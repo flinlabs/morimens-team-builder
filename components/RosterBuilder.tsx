@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useRosterStore } from "@/lib/store";
 import type { Realm, EnlightenSlot } from "@/lib/types";
 import type { GenerateResult } from "@/lib/generate";
+import { RealmSigil, REALMS, REALM_RANK, RARITY_RANK } from "./realm";
+import DetailModal, { type DetailTarget } from "./DetailModal";
 
 /* ---------------------------------------------------------------------------
    Catalog projection (sent from the server page)
@@ -18,64 +20,19 @@ export interface Catalog {
     isDivineRealm: boolean;
     isLemurian: boolean;
   }[];
-  wheels: { id: string; name: string; rarity: string }[];
+  wheels: { id: string; name: string; realm: string; rarity: string }[];
   covenants: { id: string; name: string }[];
   posses: { id: string; name: string; realm: string; hasCharacterBonus: boolean }[];
 }
 
-/* ---------------------------------------------------------------------------
-   Realm system — sigil + colour, the visual through-line
---------------------------------------------------------------------------- */
-
-const REALMS: { key: Realm; label: string; color: string }[] = [
-  { key: "CHAOS", label: "Chaos", color: "var(--realm-chaos)" },
-  { key: "CARO", label: "Caro", color: "var(--realm-caro)" },
-  { key: "AEQUOR", label: "Aequor", color: "var(--realm-aequor)" },
-  { key: "ULTRA", label: "Ultra", color: "var(--realm-ultra)" },
-];
-
-const REALM_COLOR: Record<string, string> = {
-  CHAOS: "var(--realm-chaos)",
-  CARO: "var(--realm-caro)",
-  AEQUOR: "var(--realm-aequor)",
-  ULTRA: "var(--realm-ultra)",
+const ENLIGHTEN: EnlightenSlot[] = ["E0", "E1", "E2", "E3", "OE", "AA"];
+const WHEEL_TIER_LABEL: Record<string, string> = {
+  BIS_SSR: "BiS",
+  ALT_SSR: "Alt SSR",
+  BIS_SR: "BiS SR",
+  GOOD: "Good",
+  FALLBACK: "Target",
 };
-
-function RealmSigil({ realm, size = 18 }: { realm: Realm; size?: number }) {
-  const common = {
-    width: size,
-    height: size,
-    viewBox: "0 0 24 24",
-    fill: "currentColor",
-    style: { color: REALM_COLOR[realm] },
-  } as const;
-  switch (realm) {
-    case "ULTRA": // four-point star
-      return (
-        <svg {...common} aria-hidden>
-          <path d="M12 1l2.4 8.1L23 12l-8.6 2.4L12 23l-2.4-8.6L1 12l8.6-2.9z" />
-        </svg>
-      );
-    case "CARO": // fanged maw
-      return (
-        <svg {...common} aria-hidden>
-          <path d="M3 6c3 1.8 6 2.6 9 2.6S18 7.8 21 6l-2.6 2.2L16.7 14l-1.7-5q-1.5.8-3 .8t-3-.8L7.3 14 5.6 8.2z" />
-        </svg>
-      );
-    case "AEQUOR": // tide
-      return (
-        <svg {...common} aria-hidden>
-          <path d="M2 8.5c2-2.4 4-2.4 6 0s4 2.4 6 0 4-2.4 6 0v3c-2 2.4-4 2.4-6 0s-4-2.4-6 0-4 2.4-6 0z" />
-        </svg>
-      );
-    case "CHAOS": // mask with two eyes
-      return (
-        <svg {...common} aria-hidden fillRule="evenodd" clipRule="evenodd">
-          <path d="M12 2.5c-5 0-8 3.4-8 8.4S8.2 21.5 12 21.5 20 16 20 10.9 17 2.5 12 2.5zM8.6 9.2c.9 0 1.6.9 1.6 2s-.7 2-1.6 2-1.6-.9-1.6-2 .7-2 1.6-2zm6.8 0c.9 0 1.6.9 1.6 2s-.7 2-1.6 2-1.6-.9-1.6-2 .7-2 1.6-2z" />
-        </svg>
-      );
-  }
-}
 
 /* ---------------------------------------------------------------------------
    Small UI atoms
@@ -112,14 +69,46 @@ function Segmented<T extends string>({
   );
 }
 
-const ENLIGHTEN: EnlightenSlot[] = ["E0", "E1", "E2", "E3", "OE", "AA"];
-const WHEEL_TIER_LABEL: Record<string, string> = {
-  BIS_SSR: "BiS",
-  ALT_SSR: "Alt SSR",
-  BIS_SR: "BiS SR",
-  GOOD: "Good",
-  FALLBACK: "Target",
-};
+function Select<T extends string>({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: T;
+  onChange: (v: T) => void;
+  options: { value: T; label: string }[];
+}) {
+  return (
+    <label className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
+      <span className="uppercase tracking-wider text-[var(--text-dim)]">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value as T)}
+        className="rounded border border-[var(--border)] bg-[var(--panel)] px-2 py-1.5 text-sm text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
+      >
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function DetailButton({ onClick }: { onClick: (e: React.MouseEvent) => void }) {
+  return (
+    <button
+      onClick={onClick}
+      title="Customize / view details"
+      className="flex h-5 w-5 items-center justify-center rounded-full bg-black/55 text-[11px] leading-none text-[var(--silver)] backdrop-blur-sm transition hover:bg-black/80 hover:text-white"
+    >
+      ⋯
+    </button>
+  );
+}
 
 /* ---------------------------------------------------------------------------
    Awakener card
@@ -131,12 +120,14 @@ function AwakenerCard({
   enlighten,
   onToggle,
   onEnlighten,
+  onDetails,
 }: {
   item: Catalog["awakeners"][number];
   owned: boolean;
   enlighten: EnlightenSlot;
   onToggle: () => void;
   onEnlighten: (slot: EnlightenSlot) => void;
+  onDetails: () => void;
 }) {
   return (
     <div
@@ -164,12 +155,20 @@ function AwakenerCard({
           <RealmSigil realm={item.realm} size={16} />
         </div>
 
-        {/* owned tick */}
-        {owned && (
-          <div className="absolute right-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--gold)] text-[11px] font-bold text-[#1b150a]">
-            ✓
-          </div>
-        )}
+        {/* top-right cluster: owned tick + details */}
+        <div className="absolute right-1.5 top-1.5 flex items-center gap-1">
+          {owned && (
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--gold)] text-[11px] font-bold text-[#1b150a]">
+              ✓
+            </span>
+          )}
+          <DetailButton
+            onClick={(e) => {
+              e.stopPropagation();
+              onDetails();
+            }}
+          />
+        </div>
 
         {/* divine / lemurian tag */}
         {(item.isDivineRealm || item.isLemurian) && (
@@ -185,7 +184,7 @@ function AwakenerCard({
         </div>
       </div>
 
-      {/* enlighten selector — only when owned */}
+      {/* compact enlighten selector — only when owned */}
       {owned && (
         <div className="flex items-center gap-1 border-t border-[var(--border)] bg-[var(--bg-2)] px-2 py-1.5">
           <span className="text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
@@ -217,24 +216,33 @@ function GearTile({
   id,
   name,
   category,
+  realm,
   owned,
   badge,
   badgeColor,
   onToggle,
+  onDetails,
 }: {
   id: string;
   name: string;
   category: "wheels" | "covenants" | "posses";
+  realm?: string;
   owned: boolean;
   badge?: string;
   badgeColor?: string;
   onToggle: () => void;
+  onDetails: () => void;
 }) {
   return (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onToggle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") onToggle();
+      }}
       title={name}
-      className={`flex items-center gap-2 rounded-md border p-1.5 text-left transition ${
+      className={`flex cursor-pointer items-center gap-2 rounded-md border p-1.5 text-left transition ${
         owned
           ? "border-[var(--gold)] bg-[var(--panel-2)]"
           : "border-[var(--border)] bg-[var(--panel)] hover:border-[var(--border-bright)]"
@@ -248,6 +256,11 @@ function GearTile({
           loading="lazy"
           className={`h-full w-full object-cover ${owned ? "" : "opacity-50 grayscale"}`}
         />
+        {realm && realm !== "NEUTRAL" && (
+          <div className="absolute left-0 top-0">
+            <RealmSigil realm={realm} size={11} />
+          </div>
+        )}
       </div>
       <div className="min-w-0 flex-1">
         <div className="truncate text-xs text-[var(--text)]">{name}</div>
@@ -257,8 +270,18 @@ function GearTile({
           </div>
         )}
       </div>
-      {owned && <span className="pr-1 text-xs text-[var(--gold)]">✓</span>}
-    </button>
+      {owned && <span className="text-xs text-[var(--gold)]">✓</span>}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDetails();
+        }}
+        title="Customize / view details"
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
+      >
+        ⋯
+      </button>
+    </div>
   );
 }
 
@@ -283,9 +306,7 @@ function TeamCard({
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)]/70 p-4">
       <div className="mb-3 flex items-baseline justify-between">
-        <h3 className="font-title text-sm text-[var(--gold-bright)]">
-          Team {team.rank}
-        </h3>
+        <h3 className="font-title text-sm text-[var(--gold-bright)]">Team {team.rank}</h3>
         {team.realmNote && (
           <span className="text-xs text-[var(--realm-caro)]">{team.realmNote}</span>
         )}
@@ -343,8 +364,7 @@ function TeamCard({
                   ))}
                   <div className="flex justify-between gap-2">
                     <span className="truncate">
-                      {maps.covenant[c.covenantRecommendation.covenantId] ??
-                        "—"}
+                      {maps.covenant[c.covenantRecommendation.covenantId] ?? "—"}
                     </span>
                     <span className="shrink-0 text-[var(--text-dim)]">
                       {c.covenantRecommendation.acquisitionNote ? "target" : "covenant"}
@@ -357,7 +377,6 @@ function TeamCard({
         })}
       </div>
 
-      {/* posses */}
       {team.posseRecommendations.length > 0 && (
         <div className="mt-3">
           <div className="mb-1 text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
@@ -398,6 +417,8 @@ function TeamCard({
 --------------------------------------------------------------------------- */
 
 type Tab = "awakeners" | "wheels" | "covenants" | "posses";
+type AwakenerSort = "realm" | "name" | "rarity" | "owned";
+type WheelSort = "rarity" | "realm" | "name";
 
 export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const roster = useRosterStore((s) => s.roster);
@@ -420,6 +441,10 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const [realmFilter, setRealmFilter] = useState<Realm | "ALL">("ALL");
   const [search, setSearch] = useState("");
   const [mode, setMode] = useState<"single" | "dtide">("single");
+  const [awakenerSort, setAwakenerSort] = useState<AwakenerSort>("realm");
+  const [wheelSort, setWheelSort] = useState<WheelSort>("rarity");
+  const [ownedOnly, setOwnedOnly] = useState(false);
+  const [detail, setDetail] = useState<DetailTarget | null>(null);
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<GenerateResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -442,26 +467,71 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
 
   const filteredAwakeners = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return catalog.awakeners
+    const list = catalog.awakeners
       .filter((a) => (realmFilter === "ALL" ? true : a.realm === realmFilter))
       .filter((a) => (q ? a.name.toLowerCase().includes(q) : true))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [catalog.awakeners, realmFilter, search]);
+      .filter((a) => (ownedOnly ? !!roster.awakeners[a.id]?.owned : true));
+    const byName = (x: { name: string }, y: { name: string }) =>
+      x.name.localeCompare(y.name);
+    return [...list].sort((a, b) => {
+      switch (awakenerSort) {
+        case "name":
+          return byName(a, b);
+        case "rarity":
+          return (RARITY_RANK[a.rarity] ?? 9) - (RARITY_RANK[b.rarity] ?? 9) || byName(a, b);
+        case "owned": {
+          const ao = roster.awakeners[a.id]?.owned ? 0 : 1;
+          const bo = roster.awakeners[b.id]?.owned ? 0 : 1;
+          return ao - bo || (REALM_RANK[a.realm] ?? 9) - (REALM_RANK[b.realm] ?? 9) || byName(a, b);
+        }
+        case "realm":
+        default:
+          return (REALM_RANK[a.realm] ?? 9) - (REALM_RANK[b.realm] ?? 9) || byName(a, b);
+      }
+    });
+  }, [catalog.awakeners, realmFilter, search, ownedOnly, awakenerSort, roster]);
 
-  const gearList = useMemo(() => {
+  const filteredWheels = useMemo(() => {
     const q = search.trim().toLowerCase();
-    const src =
-      tab === "wheels"
-        ? catalog.wheels
-        : tab === "covenants"
-        ? catalog.covenants
-        : tab === "posses"
-        ? catalog.posses
-        : [];
-    return src
-      .filter((x) => (q ? x.name.toLowerCase().includes(q) : true))
+    const list = catalog.wheels
+      .filter((w) => (realmFilter === "ALL" ? true : w.realm === realmFilter))
+      .filter((w) => (q ? w.name.toLowerCase().includes(q) : true))
+      .filter((w) => (ownedOnly ? !!roster.wheels[w.id]?.owned : true));
+    const byName = (x: { name: string }, y: { name: string }) =>
+      x.name.localeCompare(y.name);
+    return [...list].sort((a, b) => {
+      switch (wheelSort) {
+        case "name":
+          return byName(a, b);
+        case "realm":
+          return (REALM_RANK[a.realm] ?? 9) - (REALM_RANK[b.realm] ?? 9) || byName(a, b);
+        case "rarity":
+        default:
+          return (
+            (RARITY_RANK[a.rarity] ?? 9) - (RARITY_RANK[b.rarity] ?? 9) ||
+            (REALM_RANK[a.realm] ?? 9) - (REALM_RANK[b.realm] ?? 9) ||
+            byName(a, b)
+          );
+      }
+    });
+  }, [catalog.wheels, realmFilter, search, ownedOnly, wheelSort, roster]);
+
+  const filteredCovenants = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return catalog.covenants
+      .filter((c) => (q ? c.name.toLowerCase().includes(q) : true))
+      .filter((c) => (ownedOnly ? !!roster.covenants[c.id]?.owned : true))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [tab, catalog, search]);
+  }, [catalog.covenants, search, ownedOnly, roster]);
+
+  const filteredPosses = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return catalog.posses
+      .filter((p) => (realmFilter === "ALL" ? true : p.realm === realmFilter))
+      .filter((p) => (q ? p.name.toLowerCase().includes(q) : true))
+      .filter((p) => (ownedOnly ? !!roster.posses[p.id]?.unlocked : true))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [catalog.posses, realmFilter, search, ownedOnly, roster]);
 
   async function generate() {
     setGenerating(true);
@@ -490,6 +560,9 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
       setGenerating(false);
     }
   }
+
+  // Realm filter applies on awakeners, wheels, and posses (not covenants).
+  const showRealmFilter = tab !== "covenants";
 
   return (
     <main className="mx-auto max-w-[1400px] px-4 pb-16 pt-6 sm:px-6">
@@ -625,36 +698,74 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         />
       </nav>
 
-      {/* Realm filter (awakeners only) */}
-      {tab === "awakeners" && (
-        <div className="mb-4 flex flex-wrap gap-1.5">
-          <button
-            onClick={() => setRealmFilter("ALL")}
-            className={`rounded-full border px-3 py-1 text-xs transition ${
-              realmFilter === "ALL"
-                ? "border-[var(--silver)] text-[var(--text)]"
-                : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-bright)]"
-            }`}
-          >
-            All Realms
-          </button>
-          {REALMS.map((r) => (
+      {/* Sort + filter row */}
+      <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+        {tab === "awakeners" && (
+          <Select
+            label="Sort"
+            value={awakenerSort}
+            onChange={setAwakenerSort}
+            options={[
+              { value: "realm", label: "Realm" },
+              { value: "name", label: "Name" },
+              { value: "rarity", label: "Rarity" },
+              { value: "owned", label: "Owned first" },
+            ]}
+          />
+        )}
+        {tab === "wheels" && (
+          <Select
+            label="Sort"
+            value={wheelSort}
+            onChange={setWheelSort}
+            options={[
+              { value: "rarity", label: "Rarity → Realm" },
+              { value: "realm", label: "Realm" },
+              { value: "name", label: "Name" },
+            ]}
+          />
+        )}
+
+        <label className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
+          <input
+            type="checkbox"
+            checked={ownedOnly}
+            onChange={(e) => setOwnedOnly(e.target.checked)}
+            className="accent-[var(--gold)]"
+          />
+          Owned only
+        </label>
+
+        {showRealmFilter && (
+          <div className="flex flex-wrap gap-1.5">
             <button
-              key={r.key}
-              onClick={() => setRealmFilter(r.key)}
-              className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition ${
-                realmFilter === r.key
-                  ? "text-[var(--text)]"
+              onClick={() => setRealmFilter("ALL")}
+              className={`rounded-full border px-3 py-1 text-xs transition ${
+                realmFilter === "ALL"
+                  ? "border-[var(--silver)] text-[var(--text)]"
                   : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-bright)]"
               }`}
-              style={realmFilter === r.key ? { borderColor: r.color } : undefined}
             >
-              <RealmSigil realm={r.key} size={14} />
-              {r.label}
+              All Realms
             </button>
-          ))}
-        </div>
-      )}
+            {REALMS.map((r) => (
+              <button
+                key={r.key}
+                onClick={() => setRealmFilter(r.key)}
+                className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition ${
+                  realmFilter === r.key
+                    ? "text-[var(--text)]"
+                    : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-bright)]"
+                }`}
+                style={realmFilter === r.key ? { borderColor: r.color } : undefined}
+              >
+                <RealmSigil realm={r.key} size={14} />
+                {r.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Awakener grid */}
       {tab === "awakeners" && (
@@ -669,44 +780,72 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 enlighten={(entry?.enlightenSlot as EnlightenSlot) ?? "E0"}
                 onToggle={() => setAwakenerOwned(a.id, !entry?.owned)}
                 onEnlighten={(slot) => setEnlightenLevel(a.id, slot, entry?.enlightenCopies ?? 0)}
+                onDetails={() =>
+                  setDetail({
+                    kind: "awakener",
+                    id: a.id,
+                    name: a.name,
+                    realm: a.realm,
+                    rarity: a.rarity,
+                    isDivineRealm: a.isDivineRealm,
+                    isLemurian: a.isLemurian,
+                  })
+                }
               />
             );
           })}
         </div>
       )}
 
-      {/* Gear grids */}
-      {tab !== "awakeners" && (
+      {/* Wheels */}
+      {tab === "wheels" && (
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {gearList.map((x) => {
-            if (tab === "wheels") {
-              const owned = mounted ? !!roster.wheels[x.id]?.owned : false;
-              return (
-                <GearTile
-                  key={x.id}
-                  id={x.id}
-                  name={x.name}
-                  category="wheels"
-                  owned={owned}
-                  onToggle={() => setWheelOwned(x.id, !owned)}
-                />
-              );
-            }
-            if (tab === "covenants") {
-              const owned = mounted ? !!roster.covenants[x.id]?.owned : false;
-              return (
-                <GearTile
-                  key={x.id}
-                  id={x.id}
-                  name={x.name}
-                  category="covenants"
-                  owned={owned}
-                  onToggle={() => setCovenantOwned(x.id, !owned)}
-                />
-              );
-            }
-            // posses
-            const p = x as Catalog["posses"][number];
+          {filteredWheels.map((w) => {
+            const owned = mounted ? !!roster.wheels[w.id]?.owned : false;
+            return (
+              <GearTile
+                key={w.id}
+                id={w.id}
+                name={w.name}
+                category="wheels"
+                realm={w.realm}
+                owned={owned}
+                badge={w.rarity}
+                badgeColor="var(--text-dim)"
+                onToggle={() => setWheelOwned(w.id, !owned)}
+                onDetails={() =>
+                  setDetail({ kind: "wheel", id: w.id, name: w.name, realm: w.realm, rarity: w.rarity })
+                }
+              />
+            );
+          })}
+        </div>
+      )}
+
+      {/* Covenants */}
+      {tab === "covenants" && (
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredCovenants.map((c) => {
+            const owned = mounted ? !!roster.covenants[c.id]?.owned : false;
+            return (
+              <GearTile
+                key={c.id}
+                id={c.id}
+                name={c.name}
+                category="covenants"
+                owned={owned}
+                onToggle={() => setCovenantOwned(c.id, !owned)}
+                onDetails={() => setDetail({ kind: "covenant", id: c.id, name: c.name })}
+              />
+            );
+          })}
+        </div>
+      )}
+
+      {/* Posses */}
+      {tab === "posses" && (
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredPosses.map((p) => {
             const unlocked = mounted ? !!roster.posses[p.id]?.unlocked : false;
             return (
               <GearTile
@@ -714,15 +853,27 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 id={p.id}
                 name={p.name}
                 category="posses"
+                realm={p.realm}
                 owned={unlocked}
                 badge={p.hasCharacterBonus ? "Character bonus" : undefined}
                 badgeColor="var(--gold)"
                 onToggle={() => setPosseUnlocked(p.id, !unlocked)}
+                onDetails={() =>
+                  setDetail({
+                    kind: "posse",
+                    id: p.id,
+                    name: p.name,
+                    realm: p.realm,
+                    hasCharacterBonus: p.hasCharacterBonus,
+                  })
+                }
               />
             );
           })}
         </div>
       )}
+
+      {detail && <DetailModal target={detail} onClose={() => setDetail(null)} />}
     </main>
   );
 }
