@@ -1,11 +1,20 @@
 {
-  "_note": "Reference compositions from community guides (New Player Handbook, Mythag Compendium, Character Guide). Examples for AI reasoning — not hard rules. All IDs verified against SKeyDB.",
-
+  "_note": "Reference compositions from community guides (New Player Handbook, Mythag Compendium, Character Guide). Examples for AI reasoning — not hard rules. All IDs verified against SKeyDB. Validated: every team is 4 unique awakeners spanning at most 2 distinct realms total (Chaos counts toward that cap).",
   "teams": [
     {
       "name": "Mouchette Hypercarry (Caro, Story)",
-      "awakenerIds": ["awakener-0033", "awakener-0023", "awakener-0042", "awakener-0003"],
-      "awakenerNames": ["Mouchette", "Helot", "Ramona", "Aigis"],
+      "awakenerIds": [
+        "awakener-0033",
+        "awakener-0023",
+        "awakener-0042",
+        "awakener-0003"
+      ],
+      "awakenerNames": [
+        "Mouchette",
+        "Helot",
+        "Ramona",
+        "Aigis"
+      ],
       "realm": "CARO",
       "tier": "S",
       "arcContext": "arc1",
@@ -13,16 +22,36 @@
     },
     {
       "name": "Mouchette + Catena (Caro)",
-      "awakenerIds": ["awakener-0033", "awakener-0019", "awakener-0048", "awakener-0016"],
-      "awakenerNames": ["Mouchette", "Helot: Catena", "Thais", "Faint"],
+      "awakenerIds": [
+        "awakener-0033",
+        "awakener-0019",
+        "awakener-0048",
+        "awakener-0016"
+      ],
+      "awakenerNames": [
+        "Mouchette",
+        "Helot: Catena",
+        "Thais",
+        "Faint"
+      ],
       "realm": "CARO",
       "tier": "S",
       "notes": "Catena as main DPS, Mouchette adds Pursuit bonus damage and Strike DMG buff via Soulforge. Thais copies Catena's Bloodthirsty Flail or Lasting Loathe for burst. Faint provides Death Resistance."
     },
     {
       "name": "Castor Stall (Ultra, D-Tide)",
-      "awakenerIds": ["awakener-0008", "awakener-0028", "awakener-0002", "awakener-0015"],
-      "awakenerNames": ["Castor", "Leigh", "Agrippa", "Erica"],
+      "awakenerIds": [
+        "awakener-0008",
+        "awakener-0028",
+        "awakener-0002",
+        "awakener-0015"
+      ],
+      "awakenerNames": [
+        "Castor",
+        "Leigh",
+        "Agrippa",
+        "Erica"
+      ],
       "realm": "ULTRA",
       "tier": "A",
       "arcContext": "arc2",
@@ -30,8 +59,18 @@
     },
     {
       "name": "Xu Poison (Caro, Arc 2 Story)",
-      "awakenerIds": ["awakener-0054", "awakener-0037", "awakener-0018", "awakener-0016"],
-      "awakenerNames": ["Xu", "Nymphaea", "Doll: Inferno", "Faint"],
+      "awakenerIds": [
+        "awakener-0054",
+        "awakener-0037",
+        "awakener-0018",
+        "awakener-0016"
+      ],
+      "awakenerNames": [
+        "Xu",
+        "Nymphaea",
+        "Doll: Inferno",
+        "Faint"
+      ],
       "realm": "CARO",
       "tier": "A",
       "arcContext": "arc2",
@@ -39,88 +78,198 @@
     },
     {
       "name": "Counter Team (Aequor/Chaos)",
-      "awakenerIds": ["awakener-0047", "awakener-0022", "awakener-0006", "awakener-0036"],
-      "awakenerNames": ["Tawil", "Hameln", "Caecus", "Nautila"],
+      "awakenerIds": [
+        "awakener-0047",
+        "awakener-0022",
+        "awakener-0006",
+        "awakener-0036"
+      ],
+      "awakenerNames": [
+        "Tawil",
+        "Hameln",
+        "Caecus",
+        "Nautila"
+      ],
       "realm": "AEQUOR",
       "tier": "A",
       "notes": "From New Player Handbook p.47. Counter team. Tawil for STR and card chains. Hameln for Rondino/Crescendo STR and Marvelous Debuffs. Caecus stacks Counter and converts it to damage. Nautila multiplies Counter triggers and converts Counter to AOE damage."
     },
     {
       "name": "Sorel Core (Caro)",
-      "awakenerIds": ["awakener-0046", "awakener-0040", "awakener-0048", "awakener-0028"],
-      "awakenerNames": ["Sorel", "Pickman", "Thais", "Leigh"],
+      "awakenerIds": [
+        "awakener-0046",
+        "awakener-0040",
+        "awakener-0048",
+        "awakener-0028"
+      ],
+      "awakenerNames": [
+        "Sorel",
+        "Pickman",
+        "Thais",
+        "Leigh"
+      ],
       "realm": "CARO",
       "tier": "S",
       "notes": "From New Player Handbook p.145. Pickman is Sorel's primary pairing — builds STR for her and massively buffs her Exalt via Chromaphage temp STR. Thais provides Embryo gen, Aliemus, and card copies. Leigh heals at low HP. Sorel is the Infinite Devour DPS at OE."
     },
     {
       "name": "Sorel Alt (Caro)",
-      "awakenerIds": ["awakener-0046", "awakener-0048", "awakener-0003", "awakener-0016"],
-      "awakenerNames": ["Sorel", "Thais", "Aigis", "Faint"],
+      "awakenerIds": [
+        "awakener-0046",
+        "awakener-0048",
+        "awakener-0003",
+        "awakener-0016"
+      ],
+      "awakenerNames": [
+        "Sorel",
+        "Thais",
+        "Aigis",
+        "Faint"
+      ],
       "realm": "CARO",
       "tier": "S",
       "notes": "Aigis variant. Aigis provides Petrify (free extra turn), Vulnerable, Keyflare, and Embryo gen. Faint Death Resistance. Thais copies Sorel Exalt enabling Infinite Devour chain."
     },
     {
       "name": "Helot: Catena Core (Caro)",
-      "awakenerIds": ["awakener-0019", "awakener-0048", "awakener-0003", "awakener-0016"],
-      "awakenerNames": ["Helot: Catena", "Thais", "Aigis", "Faint"],
+      "awakenerIds": [
+        "awakener-0019",
+        "awakener-0048",
+        "awakener-0003",
+        "awakener-0016"
+      ],
+      "awakenerNames": [
+        "Helot: Catena",
+        "Thais",
+        "Aigis",
+        "Faint"
+      ],
       "realm": "CARO",
       "tier": "S",
       "notes": "Highest raw damage Caro team. Thais copies Bloodthirsty Flail or Lasting Loathe for massive burst. Aigis Petrify buys setup time. Faint Death Resistance for survival."
     },
     {
       "name": "Castor+Pollux Ultra Core",
-      "awakenerIds": ["awakener-0008", "awakener-0041", "awakener-0010", "awakener-0053"],
-      "awakenerNames": ["Castor", "Pollux", "Clementine", "Winkle"],
+      "awakenerIds": [
+        "awakener-0008",
+        "awakener-0041",
+        "awakener-0010",
+        "awakener-0053"
+      ],
+      "awakenerNames": [
+        "Castor",
+        "Pollux",
+        "Clementine",
+        "Winkle"
+      ],
       "realm": "ULTRA",
       "tier": "S",
       "notes": "Premier Ultra team. Castor shields+Corrosion via Onyx Plumes. Pollux Bleed DPS using Atonement by Pain — does not compete for Leap priority. Clementine STR+Keyflare support. Winkle Aliemus battery."
     },
     {
       "name": "Pollux+Castor+Horla Ultra",
-      "awakenerIds": ["awakener-0041", "awakener-0008", "awakener-0024", "awakener-0010"],
-      "awakenerNames": ["Pollux", "Castor", "Horla", "Clementine"],
+      "awakenerIds": [
+        "awakener-0041",
+        "awakener-0008",
+        "awakener-0024",
+        "awakener-0010"
+      ],
+      "awakenerNames": [
+        "Pollux",
+        "Castor",
+        "Horla",
+        "Clementine"
+      ],
       "realm": "ULTRA",
       "tier": "S",
       "notes": "Horla variant replacing Winkle. Horla provides universal teamwide Emotion buffs — Joy gives Aliemus and Retain, Sadness heals. At E1 also provides consistent Weak and Vulnerable."
     },
     {
       "name": "Arachne+Daffodil Ultra",
-      "awakenerIds": ["awakener-0056", "awakener-0012", "awakener-0008", "awakener-0025"],
-      "awakenerNames": ["Arachne", "Daffodil", "Castor", "Jenkin"],
+      "awakenerIds": [
+        "awakener-0056",
+        "awakener-0012",
+        "awakener-0008",
+        "awakener-0025"
+      ],
+      "awakenerNames": [
+        "Arachne",
+        "Daffodil",
+        "Castor",
+        "Jenkin"
+      ],
       "realm": "ULTRA",
       "tier": "S",
       "notes": "From New Player Handbook p.164. Arachne S-tier support — Final Verdict ignores shields and invulnerability. Daffodil Thousand Mirages creates temp Counter or Poison for combo turns. Castor shields and Corrosion. Jenkin Crit Rate/DMG buffs."
     },
     {
       "name": "Tawil Core (Chaos)",
-      "awakenerIds": ["awakener-0047", "awakener-0043", "awakener-0022", "awakener-0020"],
-      "awakenerNames": ["Tawil", "Ryker", "Hameln", "Ramona: Timeworn"],
+      "awakenerIds": [
+        "awakener-0047",
+        "awakener-0043",
+        "awakener-0022",
+        "awakener-0020"
+      ],
+      "awakenerNames": [
+        "Tawil",
+        "Ryker",
+        "Hameln",
+        "Ramona: Timeworn"
+      ],
       "realm": "CHAOS",
       "tier": "A",
       "notes": "Classic Tawil team. Ryker provides card draw, dice relic, Crit buffs. Hameln Rondino/Crescendo STR scaling and Marvelous Debuffs. Gramona card cycling. Ryker+Karen also noted as complementary exalt pair."
     },
     {
       "name": "Corposant Aequor Core",
-      "awakenerIds": ["awakener-0011", "awakener-0006", "awakener-0045", "awakener-0055"],
-      "awakenerNames": ["Corposant", "Caecus", "Sanga", "Vortice"],
+      "awakenerIds": [
+        "awakener-0011",
+        "awakener-0006",
+        "awakener-0045",
+        "awakener-0055"
+      ],
+      "awakenerNames": [
+        "Corposant",
+        "Caecus",
+        "Sanga",
+        "Vortice"
+      ],
       "realm": "AEQUOR",
       "tier": "S",
       "notes": "Premier Aequor team. Corposant shield/Pilot cycling and Aftershock discard. Caecus counter-carry or healer. Sanga converts shield to AOE damage. Vortice Divine Aequor DPS with Pursuit stacks."
     },
     {
       "name": "Corposant Discard (Ultra/Aequor)",
-      "awakenerIds": ["awakener-0011", "awakener-0005", "awakener-0007", "awakener-0006"],
-      "awakenerNames": ["Corposant", "Aurita", "Casiah", "Caecus"],
+      "awakenerIds": [
+        "awakener-0011",
+        "awakener-0005",
+        "awakener-0007",
+        "awakener-0006"
+      ],
+      "awakenerNames": [
+        "Corposant",
+        "Aurita",
+        "Casiah",
+        "Caecus"
+      ],
       "realm": "AEQUOR",
       "tier": "A",
       "notes": "Discard team. Corposant repeatedly discards hand to power Lightning Retribution. Aurita triggers 25+ tentacle attacks. Casiah draws cards and manages Ultra Space. Caecus provides healing and Counter."
     },
     {
       "name": "GMurphy Lemurian (Astral Reign only)",
-      "awakenerIds": ["awakener-0035", "awakener-0017", "awakener-0021", "awakener-0032"],
-      "awakenerNames": ["Murphy: Fauxborn", "Faros", "Goliath", "Miryam"],
+      "awakenerIds": [
+        "awakener-0035",
+        "awakener-0017",
+        "awakener-0021",
+        "awakener-0032"
+      ],
+      "awakenerNames": [
+        "Murphy: Fauxborn",
+        "Faros",
+        "Goliath",
+        "Miryam"
+      ],
       "realm": "AEQUOR",
       "tier": "S",
       "arcContext": "arc2",
@@ -128,8 +277,18 @@
     },
     {
       "name": "GMurphy Lemurian Alt",
-      "awakenerIds": ["awakener-0035", "awakener-0050", "awakener-0032", "awakener-0021"],
-      "awakenerNames": ["Murphy: Fauxborn", "Tulu", "Miryam", "Goliath"],
+      "awakenerIds": [
+        "awakener-0035",
+        "awakener-0050",
+        "awakener-0032",
+        "awakener-0021"
+      ],
+      "awakenerNames": [
+        "Murphy: Fauxborn",
+        "Tulu",
+        "Miryam",
+        "Goliath"
+      ],
       "realm": "AEQUOR",
       "tier": "A",
       "arcContext": "arc2",
@@ -137,44 +296,131 @@
     },
     {
       "name": "GMurphy Support (with Murphy base)",
-      "awakenerIds": ["awakener-0035", "awakener-0034", "awakener-0032", "awakener-0050"],
-      "awakenerNames": ["Murphy: Fauxborn", "Murphy", "Miryam", "Tulu"],
+      "awakenerIds": [
+        "awakener-0035",
+        "awakener-0034",
+        "awakener-0032",
+        "awakener-0050"
+      ],
+      "awakenerNames": [
+        "Murphy: Fauxborn",
+        "Murphy",
+        "Miryam",
+        "Tulu"
+      ],
       "realm": "AEQUOR",
       "tier": "A",
       "notes": "Murphy (base) is NOT Lemurian but clears GMurphy's self-Sacrifice stacks with Vortex Reversal. Only 2 other Lemurians (Miryam + Tulu) — reduced Soulforge scaling (+15% Max HP, 125% DEF shield)."
     },
     {
       "name": "GMurphy Discard (Arc 1)",
-      "awakenerIds": ["awakener-0035", "awakener-0034", "awakener-0031", "awakener-0020"],
-      "awakenerNames": ["Murphy: Fauxborn", "Murphy", "Lotan", "Ramona: Timeworn"],
+      "awakenerIds": [
+        "awakener-0035",
+        "awakener-0034",
+        "awakener-0031",
+        "awakener-0020"
+      ],
+      "awakenerNames": [
+        "Murphy: Fauxborn",
+        "Murphy",
+        "Lotan",
+        "Ramona: Timeworn"
+      ],
       "realm": "AEQUOR",
       "tier": "B",
       "arcContext": "arc1",
       "notes": "Arc 1 team. Murphy (base) reduces self-Sacrifice. Lotan Strike DPS. Gramona card cycling. No Lemurian Soulforge scaling."
     },
     {
-      "name": "Saya Support Team",
-      "awakenerIds": ["awakener-0057", "awakener-0045", "awakener-0021", "awakener-0025"],
-      "awakenerNames": ["Saya", "Sanga", "Goliath", "Jenkin"],
+      "name": "Saya Propagation Caro (Sorel carry)",
+      "awakenerIds": [
+        "awakener-0057",
+        "awakener-0046",
+        "awakener-0048",
+        "awakener-0016"
+      ],
+      "awakenerNames": [
+        "Saya",
+        "Sorel",
+        "Thais",
+        "Faint"
+      ],
       "realm": "CARO",
       "tier": "S",
-      "notes": "From New Player Handbook p.149. Saya S-tier support — Viscera Blossoms 0-cost inflicts corrosion multiplying team damage 4x. Works best with teammates that don't need specific cards. Sanga converts shields to AOE. Goliath STR steal. Jenkin Crit buffs."
+      "notes": "Mono-Caro Propagation team. Saya mutates Caro into Propagation: Caro — Viscera Blossoms stacks heavy Corrosion (a large damage multiplier), and she seeds 0-cost copies of teammates' cards and funnels Aliemus, so she pairs best with carries that don't need specific cards. Sorel is the embryo/STR/aliemus-hungry multihit Exalt DPS who benefits enormously from Saya's copies and funnelled resources. Thais is the premier embryo/aliemus/card-copy support; Faint provides Death Resistance sustain. Follows the Caro team core (DPS + survivability + embryo/aliemus generator + flex) from the Beginner Guide to Caro. Replaces an earlier invalid entry that mixed three realms; Saya's documented individual synergy partners (Sanga, Goliath, Jenkin) are alternates, not a legal 4-stack."
     },
     {
       "name": "Kathigu-Ra Ultra",
-      "awakenerIds": ["awakener-0027", "awakener-0010", "awakener-0008", "awakener-0053"],
-      "awakenerNames": ["Kathigu-Ra", "Clementine", "Castor", "Winkle"],
+      "awakenerIds": [
+        "awakener-0027",
+        "awakener-0010",
+        "awakener-0008",
+        "awakener-0053"
+      ],
+      "awakenerNames": [
+        "Kathigu-Ra",
+        "Clementine",
+        "Castor",
+        "Winkle"
+      ],
       "realm": "ULTRA",
       "tier": "S",
       "notes": "Kathi high-damage Chaos Assault in Ultra team. Clementine Keyflare + STR support. Castor shields. Winkle Aliemus battery."
     },
     {
       "name": "Kathigu-Ra Chaos",
-      "awakenerIds": ["awakener-0027", "awakener-0022", "awakener-0043", "awakener-0047"],
-      "awakenerNames": ["Kathigu-Ra", "Hameln", "Ryker", "Tawil"],
+      "awakenerIds": [
+        "awakener-0027",
+        "awakener-0022",
+        "awakener-0043",
+        "awakener-0047"
+      ],
+      "awakenerNames": [
+        "Kathigu-Ra",
+        "Hameln",
+        "Ryker",
+        "Tawil"
+      ],
       "realm": "CHAOS",
       "tier": "A",
       "notes": "Kathi in Chaos alongside Tawil. Both Chaos carries sharing Hameln and Ryker support."
+    },
+    {
+      "name": "Vortice Divine Aequor (Pursuit DPS)",
+      "awakenerIds": [
+        "awakener-0055",
+        "awakener-0034",
+        "awakener-0045",
+        "awakener-0009"
+      ],
+      "awakenerNames": [
+        "Vortice",
+        "Murphy",
+        "Sanga",
+        "Celeste"
+      ],
+      "realm": "AEQUOR",
+      "tier": "A",
+      "notes": "Mono-Aequor. Vortice is a 'ramping artillery cannon' DPS who stacks Vortex Reload via Reload! and her posse Drowned Innocence (which she requires), then unloads a huge AOE Exalt; she also supplies Divine Aequor (a 25% Max HP Tranquil Sea shield every 3 turns) and likes defensive teammates that stall while she ramps. Murphy and Sanga are Aequor supports; Celeste's revive Exalt buys turns for the ramp. Works-well-with per handbook: Murphy, Sanga, Celeste, Pickman. Needs Reload!/soulforge levels and her posse online."
+    },
+    {
+      "name": "Faros Poison (Aequor/Caro)",
+      "awakenerIds": [
+        "awakener-0017",
+        "awakener-0054",
+        "awakener-0032",
+        "awakener-0005"
+      ],
+      "awakenerNames": [
+        "Faros",
+        "Xu",
+        "Miryam",
+        "Aurita"
+      ],
+      "realm": "AEQUOR",
+      "tier": "A",
+      "arcContext": "arc2",
+      "notes": "Aequor + Caro poison comp (two realms total, legal). Faros spams Deep Currents for AOE poison and works best in a team full of poison units. Xu is the poison-trigger queen — Bonesick Longing and her Exalt are among the biggest poison triggers in the game, and her high CON raises the team poison cap in Astral Reign. Miryam adds Aequor/Lemurian support, and Aurita's multihit triggers 25+ tentacle attacks in Raging Waves — a direct payoff for Faros's Deep Currents tentacle-hit poison. Works-well-with per handbook: Faros -> Miryam, Xu, Aurita (GDoll is also listed but is Chaos, so it can't join a team that already spans Aequor and Caro)."
     }
   ]
 }

@@ -15,12 +15,27 @@ import { getAwakenerEntry } from './roster'
 
 const REALM_ORDER: Realm[] = ['CHAOS', 'CARO', 'AEQUOR', 'ULTRA']
 
-// Distinct NON-CHAOS realms on the team. Chaos is deliberately excluded: per the
-// Game Mechanics doc, a team with a Chaos unit is "still considered pure when
-// referring to realm mechanics", so Chaos does not consume one of the two realm
-// slots. The hard cap is therefore ≤ 2 non-Chaos realms, with any number of
-// Chaos members allowed alongside them. Do NOT change this to count Chaos.
+// All DISTINCT realms on the team, INCLUDING Chaos. This is what the team-size
+// cap is measured against: a team may contain awakeners from at most two realms
+// total, and Chaos counts as one of those two (in-game "Realm Conflict" triggers
+// on a third distinct realm regardless of whether one of them is Chaos). So
+// Aequor + Caro is full, and adding a Chaos unit to it is illegal.
 export function getRealmsInTeam(
+  awakenersIds: string[],
+  awakeners: Record<string, EnrichedAwakener>
+): Realm[] {
+  const realms = new Set<Realm>()
+  for (const id of awakenersIds) {
+    const realm = awakeners[id]?.realm
+    if (realm) realms.add(realm as Realm)
+  }
+  return Array.from(realms)
+}
+
+// Distinct NON-Chaos realms — used for bonus/penalty math, where Chaos is treated
+// as "pure" (it doesn't bring its own realm gimmick and a single-realm + Chaos
+// team still gets that realm's mechanics). NOT used for the validity cap.
+export function getNonChaosRealms(
   awakenersIds: string[],
   awakeners: Record<string, EnrichedAwakener>
 ): Realm[] {
@@ -43,15 +58,15 @@ export function isValidRealmComposition(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>
 ): boolean {
-  const nonChaosRealms = getRealmsInTeam(awakenerIds, awakeners)
-  return nonChaosRealms.length <= 2
+  // Cap counts ALL realms including Chaos: at most two distinct realms total.
+  return getRealmsInTeam(awakenerIds, awakeners).length <= 2
 }
 
 export function getMixingPenalty(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>
 ): { hasPenalty: boolean; note: string } {
-  const nonChaosRealms = getRealmsInTeam(awakenerIds, awakeners)
+  const nonChaosRealms = getNonChaosRealms(awakenerIds, awakeners)
   const hasUltra = nonChaosRealms.includes('ULTRA')
   const hasAequor = nonChaosRealms.includes('AEQUOR')
   const hasCaro = nonChaosRealms.includes('CARO')
@@ -72,7 +87,7 @@ export function getRealmBonuses(
 ): string[] {
   const bonuses: string[] = []
   const hasChaos = hasChaosMember(awakenerIds, awakeners)
-  const nonChaosRealms = getRealmsInTeam(awakenerIds, awakeners)
+  const nonChaosRealms = getNonChaosRealms(awakenerIds, awakeners)
   const chaosCount = awakenerIds.filter(id => awakeners[id]?.realm === 'CHAOS').length
 
   if (hasChaos && nonChaosRealms.includes('AEQUOR')) {
@@ -155,7 +170,7 @@ export function checkRoleCoverage(
   awakeners: Record<string, EnrichedAwakener>
 ): { covered: TeamRole[]; gaps: string[] } {
   const roles = getTeamRoles(awakenerIds, awakeners)
-  const nonChaosRealms = getRealmsInTeam(awakenerIds, awakeners)
+  const nonChaosRealms = getNonChaosRealms(awakenerIds, awakeners)
   const gaps: string[] = []
 
   // All teams need a DPS
@@ -298,7 +313,7 @@ function buildCandidateTeam(
   awakeners: Record<string, EnrichedAwakener>,
   roster: UserRoster
 ): CandidateTeam {
-  const nonChaosRealms = getRealmsInTeam(awakenerIds, awakeners)
+  const nonChaosRealms = getNonChaosRealms(awakenerIds, awakeners)
   const hasChaos = hasChaosMember(awakenerIds, awakeners)
   const realmComposition: Realm[] = [
     ...(hasChaos ? ['CHAOS' as Realm] : []),
