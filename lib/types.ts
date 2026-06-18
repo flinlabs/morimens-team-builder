@@ -316,6 +316,7 @@ export interface WheelEntry {
 
 export interface CovenantEntry {
   owned: boolean
+  threePieceComplete: boolean
   sixPieceComplete: boolean
   completionPercent: number
   pieces?: CovenantPiece[]

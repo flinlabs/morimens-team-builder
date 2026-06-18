@@ -24,6 +24,10 @@ import {
   getOwnedAwakenerIds,
   getOwnedWheelIds,
   getUnlockedPosseCount,
+  setAllAwakenersOwned,
+  setAllWheelsOwned,
+  setAllCovenantsOwned,
+  setAllPossesUnlocked,
 } from './roster'
 
 // ---------------------------------------------------------------------------
@@ -56,11 +60,18 @@ interface RosterStore {
 
   // Covenant actions
   setCovenantOwned: (id: string, owned: boolean) => void
+  setCovenantThreePiece: (id: string, complete: boolean) => void
   setCovenantSixPiece: (id: string, complete: boolean) => void
   setCovenantCompletion: (id: string, percent: number) => void
 
   // Posse actions
   setPosseUnlocked: (id: string, unlocked: boolean) => void
+
+  // Bulk ownership (own all / own none)
+  setAllAwakenersOwned: (ids: string[], owned: boolean) => void
+  setAllWheelsOwned: (ids: string[], owned: boolean) => void
+  setAllCovenantsOwned: (ids: string[], owned: boolean) => void
+  setAllPossesUnlocked: (ids: string[], unlocked: boolean) => void
 
   // Settings actions
   setArcRuleset: (ruleset: ArcRuleset) => void
@@ -150,6 +161,11 @@ export const useRosterStore = create<RosterStore>((set, get) => ({
   setCovenantOwned: (id, owned) =>
     updateAndSave(set, (r) => setCovenantEntry(r, id, { owned })),
 
+  setCovenantThreePiece: (id, complete) =>
+    updateAndSave(set, (r) =>
+      setCovenantEntry(r, id, { threePieceComplete: complete })
+    ),
+
   setCovenantSixPiece: (id, complete) =>
     updateAndSave(set, (r) =>
       setCovenantEntry(r, id, { sixPieceComplete: complete })
@@ -166,6 +182,22 @@ export const useRosterStore = create<RosterStore>((set, get) => ({
 
   setPosseUnlocked: (id, unlocked) =>
     updateAndSave(set, (r) => setPosseUnlocked(r, id, unlocked)),
+
+  // ---------------------------------------------------------------------------
+  // Bulk ownership
+  // ---------------------------------------------------------------------------
+
+  setAllAwakenersOwned: (ids, owned) =>
+    updateAndSave(set, (r) => setAllAwakenersOwned(r, ids, owned)),
+
+  setAllWheelsOwned: (ids, owned) =>
+    updateAndSave(set, (r) => setAllWheelsOwned(r, ids, owned)),
+
+  setAllCovenantsOwned: (ids, owned) =>
+    updateAndSave(set, (r) => setAllCovenantsOwned(r, ids, owned)),
+
+  setAllPossesUnlocked: (ids, unlocked) =>
+    updateAndSave(set, (r) => setAllPossesUnlocked(r, ids, unlocked)),
 
   // ---------------------------------------------------------------------------
   // Settings actions

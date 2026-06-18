@@ -47,6 +47,7 @@ const DEFAULT_WHEEL_ENTRY: WheelEntry = {
 
 const DEFAULT_COVENANT_ENTRY: CovenantEntry = {
   owned: false,
+  threePieceComplete: false,
   sixPieceComplete: false,
   completionPercent: 0,
 }
@@ -332,4 +333,56 @@ export function getRosterSummary(roster: UserRoster) {
     ownedCovenants,
     unlockedPosses,
   }
+}
+// ---------------------------------------------------------------------------
+// Bulk ownership (own all / own none) — used by the roster tab toggles.
+// Set `owned` for an explicit list of ids, leaving every other field intact.
+// ---------------------------------------------------------------------------
+
+export function setAllAwakenersOwned(
+  roster: UserRoster,
+  ids: string[],
+  owned: boolean
+): UserRoster {
+  const awakeners = { ...roster.awakeners }
+  for (const id of ids) {
+    awakeners[id] = { ...getAwakenerEntry(roster, id), owned }
+  }
+  return { ...roster, awakeners }
+}
+
+export function setAllWheelsOwned(
+  roster: UserRoster,
+  ids: string[],
+  owned: boolean
+): UserRoster {
+  const wheels = { ...roster.wheels }
+  for (const id of ids) {
+    wheels[id] = { ...getWheelEntry(roster, id), owned }
+  }
+  return { ...roster, wheels }
+}
+
+export function setAllCovenantsOwned(
+  roster: UserRoster,
+  ids: string[],
+  owned: boolean
+): UserRoster {
+  const covenants = { ...roster.covenants }
+  for (const id of ids) {
+    covenants[id] = { ...getCovenantEntry(roster, id), owned }
+  }
+  return { ...roster, covenants }
+}
+
+export function setAllPossesUnlocked(
+  roster: UserRoster,
+  ids: string[],
+  unlocked: boolean
+): UserRoster {
+  const posses = { ...roster.posses }
+  for (const id of ids) {
+    posses[id] = { ...getPosseEntry(roster, id), unlocked }
+  }
+  return { ...roster, posses }
 }
