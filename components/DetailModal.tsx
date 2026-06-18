@@ -1,14 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRosterStore } from "@/lib/store";
-import type { EnlightenSlot, SkillSlot, Realm } from "@/lib/types";
+import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
+import { ScaledText, maxScalingIndex } from "@/lib/template";
+import {
+  ENLIGHTEN_MILESTONES,
+  ENLIGHTEN_MAX,
+  toTotal,
+  fromTotal,
+  isSlotUnlocked,
+  overEnlighten,
+} from "@/lib/enlighten";
 
-/* Detail modal — the "open up and customize / view" menu for any entity.
-   Houses the full granularity the quick grid can't: every enlighten slot plus
-   copies, character + skill + talent levels for awakeners, and star/stack for
-   wheels. */
+/* ---------------------------------------------------------------------------
+   Detail modal — open up and customize / view any entity.
+
+   The grid only knows names; the rich, scaling effect text is fetched on open
+   from /api/detail. Everything the player can invest in (enlighten track,
+   character + skill + talent levels, wheel star/stack, covenant pieces) is
+   edited here, and every description re-renders at the chosen investment level.
+--------------------------------------------------------------------------- */
 
 export type DetailTarget =
   | {
@@ -24,7 +37,6 @@ export type DetailTarget =
   | { kind: "covenant"; id: string; name: string }
   | { kind: "posse"; id: string; name: string; realm: string; hasCharacterBonus?: boolean };
 
-const ENLIGHTEN: EnlightenSlot[] = ["E0", "E1", "E2", "E3", "OE", "AA"];
 const SKILLS: { slot: SkillSlot; label: string }[] = [
   { slot: "Strike", label: "Strike" },
   { slot: "Defense", label: "Defense" },
@@ -34,12 +46,77 @@ const SKILLS: { slot: SkillSlot; label: string }[] = [
   { slot: "Exalt", label: "Exalt" },
   { slot: "OverExalt", label: "Over-Exalt" },
 ];
+const SKILL_LABEL: Record<string, string> = Object.fromEntries(
+  SKILLS.map((s) => [s.slot, s.label])
+);
+
 const ASSET_DIR: Record<DetailTarget["kind"], string> = {
   awakener: "portraits",
   wheel: "wheels",
   covenant: "covenants",
   posse: "posses",
 };
+
+const MAINSTAT_LABEL: Record<string, string> = {
+  CRIT_RATE: "Crit Rate",
+  CRIT_DMG: "Crit DMG",
+  DMG_AMP: "DMG Amplification",
+  ALIEMUS_REGEN: "Aliemus Regen",
+  KEYFLARE_REGEN: "Keyflare Regen",
+  REALM_MASTERY: "Realm Mastery",
+  DEATH_RESISTANCE: "Death Resistance",
+  SIGIL_YIELD: "Sigil Yield",
+};
+
+/* ---- detail payload shapes (mirrors /api/detail) ------------------------- */
+
+interface EffectBlock {
+  id?: string;
+  name?: string;
+  slot?: string;
+  cost?: number | null;
+  descriptionTemplate: string;
+  descriptionArgs: Record<string, DescriptionArg>;
+}
+interface AwakenerDetail {
+  kind: "awakener";
+  type?: string;
+  faction?: string;
+  annotationNotes?: string | null;
+  teamRoles?: string[];
+  enlightens: (EffectBlock & { slot: EnlightenSlot })[];
+  skills: (EffectBlock & { slot: SkillSlot })[];
+  talents: (EffectBlock & { family: string; maxLevel: number; defaultMaxed: boolean })[];
+}
+interface WheelDetail {
+  kind: "wheel";
+  mainstatKey: string;
+  ownerAwakenerName?: string | null;
+  isMythic: boolean;
+  isNWheel: boolean;
+  hasCombatEffect: boolean;
+  descriptionTemplate: string;
+  descriptionArgs: Record<string, DescriptionArg>;
+  lore?: string | null;
+}
+interface CovenantDetail {
+  kind: "covenant";
+  acquisitionSource?: string | null;
+  lore?: string | null;
+  setEffects: { set: number; descriptionTemplate: string; descriptionArgs: Record<string, DescriptionArg> }[];
+}
+interface PosseDetail {
+  kind: "posse";
+  acquisitionSource?: string | null;
+  lore?: string | null;
+  hasCharacterBonus: boolean;
+  characterBonusFor?: string | null;
+  descriptionTemplate: string;
+  descriptionArgs: Record<string, DescriptionArg>;
+}
+type Detail = AwakenerDetail | WheelDetail | CovenantDetail | PosseDetail;
+
+/* ---- UI atoms ------------------------------------------------------------ */
 
 function Toggle({
   label,
@@ -76,12 +153,14 @@ function Stepper({
   value,
   min,
   max,
+  suffix,
   onChange,
 }: {
   label: string;
   value: number;
   min: number;
   max: number;
+  suffix?: string;
   onChange: (v: number) => void;
 }) {
   const clamp = (v: number) => Math.max(min, Math.min(max, v));
@@ -90,7 +169,9 @@ function Stepper({
       <div className="mb-1.5 flex items-center justify-between">
         <span className="text-sm text-[var(--text)]">{label}</span>
         <span className="tabular-nums text-xs text-[var(--text-dim)]">
-          {value} / {max}
+          {value}
+          {suffix ?? ""} / {max}
+          {suffix ?? ""}
         </span>
       </div>
       <div className="flex items-center gap-2">
@@ -130,6 +211,118 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
+/* Enlighten track — one slider 0..16 with milestone ticks + timeline labels. */
+function EnlightenTrack({
+  total,
+  onChange,
+}: {
+  total: number;
+  onChange: (total: number) => void;
+}) {
+  const pct = (t: number) => (t / ENLIGHTEN_MAX) * 100;
+  const over = overEnlighten(total);
+  return (
+    <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 pb-3 pt-2">
+      <div className="mb-1 flex items-center justify-between">
+        <span className="text-sm text-[var(--text)]">Enlightenment</span>
+        <span className="tabular-nums text-xs text-[var(--text-dim)]">
+          {total} / {ENLIGHTEN_MAX}
+          {over > 0 && (
+            <span className="ml-1 text-[var(--gold-bright)]">(+{over})</span>
+          )}
+        </span>
+      </div>
+
+      {/* timeline labels above the track */}
+      <div className="relative mb-1 h-4">
+        {ENLIGHTEN_MILESTONES.filter((m) => m.slot !== "E0").map((m) => (
+          <span
+            key={m.slot}
+            className={`absolute -translate-x-1/2 text-[10px] font-medium ${
+              total >= m.total ? "text-[var(--gold-bright)]" : "text-[var(--text-dim)]"
+            }`}
+            style={{ left: `${pct(m.total)}%` }}
+            title={m.full}
+          >
+            {m.label}
+          </span>
+        ))}
+      </div>
+
+      <input
+        type="range"
+        min={0}
+        max={ENLIGHTEN_MAX}
+        value={total}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full accent-[var(--gold)]"
+      />
+
+      {/* tick marks for milestones */}
+      <div className="relative mt-0.5 h-2">
+        {ENLIGHTEN_MILESTONES.filter((m) => m.slot !== "E0").map((m) => (
+          <span
+            key={m.slot}
+            className={`absolute h-2 w-px -translate-x-1/2 ${
+              total >= m.total ? "bg-[var(--gold)]" : "bg-[var(--border-bright)]"
+            }`}
+            style={{ left: `${pct(m.total)}%` }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* Scaling skill card — name, cost, level stepper, live-scaled description. */
+function SkillCard({
+  block,
+  level,
+  onLevel,
+}: {
+  block: EffectBlock & { slot: SkillSlot };
+  level: number;
+  onLevel: (v: number) => void;
+}) {
+  return (
+    <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] p-2.5">
+      <div className="mb-1 flex items-center gap-2">
+        <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+          {SKILL_LABEL[block.slot] ?? block.slot}
+        </span>
+        <span className="font-display truncate text-sm font-semibold text-[var(--text)]">
+          {block.name}
+        </span>
+        {typeof block.cost === "number" && block.cost > 0 && (
+          <span className="ml-auto shrink-0 rounded bg-[var(--panel)] px-1.5 py-0.5 text-[10px] text-[var(--gold-bright)]">
+            Cost {block.cost}
+          </span>
+        )}
+      </div>
+      <div className="mb-2 flex items-center gap-2">
+        <span className="text-[10px] uppercase tracking-wider text-[var(--text-dim)]">Lv</span>
+        <input
+          type="range"
+          min={1}
+          max={6}
+          value={level}
+          onChange={(e) => onLevel(Number(e.target.value))}
+          className="flex-1 accent-[var(--gold)]"
+        />
+        <span className="tabular-nums text-xs text-[var(--text-muted)]">{level}/6</span>
+      </div>
+      <ScaledText
+        template={block.descriptionTemplate}
+        args={block.descriptionArgs}
+        index={level - 1}
+        className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+      />
+    </div>
+  );
+}
+
+/* ---- main ---------------------------------------------------------------- */
+
 export default function DetailModal({
   target,
   onClose,
@@ -147,9 +340,13 @@ export default function DetailModal({
   const setWheelStarLevel = useRosterStore((s) => s.setWheelStarLevel);
   const setWheelStackLevel = useRosterStore((s) => s.setWheelStackLevel);
   const setCovenantOwned = useRosterStore((s) => s.setCovenantOwned);
+  const setCovenantThreePiece = useRosterStore((s) => s.setCovenantThreePiece);
   const setCovenantSixPiece = useRosterStore((s) => s.setCovenantSixPiece);
   const setCovenantCompletion = useRosterStore((s) => s.setCovenantCompletion);
   const setPosseUnlocked = useRosterStore((s) => s.setPosseUnlocked);
+
+  const [detail, setDetail] = useState<Detail | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Esc to close; lock body scroll while open.
   useEffect(() => {
@@ -165,21 +362,37 @@ export default function DetailModal({
     };
   }, [onClose]);
 
+  // Fetch full effect data on open.
+  useEffect(() => {
+    let alive = true;
+    setLoading(true);
+    setDetail(null);
+    fetch(`/api/detail?kind=${target.kind}&id=${encodeURIComponent(target.id)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (alive && d && !d.error) setDetail(d as Detail);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [target.kind, target.id]);
+
   const realm = "realm" in target ? target.realm : undefined;
   const rarity = "rarity" in target ? target.rarity : undefined;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div
         className="relative z-10 max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-[var(--gold)]/40 bg-[var(--panel)] shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start gap-4 border-b border-[var(--border)] p-4">
+        <div className="sticky top-0 z-10 flex items-start gap-4 border-b border-[var(--border)] bg-[var(--panel)] p-4">
           <div className="relative h-28 w-20 shrink-0 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--bg-2)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -190,9 +403,12 @@ export default function DetailModal({
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              {realm && <RealmSigil realm={realm} size={18} />}
+              {realm && realm !== "NEUTRAL" && <RealmSigil realm={realm} size={18} />}
               <span className="font-title text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
                 {target.kind}
+                {detail && detail.kind === "awakener" && detail.type
+                  ? ` · ${detail.type.toLowerCase()}`
+                  : ""}
               </span>
             </div>
             <h3 className="font-display mt-1 text-2xl font-semibold leading-tight text-[var(--text)]">
@@ -204,7 +420,7 @@ export default function DetailModal({
                   {rarity}
                 </span>
               )}
-              {realm && (
+              {realm && realm !== "NEUTRAL" && (
                 <span
                   className="rounded px-1.5 py-0.5 text-[10px] uppercase tracking-wide"
                   style={{ color: REALM_COLOR[realm] ?? "var(--text-dim)" }}
@@ -222,11 +438,16 @@ export default function DetailModal({
                   Lemurian
                 </span>
               )}
-              {target.kind === "posse" && target.hasCharacterBonus && (
-                <span className="rounded px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-[var(--gold)]">
-                  Character bonus
-                </span>
-              )}
+              {detail &&
+                detail.kind === "awakener" &&
+                (detail.teamRoles ?? []).slice(0, 3).map((r) => (
+                  <span
+                    key={r}
+                    className="rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] text-[var(--text-muted)]"
+                  >
+                    {r.replace(/_/g, " ")}
+                  </span>
+                ))}
             </div>
           </div>
           <button
@@ -240,45 +461,68 @@ export default function DetailModal({
 
         {/* Body */}
         <div className="space-y-5 p-4">
+          {loading && (
+            <p className="py-6 text-center text-sm text-[var(--text-dim)]">
+              Consulting the archives…
+            </p>
+          )}
+
+          {/* ---- AWAKENER ---- */}
           {target.kind === "awakener" &&
             (() => {
               const e = roster.awakeners[target.id];
               const owned = !!e?.owned;
               const slot = e?.enlightenSlot ?? "E0";
               const copies = e?.enlightenCopies ?? 0;
+              const total = toTotal(slot, copies);
+              const d = detail && detail.kind === "awakener" ? detail : null;
+              const passives = d?.talents.filter((t) => t.family === "passive") ?? [];
               return (
                 <>
-                  <Toggle
-                    label="Owned"
-                    checked={owned}
-                    onChange={(v) => setAwakenerOwned(target.id, v)}
-                  />
+                  <Toggle label="Owned" checked={owned} onChange={(v) => setAwakenerOwned(target.id, v)} />
 
                   <Section title="Enlighten">
-                    <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2">
-                      <div className="flex flex-wrap gap-1.5">
-                        {ENLIGHTEN.map((s) => (
-                          <button
-                            key={s}
-                            onClick={() => setEnlightenLevel(target.id, s, copies)}
-                            className={`rounded-md border px-3 py-1.5 text-sm transition ${
-                              slot === s
-                                ? "border-[var(--gold)] bg-[var(--panel-2)] text-[var(--gold-bright)]"
-                                : "border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
+                    <EnlightenTrack
+                      total={total}
+                      onChange={(t) => {
+                        const next = fromTotal(t);
+                        setEnlightenLevel(target.id, next.slot, next.copies);
+                      }}
+                    />
+                    {d &&
+                      d.enlightens.map((node) => {
+                        const lit = isSlotUnlocked(node.slot, total);
+                        return (
+                          <div
+                            key={node.id ?? node.slot}
+                            className={`rounded-lg border px-3 py-2 transition ${
+                              lit
+                                ? "border-[var(--gold)]/40 bg-[var(--bg-2)]"
+                                : "border-[var(--border)] bg-transparent opacity-50"
                             }`}
                           >
-                            {s}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <Stepper
-                      label="Over-enlighten copies"
-                      value={copies}
-                      min={0}
-                      max={12}
-                      onChange={(v) => setEnlightenLevel(target.id, slot, v)}
-                    />
+                            <div className="mb-0.5 flex items-center gap-2">
+                              <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+                                {node.slot}
+                              </span>
+                              <span className="font-display text-sm font-semibold text-[var(--text)]">
+                                {node.name}
+                              </span>
+                              {!lit && (
+                                <span className="ml-auto text-[10px] text-[var(--text-dim)]">
+                                  locked
+                                </span>
+                              )}
+                            </div>
+                            <ScaledText
+                              template={node.descriptionTemplate}
+                              args={node.descriptionArgs}
+                              index={0}
+                              className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                            />
+                          </div>
+                        );
+                      })}
                   </Section>
 
                   <Section title="Level">
@@ -286,125 +530,347 @@ export default function DetailModal({
                       label="Character level"
                       value={e?.characterLevel ?? 1}
                       min={1}
-                      max={80}
+                      max={90}
                       onChange={(v) => setCharacterLevel(target.id, v)}
                     />
                   </Section>
 
                   <Section title="Skills">
-                    {SKILLS.map(({ slot: sk, label }) => (
-                      <Stepper
-                        key={sk}
-                        label={label}
-                        value={e?.skillLevels?.[sk] ?? 1}
-                        min={1}
-                        max={6}
-                        onChange={(v) => setSkillLevel(target.id, sk, v)}
-                      />
-                    ))}
+                    {d && d.skills.length > 0
+                      ? d.skills.map((sk) => (
+                          <SkillCard
+                            key={sk.id ?? sk.slot}
+                            block={sk}
+                            level={e?.skillLevels?.[sk.slot] ?? 1}
+                            onLevel={(v) => setSkillLevel(target.id, sk.slot, v)}
+                          />
+                        ))
+                      : SKILLS.map(({ slot: sk, label }) => (
+                          <Stepper
+                            key={sk}
+                            label={label}
+                            value={e?.skillLevels?.[sk] ?? 1}
+                            min={1}
+                            max={6}
+                            onChange={(v) => setSkillLevel(target.id, sk, v)}
+                          />
+                        ))}
                   </Section>
 
+                  {passives.length > 0 && (
+                    <Section title="Passive">
+                      {passives.map((p) => (
+                        <div
+                          key={p.id ?? p.name}
+                          className="rounded-lg border border-[var(--silver)]/30 bg-[var(--bg-2)] px-3 py-2"
+                        >
+                          <div className="mb-0.5 flex items-center gap-2">
+                            <span className="font-display text-sm font-semibold text-[var(--text)]">
+                              {p.name}
+                            </span>
+                            <span className="ml-auto text-[10px] uppercase tracking-wider text-[var(--silver)]">
+                              always active
+                            </span>
+                          </div>
+                          <ScaledText
+                            template={p.descriptionTemplate}
+                            args={p.descriptionArgs}
+                            index={0}
+                            className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                          />
+                        </div>
+                      ))}
+                    </Section>
+                  )}
+
                   <Section title="Talents">
-                    <Stepper
-                      label="Madness Omen"
-                      value={e?.talentLevels?.madnessOmen ?? 0}
-                      min={0}
-                      max={12}
-                      onChange={(v) => setTalentLevel(target.id, "madnessOmen", v)}
-                    />
-                    <Stepper
-                      label="Soulforge Aptitude"
-                      value={e?.talentLevels?.soulforgeAptitude ?? 0}
-                      min={0}
-                      max={10}
-                      onChange={(v) => setTalentLevel(target.id, "soulforgeAptitude", v)}
-                    />
-                    <Stepper
-                      label="Gnostic Potential"
-                      value={e?.talentLevels?.gnosticPotential ?? 0}
-                      min={0}
-                      max={5}
-                      onChange={(v) => setTalentLevel(target.id, "gnosticPotential", v)}
-                    />
+                    {(() => {
+                      const fam = (name: string) =>
+                        d?.talents.find((t) => t.family === name) ?? null;
+                      const rows: {
+                        key: "madnessOmen" | "soulforgeAptitude" | "gnosticPotential";
+                        family: string;
+                        label: string;
+                        max: number;
+                        value: number;
+                      }[] = [
+                        {
+                          key: "madnessOmen",
+                          family: "madness_omen",
+                          label: "Madness Omen",
+                          max: fam("madness_omen")?.maxLevel ?? 12,
+                          value: e?.talentLevels?.madnessOmen ?? 0,
+                        },
+                        {
+                          key: "soulforgeAptitude",
+                          family: "soulforge_aptitude",
+                          label: "Soulforge Aptitude",
+                          max: fam("soulforge_aptitude")?.maxLevel ?? 10,
+                          value: e?.talentLevels?.soulforgeAptitude ?? 0,
+                        },
+                        {
+                          key: "gnosticPotential",
+                          family: "gnostic_potential",
+                          label: "Gnostic Potential",
+                          max: fam("gnostic_potential")?.maxLevel ?? 5,
+                          value: e?.talentLevels?.gnosticPotential ?? 0,
+                        },
+                      ];
+                      return rows.map((row) => {
+                        const t = fam(row.family);
+                        return (
+                          <div key={row.key} className="space-y-1">
+                            <Stepper
+                              label={row.label}
+                              value={row.value}
+                              min={0}
+                              max={row.max}
+                              onChange={(v) => setTalentLevel(target.id, row.key, v)}
+                            />
+                            {t && (
+                              <div className="px-1">
+                                <ScaledText
+                                  template={t.descriptionTemplate}
+                                  args={t.descriptionArgs}
+                                  index={Math.max(0, row.value - 1)}
+                                  className="text-[11.5px] leading-relaxed text-[var(--text-dim)]"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        );
+                      });
+                    })()}
                   </Section>
+
+                  {d?.annotationNotes && (
+                    <Section title="Notes">
+                      <p className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-[12.5px] leading-relaxed text-[var(--text-muted)]">
+                        {d.annotationNotes}
+                      </p>
+                    </Section>
+                  )}
                 </>
               );
             })()}
 
+          {/* ---- WHEEL ---- */}
           {target.kind === "wheel" &&
             (() => {
               const e = roster.wheels[target.id];
               const owned = !!e?.owned;
+              const star = e?.starLevel ?? 0;
+              const stack = e?.stackLevel ?? 0;
+              const d = detail && detail.kind === "wheel" ? detail : null;
+              const arc = roster.settings.arcRuleset;
               return (
                 <>
-                  <Toggle
-                    label="Owned"
-                    checked={owned}
-                    onChange={(v) => setWheelOwned(target.id, v)}
-                  />
-                  <Section title="Enlighten">
+                  <Toggle label="Owned" checked={owned} onChange={(v) => setWheelOwned(target.id, v)} />
+
+                  {d && (
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-xs">
+                      <span className="text-[var(--text-dim)]">
+                        Mainstat:{" "}
+                        <span className="text-[var(--text)]">
+                          {MAINSTAT_LABEL[d.mainstatKey] ?? d.mainstatKey}
+                        </span>
+                      </span>
+                      {d.ownerAwakenerName && (
+                        <span className="text-[var(--text-dim)]">
+                          Affinity:{" "}
+                          <span className="text-[var(--gold-bright)]">{d.ownerAwakenerName}</span>
+                        </span>
+                      )}
+                      {d.isMythic && <span className="text-[var(--realm-ultra)]">Mythic</span>}
+                    </div>
+                  )}
+
+                  <Section title="Ascension">
                     <Stepper
-                      label="Star level (ascension)"
-                      value={e?.starLevel ?? 0}
+                      label="Star level (sub-properties)"
+                      value={star}
                       min={0}
                       max={3}
+                      suffix="★"
                       onChange={(v) => setWheelStarLevel(target.id, v)}
                     />
                     <Stepper
-                      label="Stack level"
-                      value={e?.stackLevel ?? 0}
+                      label="Stack level (main stat)"
+                      value={stack}
                       min={0}
                       max={12}
                       onChange={(v) => setWheelStackLevel(target.id, v)}
                     />
-                    {(e?.stackLevel ?? 0) >= 12 && (
+                    {stack >= 12 && (
                       <p className="text-[11px] text-[var(--realm-aequor)]">
-                        Stack 12 unlocks the dual-SSR exception — this wheel can be
-                        assigned to two awakeners at once.
+                        Stack +12 unlocks the dual-SSR exception — a second SSR/Mythic wheel may be
+                        equipped alongside this one.
                       </p>
                     )}
                   </Section>
+
+                  {d && d.descriptionTemplate ? (
+                    <Section title={`Effect at ${star}★`}>
+                      <div className="rounded-lg border border-[var(--gold)]/30 bg-[var(--bg-2)] px-3 py-2.5">
+                        <ScaledText
+                          template={d.descriptionTemplate}
+                          args={d.descriptionArgs}
+                          index={star}
+                          className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                        />
+                      </div>
+                      {maxScalingIndex(d.descriptionArgs) > 0 && (
+                        <p className="text-[11px] text-[var(--text-dim)]">
+                          Values shown at {star}★; raise the star level to scale sub-properties.
+                        </p>
+                      )}
+                      {rarity === "R" && arc === "ASTRAL_REIGN" && (
+                        <p className="text-[11px] text-[var(--realm-caro)]">
+                          Astral Reign: Common (R) secondary effects are disabled — only the main
+                          stat applies.
+                        </p>
+                      )}
+                    </Section>
+                  ) : (
+                    d && (
+                      <p className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-[12px] text-[var(--text-dim)]">
+                        This wheel has no combat effect — it contributes its main stat only.
+                      </p>
+                    )
+                  )}
                 </>
               );
             })()}
 
+          {/* ---- COVENANT ---- */}
           {target.kind === "covenant" &&
             (() => {
               const e = roster.covenants[target.id];
+              const d = detail && detail.kind === "covenant" ? detail : null;
+              const three = !!e?.threePieceComplete;
+              const six = !!e?.sixPieceComplete;
+              const completion = e?.completionPercent ?? 0;
               return (
                 <>
+                  <Toggle label="Owned" checked={!!e?.owned} onChange={(v) => setCovenantOwned(target.id, v)} />
                   <Toggle
-                    label="Owned"
-                    checked={!!e?.owned}
-                    onChange={(v) => setCovenantOwned(target.id, v)}
+                    label="3-piece set active"
+                    checked={three}
+                    onChange={(v) => setCovenantThreePiece(target.id, v)}
                   />
                   <Toggle
-                    label="Six-piece set complete"
-                    checked={!!e?.sixPieceComplete}
+                    label="6-piece set complete"
+                    checked={six}
                     onChange={(v) => setCovenantSixPiece(target.id, v)}
                   />
-                  <Section title="Progress">
-                    <Stepper
-                      label="Completion %"
-                      value={e?.completionPercent ?? 0}
-                      min={0}
-                      max={100}
-                      onChange={(v) => setCovenantCompletion(target.id, v)}
-                    />
+
+                  <Section title="Completion">
+                    <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2">
+                      <span className="text-sm text-[var(--text)]">Completion %</span>
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        step="0.1"
+                        min={0}
+                        max={100}
+                        value={completion}
+                        onChange={(ev) => {
+                          const raw = parseFloat(ev.target.value);
+                          const v = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 0;
+                          setCovenantCompletion(target.id, v);
+                        }}
+                        className="ml-auto w-24 rounded border border-[var(--border)] bg-[var(--panel)] px-2 py-1 text-right text-sm tabular-nums text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
+                      />
+                      <span className="text-sm text-[var(--text-dim)]">%</span>
+                    </div>
+                    <p className="text-[11px] text-[var(--text-dim)]">
+                      Well-rolled priority substats at lower completion can beat scattered substats
+                      at higher completion.
+                    </p>
                   </Section>
+
+                  {d && (
+                    <Section title="Set Effects">
+                      {d.setEffects
+                        .sort((a, b) => a.set - b.set)
+                        .map((se) => {
+                          const active = se.set === 3 ? three || six : six;
+                          return (
+                            <div
+                              key={se.set}
+                              className={`rounded-lg border px-3 py-2 transition ${
+                                active
+                                  ? "border-[var(--gold)]/40 bg-[var(--bg-2)]"
+                                  : "border-[var(--border)] opacity-60"
+                              }`}
+                            >
+                              <div className="mb-0.5 flex items-center gap-2">
+                                <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+                                  {se.set}-piece
+                                </span>
+                                {active && (
+                                  <span className="text-[10px] text-[var(--gold-bright)]">active</span>
+                                )}
+                              </div>
+                              <ScaledText
+                                template={se.descriptionTemplate}
+                                args={se.descriptionArgs}
+                                index={0}
+                                className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                              />
+                            </div>
+                          );
+                        })}
+                      {d.acquisitionSource && (
+                        <p className="text-[11px] text-[var(--text-dim)]">
+                          Source: {d.acquisitionSource}
+                        </p>
+                      )}
+                    </Section>
+                  )}
                 </>
               );
             })()}
 
+          {/* ---- POSSE ---- */}
           {target.kind === "posse" &&
             (() => {
               const e = roster.posses[target.id];
+              const d = detail && detail.kind === "posse" ? detail : null;
               return (
-                <Toggle
-                  label="Unlocked"
-                  checked={!!e?.unlocked}
-                  onChange={(v) => setPosseUnlocked(target.id, v)}
-                />
+                <>
+                  <Toggle
+                    label="Unlocked"
+                    checked={!!e?.unlocked}
+                    onChange={(v) => setPosseUnlocked(target.id, v)}
+                  />
+                  {d && d.descriptionTemplate && (
+                    <Section title="Effect">
+                      <div className="rounded-lg border border-[var(--gold)]/30 bg-[var(--bg-2)] px-3 py-2.5">
+                        <ScaledText
+                          template={d.descriptionTemplate}
+                          args={d.descriptionArgs}
+                          index={0}
+                          className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                        />
+                      </div>
+                    </Section>
+                  )}
+                  {d && (d.hasCharacterBonus || d.acquisitionSource) && (
+                    <Section title="Details">
+                      {d.hasCharacterBonus && (
+                        <p className="rounded-lg border border-[var(--gold)]/30 bg-[var(--bg-2)] px-3 py-2 text-[12px] text-[var(--gold-bright)]">
+                          Grants a personal bonus to its affiliated awakener.
+                        </p>
+                      )}
+                      {d.acquisitionSource && (
+                        <p className="text-[11px] text-[var(--text-dim)]">
+                          Source: {d.acquisitionSource}
+                        </p>
+                      )}
+                    </Section>
+                  )}
+                </>
               );
             })()}
         </div>
