@@ -1,3 +1,127 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg: #0d121b;
+  --bg-2: #121925;
+  --panel: #18202e;
+  --panel-2: #1f2939;
+  --border: #2a3547;
+  --border-bright: #3b4a61;
+
+  --text: #e7ecf3;
+  --text-muted: #95a1b5;
+  --text-dim: #626e86;
+
+  --gold: #c6a352;
+  --gold-bright: #e3c87e;
+  --silver: #cfdaea;
+
+  --realm-chaos: #d2a544;
+  --realm-caro: #d8554f;
+  --realm-aequor: #45b6af;
+  --realm-ultra: #9c7ed8;
+
+  --background: var(--bg);
+  --foreground: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(1200px 700px at 78% -8%, rgba(56, 72, 102, 0.45), transparent 60%),
+    radial-gradient(900px 600px at 12% 8%, rgba(40, 52, 78, 0.4), transparent 55%),
+    linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 55%, #0a0e16 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* Engraved, Trajan-like titles and elegant serif display. */
+.font-title {
+  font-family: var(--font-cinzel), Georgia, serif;
+  letter-spacing: 0.06em;
+}
+.font-display {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+/* Hairline gold rule used as a section/ornament divider. */
+.gold-rule {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(198, 163, 82, 0.55) 18%,
+    rgba(227, 200, 126, 0.85) 50%,
+    rgba(198, 163, 82, 0.55) 82%,
+    transparent
+  );
+}
+
+/* Glossy pale "Silver Key" button, echoing the game's Quick Lineup / Select. */
+.btn-key {
+  background: linear-gradient(180deg, #e8eef7 0%, #c2cfe2 48%, #9fb0c9 100%);
+  color: #15202f;
+  border: 1px solid #d6e0ee;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 6px 18px rgba(120, 150, 190, 0.18);
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+.btn-key:hover {
+  filter: brightness(1.06);
+}
+.btn-key:active {
+  transform: translateY(1px);
+}
+.btn-key:disabled {
+  filter: grayscale(0.5) brightness(0.7);
+  cursor: not-allowed;
+}
+
+/* Portrait card: gold underline + lift on hover, like the in-game roster grid. */
+.awk-card {
+  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+}
+.awk-card:hover {
+  transform: translateY(-2px);
+}
+
+.realm-glow {
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+  background-clip: content-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
