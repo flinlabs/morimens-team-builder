@@ -15,6 +15,11 @@ import { getAwakenerEntry } from './roster'
 
 const REALM_ORDER: Realm[] = ['CHAOS', 'CARO', 'AEQUOR', 'ULTRA']
 
+// Distinct NON-CHAOS realms on the team. Chaos is deliberately excluded: per the
+// Game Mechanics doc, a team with a Chaos unit is "still considered pure when
+// referring to realm mechanics", so Chaos does not consume one of the two realm
+// slots. The hard cap is therefore ≤ 2 non-Chaos realms, with any number of
+// Chaos members allowed alongside them. Do NOT change this to count Chaos.
 export function getRealmsInTeam(
   awakenersIds: string[],
   awakeners: Record<string, EnrichedAwakener>
@@ -68,7 +73,6 @@ export function getRealmBonuses(
   const bonuses: string[] = []
   const hasChaos = hasChaosMember(awakenerIds, awakeners)
   const nonChaosRealms = getRealmsInTeam(awakenerIds, awakeners)
-  const nonChaosCount = nonChaosRealms.length
   const chaosCount = awakenerIds.filter(id => awakeners[id]?.realm === 'CHAOS').length
 
   if (hasChaos && nonChaosRealms.includes('AEQUOR')) {
@@ -79,10 +83,7 @@ export function getRealmBonuses(
   }
 
   if (hasChaos && nonChaosRealms.includes('CARO')) {
-    bonuses.push(
-      `Chaos+Caro: Blood Furnace fills at 6% Max HP per turn (doubled from 3%); ` +
-      `Chaos Exalts grant +35% Embryo Fusion`
-    )
+    bonuses.push('Chaos+Caro: Chaos Exalts grant +35% Embryo Fusion')
   }
 
   if (hasChaos && nonChaosRealms.includes('ULTRA')) {
@@ -94,14 +95,14 @@ export function getRealmBonuses(
   }
 
   if (hasChaos) {
-    bonuses.push('+100% Death Resistance from Chaos member')
-    bonuses.push('Chaos Memory active — second posse release draws from full collection')
-    bonuses.push('Chaos Exalts grant +35% Embryo Fusion')
+    bonuses.push('+100% Death Resistance from Chaos member (and the team is still treated as "pure" for realm-mechanic purposes)')
+    bonuses.push('Chaos provides extra Keyflare and Aliemus generation for the team')
+    bonuses.push('Chaos Memory active — a second posse can release in a turn, drawn from the full unlocked collection')
   }
 
   const isMonoNonChaos = nonChaosRealms.length === 1
   if (hasChaos && isMonoNonChaos && nonChaosRealms[0] === 'CARO') {
-    bonuses.push('Pure Caro+Chaos — Blood Furnace fills at 6% Max HP per turn')
+    bonuses.push('Pure Caro+Chaos — Blood Furnace fills at 6% Max HP per turn (doubled from 3%)')
   }
 
   // GMurphy Lemurian scaling note
