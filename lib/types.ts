@@ -212,6 +212,12 @@ export interface EnrichedAwakener {
   baseStatsLv1?: Record<string, number>
   substatsLv1?: Record<string, number>
 
+  // Derived in the sync from searchTags (authoritative; not hand-maintained):
+  // Divine units = Arachne/Saya/Vortice/Murphy: Fauxborn; Lemurians = the 5 with
+  // the 'Lemurian' searchTag.
+  isDivineRealm?: boolean
+  isLemurian?: boolean
+
   enlightens: SkeyEnlighten[]
   skills: SkeySkill[]
   talents: SkeyTalent[]
@@ -434,4 +440,25 @@ export interface TeamRecommendation {
 
 export interface AITeamResponse {
   teams: TeamRecommendation[]
+}
+
+// ---------------------------------------------------------------------------
+// Meta-team reference (app/admin/annotations/meta-teams.json)
+// Curated example compositions the prompt-builder feeds to the AI as reference.
+// ---------------------------------------------------------------------------
+
+export interface MetaTeam {
+  name: string
+  awakenerIds: string[]
+  awakenerNames: string[]
+  realm: Realm
+  tier?: 'S' | 'A' | 'B' | 'C'
+  arcContext?: 'arc1' | 'arc2'
+  source?: string
+  notes: string
+}
+
+export interface MetaTeamsFile {
+  _note: string
+  teams: MetaTeam[]
 }
