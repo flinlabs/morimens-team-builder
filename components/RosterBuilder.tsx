@@ -1,11 +1,38 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRosterStore } from "@/lib/store";
 import type { Realm, EnlightenSlot } from "@/lib/types";
 import type { GenerateResult } from "@/lib/generate";
 import { RealmSigil, REALMS, REALM_RANK, RARITY_RANK } from "./realm";
 import DetailModal, { type DetailTarget } from "./DetailModal";
+import FormationBoard, { type SlotPlan } from "./FormationBoard";
+
+const ROLE_LABEL: Record<string, string> = {
+  main_dps: "Main DPS",
+  sub_dps: "Sub DPS",
+  embryo_gen: "Embryo generator",
+  aliemus_battery: "Aliemus battery",
+  vuln_applier: "Vulnerable applier",
+  weak_applier: "Weakness applier",
+  shielder: "Shielder",
+  healer: "Healer",
+  death_resist: "Death-resist support",
+  str_support: "STR support",
+  keyflare_support: "Keyflare support",
+  card_cycler: "Card cycler",
+  tentacle_enabler: "Tentacle enabler",
+  leap_support: "Leap support",
+  annihilation_support: "Annihilation support",
+  ultra_space_manager: "Ultra-space manager",
+  sacrifice_engine: "Sacrifice engine",
+  birth_ritual_stacker: "Birth Ritual stacker",
+  corrosion_applier: "Corrosion applier",
+  strike_enabler: "Strike enabler",
+  relic_gen: "Relic generator",
+  poison_stacker: "Poison stacker",
+};
+const humanRole = (r: string) => ROLE_LABEL[r] ?? r.replace(/_/g, " ");
 
 /* ---------------------------------------------------------------------------
    Catalog projection (sent from the server page)
@@ -17,6 +44,8 @@ export interface Catalog {
     name: string;
     realm: Realm;
     rarity: string;
+    type?: string;
+    roles?: string[];
     isDivineRealm: boolean;
     isLemurian: boolean;
   }[];
@@ -419,6 +448,48 @@ function TeamCard({
 type Tab = "awakeners" | "wheels" | "covenants" | "posses";
 type AwakenerSort = "realm" | "name" | "rarity" | "owned";
 type WheelSort = "rarity" | "realm" | "name";
+type WheelRarity = "ALL" | "MYTHIC" | "SSR" | "SR" | "R" | "N";
+
+const WHEEL_RARITY_GROUPS: { key: Exclude<WheelRarity, "ALL">; label: string }[] = [
+  { key: "MYTHIC", label: "Mythic" },
+  { key: "SSR", label: "SSR" },
+  { key: "SR", label: "SR" },
+  { key: "R", label: "R" },
+  { key: "N", label: "N" },
+];
+
+/* Own all / own none control shared by every roster tab. */
+function OwnControl({
+  count,
+  total,
+  onAll,
+  onNone,
+}: {
+  count: number;
+  total: number;
+  onAll: () => void;
+  onNone: () => void;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-[var(--text-dim)]">
+        <span className="text-[var(--text-muted)]">{count}</span> / {total}
+      </span>
+      <button
+        onClick={onAll}
+        className="rounded border border-[var(--border)] px-2 py-1 text-xs text-[var(--text-muted)] transition hover:border-[var(--gold)] hover:text-[var(--gold-bright)]"
+      >
+        Own all
+      </button>
+      <button
+        onClick={onNone}
+        className="rounded border border-[var(--border)] px-2 py-1 text-xs text-[var(--text-muted)] transition hover:border-[var(--realm-caro)] hover:text-[var(--realm-caro)]"
+      >
+        Own none
+      </button>
+    </div>
+  );
+}
 
 export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const roster = useRosterStore((s) => s.roster);
@@ -430,6 +501,10 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const setPosseUnlocked = useRosterStore((s) => s.setPosseUnlocked);
   const setArcRuleset = useRosterStore((s) => s.setArcRuleset);
   const setKeeperLevel = useRosterStore((s) => s.setKeeperLevel);
+  const setAllAwakenersOwned = useRosterStore((s) => s.setAllAwakenersOwned);
+  const setAllWheelsOwned = useRosterStore((s) => s.setAllWheelsOwned);
+  const setAllCovenantsOwned = useRosterStore((s) => s.setAllCovenantsOwned);
+  const setAllPossesUnlocked = useRosterStore((s) => s.setAllPossesUnlocked);
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -448,6 +523,10 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<GenerateResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [wheelRarity, setWheelRarity] = useState<WheelRarity>("ALL");
+  const [slots, setSlots] = useState<(string | null)[]>([null, null, null, null]);
+  const [plans, setPlans] = useState<Record<string, SlotPlan>>({});
+  const [posseName, setPosseName] = useState<string | undefined>(undefined);
 
   const maps: NameMaps = useMemo(() => {
     const awk: NameMaps["awk"] = {};
@@ -493,8 +572,14 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
 
   const filteredWheels = useMemo(() => {
     const q = search.trim().toLowerCase();
+    // Realm filter is only meaningful for SSR wheels — every other rarity is
+    // realm-neutral, so applying a realm pill to them would empty the grid.
+    const realmApplies = wheelRarity === "SSR" || wheelRarity === "ALL";
     const list = catalog.wheels
-      .filter((w) => (realmFilter === "ALL" ? true : w.realm === realmFilter))
+      .filter((w) => (wheelRarity === "ALL" ? true : w.rarity === wheelRarity))
+      .filter((w) =>
+        realmFilter === "ALL" || !realmApplies ? true : w.realm === realmFilter
+      )
       .filter((w) => (q ? w.name.toLowerCase().includes(q) : true))
       .filter((w) => (ownedOnly ? !!roster.wheels[w.id]?.owned : true));
     const byName = (x: { name: string }, y: { name: string }) =>
@@ -514,7 +599,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
           );
       }
     });
-  }, [catalog.wheels, realmFilter, search, ownedOnly, wheelSort, roster]);
+  }, [catalog.wheels, realmFilter, search, ownedOnly, wheelSort, wheelRarity, roster]);
 
   const filteredCovenants = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -551,8 +636,10 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         setError(json.error ?? "Generation failed.");
         setResult(null);
       } else {
-        setResult(json as GenerateResult);
+        const gen = json as GenerateResult;
+        setResult(gen);
         setError(null);
+        applyTeamToFormation(gen);
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Network error.");
@@ -561,8 +648,94 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     }
   }
 
-  // Realm filter applies on awakeners, wheels, and posses (not covenants).
-  const showRealmFilter = tab !== "covenants";
+  // Map the AI's top-ranked team onto the editable formation template. The
+  // recommendation simply "fills out" the four deploy slots; users can still
+  // swap anyone afterward via the board's own picker.
+  function applyTeamToFormation(gen: GenerateResult) {
+    const top = gen.teams?.[0];
+    if (!top) return;
+    const nextSlots: (string | null)[] = [null, null, null, null];
+    const nextPlans: Record<string, SlotPlan> = {};
+    top.composition.slice(0, 4).forEach((c, i) => {
+      nextSlots[i] = c.awakenerId;
+      const wheelNames = c.wheelAssignments
+        .map((w) => maps.wheel[w.wheelId])
+        .filter((n): n is string => !!n);
+      const covenantName = maps.covenant[c.covenantRecommendation?.covenantId] ?? undefined;
+      const blurb = c.skillNote || c.talentNote || undefined;
+      nextPlans[c.awakenerId] = {
+        role: humanRole(c.roleInThisTeam),
+        blurb,
+        wheelNames,
+        covenantName,
+      };
+    });
+    setSlots(nextSlots);
+    setPlans(nextPlans);
+    setPosseName(
+      top.posseRecommendations?.[0]
+        ? maps.posse[top.posseRecommendations[0].posseId]
+        : undefined
+    );
+  }
+
+  // Drives the Own all / Own none control for whichever tab is active. It acts
+  // on the currently filtered set, so a realm or rarity filter narrows what the
+  // bulk buttons touch.
+  const ownControl = useMemo(() => {
+    if (tab === "wheels") {
+      const ids = filteredWheels.map((w) => w.id);
+      return {
+        total: ids.length,
+        count: ids.filter((id) => roster.wheels[id]?.owned).length,
+        onAll: () => setAllWheelsOwned(ids, true),
+        onNone: () => setAllWheelsOwned(ids, false),
+      };
+    }
+    if (tab === "covenants") {
+      const ids = filteredCovenants.map((c) => c.id);
+      return {
+        total: ids.length,
+        count: ids.filter((id) => roster.covenants[id]?.owned).length,
+        onAll: () => setAllCovenantsOwned(ids, true),
+        onNone: () => setAllCovenantsOwned(ids, false),
+      };
+    }
+    if (tab === "posses") {
+      const ids = filteredPosses.map((p) => p.id);
+      return {
+        total: ids.length,
+        count: ids.filter((id) => roster.posses[id]?.unlocked).length,
+        onAll: () => setAllPossesUnlocked(ids, true),
+        onNone: () => setAllPossesUnlocked(ids, false),
+      };
+    }
+    const ids = filteredAwakeners.map((a) => a.id);
+    return {
+      total: ids.length,
+      count: ids.filter((id) => roster.awakeners[id]?.owned).length,
+      onAll: () => setAllAwakenersOwned(ids, true),
+      onNone: () => setAllAwakenersOwned(ids, false),
+    };
+  }, [
+    tab,
+    filteredAwakeners,
+    filteredWheels,
+    filteredCovenants,
+    filteredPosses,
+    roster,
+    setAllAwakenersOwned,
+    setAllWheelsOwned,
+    setAllCovenantsOwned,
+    setAllPossesUnlocked,
+  ]);
+
+  // Realm filter applies on awakeners and posses always, and on wheels only
+  // when viewing SSR (the one wheel rarity that carries a realm) or All.
+  const showRealmFilter =
+    tab === "awakeners" ||
+    tab === "posses" ||
+    (tab === "wheels" && (wheelRarity === "ALL" || wheelRarity === "SSR"));
 
   return (
     <main className="mx-auto max-w-[1400px] px-4 pb-16 pt-6 sm:px-6">
@@ -639,6 +812,18 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             Mark at least 4 owned awakeners to generate a team.
           </p>
         )}
+      </section>
+
+      {/* Formation — editable template; Generate fills it in */}
+      <section className="mb-6">
+        <FormationBoard
+          title="Formation"
+          awakeners={catalog.awakeners}
+          slots={slots}
+          plans={plans}
+          posseName={posseName}
+          onChangeSlots={setSlots}
+        />
       </section>
 
       {/* Results */}
@@ -725,6 +910,33 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             ]}
           />
         )}
+        {tab === "wheels" && (
+          <div className="flex flex-wrap gap-1.5">
+            <button
+              onClick={() => setWheelRarity("ALL")}
+              className={`rounded-full border px-3 py-1 text-xs transition ${
+                wheelRarity === "ALL"
+                  ? "border-[var(--silver)] text-[var(--text)]"
+                  : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-bright)]"
+              }`}
+            >
+              All
+            </button>
+            {WHEEL_RARITY_GROUPS.map((g) => (
+              <button
+                key={g.key}
+                onClick={() => setWheelRarity(g.key)}
+                className={`rounded-full border px-3 py-1 text-xs transition ${
+                  wheelRarity === g.key
+                    ? "border-[var(--gold)] text-[var(--gold-bright)]"
+                    : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-bright)]"
+                }`}
+              >
+                {g.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <label className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
           <input
@@ -765,6 +977,15 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             ))}
           </div>
         )}
+
+        <div className="ml-auto">
+          <OwnControl
+            count={ownControl.count}
+            total={ownControl.total}
+            onAll={ownControl.onAll}
+            onNone={ownControl.onNone}
+          />
+        </div>
       </div>
 
       {/* Awakener grid */}
@@ -798,29 +1019,57 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
       )}
 
       {/* Wheels */}
-      {tab === "wheels" && (
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredWheels.map((w) => {
-            const owned = mounted ? !!roster.wheels[w.id]?.owned : false;
-            return (
-              <GearTile
-                key={w.id}
-                id={w.id}
-                name={w.name}
-                category="wheels"
-                realm={w.realm}
-                owned={owned}
-                badge={w.rarity}
-                badgeColor="var(--text-dim)"
-                onToggle={() => setWheelOwned(w.id, !owned)}
-                onDetails={() =>
-                  setDetail({ kind: "wheel", id: w.id, name: w.name, realm: w.realm, rarity: w.rarity })
-                }
-              />
-            );
-          })}
-        </div>
-      )}
+      {tab === "wheels" && (() => {
+        const renderTile = (w: (typeof filteredWheels)[number]) => {
+          const owned = mounted ? !!roster.wheels[w.id]?.owned : false;
+          return (
+            <GearTile
+              key={w.id}
+              id={w.id}
+              name={w.name}
+              category="wheels"
+              realm={w.realm}
+              owned={owned}
+              badge={w.rarity}
+              badgeColor="var(--text-dim)"
+              onToggle={() => setWheelOwned(w.id, !owned)}
+              onDetails={() =>
+                setDetail({ kind: "wheel", id: w.id, name: w.name, realm: w.realm, rarity: w.rarity })
+              }
+            />
+          );
+        };
+        const grouped = wheelSort === "rarity" && wheelRarity === "ALL";
+        if (!grouped) {
+          return (
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredWheels.map(renderTile)}
+            </div>
+          );
+        }
+        return (
+          <div className="space-y-6">
+            {WHEEL_RARITY_GROUPS.map((g) => {
+              const inGroup = filteredWheels.filter((w) => w.rarity === g.key);
+              if (inGroup.length === 0) return null;
+              return (
+                <div key={g.key}>
+                  <div className="mb-2 flex items-center gap-2">
+                    <h4 className="font-title text-xs uppercase tracking-wider text-[var(--gold-bright)]">
+                      {g.label}
+                    </h4>
+                    <span className="text-xs text-[var(--text-dim)]">{inGroup.length}</span>
+                    <div className="gold-rule ml-1 flex-1" />
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {inGroup.map(renderTile)}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })()}
 
       {/* Covenants */}
       {tab === "covenants" && (
