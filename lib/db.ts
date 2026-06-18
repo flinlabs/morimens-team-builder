@@ -5,9 +5,17 @@ import type {
   EnrichedWheel,
   EnrichedCovenant,
   EnrichedPosse,
+  MetaTeamsFile,
 } from './types'
 
 const DB_DIR = path.join(process.cwd(), 'db')
+const META_TEAMS_PATH = path.join(
+  process.cwd(),
+  'app',
+  'admin',
+  'annotations',
+  'meta-teams.json'
+)
 
 function readDB<T>(filename: string): T {
   const filepath = path.join(DB_DIR, filename)
@@ -94,4 +102,47 @@ export interface DzoneData {
 
 export function getDzones(): DzoneData {
   return readDB<DzoneData>('dzones.json')
+}
+
+// ---------------------------------------------------------------------------
+// Meta-team reference (curated example compositions for the prompt-builder)
+// ---------------------------------------------------------------------------
+
+export function getMetaTeams(): MetaTeamsFile {
+  const raw = fs.readFileSync(META_TEAMS_PATH, 'utf-8')
+  return JSON.parse(raw) as MetaTeamsFile
+}
+
+// ---------------------------------------------------------------------------
+// Generator-facing read helpers
+// ---------------------------------------------------------------------------
+
+export function getAwakenersByType(type: string): EnrichedAwakener[] {
+  return Object.values(getAwakeners()).filter(a => a.type === type)
+}
+
+export function getDivineAwakeners(): EnrichedAwakener[] {
+  return Object.values(getAwakeners()).filter(a => a.isDivineRealm)
+}
+
+export function getLemurians(): EnrichedAwakener[] {
+  return Object.values(getAwakeners()).filter(a => a.isLemurian)
+}
+
+// Wheels tied to a specific awakener (excludes ownerless Mythic/standard wheels).
+export function getWheelsForAwakener(awakenerId: string): EnrichedWheel[] {
+  return Object.values(getWheels()).filter(w => w.ownerAwakenerId === awakenerId)
+}
+
+export function getMythicWheels(): EnrichedWheel[] {
+  return Object.values(getWheels()).filter(w => w.isMythic)
+}
+
+export function getPossesByRealm(realm: string): EnrichedPosse[] {
+  return Object.values(getPosses()).filter(p => p.realm === realm)
+}
+
+// Posses that grant a specific awakener a personal bonus (anchor-pick candidates).
+export function getCharacterBonusPosses(): EnrichedPosse[] {
+  return Object.values(getPosses()).filter(p => p.hasCharacterBonus)
 }
