@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRosterStore } from "@/lib/store";
-import type { Realm, EnlightenSlot } from "@/lib/types";
+import type { Realm, EnlightenSlot, CharacterAssignment, TeamRecommendation } from "@/lib/types";
 import type { GenerateResult } from "@/lib/generate";
 import { RealmSigil, REALMS, REALM_RANK, RARITY_RANK } from "./realm";
 import DetailModal, { type DetailTarget } from "./DetailModal";
@@ -55,14 +55,6 @@ export interface Catalog {
 }
 
 const ENLIGHTEN: EnlightenSlot[] = ["E0", "E1", "E2", "E3", "OE", "AA"];
-const WHEEL_TIER_LABEL: Record<string, string> = {
-  BIS_SSR: "BiS",
-  ALT_SSR: "Alt SSR",
-  BIS_SR: "BiS SR",
-  GOOD: "Good",
-  FALLBACK: "Target",
-};
-
 /* ---------------------------------------------------------------------------
    Small UI atoms
 --------------------------------------------------------------------------- */
@@ -260,7 +252,7 @@ function GearTile({
   badge?: string;
   badgeColor?: string;
   onToggle: () => void;
-  onDetails: () => void;
+  onDetails?: () => void;
 }) {
   return (
     <div
@@ -300,16 +292,18 @@ function GearTile({
         )}
       </div>
       {owned && <span className="text-xs text-[var(--gold)]">✓</span>}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onDetails();
-        }}
-        title="Customize / view details"
-        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
-      >
-        ⋯
-      </button>
+      {onDetails && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDetails();
+          }}
+          title="Customize / view details"
+          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
+        >
+          ⋯
+        </button>
+      )}
     </div>
   );
 }
@@ -325,113 +319,55 @@ interface NameMaps {
   posse: Record<string, string>;
 }
 
-function TeamCard({
+function TeamFormation({
   team,
+  awakeners,
   maps,
+  planFor,
 }: {
-  team: GenerateResult["teams"][number];
+  team: TeamRecommendation;
+  awakeners: Catalog["awakeners"];
   maps: NameMaps;
+  planFor: (c: CharacterAssignment) => SlotPlan;
 }) {
+  const initialSlots = useMemo(() => {
+    const s: (string | null)[] = [null, null, null, null];
+    team.composition.slice(0, 4).forEach((c, i) => (s[i] = c.awakenerId));
+    return s;
+  }, [team]);
+  const initialPlans = useMemo(() => {
+    const p: Record<string, SlotPlan> = {};
+    for (const c of team.composition) p[c.awakenerId] = planFor(c);
+    return p;
+  }, [team, planFor]);
+
+  const [slots, setSlots] = useState<(string | null)[]>(initialSlots);
+  const posseName = team.posseRecommendations?.[0]
+    ? maps.posse[team.posseRecommendations[0].posseId]
+    : undefined;
+
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)]/70 p-4">
-      <div className="mb-3 flex items-baseline justify-between">
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)]/40 p-3 sm:p-4">
+      <div className="mb-2 flex items-baseline justify-between gap-3">
         <h3 className="font-title text-sm text-[var(--gold-bright)]">Team {team.rank}</h3>
         {team.realmNote && (
           <span className="text-xs text-[var(--realm-caro)]">{team.realmNote}</span>
         )}
       </div>
-
-      <p className="font-display mb-3 text-[15px] text-[var(--text)]">
+      <p className="font-display mb-3 text-[15px] leading-snug text-[var(--text)]">
         {team.compositionNote}
       </p>
 
-      <div className="grid gap-2 sm:grid-cols-2">
-        {team.composition.map((c) => {
-          const meta = maps.awk[c.awakenerId];
-          return (
-            <div
-              key={c.awakenerId}
-              className="flex gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-2)] p-2"
-            >
-              <div className="relative h-16 w-12 shrink-0 overflow-hidden rounded bg-[var(--panel)]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`/assets/portraits/${c.awakenerId}.webp`}
-                  alt={meta?.name ?? c.awakenerId}
-                  loading="lazy"
-                  className="h-full w-full object-cover object-top"
-                />
-                {meta && (
-                  <div className="absolute left-0.5 top-0.5">
-                    <RealmSigil realm={meta.realm} size={12} />
-                  </div>
-                )}
-              </div>
-              <div className="min-w-0 flex-1 text-xs">
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-sm font-semibold text-[var(--text)]">
-                    {meta?.name ?? c.awakenerId}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-wide text-[var(--text-dim)]">
-                    {c.roleInThisTeam.replace(/_/g, " ")}
-                  </span>
-                </div>
-                <div className="mt-1 space-y-0.5 text-[var(--text-muted)]">
-                  {c.wheelAssignments.map((w, i) => (
-                    <div key={i} className="flex justify-between gap-2">
-                      <span className="truncate">{maps.wheel[w.wheelId] ?? w.wheelId}</span>
-                      <span
-                        className={`shrink-0 ${
-                          w.tier === "FALLBACK"
-                            ? "text-[var(--text-dim)]"
-                            : "text-[var(--realm-aequor)]"
-                        }`}
-                      >
-                        {WHEEL_TIER_LABEL[w.tier] ?? w.tier}
-                      </span>
-                    </div>
-                  ))}
-                  <div className="flex justify-between gap-2">
-                    <span className="truncate">
-                      {maps.covenant[c.covenantRecommendation.covenantId] ?? "—"}
-                    </span>
-                    <span className="shrink-0 text-[var(--text-dim)]">
-                      {c.covenantRecommendation.acquisitionNote ? "target" : "covenant"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {team.posseRecommendations.length > 0 && (
-        <div className="mt-3">
-          <div className="mb-1 text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
-            Posse
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {team.posseRecommendations.slice(0, 4).map((p) => (
-              <span
-                key={p.posseId}
-                className={`rounded-full border px-2 py-0.5 text-[11px] ${
-                  p.priority === "anchor"
-                    ? "border-[var(--gold)] text-[var(--gold-bright)]"
-                    : "border-[var(--border)] text-[var(--text-muted)]"
-                }`}
-                title={p.reason}
-              >
-                {maps.posse[p.posseId] ?? p.posseId}
-                {p.priority === "anchor" ? " ★" : ""}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
+      <FormationBoard
+        awakeners={awakeners}
+        slots={slots}
+        plans={initialPlans}
+        posseName={posseName}
+        onChangeSlots={setSlots}
+      />
 
       {team.investmentWarnings.length > 0 && (
-        <ul className="mt-3 space-y-0.5 text-[11px] text-[var(--realm-chaos)]">
+        <ul className="mt-2.5 space-y-0.5 text-[11px] text-[var(--realm-chaos)]">
           {team.investmentWarnings.map((w, i) => (
             <li key={i}>• {w}</li>
           ))}
@@ -527,6 +463,8 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const [slots, setSlots] = useState<(string | null)[]>([null, null, null, null]);
   const [plans, setPlans] = useState<Record<string, SlotPlan>>({});
   const [posseName, setPosseName] = useState<string | undefined>(undefined);
+  // Slots the player placed by hand — preserved when Generate fills the board.
+  const [pinned, setPinned] = useState<boolean[]>([false, false, false, false]);
 
   const maps: NameMaps = useMemo(() => {
     const awk: NameMaps["awk"] = {};
@@ -651,26 +589,47 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   // Map the AI's top-ranked team onto the editable formation template. The
   // recommendation simply "fills out" the four deploy slots; users can still
   // swap anyone afterward via the board's own picker.
+  // Build a SlotPlan from one AI character assignment (shared by the working
+  // board and the per-team boards below).
+  function planFromAssignment(c: CharacterAssignment): SlotPlan {
+    return {
+      role: humanRole(c.roleInThisTeam),
+      blurb: c.skillNote || c.talentNote || undefined,
+      wheelNames: c.wheelAssignments
+        .map((w) => maps.wheel[w.wheelId])
+        .filter((n): n is string => !!n),
+      covenantName: maps.covenant[c.covenantRecommendation?.covenantId] ?? undefined,
+    };
+  }
+
+  // The board calls this on every manual deploy / clear. A slot the player sets
+  // by hand becomes pinned; clearing a slot unpins it. Generate then keeps the
+  // pinned slots and only fills the rest.
+  function handleSlotsChange(next: (string | null)[]) {
+    setPinned((prev) =>
+      next.map((id, i) => (id ? (slots[i] !== id ? true : prev[i]) : false))
+    );
+    setSlots(next);
+  }
+
   function applyTeamToFormation(gen: GenerateResult) {
     const top = gen.teams?.[0];
     if (!top) return;
-    const nextSlots: (string | null)[] = [null, null, null, null];
-    const nextPlans: Record<string, SlotPlan> = {};
-    top.composition.slice(0, 4).forEach((c, i) => {
-      nextSlots[i] = c.awakenerId;
-      const wheelNames = c.wheelAssignments
-        .map((w) => maps.wheel[w.wheelId])
-        .filter((n): n is string => !!n);
-      const covenantName = maps.covenant[c.covenantRecommendation?.covenantId] ?? undefined;
-      const blurb = c.skillNote || c.talentNote || undefined;
-      nextPlans[c.awakenerId] = {
-        role: humanRole(c.roleInThisTeam),
-        blurb,
-        wheelNames,
-        covenantName,
-      };
-    });
-    setSlots(nextSlots);
+    const nextPlans: Record<string, SlotPlan> = { ...plans };
+    // Keep whatever the player pinned.
+    const result: (string | null)[] = slots.map((id, i) => (pinned[i] ? id : null));
+    const taken = new Set(result.filter((x): x is string => !!x));
+    // Fill the open slots from the recommendation, skipping anyone already kept.
+    const queue = top.composition.filter((c) => !taken.has(c.awakenerId));
+    let qi = 0;
+    for (let i = 0; i < 4; i++) {
+      if (result[i]) continue;
+      const c = queue[qi++];
+      if (!c) continue;
+      result[i] = c.awakenerId;
+      nextPlans[c.awakenerId] = planFromAssignment(c);
+    }
+    setSlots(result);
     setPlans(nextPlans);
     setPosseName(
       top.posseRecommendations?.[0]
@@ -814,16 +773,21 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         )}
       </section>
 
-      {/* Formation — editable template; Generate fills it in */}
+      {/* Formation — editable working lineup; Generate fills the open slots */}
       <section className="mb-6">
         <FormationBoard
-          title="Formation"
+          title="Your Lineup"
           awakeners={catalog.awakeners}
           slots={slots}
           plans={plans}
           posseName={posseName}
-          onChangeSlots={setSlots}
+          onChangeSlots={handleSlotsChange}
         />
+        {pinned.some(Boolean) && (
+          <p className="mt-1.5 text-[11px] text-[var(--text-dim)]">
+            Pinned characters are kept when you generate — only the empty slots get filled.
+          </p>
+        )}
       </section>
 
       {/* Results */}
@@ -843,9 +807,15 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                   ))}
                 </ul>
               )}
-              <div className="grid gap-4 lg:grid-cols-2">
+              <div className="space-y-5">
                 {result.teams.map((t) => (
-                  <TeamCard key={t.rank} team={t} maps={maps} />
+                  <TeamFormation
+                    key={t.rank}
+                    team={t}
+                    awakeners={catalog.awakeners}
+                    maps={maps}
+                    planFor={planFromAssignment}
+                  />
                 ))}
               </div>
             </>
@@ -1107,15 +1077,6 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 badge={p.hasCharacterBonus ? "Character bonus" : undefined}
                 badgeColor="var(--gold)"
                 onToggle={() => setPosseUnlocked(p.id, !unlocked)}
-                onDetails={() =>
-                  setDetail({
-                    kind: "posse",
-                    id: p.id,
-                    name: p.name,
-                    realm: p.realm,
-                    hasCharacterBonus: p.hasCharacterBonus,
-                  })
-                }
               />
             );
           })}
