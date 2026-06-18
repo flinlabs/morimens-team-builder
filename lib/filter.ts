@@ -258,7 +258,8 @@ function synergScore(
 // ---------------------------------------------------------------------------
 
 export function isLemurian(awakener: EnrichedAwakener): boolean {
-  return awakener.searchTags.includes('Lemurian')
+  // Prefer the flag the sync derives; fall back to searchTags for older DB files.
+  return awakener.isLemurian ?? awakener.searchTags.includes('Lemurian')
 }
 
 export function countLemurians(
