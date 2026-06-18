@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRosterStore } from "@/lib/store";
 import type { Realm, EnlightenSlot } from "@/lib/types";
 import { RealmSigil, REALM_COLOR, REALM_RANK } from "./realm";
-import { toTotal, overEnlighten, ENLIGHTEN_MILESTONES } from "@/lib/enlighten";
+import { toTotal, plusCount, ENLIGHTEN_MILESTONES } from "@/lib/enlighten";
 
 /* ---------------------------------------------------------------------------
    Formation board — the in-game Lineup screen, but editable.
@@ -60,24 +60,25 @@ function humanRole(r: string): string {
   return ROLE_LABEL[r] ?? r.replace(/_/g, " ");
 }
 
-/* Enlighten diamonds — E1..AA filled by milestone, then a +N over badge. */
+/* Enlighten diamonds — E1..AA filled by milestone, then a +N badge. */
 function Diamonds({ slot, copies }: { slot: EnlightenSlot; copies: number }) {
   const total = toTotal(slot, copies);
-  const over = overEnlighten(total);
+  const plus = plusCount(total);
   const named = ENLIGHTEN_MILESTONES.filter((m) => m.slot !== "E0");
   return (
     <span className="inline-flex items-center gap-0.5">
       {named.map((m) => (
         <span
           key={m.slot}
-          className="text-[9px] leading-none"
-          style={{ color: total >= m.total ? "var(--gold-bright)" : "var(--border-bright)" }}
+          className="text-[11px] leading-none"
+          style={{ color: total >= m.copies ? "var(--gold-bright)" : "var(--border-bright)" }}
+          title={m.full}
         >
           ◆
         </span>
       ))}
-      {over > 0 && (
-        <span className="ml-0.5 text-[10px] font-semibold text-[var(--gold-bright)]">+{over}</span>
+      {plus > 0 && (
+        <span className="ml-0.5 text-[11px] font-semibold text-[var(--gold-bright)]">+{plus}</span>
       )}
     </span>
   );
@@ -85,9 +86,11 @@ function Diamonds({ slot, copies }: { slot: EnlightenSlot; copies: number }) {
 
 function StatLine({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-1 text-[10px] leading-tight text-white/85">
-      <span className="text-[8px] uppercase tracking-wider text-white/45">{label}</span>
-      <span className="tabular-nums">{children}</span>
+    <div className="flex items-center gap-1.5 leading-tight">
+      <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+        {label}
+      </span>
+      <span className="tabular-nums text-[12px] text-[var(--text)]">{children}</span>
     </div>
   );
 }
@@ -196,7 +199,7 @@ function Slot({
     return (
       <button
         onClick={onClick}
-        className="group flex aspect-[5/9] flex-col items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] bg-[var(--bg-2)]/40 text-[var(--text-dim)] transition hover:border-[var(--gold)] hover:text-[var(--text-muted)]"
+        className="group flex min-h-[260px] flex-col items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] bg-[var(--bg-2)]/40 text-[var(--text-dim)] transition hover:border-[var(--gold)] hover:text-[var(--text-muted)]"
       >
         <span className="text-3xl leading-none">＋</span>
         <span className="mt-2 text-xs tracking-wide">Tap to Deploy</span>
@@ -224,11 +227,12 @@ function Slot({
     (awk.roles && awk.roles.length
       ? awk.roles.slice(0, 3).map(humanRole).join(" · ")
       : undefined);
+  const wheels = (plan?.wheelNames ?? []).filter(Boolean);
 
   return (
-    <div className="relative flex aspect-[5/9] flex-col overflow-hidden rounded-lg border-b-2 border-[var(--gold)] bg-[var(--panel)]">
-      {/* portrait */}
-      <div className="absolute inset-0">
+    <div className="flex flex-col overflow-hidden rounded-lg border border-[var(--border)] border-b-2 border-b-[var(--gold)] bg-[var(--panel)]">
+      {/* portrait — smaller, name + realm overlaid */}
+      <div className="relative aspect-[4/3] shrink-0 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`/assets/portraits/${awk.id}.webp`}
@@ -236,52 +240,66 @@ function Slot({
           loading="lazy"
           className="h-full w-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/20 to-black/45" />
-      </div>
-
-      {/* top row: realm + name + clear */}
-      <div className="relative flex items-start justify-between p-1.5">
-        <div className="flex items-center gap-1 rounded bg-black/45 px-1 py-0.5 backdrop-blur-sm">
-          <RealmSigil realm={awk.realm} size={13} />
-          <span className="font-display max-w-[7rem] truncate text-[13px] font-semibold text-white">
-            {awk.name}
-          </span>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
         <button
           onClick={onClear}
           title="Remove"
-          className="rounded-full bg-black/55 px-1.5 text-xs text-white/70 backdrop-blur-sm hover:text-white"
+          className="absolute right-1 top-1 rounded-full bg-black/55 px-1.5 text-xs text-white/75 backdrop-blur-sm hover:text-white"
         >
           ✕
         </button>
+        <div className="absolute inset-x-0 bottom-0 flex items-center gap-1.5 p-1.5">
+          <RealmSigil realm={awk.realm} size={15} />
+          <span className="font-display truncate text-sm font-semibold text-white">
+            {awk.name}
+          </span>
+        </div>
       </div>
 
-      {/* bottom stat block */}
-      <div className="relative mt-auto space-y-0.5 p-1.5">
+      {/* solid info panel — readable */}
+      <div className="flex flex-1 flex-col gap-1 p-2">
         {role && (
-          <div className="mb-1 inline-block rounded bg-[var(--gold)]/85 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#1b150a]">
+          <div className="self-start rounded bg-[var(--gold)]/90 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#1b150a]">
             {role}
           </div>
         )}
-        <StatLine label="Lv">{level}</StatLine>
-        <div className="flex items-center gap-1">
-          <span className="text-[8px] uppercase tracking-wider text-white/45">Enl</span>
+        <StatLine label="Lv">{level} / 90</StatLine>
+        <div className="flex items-center gap-1.5 leading-tight">
+          <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+            Enl
+          </span>
           <Diamonds slot={slot} copies={copies} />
         </div>
         <StatLine label="Skl">{skillRow}</StatLine>
         <StatLine label="Tal">{talRow}</StatLine>
-        {plan?.wheelNames && plan.wheelNames.length > 0 && (
-          <div className="truncate text-[9px] text-[var(--realm-aequor)]" title={plan.wheelNames.join(", ")}>
-            ⊚ {plan.wheelNames.filter(Boolean).join(" · ")}
+
+        <div className="mt-0.5 border-t border-[var(--border)] pt-1">
+          <div className="flex items-start gap-1.5 leading-tight">
+            <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+              Whl
+            </span>
+            {wheels.length > 0 ? (
+              <span className="text-[11px] text-[var(--realm-aequor)]">
+                {wheels.join(" · ")}
+              </span>
+            ) : (
+              <span className="text-[11px] text-[var(--text-dim)]">None assigned</span>
+            )}
           </div>
-        )}
-        {(plan?.covenantName || cov) && (
-          <div className="truncate text-[9px] text-white/60">
-            ◇ {plan?.covenantName ?? "Equipped covenant"}
+          <div className="mt-0.5 flex items-start gap-1.5 leading-tight">
+            <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+              Cov
+            </span>
+            <span className="text-[11px] text-[var(--text-muted)]">
+              {plan?.covenantName ?? (cov ? "Equipped covenant" : "None")}
+            </span>
           </div>
-        )}
+        </div>
+
         {blurb && (
-          <p className="line-clamp-2 pt-0.5 text-[9.5px] leading-snug text-white/70">{blurb}</p>
+          <p className="mt-0.5 line-clamp-3 text-[11px] leading-snug text-[var(--text-muted)]">
+            {blurb}
+          </p>
         )}
       </div>
     </div>
@@ -347,7 +365,7 @@ export default function FormationBoard({
         )}
       </div>
 
-      <div className="grid grid-cols-4 gap-2 sm:gap-3">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
         {[0, 1, 2, 3].map((i) => {
           const id = slots[i] ?? null;
           const awk = id ? byId[id] ?? null : null;
