@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------------------------------
+   Morimens Team Builder theme — dark slate-blue gothic, grounded in the game's
+   own UI: misty navy gradients, engraved serif titles, gold hairline ornament,
+   and a four-realm sigil colour system (Chaos gold, Caro crimson, Aequor teal,
+   Ultra violet).
+--------------------------------------------------------------------------- */
+
 :root {
   --bg: #0d121b;
   --bg-2: #121925;

@@ -5,6 +5,10 @@ import { useRosterStore } from "@/lib/store";
 import type { Realm, EnlightenSlot } from "@/lib/types";
 import type { GenerateResult } from "@/lib/generate";
 
+/* ---------------------------------------------------------------------------
+   Catalog projection (sent from the server page)
+--------------------------------------------------------------------------- */
+
 export interface Catalog {
   awakeners: {
     id: string;
@@ -19,7 +23,10 @@ export interface Catalog {
   posses: { id: string; name: string; realm: string; hasCharacterBonus: boolean }[];
 }
 
-// Realm system — sigil + colour, the visual through-line
+/* ---------------------------------------------------------------------------
+   Realm system — sigil + colour, the visual through-line
+--------------------------------------------------------------------------- */
+
 const REALMS: { key: Realm; label: string; color: string }[] = [
   { key: "CHAOS", label: "Chaos", color: "var(--realm-chaos)" },
   { key: "CARO", label: "Caro", color: "var(--realm-caro)" },
@@ -70,7 +77,10 @@ function RealmSigil({ realm, size = 18 }: { realm: Realm; size?: number }) {
   }
 }
 
-// Small UI atoms
+/* ---------------------------------------------------------------------------
+   Small UI atoms
+--------------------------------------------------------------------------- */
+
 function Segmented<T extends string>({
   options,
   value,
@@ -111,7 +121,10 @@ const WHEEL_TIER_LABEL: Record<string, string> = {
   FALLBACK: "Target",
 };
 
-// Awakener card
+/* ---------------------------------------------------------------------------
+   Awakener card
+--------------------------------------------------------------------------- */
+
 function AwakenerCard({
   item,
   owned,
@@ -196,7 +209,10 @@ function AwakenerCard({
   );
 }
 
-// Generic owned-toggle tile (wheels / covenants / posses)
+/* ---------------------------------------------------------------------------
+   Generic owned-toggle tile (wheels / covenants / posses)
+--------------------------------------------------------------------------- */
+
 function GearTile({
   id,
   name,
@@ -246,7 +262,10 @@ function GearTile({
   );
 }
 
-// Results
+/* ---------------------------------------------------------------------------
+   Results
+--------------------------------------------------------------------------- */
+
 interface NameMaps {
   awk: Record<string, { name: string; realm: Realm }>;
   wheel: Record<string, string>;
@@ -374,7 +393,10 @@ function TeamCard({
   );
 }
 
-// Main
+/* ---------------------------------------------------------------------------
+   Main
+--------------------------------------------------------------------------- */
+
 type Tab = "awakeners" | "wheels" | "covenants" | "posses";
 
 export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
