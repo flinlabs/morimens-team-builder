@@ -38,3 +38,6 @@ next-env.d.ts
 # Generated DB files
 /db/*.json
 !/db/.gitkeep
+
+#morisources
+/morisources
