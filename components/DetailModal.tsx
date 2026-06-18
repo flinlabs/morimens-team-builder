@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRosterStore } from "@/lib/store";
 import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
@@ -8,10 +8,12 @@ import { ScaledText, maxScalingIndex } from "@/lib/template";
 import {
   ENLIGHTEN_MILESTONES,
   ENLIGHTEN_MAX,
+  ENLIGHTEN_MIN,
   toTotal,
   fromTotal,
   isSlotUnlocked,
-  overEnlighten,
+  plusCount,
+  trackLabel,
 } from "@/lib/enlighten";
 
 /* ---------------------------------------------------------------------------
@@ -219,29 +221,32 @@ function EnlightenTrack({
   total: number;
   onChange: (total: number) => void;
 }) {
-  const pct = (t: number) => (t / ENLIGHTEN_MAX) * 100;
-  const over = overEnlighten(total);
+  // The slider spans 1..16 (E0..+12). Position 1 is the owned base, so the
+  // track is laid out across (MIN..MAX) rather than 0..MAX.
+  const span = ENLIGHTEN_MAX - ENLIGHTEN_MIN;
+  const pct = (t: number) => ((t - ENLIGHTEN_MIN) / span) * 100;
+  const plus = plusCount(total);
   return (
     <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 pb-3 pt-2">
-      <div className="mb-1 flex items-center justify-between">
+      <div className="mb-1 flex items-baseline justify-between">
         <span className="text-sm text-[var(--text)]">Enlightenment</span>
-        <span className="tabular-nums text-xs text-[var(--text-dim)]">
-          {total} / {ENLIGHTEN_MAX}
-          {over > 0 && (
-            <span className="ml-1 text-[var(--gold-bright)]">(+{over})</span>
-          )}
+        <span className="tabular-nums text-sm font-semibold text-[var(--gold-bright)]">
+          {trackLabel(total)}
+          <span className="ml-1.5 text-[10px] font-normal text-[var(--text-dim)]">
+            {total} {total === 1 ? "copy" : "copies"}
+          </span>
         </span>
       </div>
 
-      {/* timeline labels above the track */}
+      {/* milestone labels above the track */}
       <div className="relative mb-1 h-4">
-        {ENLIGHTEN_MILESTONES.filter((m) => m.slot !== "E0").map((m) => (
+        {ENLIGHTEN_MILESTONES.map((m) => (
           <span
             key={m.slot}
             className={`absolute -translate-x-1/2 text-[10px] font-medium ${
-              total >= m.total ? "text-[var(--gold-bright)]" : "text-[var(--text-dim)]"
+              total >= m.copies ? "text-[var(--gold-bright)]" : "text-[var(--text-dim)]"
             }`}
-            style={{ left: `${pct(m.total)}%` }}
+            style={{ left: `${pct(m.copies)}%` }}
             title={m.full}
           >
             {m.label}
@@ -251,25 +256,32 @@ function EnlightenTrack({
 
       <input
         type="range"
-        min={0}
+        min={ENLIGHTEN_MIN}
         max={ENLIGHTEN_MAX}
         value={total}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full accent-[var(--gold)]"
       />
 
-      {/* tick marks for milestones */}
+      {/* tick marks for every milestone, including E0 */}
       <div className="relative mt-0.5 h-2">
-        {ENLIGHTEN_MILESTONES.filter((m) => m.slot !== "E0").map((m) => (
+        {ENLIGHTEN_MILESTONES.map((m) => (
           <span
             key={m.slot}
             className={`absolute h-2 w-px -translate-x-1/2 ${
-              total >= m.total ? "bg-[var(--gold)]" : "bg-[var(--border-bright)]"
+              total >= m.copies ? "bg-[var(--gold)]" : "bg-[var(--border-bright)]"
             }`}
-            style={{ left: `${pct(m.total)}%` }}
+            style={{ left: `${pct(m.copies)}%` }}
           />
         ))}
       </div>
+      {plus > 0 && (
+        <p className="mt-1.5 text-[10px] text-[var(--text-dim)]">
+          {plus >= 4 && plus < 12 && "Over-Exalt active. "}
+          {plus >= 12 && "Absolute Axiom active. "}
+          {plus} dupe{plus === 1 ? "" : "s"} past Enlighten III.
+        </p>
+      )}
     </div>
   );
 }
@@ -618,6 +630,7 @@ export default function DetailModal({
                       ];
                       return rows.map((row) => {
                         const t = fam(row.family);
+                        const active = row.value >= 1;
                         return (
                           <div key={row.key} className="space-y-1">
                             <Stepper
@@ -627,15 +640,20 @@ export default function DetailModal({
                               max={row.max}
                               onChange={(v) => setTalentLevel(target.id, row.key, v)}
                             />
-                            {t && (
+                            {t && active && (
                               <div className="px-1">
                                 <ScaledText
                                   template={t.descriptionTemplate}
                                   args={t.descriptionArgs}
-                                  index={Math.max(0, row.value - 1)}
+                                  index={row.value - 1}
                                   className="text-[11.5px] leading-relaxed text-[var(--text-dim)]"
                                 />
                               </div>
+                            )}
+                            {t && !active && (
+                              <p className="px-1 text-[11px] italic text-[var(--text-dim)]">
+                                Not unlocked — raise to Lv 1 to activate.
+                              </p>
                             )}
                           </div>
                         );
@@ -668,20 +686,30 @@ export default function DetailModal({
                   <Toggle label="Owned" checked={owned} onChange={(v) => setWheelOwned(target.id, v)} />
 
                   {d && (
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-xs">
-                      <span className="text-[var(--text-dim)]">
-                        Mainstat:{" "}
-                        <span className="text-[var(--text)]">
-                          {MAINSTAT_LABEL[d.mainstatKey] ?? d.mainstatKey}
+                    <div className="rounded-lg border border-[var(--gold)]/30 bg-[var(--bg-2)] px-3 py-2.5">
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+                          Main Stat
                         </span>
-                      </span>
-                      {d.ownerAwakenerName && (
-                        <span className="text-[var(--text-dim)]">
-                          Affinity:{" "}
-                          <span className="text-[var(--gold-bright)]">{d.ownerAwakenerName}</span>
+                        <span className="tabular-nums text-xs text-[var(--gold-bright)]">
+                          {stack > 0 ? `+${stack}` : "3★ base"}
                         </span>
-                      )}
-                      {d.isMythic && <span className="text-[var(--realm-ultra)]">Mythic</span>}
+                      </div>
+                      <div className="font-display text-base font-semibold text-[var(--text)]">
+                        {MAINSTAT_LABEL[d.mainstatKey] ?? d.mainstatKey}
+                      </div>
+                      <p className="mt-0.5 text-[11px] text-[var(--text-dim)]">
+                        Grows with each +X stack past 3★ (up to +12).
+                      </p>
+                      <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+                        {d.ownerAwakenerName && (
+                          <span className="text-[var(--text-dim)]">
+                            Affinity:{" "}
+                            <span className="text-[var(--gold-bright)]">{d.ownerAwakenerName}</span>
+                          </span>
+                        )}
+                        {d.isMythic && <span className="text-[var(--realm-ultra)]">Mythic</span>}
+                      </div>
                     </div>
                   )}
 
