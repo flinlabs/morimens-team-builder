@@ -5,21 +5,13 @@ import type {
   TeamRole,
   CandidateTeam,
   ViabilityTier,
+  ArcRuleset,
 } from './types'
 import { getViableAwakenerIds, scoreViability } from './viability'
 import { getAwakenerEntry } from './roster'
 
-// ---------------------------------------------------------------------------
-// Realm rules
-// ---------------------------------------------------------------------------
-
 const REALM_ORDER: Realm[] = ['CHAOS', 'CARO', 'AEQUOR', 'ULTRA']
 
-// All DISTINCT realms on the team, INCLUDING Chaos. This is what the team-size
-// cap is measured against: a team may contain awakeners from at most two realms
-// total, and Chaos counts as one of those two (in-game "Realm Conflict" triggers
-// on a third distinct realm regardless of whether one of them is Chaos). So
-// Aequor + Caro is full, and adding a Chaos unit to it is illegal.
 export function getRealmsInTeam(
   awakenersIds: string[],
   awakeners: Record<string, EnrichedAwakener>
@@ -32,9 +24,6 @@ export function getRealmsInTeam(
   return Array.from(realms)
 }
 
-// Distinct NON-Chaos realms — used for bonus/penalty math, where Chaos is treated
-// as "pure" (it doesn't bring its own realm gimmick and a single-realm + Chaos
-// team still gets that realm's mechanics). NOT used for the validity cap.
 export function getNonChaosRealms(
   awakenersIds: string[],
   awakeners: Record<string, EnrichedAwakener>
@@ -137,10 +126,6 @@ export function getRealmBonuses(
   return bonuses
 }
 
-// ---------------------------------------------------------------------------
-// Role coverage
-// ---------------------------------------------------------------------------
-
 const REQUIRED_ROLES_ALL: TeamRole[] = ['main_dps']
 const REQUIRED_SUSTAIN: TeamRole[] = ['shielder', 'healer', 'death_resist']
 
@@ -234,10 +219,6 @@ export function checkRoleCoverage(
   }
 }
 
-// ---------------------------------------------------------------------------
-// Synergy score
-// ---------------------------------------------------------------------------
-
 function synergScore(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>
@@ -253,10 +234,6 @@ function synergScore(
   return Math.min(bonus, 0.5) // cap at 0.5 bonus
 }
 
-// ---------------------------------------------------------------------------
-// Lemurian tag helpers (derived from searchTags, not hardcoded)
-// ---------------------------------------------------------------------------
-
 export function isLemurian(awakener: EnrichedAwakener): boolean {
   // Prefer the flag the sync derives; fall back to searchTags for older DB files.
   return awakener.isLemurian ?? awakener.searchTags.includes('Lemurian')
@@ -269,13 +246,10 @@ export function countLemurians(
   return awakenerIds.filter(id => isLemurian(awakeners[id])).length
 }
 
-// ---------------------------------------------------------------------------
-// GMurphy condition check
-// ---------------------------------------------------------------------------
-
 function checkRequiresConditions(
   awakenerIds: string[],
-  awakeners: Record<string, EnrichedAwakener>
+  awakeners: Record<string, EnrichedAwakener>,
+  arc: ArcRuleset = 'FADED_LEGACY'
 ): string[] {
   const warnings: string[] = []
 
@@ -284,6 +258,8 @@ function checkRequiresConditions(
     if (!annotation?.requiresCondition) continue
 
     if (annotation.requiresCondition === 'lemurian_team_arc2') {
+      // The Lemurian Soulforge scaling is inert in Faded Legacy — only gate it in Astral Reign, where it actually applies.
+      if (arc !== 'ASTRAL_REIGN') continue
       // GMurphy is herself Lemurian — needs 3 *other* Lemurians for full scaling
       const otherLemurians = awakenerIds.filter(
         tid => tid !== id && isLemurian(awakeners[tid])
@@ -305,10 +281,6 @@ function checkRequiresConditions(
   return warnings
 }
 
-// ---------------------------------------------------------------------------
-// Candidate team builder
-// ---------------------------------------------------------------------------
-
 function buildCandidateTeam(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>,
@@ -323,7 +295,7 @@ function buildCandidateTeam(
 
   const { hasPenalty, note } = getMixingPenalty(awakenerIds, awakeners)
   const { covered, gaps } = checkRoleCoverage(awakenerIds, awakeners)
-  const conditionWarnings = checkRequiresConditions(awakenerIds, awakeners)
+  const conditionWarnings = checkRequiresConditions(awakenerIds, awakeners, roster.settings.arcRuleset)
   const realmBonuses = getRealmBonuses(awakenerIds, awakeners)
 
   // Viability score sum
@@ -356,10 +328,6 @@ function buildCandidateTeam(
   }
 }
 
-// ---------------------------------------------------------------------------
-// Combination generator (4-choose-N)
-// ---------------------------------------------------------------------------
-
 function combinations<T>(arr: T[], size: number): T[][] {
   if (size === 0) return [[]]
   if (arr.length < size) return []
@@ -368,10 +336,6 @@ function combinations<T>(arr: T[], size: number): T[][] {
   const withoutFirst = combinations(rest, size)
   return [...withFirst, ...withoutFirst]
 }
-
-// ---------------------------------------------------------------------------
-// Hard coverage check (for filtering out invalid teams)
-// ---------------------------------------------------------------------------
 
 function hasMinimumCoverage(
   awakenerIds: string[],
@@ -382,10 +346,6 @@ function hasMinimumCoverage(
   const hasSustain = REQUIRED_SUSTAIN.some(r => roles.includes(r))
   return hasDPS && hasSustain
 }
-
-// ---------------------------------------------------------------------------
-// Main: generate candidate teams
-// ---------------------------------------------------------------------------
 
 export interface FilterOptions {
   pinnedIds?: string[]
@@ -461,10 +421,6 @@ export function generateCandidateTeams(
 
   return candidates.slice(0, maxResults)
 }
-
-// ---------------------------------------------------------------------------
-// D-Tide: 5-team constraint solver
-// ---------------------------------------------------------------------------
 
 export interface DtideSolution {
   teams: CandidateTeam[]
