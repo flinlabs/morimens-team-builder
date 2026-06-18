@@ -17,6 +17,8 @@ export default function Home() {
       name: a.name,
       realm: a.realm,
       rarity: a.rarity,
+      type: a.type,
+      roles: a.annotation?.teamRoles ?? [],
       isDivineRealm: !!a.isDivineRealm,
       isLemurian: !!a.isLemurian,
     })),
