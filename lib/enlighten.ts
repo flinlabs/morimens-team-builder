@@ -3,31 +3,35 @@ import type { EnlightenSlot } from "./types";
 /* ---------------------------------------------------------------------------
    Enlighten track.
 
-   The roster stores enlightenment as a named slot (E0..AA) plus over-enlighten
-   copies, but the player thinks of it as one continuous track — the in-game
-   slider that runs from base up through E1/E2/E3/OverExalt/AbsoluteAxiom and on
-   into over-enlighten dupes. These helpers convert between the two so the UI
-   can present a single 0..16 slider with milestone ticks while the store and
-   generator keep their (slot, copies) shape.
+   Morimens dupes run E0–E3 then +1…+12 (see the in-game "Dupes" rules):
+     • E0  = owned, a single copy (the base).
+     • E1  = 2 copies, E2 = 3, E3 = 4.
+     • +N  = copies past E3. Over-Exalt unlocks at +4 (8 copies total),
+             and Absolute Axiom at +12 (16 copies total, the maximum —
+             "15 dupes" on top of the base).
+   The roster stores a named slot + copies-past-slot; the UI works in a single
+   1…16 total-copy slider. These helpers convert between the two and label the
+   position the way the game does ("E0".."E3", then "+1".."+12").
 --------------------------------------------------------------------------- */
 
-export const ENLIGHTEN_MAX = 16;
+export const ENLIGHTEN_MIN = 1; // E0 — a single owned copy
+export const ENLIGHTEN_MAX = 16; // +12 — Absolute Axiom, the max
 
 export interface Milestone {
   slot: EnlightenSlot;
-  total: number;
+  copies: number; // total copies at which this node unlocks
   label: string;
   full: string;
 }
 
-// total-copy index at which each named node unlocks.
+// Total-copy count at which each named node unlocks.
 export const ENLIGHTEN_MILESTONES: Milestone[] = [
-  { slot: "E0", total: 0, label: "Base", full: "Base" },
-  { slot: "E1", total: 1, label: "E1", full: "Enlighten I" },
-  { slot: "E2", total: 2, label: "E2", full: "Enlighten II" },
-  { slot: "E3", total: 3, label: "E3", full: "Enlighten III" },
-  { slot: "OE", total: 4, label: "OE", full: "Over-Exalt" },
-  { slot: "AA", total: 5, label: "AA", full: "Absolute Axiom" },
+  { slot: "E0", copies: 1, label: "E0", full: "Base (owned)" },
+  { slot: "E1", copies: 2, label: "E1", full: "Enlighten I" },
+  { slot: "E2", copies: 3, label: "E2", full: "Enlighten II" },
+  { slot: "E3", copies: 4, label: "E3", full: "Enlighten III" },
+  { slot: "OE", copies: 8, label: "OE", full: "Over-Exalt (+4)" },
+  { slot: "AA", copies: 16, label: "AA", full: "Absolute Axiom (+12)" },
 ];
 
 // Record-level slot names -> roster slot names.
@@ -39,42 +43,51 @@ export const RECORD_SLOT_TO_ROSTER: Record<string, EnlightenSlot> = {
   AbsoluteAxiom: "AA",
 };
 
-/** (slot, copies) -> single 0..16 track index. */
+function thresholdOf(slot: EnlightenSlot): number {
+  return ENLIGHTEN_MILESTONES.find((m) => m.slot === slot)?.copies ?? ENLIGHTEN_MIN;
+}
+
+/** (slot, copies-past-slot) -> total copies (1..16). */
 export function toTotal(slot: EnlightenSlot, copies: number): number {
-  const m = ENLIGHTEN_MILESTONES.find((x) => x.slot === slot);
-  const base = m ? m.total : 0;
-  // Over-enlighten dupes only stack past Absolute Axiom.
-  if (slot === "AA") return Math.min(ENLIGHTEN_MAX, base + Math.max(0, copies));
-  return base;
+  return Math.min(ENLIGHTEN_MAX, thresholdOf(slot) + Math.max(0, copies));
 }
 
-/** single 0..16 track index -> (slot, copies). */
-export function fromTotal(total: number): {
-  slot: EnlightenSlot;
-  copies: number;
-} {
-  const t = Math.max(0, Math.min(ENLIGHTEN_MAX, Math.round(total)));
-  if (t <= 5) return { slot: ENLIGHTEN_MILESTONES[t].slot, copies: 0 };
-  return { slot: "AA", copies: t - 5 };
+/** total copies (1..16) -> (slot, copies-past-slot), choosing the highest node reached. */
+export function fromTotal(total: number): { slot: EnlightenSlot; copies: number } {
+  const t = Math.max(ENLIGHTEN_MIN, Math.min(ENLIGHTEN_MAX, Math.round(total)));
+  let chosen = ENLIGHTEN_MILESTONES[0];
+  for (const m of ENLIGHTEN_MILESTONES) if (t >= m.copies) chosen = m;
+  return { slot: chosen.slot, copies: t - chosen.copies };
 }
 
-/** Named nodes (E1..AA) reached at a given track index, base excluded. */
+/** Named nodes (E1..AA) reached at a given total-copy count, base excluded. */
 export function unlockedSlots(total: number): EnlightenSlot[] {
   return ENLIGHTEN_MILESTONES.filter(
-    (m) => m.total <= total && m.slot !== "E0"
+    (m) => m.copies <= total && m.slot !== "E0"
   ).map((m) => m.slot);
 }
 
 export function isSlotUnlocked(slot: EnlightenSlot, total: number): boolean {
-  const m = ENLIGHTEN_MILESTONES.find((x) => x.slot === slot);
-  return m ? total >= m.total : false;
+  return total >= thresholdOf(slot);
 }
 
 export function slotLabel(slot: EnlightenSlot): string {
   return ENLIGHTEN_MILESTONES.find((m) => m.slot === slot)?.label ?? slot;
 }
 
-/** Over-enlighten dupes past AA, for the "+N" badge. */
+/** The "+N" dupe count past E3 (0 for E0..E3, up to 12 at the max). */
+export function plusCount(total: number): number {
+  return Math.max(0, Math.min(12, Math.round(total) - 4));
+}
+
+/** Back-compat alias — the dupe count past E3. */
 export function overEnlighten(total: number): number {
-  return Math.max(0, Math.min(ENLIGHTEN_MAX - 5, total - 5));
+  return plusCount(total);
+}
+
+/** Position label the way the game shows it: "E0".."E3", then "+1".."+12". */
+export function trackLabel(total: number): string {
+  const t = Math.max(ENLIGHTEN_MIN, Math.min(ENLIGHTEN_MAX, Math.round(total)));
+  if (t <= 4) return ENLIGHTEN_MILESTONES[t - 1].label;
+  return `+${t - 4}`;
 }
