@@ -23,6 +23,7 @@ export default function Home() {
     wheels: Object.values(wheels).map((w) => ({
       id: w.id,
       name: w.name,
+      realm: w.realm,
       rarity: w.rarity,
     })),
     covenants: Object.values(covenants).map((c) => ({
