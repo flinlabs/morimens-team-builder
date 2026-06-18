@@ -133,6 +133,12 @@ export interface AwakenerAnnotation {
   anchorPosse?: string
   recommendedPosses: string[]
 
+  // Known strong pairings with explanation
+  keyPairings?: Array<{
+    partnerId: string   // awakener ID
+    reason: string      // why they work together
+  }>
+  
   // Ultra-specific
   leapPriority?: 'high' | 'mid' | 'low' | 'none'
   rousePriority?: 'high' | 'mid' | 'low'
