@@ -9,10 +9,7 @@ import type {
   SkillSlot,
 } from './types'
 import { getWheelEntry } from './roster'
-
-// ---------------------------------------------------------------------------
-// Enlighten slot ordering
-// ---------------------------------------------------------------------------
+import { getArcViabilityModifier, getArcViabilityNote } from './arc-rules'
 
 const ENLIGHTEN_ORDER: EnlightenSlot[] = ['E0', 'E1', 'E2', 'E3', 'OE', 'AA']
 
@@ -24,19 +21,11 @@ export function meetsFloor(slot: EnlightenSlot, floor: EnlightenSlot): boolean {
   return enlightenRank(slot) >= enlightenRank(floor)
 }
 
-// ---------------------------------------------------------------------------
-// Keeper level → expected character level
-// ---------------------------------------------------------------------------
-
 function expectedCharacterLevel(keeperLevel: number): number {
   // Rough mapping: keeper level drives the level cap
   // Level cap increases every ~10 keeper levels
   return Math.min(90, 10 + keeperLevel * 2)
 }
-
-// ---------------------------------------------------------------------------
-// Subscores (each 0.0 – 1.0)
-// ---------------------------------------------------------------------------
 
 function enlightenScore(
   entry: AwakenerEntry,
@@ -146,9 +135,6 @@ function wheelScore(
     GOOD: 0.25,
   }
 
-  // A recommended "slot" lists one or more interchangeable wheelIds; it counts
-  // as owned if the player owns any of them. Score each build variant by its
-  // best-two owned slots, and return the best variant the player can field.
   let bestVariantScore = 0
 
   for (const variant of build.builds) {
@@ -174,10 +160,6 @@ function wheelScore(
   return bestVariantScore
 }
 
-// ---------------------------------------------------------------------------
-// Level flag
-// ---------------------------------------------------------------------------
-
 function isLevelAppropriate(
   entry: AwakenerEntry,
   keeperLevel: number
@@ -186,10 +168,6 @@ function isLevelAppropriate(
   // Allow 10 levels below expected without penalizing
   return entry.characterLevel >= expected - 10
 }
-
-// ---------------------------------------------------------------------------
-// Main viability scorer
-// ---------------------------------------------------------------------------
 
 export function scoreViability(
   awakenerId: string,
@@ -256,11 +234,20 @@ export function scoreViability(
   const wScore = wheelScore(awakenerId, roster, awakener)
 
   // Weighted total
-  const totalScore =
+  const baseScore =
     eScore * 0.35 +
     sScore * 0.35 +
     tScore * 0.15 +
     wScore * 0.15
+
+  const arcMod = getArcViabilityModifier(awakenerId, arcRuleset)
+  const totalScore = Math.max(0, Math.min(1, baseScore + arcMod))
+  if (arcMod !== 0) {
+    const note = getArcViabilityNote(awakenerId, arcRuleset)
+    flags.push(
+      `${arcMod > 0 ? '+' : ''}${arcMod.toFixed(2)} ${arcRuleset === 'ASTRAL_REIGN' ? 'Astral Reign' : 'Faded Legacy'} adjustment${note ? ` — ${note}` : ''}`
+    )
+  }
 
   // Determine tier
   let tier: ViabilityTier
@@ -294,10 +281,6 @@ export function scoreViability(
   }
 }
 
-// ---------------------------------------------------------------------------
-// Batch scorer — scores all owned awakeners in the roster
-// ---------------------------------------------------------------------------
-
 export function scoreAllViability(
   roster: UserRoster,
   awakeners: Record<string, EnrichedAwakener>
@@ -313,10 +296,6 @@ export function scoreAllViability(
 
   return results
 }
-
-// ---------------------------------------------------------------------------
-// Helpers for generation layer
-// ---------------------------------------------------------------------------
 
 export function getViableAwakenerIds(
   roster: UserRoster,
