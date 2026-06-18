@@ -139,6 +139,13 @@ function buildAwakeners(
     const annotation = annotations[a.id] || null
     if (!annotation) pendingAnnotation.push(a.name)
 
+    // Derive realm-identity flags from searchTags (authoritative, not hand-set).
+    const tags = a.searchTags || []
+    const isLemurian = tags.includes('Lemurian')
+    const isDivineRealm = tags.some((t) =>
+      /Divine|Propagation|Singularity/i.test(String(t))
+    )
+
     result[a.id] = {
       id: a.id,
       name: a.name,
@@ -149,6 +156,9 @@ function buildAwakeners(
       searchTags: a.searchTags || [],
       route: a.route,
       assets: a.assets || {},
+
+      isDivineRealm,
+      isLemurian,
 
       // Richer descriptive fields for the AI prompt
       availabilityType: a.availabilityType,
@@ -238,10 +248,17 @@ function buildPosses(posseRecords, awakenerNames) {
 
   function detectCharacterBonus(desc) {
     if (!desc) return null
+    // Pattern A: "If <name> is in your/the team/party, ..."
     for (const name of names) {
-      // Matches: If <name> is in your team / the team / the party,
-      // with the name optionally wrapped in quotes.
       const re = new RegExp(`\\bIf\\s+"?${esc(name)}"?\\s+is in (?:your |the )?(?:team|party)\\b`, 'i')
+      if (re.test(desc)) return name
+    }
+    // Pattern B: a sentence-initial "<name>: <effect>" clause granting that
+    // awakener a personal bonus (e.g. Vortice's Drowned Innocence, Saya's For
+    // the New World). Sentence-boundary anchor prevents a short name from
+    // matching inside a longer one (e.g. "Doll" inside "Doll: Inferno").
+    for (const name of names) {
+      const re = new RegExp(`(?:^|[.;!?]\\s+)${esc(name)}:\\s`)
       if (re.test(desc)) return name
     }
     return null
@@ -377,6 +394,9 @@ async function main() {
 
   console.log('\n✅ Sync complete!')
   console.log(`  Awakeners: ${Object.keys(enrichedAwakeners).length}`)
+  const divineCount = Object.values(enrichedAwakeners).filter((a) => a.isDivineRealm).length
+  const lemurianCount = Object.values(enrichedAwakeners).filter((a) => a.isLemurian).length
+  console.log(`    (${divineCount} Divine, ${lemurianCount} Lemurian — derived from searchTags)`)
   console.log(`  Wheels: ${Object.keys(enrichedWheels).length} (${Object.values(enrichedWheels).filter((w) => w.isMythic).length} Mythic, ${wheelsMissingDesc} missing description)`)
   console.log(`  Covenants: ${Object.keys(enrichedCovenants).length} (${covsMissingEffects} missing setEffects)`)
   console.log(`  Posses: ${Object.keys(enrichedPosses).length} (${possesWithBonus} with character bonus)`)
