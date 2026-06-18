@@ -91,6 +91,15 @@ function skillScore(
   return totalWeight > 0 ? weightedSum / totalWeight : 0
 }
 
+function talentMax(
+  awakener: EnrichedAwakener,
+  family: 'madness_omen' | 'soulforge_aptitude' | 'gnostic_potential',
+  fallback: number
+): number {
+  const t = awakener.talents?.find(tl => tl.family === family)
+  return t?.maxLevel && t.maxLevel > 0 ? t.maxLevel : fallback
+}
+
 function talentScore(
   entry: AwakenerEntry,
   awakener: EnrichedAwakener,
@@ -99,12 +108,14 @@ function talentScore(
   const keyTalents = awakener.annotation?.keyTalents ?? []
   const { madnessOmen, soulforgeAptitude, gnosticPotential } = entry.talentLevels
 
-  // Weight soulforge higher in Arc 2
+  // Weight soulforge higher in Arc 2 (it is inert in Faded Legacy / Arc 1)
   const soulforgeWeight = arcRuleset === 'ASTRAL_REIGN' ? 1.5 : 0.5
 
-  const moScore = (madnessOmen / 12)
-  const saScore = (soulforgeAptitude / 10)
-  const gpScore = (gnosticPotential / 5)
+  // Use each talent's real maxLevel from SKeyDB rather than hardcoded divisors
+  const clamp01 = (x: number) => Math.max(0, Math.min(1, x))
+  const moScore = clamp01(madnessOmen / talentMax(awakener, 'madness_omen', 12))
+  const saScore = clamp01(soulforgeAptitude / talentMax(awakener, 'soulforge_aptitude', 10))
+  const gpScore = clamp01(gnosticPotential / talentMax(awakener, 'gnostic_potential', 5))
 
   // Base weighted average
   const baseScore = (
@@ -125,36 +136,42 @@ function wheelScore(
   roster: UserRoster,
   awakener: EnrichedAwakener
 ): number {
-  const recommendedWheels = awakener.build?.recommendedWheels ?? []
-  if (recommendedWheels.length === 0) return 0.5 // neutral if no data
+  const build = awakener.build
+  if (!build || !build.builds || build.builds.length === 0) return 0.5 // neutral if no data
 
   const tierScores: Record<string, number> = {
     BIS_SSR: 1.0,
-    BIS_MYTHIC: 1.0,
     ALT_SSR: 0.75,
-    ALT_MYTHIC: 0.75,
     BIS_SR: 0.5,
     GOOD: 0.25,
   }
 
-  // Score for each recommended slot (check if owned)
-  let best1 = 0
-  let best2 = 0
+  // A recommended "slot" lists one or more interchangeable wheelIds; it counts
+  // as owned if the player owns any of them. Score each build variant by its
+  // best-two owned slots, and return the best variant the player can field.
+  let bestVariantScore = 0
 
-  for (const rec of recommendedWheels) {
-    const entry = getWheelEntry(roster, rec.wheelId)
-    if (!entry.owned) continue
-    const score = tierScores[rec.tier] ?? 0.1
-    if (score > best1) {
-      best2 = best1
-      best1 = score
-    } else if (score > best2) {
-      best2 = score
+  for (const variant of build.builds) {
+    let best1 = 0
+    let best2 = 0
+    for (const rec of variant.recommendedWheels ?? []) {
+      const owned = (rec.wheelIds ?? []).some(
+        wid => getWheelEntry(roster, wid).owned
+      )
+      if (!owned) continue
+      const score = tierScores[rec.tier] ?? 0.1
+      if (score > best1) {
+        best2 = best1
+        best1 = score
+      } else if (score > best2) {
+        best2 = score
+      }
     }
+    const variantScore = (best1 + best2) / 2
+    if (variantScore > bestVariantScore) bestVariantScore = variantScore
   }
 
-  // Average of best two slots
-  return (best1 + best2) / 2
+  return bestVariantScore
 }
 
 // ---------------------------------------------------------------------------

@@ -82,3 +82,16 @@ export function getCombatWheels(): Record<string, EnrichedWheel> {
     Object.entries(all).filter(([, w]) => w.hasCombatEffect)
   )
 }
+
+// ---------------------------------------------------------------------------
+// D-Tide / D-Effect Zone data (season list + enemy characteristics)
+// ---------------------------------------------------------------------------
+
+export interface DzoneData {
+  seasons: unknown[]
+  enemyCharacteristics: unknown
+}
+
+export function getDzones(): DzoneData {
+  return readDB<DzoneData>('dzones.json')
+}

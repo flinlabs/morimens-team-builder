@@ -34,8 +34,36 @@ function readAnnotations() {
   }
 }
 
+// Fetch every per-record file for a record type, given the list of ids from the
+// catalog. Records hold the description text the catalogs omit. Chunked to keep
+// concurrency bounded; failures are logged and skipped (never silently dropped).
+async function fetchRecordsByIds(type, ids, concurrency = 25) {
+  const results = {}
+  let done = 0
+  let failed = 0
+  for (let i = 0; i < ids.length; i += concurrency) {
+    const chunk = ids.slice(i, i + concurrency)
+    await Promise.all(
+      chunk.map(async (id) => {
+        try {
+          results[id] = await fetchJSON(`${SKEYDB_BASE}/records/${type}/${id}.json`)
+        } catch {
+          failed++
+          console.warn(`    ⚠ could not fetch ${type}/${id}`)
+        }
+        done++
+      })
+    )
+    process.stdout.write(`\r  …${type}: ${done}/${ids.length}`)
+  }
+  process.stdout.write(`\r  ✓ ${type}: ${done}/${ids.length}${failed ? ` (${failed} failed)` : ''}\n`)
+  return results
+}
+
+const idsOf = (catalog) => (catalog.records || []).map((r) => r.id)
+
 // ---------------------------------------------------------------------------
-// Fetch catalogs
+// Fetch catalogs (index + the build records, which are already complete)
 // ---------------------------------------------------------------------------
 
 async function fetchCatalogs() {
@@ -59,7 +87,7 @@ async function fetchCatalogs() {
     fetchJSON(`${SKEYDB_BASE}/catalogs/covenants.json`),
     fetchJSON(`${SKEYDB_BASE}/catalogs/posses.json`),
   ])
-  console.log(`  ✓ fetched all catalogs`)
+  console.log('  ✓ fetched all catalogs')
   return { awakeners, awakenersBuilds, wheels, enlightens, skills, talents, covenants, posses }
 }
 
@@ -67,119 +95,102 @@ async function fetchDzones() {
   console.log('\n📥 Fetching D-Tide data...')
   const dzones = await fetchJSON(`${DZONE_BASE}/dzones.json`)
   const enemyCharacteristics = await fetchJSON(`${DZONE_BASE}/enemy-characteristics.json`)
-  console.log(`  ✓ fetched dzone data`)
+  console.log('  ✓ fetched dzone data')
   return { dzones, enemyCharacteristics }
 }
 
 // ---------------------------------------------------------------------------
-// Fetch individual records
+// Build enriched awakeners (merges full records + grouped child records)
 // ---------------------------------------------------------------------------
 
-async function fetchRecords(type, ids) {
-  const BASE = `${SKEYDB_BASE}/records/${type}`
-  const results = {}
-  const chunks = []
-  for (let i = 0; i < ids.length; i += 10) chunks.push(ids.slice(i, i + 10))
-  for (const chunk of chunks) {
-    await Promise.all(chunk.map(async (id) => {
-      try {
-        const slug = id.replace(`${type.replace(/s$/, '')}-`, `${type.replace(/s$/, '')}-`)
-        results[id] = await fetchJSON(`${BASE}/${id}.json`)
-      } catch (e) {
-        console.warn(`  ⚠ could not fetch ${type}/${id}`)
-      }
-    }))
-  }
-  return results
-}
-
-// ---------------------------------------------------------------------------
-// Build enriched awakeners
-// ---------------------------------------------------------------------------
-
-function buildAwakeners(catalog, buildsCatalog, enlightenCatalog, skillCatalog, talentCatalog, annotations) {
+function buildAwakeners(
+  awakenerRecords,
+  buildsCatalog,
+  enlightenRecords,
+  skillRecords,
+  talentRecords,
+  annotations
+) {
   console.log('\n🔨 Building awakeners.json...')
 
-  // Group enlightens by awakener
-  const enlightensByAwakener = {}
-  for (const e of enlightenCatalog.records) {
-    if (!enlightensByAwakener[e.ownerAwakenerId]) enlightensByAwakener[e.ownerAwakenerId] = []
-    enlightensByAwakener[e.ownerAwakenerId].push(e)
+  const groupByOwner = (records) => {
+    const by = {}
+    for (const r of Object.values(records)) {
+      if (!r || !r.ownerAwakenerId) continue
+      ;(by[r.ownerAwakenerId] ??= []).push(r)
+    }
+    return by
   }
 
-  // Group skills by awakener
-  const skillsByAwakener = {}
-  for (const s of skillCatalog.records) {
-    if (!skillsByAwakener[s.ownerAwakenerId]) skillsByAwakener[s.ownerAwakenerId] = []
-    skillsByAwakener[s.ownerAwakenerId].push(s)
-  }
+  const enlightensByAwakener = groupByOwner(enlightenRecords)
+  const skillsByAwakener = groupByOwner(skillRecords)
+  const talentsByAwakener = groupByOwner(talentRecords)
 
-  // Group talents by awakener
-  const talentsByAwakener = {}
-  for (const t of talentCatalog.records) {
-    if (!talentsByAwakener[t.ownerAwakenerId]) talentsByAwakener[t.ownerAwakenerId] = []
-    talentsByAwakener[t.ownerAwakenerId].push(t)
-  }
-
-  // Index builds by awakener
+  // builds catalog records already contain the full nested `builds` structure
   const buildsByAwakener = {}
-  for (const b of (buildsCatalog.records || [])) {
-    buildsByAwakener[b.awakenerId] = b
-  }
+  for (const b of buildsCatalog.records || []) buildsByAwakener[b.awakenerId] = b
+
+  const enlightenOrder = ['E1', 'E2', 'E3', 'OverExalt', 'AbsoluteAxiom']
 
   const result = {}
   const pendingAnnotation = []
 
-  for (const awakener of catalog.records) {
-    const annotation = annotations[awakener.id] || null
-    if (!annotation) pendingAnnotation.push(awakener.name)
+  for (const a of Object.values(awakenerRecords)) {
+    const annotation = annotations[a.id] || null
+    if (!annotation) pendingAnnotation.push(a.name)
 
-    result[awakener.id] = {
-      // Base data from SKeyDB
-      id: awakener.id,
-      name: awakener.name,
-      realm: awakener.realm,
-      type: awakener.type,
-      faction: awakener.faction,
-      rarity: awakener.rarity,
-      searchTags: awakener.searchTags || [],
-      route: awakener.route,
-      assets: awakener.assets || {},
+    result[a.id] = {
+      id: a.id,
+      name: a.name,
+      realm: a.realm,
+      type: a.type,
+      faction: a.faction,
+      rarity: a.rarity,
+      searchTags: a.searchTags || [],
+      route: a.route,
+      assets: a.assets || {},
 
-      // Related data grouped
-      enlightens: (enlightensByAwakener[awakener.id] || [])
-        .sort((a, b) => {
-          const order = ['E1', 'E2', 'E3', 'OverExalt', 'AbsoluteAxiom']
-          return order.indexOf(a.slot) - order.indexOf(b.slot)
-        }),
-      skills: skillsByAwakener[awakener.id] || [],
-      talents: talentsByAwakener[awakener.id] || [],
-      build: buildsByAwakener[awakener.id] || null,
+      // Richer descriptive fields for the AI prompt
+      availabilityType: a.availabilityType,
+      aliases: a.aliases || [],
+      ingameId: a.ingameId,
+      numericId: a.numericId,
+      lineupToken: a.lineupToken,
+      primaryScalingBase: a.primaryScalingBase,
+      baseStatsLv1: a.baseStatsLv1,
+      substatsLv1: a.substatsLv1,
 
-      // Annotation layer (null if not yet annotated)
-      annotation: annotation,
+      enlightens: (enlightensByAwakener[a.id] || []).sort(
+        (x, y) => enlightenOrder.indexOf(x.slot) - enlightenOrder.indexOf(y.slot)
+      ),
+      skills: skillsByAwakener[a.id] || [],
+      talents: talentsByAwakener[a.id] || [],
+      build: buildsByAwakener[a.id] || null,
+
+      annotation,
       annotationPending: !annotation,
     }
   }
 
   if (pendingAnnotation.length > 0) {
     console.log(`\n  ⚠ ${pendingAnnotation.length} awakeners need annotation:`)
-    pendingAnnotation.forEach(name => console.log(`    - ${name}`))
+    pendingAnnotation.forEach((name) => console.log(`    - ${name}`))
   }
 
   return result
 }
 
 // ---------------------------------------------------------------------------
-// Build wheels (tag Mythic correctly)
+// Build wheels (retag Mythic; carry description text)
 // ---------------------------------------------------------------------------
 
-function buildWheels(catalog) {
+function buildWheels(wheelRecords) {
   console.log('\n🔨 Building wheels.json...')
   const result = {}
-  for (const wheel of catalog.records) {
-    // SKeyDB stores Mythic wheels as SSR with no ownerAwakenerId
-    // We retag them correctly here
+  for (const wheel of Object.values(wheelRecords)) {
+    // Mythic wheels (campaign / battlepass / Sediment, black border) are stored
+    // by SKeyDB as SSR with no ownerAwakenerId. Verified: this recovers exactly
+    // the 15 known Mythic wheels.
     const isMythic = wheel.rarity === 'SSR' && !wheel.ownerAwakenerId
     const isN = wheel.rarity === 'N'
 
@@ -195,33 +206,54 @@ function buildWheels(catalog) {
 }
 
 // ---------------------------------------------------------------------------
-// Build covenants
+// Build covenants (setEffects come from the per-record file, not the catalog)
 // ---------------------------------------------------------------------------
 
-function buildCovenants(catalog) {
+function buildCovenants(covenantRecords, covenantCatalog) {
   console.log('\n🔨 Building covenants.json...')
+  const catalogById = {}
+  for (const c of covenantCatalog.records || []) catalogById[c.id] = c
+
   const result = {}
-  for (const covenant of catalog.records) {
-    result[covenant.id] = { ...covenant }
+  for (const covenant of Object.values(covenantRecords)) {
+    result[covenant.id] = {
+      ...covenant,
+      setEffects: covenant.setEffects || [],
+      setBonuses: covenant.setBonuses || catalogById[covenant.id]?.setBonuses || [],
+    }
   }
   return result
 }
 
 // ---------------------------------------------------------------------------
-// Build posses
+// Build posses (detect character-specific bonus from real phrasing)
 // ---------------------------------------------------------------------------
 
-function buildPosses(catalog) {
+function buildPosses(posseRecords, awakenerNames) {
   console.log('\n🔨 Building posses.json...')
+
+  // Longest names first so e.g. "Doll: Inferno" wins over "Doll".
+  const names = [...awakenerNames].sort((a, b) => b.length - a.length)
+  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+  function detectCharacterBonus(desc) {
+    if (!desc) return null
+    for (const name of names) {
+      // Matches: If <name> is in your team / the team / the party,
+      // with the name optionally wrapped in quotes.
+      const re = new RegExp(`\\bIf\\s+"?${esc(name)}"?\\s+is in (?:your |the )?(?:team|party)\\b`, 'i')
+      if (re.test(desc)) return name
+    }
+    return null
+  }
+
   const result = {}
-  for (const posse of catalog.records) {
-    // Detect character-specific bonus from description text
-    const desc = posse.descriptionTemplate || ''
-    const charBonusMatch = desc.match(/"([^"]+)" is in (?:your team|the team|the party)/)
+  for (const posse of Object.values(posseRecords)) {
+    const charBonus = detectCharacterBonus(posse.descriptionTemplate || '')
     result[posse.id] = {
       ...posse,
-      hasCharacterBonus: !!charBonusMatch,
-      characterBonusFor: charBonusMatch ? charBonusMatch[1] : null,
+      hasCharacterBonus: !!charBonus,
+      characterBonusFor: charBonus,
     }
   }
   return result
@@ -235,7 +267,7 @@ function buildDzones(dzones, enemyCharacteristics) {
   console.log('\n🔨 Building dzones.json...')
   return {
     seasons: dzones.records || [],
-    enemyCharacteristics: enemyCharacteristics,
+    enemyCharacteristics,
   }
 }
 
@@ -244,10 +276,10 @@ function buildDzones(dzones, enemyCharacteristics) {
 // ---------------------------------------------------------------------------
 
 function generateDiffReport(newAwakeners) {
-  const reportPath = path.join(DB_DIR, 'sync-report.json')
-  let previousReport = {}
+  const snapshotPath = path.join(DB_DIR, 'sync-snapshot.json')
+  let previous = {}
   try {
-    previousReport = JSON.parse(fs.readFileSync(reportPath, 'utf-8'))
+    previous = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'))
   } catch { /* first run */ }
 
   const report = {
@@ -260,8 +292,7 @@ function generateDiffReport(newAwakeners) {
     if (awakener.annotationPending) {
       report.pendingAnnotation.push({ id, name: awakener.name })
     }
-
-    const prev = previousReport[id]
+    const prev = previous[id]
     if (prev) {
       const prevTags = JSON.stringify(prev.searchTags || [])
       const newTags = JSON.stringify(awakener.searchTags || [])
@@ -277,12 +308,12 @@ function generateDiffReport(newAwakeners) {
     }
   }
 
-  // Save snapshot for next diff
+  // Save snapshot for next diff (kept separate from the human-readable report)
   const snapshot = {}
   for (const [id, awakener] of Object.entries(newAwakeners)) {
     snapshot[id] = { searchTags: awakener.searchTags }
   }
-  fs.writeFileSync(reportPath, JSON.stringify(snapshot, null, 2))
+  fs.writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2))
 
   return report
 }
@@ -294,21 +325,38 @@ function generateDiffReport(newAwakeners) {
 async function main() {
   console.log('🚀 Starting SKeyDB sync...')
 
-  // Ensure db directory exists
   if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true })
 
   const annotations = readAnnotations()
   console.log(`  ✓ loaded ${Object.keys(annotations).length} annotations`)
 
-  // Fetch all data
-  const { awakeners, awakenersBuilds, wheels, enlightens, skills, talents, covenants, posses } = await fetchCatalogs()
+  const catalogs = await fetchCatalogs()
   const { dzones, enemyCharacteristics } = await fetchDzones()
 
+  // Fetch the per-record files that carry description text.
+  console.log('\n📥 Fetching per-record details (this is the slow part)...')
+  const awakenerRecords = await fetchRecordsByIds('awakeners', idsOf(catalogs.awakeners))
+  const enlightenRecords = await fetchRecordsByIds('enlightens', idsOf(catalogs.enlightens))
+  const skillRecords = await fetchRecordsByIds('skills', idsOf(catalogs.skills))
+  const talentRecords = await fetchRecordsByIds('talents', idsOf(catalogs.talents))
+  const wheelRecords = await fetchRecordsByIds('wheels', idsOf(catalogs.wheels))
+  const posseRecords = await fetchRecordsByIds('posses', idsOf(catalogs.posses))
+  const covenantRecords = await fetchRecordsByIds('covenants', idsOf(catalogs.covenants))
+
+  const awakenerNames = Object.values(awakenerRecords).map((a) => a.name)
+
   // Build enriched DB files
-  const enrichedAwakeners = buildAwakeners(awakeners, awakenersBuilds, enlightens, skills, talents, annotations)
-  const enrichedWheels = buildWheels(wheels)
-  const enrichedCovenants = buildCovenants(covenants)
-  const enrichedPosses = buildPosses(posses)
+  const enrichedAwakeners = buildAwakeners(
+    awakenerRecords,
+    catalogs.awakenersBuilds,
+    enlightenRecords,
+    skillRecords,
+    talentRecords,
+    annotations
+  )
+  const enrichedWheels = buildWheels(wheelRecords)
+  const enrichedCovenants = buildCovenants(covenantRecords, catalogs.covenants)
+  const enrichedPosses = buildPosses(posseRecords, awakenerNames)
   const enrichedDzones = buildDzones(dzones, enemyCharacteristics)
 
   // Write DB files
@@ -319,28 +367,31 @@ async function main() {
   write('posses.json', enrichedPosses)
   write('dzones.json', enrichedDzones)
 
-  // Generate diff report
   const report = generateDiffReport(enrichedAwakeners)
   write('sync-report.json', report)
 
-  // Summary
+  // Sanity checks — surface silent data gaps instead of shipping empty text
+  const wheelsMissingDesc = Object.values(enrichedWheels).filter((w) => !w.descriptionTemplate).length
+  const possesWithBonus = Object.values(enrichedPosses).filter((p) => p.hasCharacterBonus).length
+  const covsMissingEffects = Object.values(enrichedCovenants).filter((c) => !c.setEffects.length).length
+
   console.log('\n✅ Sync complete!')
   console.log(`  Awakeners: ${Object.keys(enrichedAwakeners).length}`)
-  console.log(`  Wheels: ${Object.keys(enrichedWheels).length}`)
-  console.log(`  Covenants: ${Object.keys(enrichedCovenants).length}`)
-  console.log(`  Posses: ${Object.keys(enrichedPosses).length}`)
+  console.log(`  Wheels: ${Object.keys(enrichedWheels).length} (${Object.values(enrichedWheels).filter((w) => w.isMythic).length} Mythic, ${wheelsMissingDesc} missing description)`)
+  console.log(`  Covenants: ${Object.keys(enrichedCovenants).length} (${covsMissingEffects} missing setEffects)`)
+  console.log(`  Posses: ${Object.keys(enrichedPosses).length} (${possesWithBonus} with character bonus)`)
   console.log(`  D-Tide seasons: ${enrichedDzones.seasons.length}`)
 
   if (report.changes.length > 0) {
     console.log(`\n⚠ ${report.changes.length} awakeners had data changes — review annotations:`)
-    report.changes.forEach(c => console.log(`  - ${c.name} (${c.type} changed)`))
+    report.changes.forEach((c) => console.log(`  - ${c.name} (${c.type} changed)`))
   }
   if (report.pendingAnnotation.length > 0) {
     console.log(`\n📝 ${report.pendingAnnotation.length} awakeners need annotations`)
   }
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error('❌ Sync failed:', err)
   process.exit(1)
 })

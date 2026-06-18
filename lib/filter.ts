@@ -91,6 +91,7 @@ export function getRealmBonuses(
       `team STR +${chaosCount}% Max HP; ` +
       `Ultra units +${chaosCount * 10}% Crit DMG per Chaos member`
     )
+  }
 
   if (hasChaos) {
     bonuses.push('+100% Death Resistance from Chaos member')

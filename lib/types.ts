@@ -4,11 +4,23 @@
 
 export type Realm = 'CHAOS' | 'CARO' | 'AEQUOR' | 'ULTRA'
 export type AwakenerType = 'ASSAULT' | 'WARDEN' | 'CHORUS'
-export type Rarity = 'R' | 'SR' | 'SSR' | 'MYTHIC' | 'N'
+
+// Raw awakener rarities: SSR | SR | Genesis (alt/anniversary units).
+// Raw wheel rarities: R | SR | SSR | N. 'MYTHIC' is a DERIVED wheel value the
+// sync assigns to ownerless SSR wheels (campaign/battlepass/Sediment, black
+// border) — confirmed against the Wheel Guide. SKeyDB stores these as SSR with
+// no ownerAwakenerId.
+export type Rarity = 'R' | 'SR' | 'SSR' | 'MYTHIC' | 'N' | 'Genesis'
+
 export type EnlightenSlot = 'E0' | 'E1' | 'E2' | 'E3' | 'OE' | 'AA'
 export type SkillSlot = 'Strike' | 'Defense' | 'Skill1' | 'Skill2' | 'Rouse' | 'Exalt' | 'OverExalt'
 export type ArcRuleset = 'FADED_LEGACY' | 'ASTRAL_REIGN'
 export type ViabilityTier = 1 | 2 | 3 | 4
+
+// Wheel build tiers as they actually appear in SKeyDB awakener-builds.
+// There is no MYTHIC build tier — a Mythic-rarity wheel recommended as BIS is
+// tagged BIS_SSR; its Mythic-ness is conveyed by the wheel's `rarity` field.
+export type WheelTier = 'BIS_SSR' | 'ALT_SSR' | 'BIS_SR' | 'GOOD'
 
 export type TeamRole =
   | 'main_dps'
@@ -56,7 +68,17 @@ export type SynergyTag =
   | 'sin_stacker'
 
 // ---------------------------------------------------------------------------
-// SKeyDB base types (as they come from the DB files)
+// Scaling-argument shape used inside descriptionArgs (SKeyDB v3)
+// ---------------------------------------------------------------------------
+
+export type DescriptionArg =
+  | { kind: 'fixed'; value: string; suffix?: string }
+  | { kind: 'linear'; base: string; gainPerLevel: string; suffix?: string }
+  | { kind: 'scaling'; values: string[]; suffix?: string }
+  | Record<string, unknown>
+
+// ---------------------------------------------------------------------------
+// SKeyDB base types (as they come from the per-record files)
 // ---------------------------------------------------------------------------
 
 export interface SkeyEnlighten {
@@ -66,7 +88,7 @@ export interface SkeyEnlighten {
   ownerAwakenerId: string
   ownerAwakenerName: string
   descriptionTemplate: string
-  descriptionArgs: Record<string, unknown>
+  descriptionArgs: Record<string, DescriptionArg>
   route: { slug: string; canonicalPath: string }
 }
 
@@ -74,11 +96,12 @@ export interface SkeySkill {
   id: string
   name: string
   slot: SkillSlot
-  cost: number | null
+  cost?: number | null
+  cardKeywords?: string[]
   ownerAwakenerId: string
   ownerAwakenerName: string
   descriptionTemplate: string
-  descriptionArgs: Record<string, unknown>
+  descriptionArgs: Record<string, DescriptionArg>
   route: { slug: string; canonicalPath: string }
 }
 
@@ -87,23 +110,28 @@ export interface SkeyTalent {
   name: string
   family: 'madness_omen' | 'soulforge_aptitude' | 'gnostic_potential' | 'passive'
   maxLevel: number
+  defaultMaxed?: boolean
   ownerAwakenerId: string
   ownerAwakenerName: string
   descriptionTemplate: string
-  descriptionArgs: Record<string, unknown>
+  descriptionArgs: Record<string, DescriptionArg>
+}
+
+// SKeyDB awakener-builds: each awakener has one build record containing one or
+// more named build variants (DPS, Support, Core, Tank, ...).
+export interface SkeyBuildVariant {
+  id: string
+  label: string
+  recommendedCovenantIds: string[]
+  recommendedWheels: Array<{ wheelIds: string[]; tier: WheelTier }>
+  substatPriorityGroups: string[][]
+  recommendedWheelMainstats: string[]
 }
 
 export interface SkeyBuild {
   awakenerId: string
-  recommendedWheels?: Array<{
-    wheelId: string
-    tier: 'BIS_SSR' | 'BIS_MYTHIC' | 'ALT_SSR' | 'ALT_MYTHIC' | 'BIS_SR' | 'GOOD'
-  }>
-  recommendedCovenants?: Array<{
-    covenantId: string
-    priority: number
-  }>
-  substatPriorityGroups?: string[][]
+  primaryBuildId: string
+  builds: SkeyBuildVariant[]
 }
 
 // ---------------------------------------------------------------------------
@@ -138,7 +166,7 @@ export interface AwakenerAnnotation {
     partnerId: string   // awakener ID
     reason: string      // why they work together
   }>
-  
+
   // Ultra-specific
   leapPriority?: 'high' | 'mid' | 'low' | 'none'
   rousePriority?: 'high' | 'mid' | 'low'
@@ -173,6 +201,17 @@ export interface EnrichedAwakener {
   route: { slug: string; canonicalPath: string }
   assets: Record<string, string>
 
+  // Optional descriptive fields carried through from the record (useful for
+  // the AI prompt; all optional so older DB files stay valid)
+  availabilityType?: string
+  aliases?: string[]
+  ingameId?: string
+  numericId?: number
+  lineupToken?: string
+  primaryScalingBase?: number
+  baseStatsLv1?: Record<string, number>
+  substatsLv1?: Record<string, number>
+
   enlightens: SkeyEnlighten[]
   skills: SkeySkill[]
   talents: SkeyTalent[]
@@ -195,7 +234,9 @@ export interface EnrichedWheel {
   ownerAwakenerId?: string
   ownerAwakenerName?: string
   searchTags: string[]
-  descriptionTemplate: string
+  descriptionTemplate?: string
+  descriptionArgs?: Record<string, DescriptionArg>
+  lore?: string
   isMythic: boolean
   isNWheel: boolean
   hasCombatEffect: boolean
@@ -210,12 +251,18 @@ export interface EnrichedWheel {
 export interface CovenantSetEffect {
   set: number
   descriptionTemplate: string
+  descriptionArgs?: Record<string, DescriptionArg>
 }
 
 export interface EnrichedCovenant {
   id: string
   name: string
   setEffects: CovenantSetEffect[]
+  setBonuses?: number[]
+  acquisitionSource?: string
+  lineupToken?: string
+  lore?: string
+  assets?: Record<string, string>
   route: { slug: string; canonicalPath: string }
 }
 
@@ -227,9 +274,13 @@ export interface EnrichedPosse {
   id: string
   name: string
   realm: string
-  descriptionTemplate: string
+  descriptionTemplate?: string
+  descriptionArgs?: Record<string, DescriptionArg>
+  acquisitionSource?: string
+  lore?: string
   hasCharacterBonus: boolean
   characterBonusFor: string | null
+  assets?: Record<string, string>
   route: { slug: string; canonicalPath: string }
 }
 
@@ -341,7 +392,7 @@ export interface CandidateTeam {
 export interface WheelAssignment {
   slot: 1 | 2
   wheelId: string
-  tier: 'BIS_SSR' | 'BIS_MYTHIC' | 'ALT_SSR' | 'ALT_MYTHIC' | 'BIS_SR' | 'GOOD' | 'FALLBACK'
+  tier: WheelTier | 'FALLBACK'
   dualSSRNote?: string
   arc2Note?: string
 }
