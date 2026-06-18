@@ -39,5 +39,8 @@ next-env.d.ts
 /db/*.json
 !/db/.gitkeep
 
+# Fetched game assets (© Qookka Games) — pulled by `npm run assets`, not committed
+/public/assets
+
 #morisources
 /morisources
