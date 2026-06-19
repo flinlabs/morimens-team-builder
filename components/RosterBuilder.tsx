@@ -311,7 +311,7 @@ function GearTile({
       {/* image on top */}
       <div
         className={`relative overflow-hidden rounded bg-[var(--bg-2)] ${
-          isWheel ? "h-[72px] w-[54px]" : "h-16 w-16"
+          isWheel ? "h-[108px] w-[81px]" : "h-[88px] w-[88px]"
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -571,6 +571,11 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     for (const w of catalog.wheels) m[w.id] = { name: w.name };
     return m;
   }, [catalog.wheels]);
+  const wheelInfoById = useMemo(() => {
+    const m: Record<string, { rarity: string; realm: string }> = {};
+    for (const w of catalog.wheels) m[w.id] = { rarity: w.rarity, realm: w.realm };
+    return m;
+  }, [catalog.wheels]);
   const covenantMeta = useMemo(() => {
     const m: Record<string, { name: string }> = {};
     for (const c of catalog.covenants) m[c.id] = { name: c.name };
@@ -720,18 +725,42 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     );
     setPlans((prev) => {
       const np = { ...prev };
+      // Track gear already used by slots that aren't changing, so the board
+      // stays unique (no repeated wheels, no duplicate covenant sets).
+      const usedWheelIds = new Set<string>();
+      const usedCovenantIds = new Set<string>();
+      next.forEach((id, i) => {
+        if (!id) return;
+        if (slots[i] === id) {
+          const keep = np[id];
+          keep?.wheelIds?.forEach((w) => usedWheelIds.add(w));
+          if (keep?.covenantId) usedCovenantIds.add(keep.covenantId);
+        }
+      });
+      const ownedFillerWheels = () =>
+        catalog.wheels
+          .filter((w) => ["SR", "R", "N"].includes(w.rarity) && roster.wheels[w.id]?.owned)
+          .map((w) => ({ id: w.id, rarity: w.rarity, realm: w.realm }));
       next.forEach((id, i) => {
         if (!id || slots[i] === id) return; // unchanged or cleared
         const existing = np[id];
-        if (existing && (existing.wheelIds?.length || existing.covenantId)) return;
+        if (existing && (existing.wheelIds?.length || existing.covenantId)) {
+          existing.wheelIds?.forEach((w) => usedWheelIds.add(w));
+          if (existing.covenantId) usedCovenantIds.add(existing.covenantId);
+          return;
+        }
         const awk = catalog.awakeners.find((a) => a.id === id);
         const role = awk?.roles?.[0];
-        const g = recommendGearFor(
-          id,
-          role,
-          (w) => !!roster.wheels[w]?.owned,
-          (c) => !!roster.covenants[c]?.owned
-        );
+        const g = recommendGearFor(id, role, {
+          ownsWheel: (w) => !!roster.wheels[w]?.owned,
+          ownsCovenant: (c) => !!roster.covenants[c]?.owned,
+          wheelRarity: (w) => wheelInfoById[w]?.rarity ?? "N",
+          isPlus12: (w) => (roster.wheels[w]?.stackLevel ?? 0) >= 12,
+          ownedFillerWheels,
+          awakenerRealm: awk?.realm,
+          usedWheelIds,
+          usedCovenantIds,
+        });
         np[id] = {
           ...(existing ?? {}),
           role: existing?.role ?? (role ? humanRole(role) : undefined),
@@ -1270,7 +1299,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         const grouped = wheelSort === "rarity" && wheelRarity === "ALL";
         if (!grouped) {
           return (
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredWheels.map(renderTile)}
             </div>
           );
@@ -1289,7 +1318,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                     <span className="text-xs text-[var(--text-dim)]">{inGroup.length}</span>
                     <div className="gold-rule ml-1 flex-1" />
                   </div>
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {inGroup.map(renderTile)}
                   </div>
                 </div>
@@ -1301,7 +1330,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
 
       {/* Covenants */}
       {tab === "covenants" && (
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {filteredCovenants.map((c) => {
             const owned = mounted ? !!roster.covenants[c.id]?.owned : false;
             return (
