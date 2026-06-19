@@ -80,7 +80,7 @@ function ItemDrawer({
   const [q, setQ] = useState("");
   const [realm, setRealm] = useState<string | null>(null);
   const [rarity, setRarity] = useState<string | null>(null);
-  const [hover, setHover] = useState<{ text: string; y: number } | null>(null);
+  const [hover, setHover] = useState<string | null>(null);
 
   const realms = useMemo(() => {
     const set = new Set<string>();
@@ -193,12 +193,7 @@ function ItemDrawer({
               <button
                 key={it.id}
                 onClick={() => onSelect(it.id)}
-                onMouseEnter={(e) =>
-                  it.tooltip && setHover({ text: it.tooltip, y: e.clientY })
-                }
-                onMouseMove={(e) =>
-                  it.tooltip ? setHover({ text: it.tooltip, y: e.clientY }) : undefined
-                }
+                onMouseEnter={() => it.tooltip && setHover(it.tooltip)}
                 onMouseLeave={() => setHover(null)}
                 className={`group flex flex-col overflow-hidden rounded-lg border text-left transition ${
                   it.id === currentId
@@ -246,16 +241,13 @@ function ItemDrawer({
         </div>
       </div>
 
-      {/* custom hover popup — sits to the left of the panel, follows the cursor */}
+      {/* hover popup — pinned in one place (centred over the panel), not cursor-following */}
       {hover && (
         <div
-          className="pointer-events-none fixed z-[70] w-72 whitespace-pre-line rounded-lg border border-[var(--gold)]/40 bg-[var(--panel-2)] p-3 text-[13px] leading-snug text-[var(--text)] shadow-2xl"
-          style={{
-            right: "5rem",
-            top: Math.max(12, Math.min(hover.y - 20, (typeof window !== "undefined" ? window.innerHeight : 800) - 160)),
-          }}
+          className="pointer-events-none fixed top-1/2 z-[70] w-72 -translate-y-1/2 whitespace-pre-line rounded-lg border border-[var(--gold)]/40 bg-[var(--panel-2)] p-3 text-[13px] leading-snug text-[var(--text)] shadow-2xl"
+          style={{ right: "5rem" }}
         >
-          {hover.text}
+          {hover}
         </div>
       )}
     </div>
