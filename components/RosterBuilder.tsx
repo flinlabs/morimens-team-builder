@@ -465,6 +465,8 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const [posseName, setPosseName] = useState<string | undefined>(undefined);
   // Slots the player placed by hand — preserved when Generate fills the board.
   const [pinned, setPinned] = useState<boolean[]>([false, false, false, false]);
+  // Bumped every successful generation so the per-team boards remount with fresh state.
+  const [genId, setGenId] = useState(0);
 
   const maps: NameMaps = useMemo(() => {
     const awk: NameMaps["awk"] = {};
@@ -560,13 +562,17 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     setGenerating(true);
     setError(null);
     try {
+      const pinnedIds = slots.filter((id, i): id is string => !!id && pinned[i]);
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           roster,
           mode,
-          options: mode === "single" ? { maxResults: 3 } : undefined,
+          options:
+            mode === "single"
+              ? { maxResults: 3, pinnedIds: pinnedIds.length ? pinnedIds : undefined }
+              : undefined,
         }),
       });
       const json = await res.json();
@@ -576,6 +582,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
       } else {
         const gen = json as GenerateResult;
         setResult(gen);
+        setGenId((g) => g + 1);
         setError(null);
         applyTeamToFormation(gen);
       }
@@ -810,7 +817,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               <div className="space-y-5">
                 {result.teams.map((t) => (
                   <TeamFormation
-                    key={t.rank}
+                    key={`${genId}-${t.rank}`}
                     team={t}
                     awakeners={catalog.awakeners}
                     maps={maps}
