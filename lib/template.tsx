@@ -71,6 +71,7 @@ function resolveArg(
     case "computed": {
       // Account-research-scaled value (esoteric/occult research depth). Needs the
       // player's account (keeper) level; without it we can't show a real number.
+      // In-game these always round UP to a whole number (e.g. 39.6 shows as 40).
       if (accountLevel == null) return "?";
       const v = researchDepthValue(
         String(a.baseFormula ?? ""),
@@ -79,8 +80,7 @@ function resolveArg(
         typeof a.rounding === "string" ? a.rounding : undefined
       );
       if (v == null) return "?";
-      const shown = Math.round(v * 10) / 10;
-      return `${Number.isInteger(shown) ? shown : shown.toFixed(1)}${suffix}`;
+      return `${Math.ceil(v)}${suffix}`;
     }
     default:
       // Unknown shape: surface a stringy value if present, else a marker.
