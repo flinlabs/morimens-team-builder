@@ -243,23 +243,35 @@ const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
   { terms: ["Team Unique"], style: { color: "var(--gold-bright)", bold: true } },
   // Debuffs — pink/purple. Listed before STR so "STR Down" wins over "STR".
   { terms: ["STR Down", "STR-Down", "Weakness", "Weakened"], style: { color: "#d98fce" } },
-  { terms: ["Vulnerability", "Vulnerable"], style: { color: "#eb7d7d" } },
-  // Card keywords — orange.
-  { terms: ["Retain", "Exhaust", "Fleeting", "Prepare", "Countdown"], style: { color: "#e6a35c" } },
-  // Quasar / Leap — purple.
-  { terms: ["Quasar", "Leap"], style: { color: "#a98ff0" } },
-  // STR / buffs — green.
-  { terms: ["Strength", "STR"], style: { color: "#7dd39b" } },
-  // Stat names — bold amber, so a wheel's mainstat stands apart in the popup.
+  // Debuffs — red (damage/bleed/poison-class).
+  { terms: ["Vulnerability", "Vulnerable", "Bleed", "Corrosion", "Sin Mark", "Madness"], style: { color: "#eb7d7d" } },
+  // Card / mechanic keywords — orange (triangle-icon class in-game).
   {
     terms: [
-      "Aliemus Regen", "Keyflare Regen", "Crit. Rate", "Crit Rate",
-      "Crit. DMG", "Crit DMG", "DMG Amplification", "DMG Amp",
-      "Realm Mastery", "Death Resistance", "Sigil Yield",
+      "Retain", "Exhaust", "Fleeting", "Prepare", "Countdown", "Innate",
+      "Quasar", "Leap",
+      "Devour", "Pierce DMG", "Tentacle DMG",
+      "Discover", "Aftershock", "Destroy",
+      "Scion of Purity", "Fantasia", "Creativity", "Fiamma",
+    ],
+    style: { color: "#e6a35c" },
+  },
+  // Buffs / buff resources — green.
+  { terms: ["Strength", "STR", "Counter", "Death Resistance", "Realm Mastery"], style: { color: "#7dd39b" } },
+  // Stat names — bold amber.
+  {
+    terms: [
+      "Aliemus Regen", "Keyflare Regen",
+      "Crit. Rate", "Crit Rate", "Crit. DMG", "Crit DMG",
+      "DMG Amplification", "DMG Amp",
+      "Embryo Fusion", "Sigil Yield",
     ],
     style: { color: "#d4b173", bold: true },
   },
-  { terms: ["Shield"], style: { color: "#7db8e8" } },
+  // Protection — blue.
+  { terms: ["Shield", "Life Seal", "Birth Ritual", "Sacrifice"], style: { color: "#7db8e8" } },
+  // Status effects / unique abilities — purple.
+  { terms: ["Poison", "Stagnation", "Void", "Singularity Warp", "Final Verdict"], style: { color: "#a98ff0" } },
 ];
 
 const KEYWORD_STYLE = new Map<string, KwStyle>();
