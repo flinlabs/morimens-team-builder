@@ -139,6 +139,14 @@ export function segmentTemplate(
     last = TOKEN.lastIndex;
   }
   if (last < template.length) pushText(template.slice(last));
+
+  // Collapse a stray "%" that immediately follows a value already ending in "%"
+  // (templates sometimes carry a literal % after a token whose suffix is also %).
+  for (let i = 1; i < segs.length; i++) {
+    if (segs[i - 1].text.endsWith("%") && segs[i].text.startsWith("%")) {
+      segs[i].text = segs[i].text.replace(/^%+/, "");
+    }
+  }
   return segs;
 }
 
