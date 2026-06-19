@@ -152,8 +152,33 @@ export function assignWheels(
     }
   }
 
-  // Pass 2 — recommend acquisition targets for any unfilled slot. Respects the
-  // shared used-pool (so D-Tide never repeats a wheel) and the Overlimit rule.
+  // Pass 2 — fill any remaining slot from an owned SR/R/N wheel. These are
+  // strong, plentiful fillers and never trip the Overlimit rule. Honours the
+  // shared used-pool so D-Tide stays unique; prefers the awakener's realm.
+  if (out.length < 2) {
+    const fillers = Object.values(wheels)
+      .filter((w) => {
+        const r = w.rarity
+        return r === 'SR' || r === 'R' || r === 'N'
+      })
+      .filter((w) => getWheelEntry(roster, w.id).owned)
+      .filter((w) => !usedWheelIds.has(w.id) && !out.some((a) => a.wheelId === w.id))
+      .sort((a, b) => {
+        const ra = a.realm === awakener.realm ? 0 : 1
+        const rb = b.realm === awakener.realm ? 0 : 1
+        if (ra !== rb) return ra - rb
+        const rank: Record<string, number> = { SR: 0, R: 1, N: 2 }
+        return (rank[a.rarity] ?? 3) - (rank[b.rarity] ?? 3)
+      })
+    for (const w of fillers) {
+      if (out.length >= 2) break
+      out.push({ slot: (out.length + 1) as 1 | 2, wheelId: w.id, tier: 'GOOD' })
+      usedWheelIds.add(w.id)
+    }
+  }
+
+  // Pass 3 — recommend acquisition targets for any still-unfilled slot. Respects
+  // the shared used-pool (so D-Tide never repeats a wheel) and the Overlimit rule.
   for (const rec of ranked) {
     if (out.length >= 2) break
     for (const target of rec.wheelIds) {
@@ -178,15 +203,20 @@ export function assignWheels(
 export function recommendCovenant(
   awakener: EnrichedAwakener,
   roster: UserRoster,
-  role?: string
+  role?: string,
+  usedCovenantIds: Set<string> = new Set()
 ): CovenantRecommendation {
   const variant = primaryVariant(awakener)
   const ids = recommendedCovenantsFor(awakener, role)
   const prioritySubstats = (variant?.substatPriorityGroups ?? []).flat()
 
+  // A covenant set is a physical item: two characters can't run the same set,
+  // so skip anything a teammate already took and fall to the next recommendation.
   for (const covenantId of ids) {
+    if (usedCovenantIds.has(covenantId)) continue
     const entry = getCovenantEntry(roster, covenantId)
     if (entry.owned) {
+      usedCovenantIds.add(covenantId)
       return {
         covenantId,
         sixPieceAvailable: entry.sixPieceComplete,
@@ -196,8 +226,9 @@ export function recommendCovenant(
     }
   }
 
-  const target = ids[0]
-  if (target) {
+  for (const target of ids) {
+    if (usedCovenantIds.has(target)) continue
+    usedCovenantIds.add(target)
     return {
       covenantId: target,
       sixPieceAvailable: false,
@@ -358,6 +389,8 @@ export function buildTeamRecommendation(
   const arc = roster.settings.arcRuleset
   const composition: CharacterAssignment[] = []
   const investmentWarnings: string[] = []
+  // Covenants are per-team unique — a set can't be worn by two characters.
+  const usedCovenantIds = new Set<string>()
 
   for (const id of candidate.awakenerIds) {
     const awakener = awakeners[id]
@@ -365,7 +398,7 @@ export function buildTeamRecommendation(
     const ann = awakener.annotation
     const role = ann?.teamRoles?.[0] ?? 'flex'
     const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR)
-    const covenantRecommendation = recommendCovenant(awakener, roster, role)
+    const covenantRecommendation = recommendCovenant(awakener, roster, role, usedCovenantIds)
 
     if (wheelAssignments.some(w => w.tier === 'FALLBACK')) {
       investmentWarnings.push(`${awakener.name} is missing recommended wheels.`)
