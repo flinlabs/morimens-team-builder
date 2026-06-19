@@ -22,6 +22,81 @@ export interface SlotPlan {
   covenantName?: string;
 }
 
+export interface GearOptions {
+  wheels: { id: string; name: string }[];
+  covenants: { id: string; name: string }[];
+  posses: { id: string; name: string }[];
+}
+
+/** Inline single-select picker used for editing wheels / covenant / posse on a board. */
+function GearSelect({
+  value,
+  options,
+  onChange,
+  placeholder,
+  valueClass,
+}: {
+  value?: string;
+  options: { id: string; name: string }[];
+  onChange: (name: string | undefined) => void;
+  placeholder: string;
+  valueClass?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative min-w-0 flex-1">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((o) => !o);
+        }}
+        title="Change"
+        className={`max-w-full truncate text-left text-[11px] hover:underline ${
+          value ? valueClass ?? "text-[var(--text)]" : "text-[var(--text-dim)]"
+        }`}
+      >
+        {value ?? placeholder} <span className="text-[var(--text-dim)]">▾</span>
+      </button>
+      {open && (
+        <>
+          <div
+            className="fixed inset-0 z-30"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+            }}
+          />
+          <div className="absolute left-0 z-40 mt-1 max-h-52 w-44 overflow-auto rounded-md border border-[var(--border-bright)] bg-[var(--panel)] py-1 shadow-xl">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onChange(undefined);
+                setOpen(false);
+              }}
+              className="block w-full px-2 py-1 text-left text-[11px] text-[var(--text-dim)] hover:bg-black/30"
+            >
+              — None —
+            </button>
+            {options.map((o) => (
+              <button
+                key={o.id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange(o.name);
+                  setOpen(false);
+                }}
+                className="block w-full truncate px-2 py-1 text-left text-[11px] text-[var(--text-muted)] hover:bg-black/30 hover:text-[var(--text)]"
+              >
+                {o.name}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 interface AwkLite {
   id: string;
   name: string;
@@ -187,13 +262,18 @@ function Slot({
   plan,
   onClick,
   onClear,
+  gear,
+  onChangeGear,
 }: {
   awk: AwkLite | null;
   plan?: SlotPlan;
   onClick: () => void;
   onClear: () => void;
+  gear?: GearOptions;
+  onChangeGear?: (patch: { wheelNames?: string[]; covenantName?: string }) => void;
 }) {
   const roster = useRosterStore((s) => s.roster);
+  const editable = !!gear && !!onChangeGear;
 
   if (!awk) {
     return (
@@ -230,9 +310,9 @@ function Slot({
   const wheels = (plan?.wheelNames ?? []).filter(Boolean);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-[var(--border)] border-b-2 border-b-[var(--gold)] bg-[var(--panel)]">
+    <div className="flex flex-col rounded-lg border border-[var(--border)] border-b-2 border-b-[var(--gold)] bg-[var(--panel)]">
       {/* portrait — smaller, name + realm overlaid */}
-      <div className="relative aspect-[4/3] shrink-0 overflow-hidden">
+      <div className="relative aspect-[4/3] shrink-0 overflow-hidden rounded-t-lg">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`/assets/portraits/${awk.id}.webp`}
@@ -275,24 +355,40 @@ function Slot({
 
         <div className="mt-0.5 border-t border-[var(--border)] pt-1">
           <div className="flex items-start gap-1.5 leading-tight">
-            <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+            <span className="w-7 shrink-0 pt-px text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
               Whl
             </span>
-            {wheels.length > 0 ? (
-              <span className="text-[11px] text-[var(--realm-aequor)]">
-                {wheels.join(" · ")}
-              </span>
+            {editable ? (
+              <GearSelect
+                value={wheels[0]}
+                options={gear!.wheels}
+                onChange={(name) => onChangeGear!({ wheelNames: name ? [name] : [] })}
+                placeholder="None assigned"
+                valueClass="text-[var(--realm-aequor)]"
+              />
+            ) : wheels.length > 0 ? (
+              <span className="text-[11px] text-[var(--realm-aequor)]">{wheels.join(" · ")}</span>
             ) : (
               <span className="text-[11px] text-[var(--text-dim)]">None assigned</span>
             )}
           </div>
           <div className="mt-0.5 flex items-start gap-1.5 leading-tight">
-            <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+            <span className="w-7 shrink-0 pt-px text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
               Cov
             </span>
-            <span className="text-[11px] text-[var(--text-muted)]">
-              {plan?.covenantName ?? (cov ? "Equipped covenant" : "None")}
-            </span>
+            {editable ? (
+              <GearSelect
+                value={plan?.covenantName}
+                options={gear!.covenants}
+                onChange={(name) => onChangeGear!({ covenantName: name })}
+                placeholder="None"
+                valueClass="text-[var(--text-muted)]"
+              />
+            ) : (
+              <span className="text-[11px] text-[var(--text-muted)]">
+                {plan?.covenantName ?? (cov ? "Equipped covenant" : "None")}
+              </span>
+            )}
           </div>
         </div>
 
@@ -313,6 +409,9 @@ export default function FormationBoard({
   plans,
   posseName,
   onChangeSlots,
+  gear,
+  onChangeSlotGear,
+  onChangePosse,
 }: {
   title?: string;
   awakeners: AwkLite[];
@@ -320,6 +419,9 @@ export default function FormationBoard({
   plans?: Record<string, SlotPlan>;
   posseName?: string;
   onChangeSlots: (next: (string | null)[]) => void;
+  gear?: GearOptions;
+  onChangeSlotGear?: (slotIndex: number, patch: { wheelNames?: string[]; covenantName?: string }) => void;
+  onChangePosse?: (name: string | undefined) => void;
 }) {
   const roster = useRosterStore((s) => s.roster);
   const [pickFor, setPickFor] = useState<number | null>(null);
@@ -380,6 +482,10 @@ export default function FormationBoard({
                 next[i] = null;
                 onChangeSlots(next);
               }}
+              gear={awk ? gear : undefined}
+              onChangeGear={
+                awk && onChangeSlotGear ? (patch) => onChangeSlotGear(i, patch) : undefined
+              }
             />
           );
         })}
@@ -389,7 +495,15 @@ export default function FormationBoard({
       <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-[var(--border)] pt-2.5 text-xs">
         <span className="flex items-center gap-1.5 text-[var(--text-muted)]">
           <span className="text-[var(--gold)]">❀</span>
-          {posseName ? (
+          {gear && onChangePosse ? (
+            <GearSelect
+              value={posseName}
+              options={gear.posses}
+              onChange={(name) => onChangePosse(name)}
+              placeholder="Posse Not Equipped"
+              valueClass="text-[var(--text)]"
+            />
+          ) : posseName ? (
             <span className="text-[var(--text)]">{posseName}</span>
           ) : (
             <span className="text-[var(--text-dim)]">Posse Not Equipped</span>
