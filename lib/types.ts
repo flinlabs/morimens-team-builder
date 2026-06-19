@@ -2,6 +2,8 @@
 // Enums
 // ---------------------------------------------------------------------------
 
+import type { TeamAnalysis } from './team-analysis'
+
 export type Realm = 'CHAOS' | 'CARO' | 'AEQUOR' | 'ULTRA'
 export type AwakenerType = 'ASSAULT' | 'WARDEN' | 'CHORUS'
 
@@ -77,15 +79,6 @@ export type DescriptionArg =
   | { kind: 'scaling'; values: string[]; suffix?: string }
   | Record<string, unknown>
 
-export interface SkillUpgrade {
-  upgraderType?: string
-  upgraderSlot?: string
-  patch?: {
-    descriptionTemplate?: string
-    descriptionArgs?: Record<string, DescriptionArg>
-  }
-}
-
 // ---------------------------------------------------------------------------
 // SKeyDB base types (as they come from the per-record files)
 // ---------------------------------------------------------------------------
@@ -101,6 +94,16 @@ export interface SkeyEnlighten {
   route: { slug: string; canonicalPath: string }
 }
 
+export interface SkeySkillUpgrade {
+  upgraderType?: string
+  upgraderSlot?: string
+  operation?: string
+  patch?: {
+    descriptionTemplate?: string
+    descriptionArgs?: Record<string, DescriptionArg>
+  }
+}
+
 export interface SkeySkill {
   id: string
   name: string
@@ -111,7 +114,7 @@ export interface SkeySkill {
   ownerAwakenerName: string
   descriptionTemplate: string
   descriptionArgs: Record<string, DescriptionArg>
-  upgrades?: SkillUpgrade[]
+  upgrades?: SkeySkillUpgrade[]
   route: { slug: string; canonicalPath: string }
 }
 
@@ -457,6 +460,8 @@ export interface TeamRecommendation {
   // Present when the team is a curated meta composition.
   metaName?: string
   metaSource?: string
+  // Deterministic explanation of what the composition is doing.
+  analysis?: TeamAnalysis
 }
 
 export interface AITeamResponse {
