@@ -43,6 +43,7 @@ export default function Home() {
       realm: w.realm,
       rarity: w.rarity,
       mainstatKey: w.mainstatKey,
+      effect: w.hasCombatEffect ? plain(w.descriptionTemplate, w.descriptionArgs) : undefined,
     })),
     covenants: Object.values(covenants).map((c) => {
       // The 6-set is the build-defining bonus; fall back to the 3-set.
