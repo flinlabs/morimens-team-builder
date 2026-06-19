@@ -238,11 +238,10 @@ export function renderTemplateString(
  * ------------------------------------------------------------------------- */
 interface KwStyle {
   color?: string;
-  bold?: boolean;
 }
 
 const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
-  { terms: ["Team Unique"], style: { color: "var(--gold-bright)", bold: true } },
+  { terms: ["Team Unique"], style: { color: "var(--gold-bright)" } },
 
   // STR-down debuff — pink. The in-game token is the glyph "STR⯆" (not "STR Down"),
   // and longest-match-first colours it before the green "STR".
@@ -284,7 +283,7 @@ const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
       "Crimson Furnace", "Emotion",
       "Arithmetica",
     ],
-    style: { color: "#d7a54e", bold: true },
+    style: { color: "#d7a54e"},
   },
 
   // Protection / Aequor Divine stances — blue.
