@@ -13,6 +13,12 @@ import FormationBoard, {
 } from "./FormationBoard";
 import { keeperHpMultiplier } from "@/lib/stats";
 import { recommendGearFor } from "@/lib/bis-client";
+import {
+  wheelMainstatText,
+  wheelEffectText,
+  covenantCategoryText,
+  posseEffectText,
+} from "@/lib/catalog-client";
 
 const ROLE_LABEL: Record<string, string> = {
   main_dps: "Main DPS",
@@ -308,10 +314,10 @@ function GearTile({
         )}
       </div>
 
-      {/* image on top */}
+      {/* image on top — fills the tile width */}
       <div
-        className={`relative overflow-hidden rounded bg-[var(--bg-2)] ${
-          isWheel ? "h-[108px] w-[81px]" : "h-[88px] w-[88px]"
+        className={`relative w-full overflow-hidden rounded bg-[var(--bg-2)] ${
+          isWheel ? "aspect-[3/4]" : "aspect-square"
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -319,11 +325,14 @@ function GearTile({
           src={`/assets/${category}/${id}.webp`}
           alt={name}
           loading="lazy"
-          className={`h-full w-full ${isWheel ? "object-cover" : "object-contain p-1"} ${owned ? "" : "opacity-50 grayscale"}`}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
+          }}
+          className={`h-full w-full ${isWheel ? "object-cover" : "object-contain p-2"} ${owned ? "" : "opacity-50 grayscale"}`}
         />
         {realm && realm !== "NEUTRAL" && (
-          <div className="absolute left-0.5 top-0.5">
-            <RealmSigil realm={realm} size={12} />
+          <div className="absolute left-1 top-1">
+            <RealmSigil realm={realm} size={13} />
           </div>
         )}
       </div>
@@ -1287,8 +1296,11 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               category="wheels"
               realm={w.realm}
               owned={owned}
-              mainstat={w.mainstatKey ? MAINSTAT_LABEL[w.mainstatKey] ?? w.mainstatKey : undefined}
-              effect={w.effect}
+              mainstat={
+                wheelMainstatText(w.id, roster.wheels[w.id]?.stackLevel ?? 0) ??
+                (w.mainstatKey ? MAINSTAT_LABEL[w.mainstatKey] ?? w.mainstatKey : undefined)
+              }
+              effect={wheelEffectText(w.id, roster.keeperLevel)}
               onToggle={() => setWheelOwned(w.id, !owned)}
               onDetails={() =>
                 setDetail({ kind: "wheel", id: w.id, name: w.name, realm: w.realm, rarity: w.rarity })
@@ -1340,7 +1352,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 name={c.name}
                 category="covenants"
                 owned={owned}
-                mainstat={c.mainstat}
+                mainstat={covenantCategoryText(c.id) ?? c.mainstat}
                 onToggle={() => setCovenantOwned(c.id, !owned)}
                 onDetails={() => setDetail({ kind: "covenant", id: c.id, name: c.name })}
               />
@@ -1362,7 +1374,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 category="posses"
                 realm={p.realm}
                 owned={unlocked}
-                effect={p.effect}
+                effect={posseEffectText(p.id, roster.keeperLevel) ?? p.effect}
                 badge={p.hasCharacterBonus ? "Character bonus" : undefined}
                 badgeColor="var(--gold)"
                 onToggle={() => setPosseUnlocked(p.id, !unlocked)}
