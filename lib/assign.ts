@@ -29,9 +29,56 @@ import {
   getCovenantEntry,
   getPosseEntry,
 } from './roster'
+import { getBisData, type BisVariant } from './db'
 
 // Best-to-worst wheel tier order.
 const WHEEL_TIER_ORDER: WheelTier[] = ['BIS_SSR', 'ALT_SSR', 'BIS_SR', 'GOOD']
+
+// Normalise a BiS tier ("SR_SHOP") to the assigner's tier vocabulary.
+function normTier(tier: string): WheelTier {
+  if (tier === 'BIS_SSR' || tier === 'ALT_SSR' || tier === 'BIS_SR' || tier === 'GOOD') {
+    return tier
+  }
+  return 'GOOD' // SR_SHOP and anything else
+}
+
+// Choose the BiS variant that best matches how the unit is being used. A
+// damage role prefers a "dps"/"carry" variant; otherwise a support/standard one.
+function pickBisVariant(awakenerId: string, role?: string): BisVariant | null {
+  const entry = getBisData()[awakenerId]
+  if (!entry || !entry.variants.length) return null
+  if (entry.variants.length === 1) return entry.variants[0]
+  const wantsDps = !!role && /dps|carry/i.test(role)
+  const dps = entry.variants.find((v) => /dps|carry/i.test(v.variant))
+  const sup = entry.variants.find((v) => /sup|support|tank|defen|standard/i.test(v.variant))
+  if (wantsDps && dps) return dps
+  if (!wantsDps && sup) return sup
+  return entry.variants[0]
+}
+
+// Recommended wheels for a unit, tier-grouped, sourced from BiS data first and
+// falling back to the awakener's build record.
+function recommendedWheelsFor(
+  awakener: EnrichedAwakener,
+  role?: string
+): { tier: WheelTier; wheelIds: string[] }[] {
+  const bis = pickBisVariant(awakener.id, role)
+  if (bis && bis.wheels.length) {
+    return bis.wheels.map((w) => ({ tier: normTier(w.tier), wheelIds: [w.wheelId] }))
+  }
+  const variant = primaryVariant(awakener)
+  return (variant?.recommendedWheels ?? []).map((r) => ({
+    tier: r.tier,
+    wheelIds: r.wheelIds,
+  }))
+}
+
+// Recommended covenant ids for a unit, BiS-first.
+function recommendedCovenantsFor(awakener: EnrichedAwakener, role?: string): string[] {
+  const bis = pickBisVariant(awakener.id, role)
+  if (bis && bis.covenants.length) return bis.covenants.map((c) => c.covenantId)
+  return primaryVariant(awakener)?.recommendedCovenantIds ?? []
+}
 
 // The build variant the player should follow (its designated primary, else the
 // first listed).
@@ -54,14 +101,13 @@ function primaryVariant(awakener: EnrichedAwakener): SkeyBuildVariant | null {
 export function assignWheels(
   awakener: EnrichedAwakener,
   roster: UserRoster,
-  usedWheelIds: Set<string> = new Set()
+  usedWheelIds: Set<string> = new Set(),
+  role?: string
 ): WheelAssignment[] {
-  const variant = primaryVariant(awakener)
-  if (!variant) return []
-
-  const ranked = [...variant.recommendedWheels].sort(
+  const ranked = [...recommendedWheelsFor(awakener, role)].sort(
     (a, b) => WHEEL_TIER_ORDER.indexOf(a.tier) - WHEEL_TIER_ORDER.indexOf(b.tier)
   )
+  if (!ranked.length) return []
 
   const out: WheelAssignment[] = []
 
@@ -108,10 +154,11 @@ export function assignWheels(
 // target if none are owned), with completion info and priority substats.
 export function recommendCovenant(
   awakener: EnrichedAwakener,
-  roster: UserRoster
+  roster: UserRoster,
+  role?: string
 ): CovenantRecommendation {
   const variant = primaryVariant(awakener)
-  const ids = variant?.recommendedCovenantIds ?? []
+  const ids = recommendedCovenantsFor(awakener, role)
   const prioritySubstats = (variant?.substatPriorityGroups ?? []).flat()
 
   for (const covenantId of ids) {
@@ -292,8 +339,9 @@ export function buildTeamRecommendation(
     const awakener = awakeners[id]
     if (!awakener) continue
     const ann = awakener.annotation
-    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds)
-    const covenantRecommendation = recommendCovenant(awakener, roster)
+    const role = ann?.teamRoles?.[0] ?? 'flex'
+    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role)
+    const covenantRecommendation = recommendCovenant(awakener, roster, role)
 
     if (wheelAssignments.some(w => w.tier === 'FALLBACK')) {
       investmentWarnings.push(`${awakener.name} is missing recommended wheels.`)
