@@ -232,7 +232,9 @@ export function renderTemplateString(
 /** React render with keyword chips and scaled-value highlighting. */
 /* ---------------------------------------------------------------------------
  * Keyword colouring — mirrors the in-game palette so descriptions read like the
- * game. Stat names and "Team Unique" are bolded so they stand apart.
+ * game. Stat names and "Team Unique" are bolded so they stand apart. Colours for
+ * the less-certain mechanics are best-guess by icon class; nudge any that don't
+ * match the in-game colour.
  * ------------------------------------------------------------------------- */
 interface KwStyle {
   color?: string;
@@ -241,58 +243,102 @@ interface KwStyle {
 
 const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
   { terms: ["Team Unique"], style: { color: "var(--gold-bright)", bold: true } },
-  // Debuffs — pink/purple. Listed before STR so "STR Down" wins over "STR".
-  { terms: ["STR Down", "STR-Down", "Weakness", "Weakened"], style: { color: "#d98fce" } },
-  // Debuffs — red (damage/bleed/poison-class).
-  { terms: ["Vulnerability", "Vulnerable", "Bleed", "Corrosion", "Sin Mark", "Madness"], style: { color: "#eb7d7d" } },
+
+  // STR-down debuff — pink. The in-game token is the glyph "STR⯆" (not "STR Down"),
+  // and longest-match-first colours it before the green "STR".
+  { terms: ["STR⯆", "Weakness"], style: { color: "#a8549b" } },
+
+  // Damage-over-time & damage-class debuffs — red.
+  {
+    terms: [
+      "Vulnerability", "Vulnerable", "Bleed", "Corrosion", "Burn", "Combust",
+      "Sin Mark", "Fragile", "Spellbound", "Sealed", "Dormancy",
+      "Madness", "Fantasia", "Creativity", "Fiamma", "Gynoecium", "Corpse",
+    ],
+    style: { color: "#a13939" },
+  },
+
   // Card / mechanic keywords — orange (triangle-icon class in-game).
   {
     terms: [
-      "Retain", "Exhaust", "Fleeting", "Prepare", "Countdown", "Innate",
-      "Quasar", "Leap",
-      "Devour", "Pierce DMG", "Tentacle DMG",
-      "Discover", "Aftershock", "Destroy",
-      "Scion of Purity", "Fantasia", "Creativity", "Fiamma",
+      "Rouse", "Retain", "Exhaust", "Fleeting", "Prepare", "Countdown", "Innate",
+      "Insight", "Endure", "Steal", "Loop", "Alert", "Finale", "Resonance",
+      "Quasar", "Leap", "Devour", "Discover", "Aftershock", "Destroy",
+      "Fixed DMG", "Pierce DMG", "Tentacle DMG", "Decapitation Damage",
+      "Scion of Purity",
     ],
-    style: { color: "#e6a35c" },
+    style: { color: "#af773b" },
   },
-  // Buffs / buff resources — green.
-  { terms: ["Strength", "STR", "Counter", "Death Resistance", "Realm Mastery"], style: { color: "#7dd39b" } },
-  // Stat names — bold amber.
+
+  // Buffs — green.
+  { terms: ["Strength", "STR", "Counter", "Death Resistance", "Realm Mastery"], style: { color: "#358c53" } },
+
+  // Stats & resources — bold amber. Longer forms (Embryo Fusion, Aliemus Regen)
+  // are matched before their bare roots (Embryo, Aliemus) by the length sort.
   {
     terms: [
       "Aliemus Regen", "Keyflare Regen",
       "Crit. Rate", "Crit Rate", "Crit. DMG", "Crit DMG",
       "DMG Amplification", "DMG Amp",
-      "Embryo Fusion", "Sigil Yield",
+      "Embryo Fusion", "Embryo", "Sigil Yield",
+      "Crimson Furnace", "Emotion",
+      "Arithmetica",
     ],
-    style: { color: "#d4b173", bold: true },
+    style: { color: "#c79b4e", bold: true },
   },
-  // Protection — blue.
-  { terms: ["Shield", "Life Seal", "Birth Ritual", "Sacrifice"], style: { color: "#7db8e8" } },
-  // Status effects / unique abilities — purple.
-  { terms: ["Poison", "Stagnation", "Void", "Singularity Warp", "Final Verdict"], style: { color: "#a98ff0" } },
+
+  // Protection / Aequor Divine stances — blue.
+  {
+    terms: [
+      "Shield", "Life Seal", "Birth Ritual", "Sacrifice",
+      "Tranquil Sea", "Raging Waves", "Surging Tides", "Gland Division",
+    ],
+    style: { color: "#5697cd" },
+  },
+
+  // Status effects / Ultra mechanics / unique — purple.
+  {
+    terms: [
+      "Poison", "Stagnation", "Void", "Singularity Warp", "Final Verdict",
+      "Ultra Space", "Ultra Round", "Annihilation", "Symbiosis",
+    ],
+    style: { color: "#7056b9" },
+  },
+
+  // Realm names — tinted to their realm colour. (Single-term groups so each
+  // realm keeps its own hue.) "Ultra Space"/"Ultra Round" win over bare "Ultra".
+  { terms: ["Caro"], style: { color: "var(--realm-caro)" } },
+  { terms: ["Aequor"], style: { color: "var(--realm-aequor)" } },
+  { terms: ["Chaos"], style: { color: "var(--realm-chaos)" } },
+  { terms: ["Ultra"], style: { color: "var(--realm-ultra)" } },
 ];
 
 const KEYWORD_STYLE = new Map<string, KwStyle>();
 for (const g of KEYWORD_GROUPS) for (const t of g.terms) KEYWORD_STYLE.set(t, g.style);
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-// Longest terms first so multi-word keywords match before their substrings.
+// Alphanumeric lookarounds (instead of \b) so glyph-bearing tokens like "STR⯆"
+// match — \b fails after a non-word symbol. A trailing "s?" lets plain-text
+// plurals (Counters, Leaps) colour too. Longest terms first so multi-word
+// keywords beat their substrings (e.g. "STR⯆" before "STR").
 const KEYWORD_RE = new RegExp(
-  "(\\b(?:" +
+  "((?<![A-Za-z0-9])(?:" +
     [...KEYWORD_STYLE.keys()]
       .sort((a, b) => b.length - a.length)
       .map(escapeRe)
       .join("|") +
-    ")\\b)",
+    ")s?(?![A-Za-z0-9]))",
   "g"
 );
 
 /** Semantic style for a single keyword term — also used to recolour the braced
- *  {keyword} segments so they match the in-game palette instead of plain gold. */
+ *  {keyword} segments so they match the in-game palette instead of plain gold.
+ *  Falls back to the singular for a trailing-"s" plural (Counters -> Counter). */
 export function keywordStyle(term: string): KwStyle | undefined {
-  return KEYWORD_STYLE.get(term);
+  return (
+    KEYWORD_STYLE.get(term) ??
+    (term.length > 1 && term.endsWith("s") ? KEYWORD_STYLE.get(term.slice(0, -1)) : undefined)
+  );
 }
 
 /** Colourises the special game keywords inside a plain description string. */
@@ -302,7 +348,7 @@ export function KeywordText({ text }: { text?: string | null }) {
   return (
     <>
       {parts.map((p, i) => {
-        const st = KEYWORD_STYLE.get(p);
+        const st = keywordStyle(p);
         return st ? (
           <span
             key={i}
@@ -366,11 +412,22 @@ export function ScaledText({
           );
         }
         if (s.kind === "value") {
+          // Colour a value by the resource it feeds: Aliemus values render
+          // yellow and Keyflare values white, identified by the word trailing
+          // the number (Keyflare is untyped, so the type hint can't be used).
+          const after = segs[i + 1];
+          const trailing =
+            after && after.kind === "text" ? after.text.trimStart() : "";
+          const valueColor = trailing.startsWith("Aliemus")
+            ? "#f0cf52"
+            : trailing.startsWith("Keyflare")
+            ? "#ffffff"
+            : "var(--realm-aequor)";
           return (
             <span
               key={i}
               className="font-semibold tabular-nums"
-              style={{ color: "var(--realm-aequor)" }}
+              style={{ color: valueColor }}
             >
               {s.text}
             </span>
