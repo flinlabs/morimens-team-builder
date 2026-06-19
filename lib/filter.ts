@@ -51,15 +51,32 @@ export function isValidRealmComposition(
   return getRealmsInTeam(awakenerIds, awakeners).length <= 2
 }
 
-// At most two ASSAULT-class units per team — a team can't run three damage
-// dealers without falling apart for lack of sustain/support.
-const MAX_ASSAULT_PER_TEAM = 2
+// At most one ASSAULT-class unit per team. Each carry is so resource-hungry
+// (hand size, Arithmetica, Keyflare) that two of them clash badly.
+const MAX_ASSAULT_PER_TEAM = 1
 export function withinClassLimits(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>
 ): boolean {
   const assault = awakenerIds.filter((id) => awakeners[id]?.type === 'ASSAULT').length
   return assault <= MAX_ASSAULT_PER_TEAM
+}
+
+// Realm gates for units that only function in a specific mono-realm shell.
+// Murphy: Fauxborn (the lone `lemurian_team_arc2` unit) only belongs on a team
+// whose every non-Chaos member is Aequor.
+export function withinRealmGates(
+  awakenerIds: string[],
+  awakeners: Record<string, EnrichedAwakener>
+): boolean {
+  const needsMonoAequor = awakenerIds.some(
+    (id) => awakeners[id]?.annotation?.requiresCondition === 'lemurian_team_arc2'
+  )
+  if (!needsMonoAequor) return true
+  return awakenerIds.every((id) => {
+    const realm = awakeners[id]?.realm
+    return realm === 'AEQUOR' || realm === 'CHAOS'
+  })
 }
 
 export function getMixingPenalty(
@@ -292,7 +309,7 @@ function checkRequiresConditions(
   return warnings
 }
 
-function buildCandidateTeam(
+export function buildCandidateTeam(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>,
   roster: UserRoster
@@ -411,8 +428,11 @@ export function generateCandidateTeams(
     // Realm validity
     if (!isValidRealmComposition(teamIds, awakeners)) continue
 
-    // Class limits (no more than two ASSAULT units)
+    // Class limits (no more than one ASSAULT unit)
     if (!withinClassLimits(teamIds, awakeners)) continue
+
+    // Realm gates (e.g. Murphy: Fauxborn only on mono-Aequor teams)
+    if (!withinRealmGates(teamIds, awakeners)) continue
 
     // Preferred realm filter (soft — don't exclude, just deprioritize)
     if (preferredRealm) {
