@@ -419,8 +419,8 @@ function Slot({
 
   return (
     <div className="flex flex-col rounded-lg border border-[var(--border)] border-b-2 border-b-[var(--gold)] bg-[var(--panel)]">
-      {/* portrait — smaller, name + realm overlaid */}
-      <div className="relative aspect-[4/3] shrink-0 overflow-hidden rounded-t-lg">
+      {/* portrait — taller, name + realm overlaid */}
+      <div className="relative aspect-[3/4] shrink-0 overflow-hidden rounded-t-lg">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`/assets/portraits/${awk.id}.webp`}
@@ -451,28 +451,32 @@ function Slot({
             {role}
           </div>
         )}
-        <StatLine label="Lv">{level} / 90</StatLine>
-        <div className="flex items-center gap-1.5 leading-tight">
-          <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
-            Enl
-          </span>
-          <Diamonds slot={slot} copies={copies} />
-        </div>
-        <StatLine label="Skl">{skillRow}</StatLine>
-        <StatLine label="Tal">{talRow}</StatLine>
-
-        {/* covenant icon + name */}
-        <div className="mt-1 flex items-center gap-2 border-t border-[var(--border)] pt-1.5">
-          {editable ? (
-            <button onClick={onEditCovenant} title="Change covenant" className="shrink-0">
+        <div className="flex gap-2">
+          {/* stats column */}
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
+            <StatLine label="Lv">{level} / 90</StatLine>
+            <div className="flex items-center gap-1.5 leading-tight">
+              <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+                Enl
+              </span>
+              <Diamonds slot={slot} copies={copies} />
+            </div>
+            <StatLine label="Skl">{skillRow}</StatLine>
+            <StatLine label="Tal">{talRow}</StatLine>
+          </div>
+          {/* covenant on the right */}
+          <div className="flex w-16 shrink-0 flex-col items-center gap-0.5 border-l border-[var(--border)] pl-2">
+            {editable ? (
+              <button onClick={onEditCovenant} title="Change covenant">
+                <CovIcon id={covenantId} />
+              </button>
+            ) : (
               <CovIcon id={covenantId} />
-            </button>
-          ) : (
-            <CovIcon id={covenantId} />
-          )}
-          <span className="min-w-0 flex-1 truncate text-[11px] text-[var(--text-muted)]">
-            {covenantName ?? (editable ? "Tap to set covenant" : "No covenant")}
-          </span>
+            )}
+            <span className="w-full truncate text-center text-[9px] leading-tight text-[var(--text-muted)]">
+              {covenantName ?? (editable ? "Set" : "—")}
+            </span>
+          </div>
         </div>
 
         {/* two wheel thumbnails */}
