@@ -30,6 +30,7 @@ import {
   getPosseEntry,
 } from './roster'
 import { getBisData, getWheels, type BisVariant } from './db'
+import { analyzeTeam } from './team-analysis'
 
 // Best-to-worst wheel tier order.
 const WHEEL_TIER_ORDER: WheelTier[] = ['BIS_SSR', 'ALT_SSR', 'BIS_SR', 'GOOD']
@@ -444,6 +445,7 @@ export function buildTeamRecommendation(
     investmentWarnings,
     metaName: candidate.metaName,
     metaSource: candidate.metaSource,
+    analysis: analyzeTeam(candidate.awakenerIds, awakeners),
   }
 }
 
