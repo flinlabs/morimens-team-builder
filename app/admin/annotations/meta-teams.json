@@ -1,624 +1,624 @@
 {
-  "_note": "Reference compositions from the Mythag Compendium Meta Team Comp doc and Cheri's New Player Handbook. The lead/core unit is included in each 4-stack; 'Alternates' are swap-in suggestions, not part of the four. All IDs verified against SKeyDB. Validated: every team is 4 unique awakeners spanning at most 2 distinct realms total (Chaos counts toward that cap).",
-  "teams": [
-    {
-      "name": "Kathigu-Ra — Ultra (Chaos+Ultra)",
-      "awakenerIds": [
-        "awakener-0027",
-        "awakener-0010",
-        "awakener-0049",
-        "awakener-0024"
-      ],
-      "awakenerNames": [
-        "Kathigu-Ra",
-        "Clementine",
-        "Tinct",
-        "Horla"
-      ],
-      "realm": "ULTRA",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Kathigu-Ra DPS with Ultra support (Clementine/Horla weakness+vulnerable+Ultra access, Tinct buffs). Realm: CHAOS+ULTRA. Alternates (swap-ins if missing pieces): Ryker, Karen, Castor. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Kathigu-Ra — Pure Chaos",
-      "awakenerIds": [
-        "awakener-0027",
-        "awakener-0026",
-        "awakener-0001",
-        "awakener-0020"
-      ],
-      "awakenerNames": [
-        "Kathigu-Ra",
-        "Karen",
-        "24",
-        "Ramona: Timeworn"
-      ],
-      "realm": "CHAOS",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Kathigu-Ra DPS in pure Chaos — exalt/posse spam with aliemus from Karen and \"24\". Realm: CHAOS. Alternates (swap-ins if missing pieces): Ryker. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Kathigu-Ra — Aequor (Chaos+Aequor)",
-      "awakenerIds": [
-        "awakener-0027",
-        "awakener-0029",
-        "awakener-0038",
-        "awakener-0034"
-      ],
-      "awakenerNames": [
-        "Kathigu-Ra",
-        "Lily",
-        "Ogier",
-        "Murphy"
-      ],
-      "realm": "AEQUOR",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Kathigu-Ra DPS with tentacle/Aequor support and Chaos filler. Realm: CHAOS+AEQUOR. Alternates (swap-ins if missing pieces): Hameln, Ryker. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Mouchette — Caro (Chaos+Caro)",
-      "awakenerIds": [
-        "awakener-0033",
-        "awakener-0023",
-        "awakener-0022",
-        "awakener-0042"
-      ],
-      "awakenerNames": [
-        "Mouchette",
-        "Helot",
-        "Hameln",
-        "Ramona"
-      ],
-      "realm": "CARO",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Mouchette hypercarry; Helot (core) feeds Strikes for her Pursuit triggers, Ramona cycles, Hameln debuffs. Realm: CHAOS+CARO. Alternates (swap-ins if missing pieces): Ryker, Alva, Faint, Ogier. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Mouchette — Ultra (Chaos+Ultra)",
-      "awakenerIds": [
-        "awakener-0033",
-        "awakener-0010",
-        "awakener-0024",
-        "awakener-0053"
-      ],
-      "awakenerNames": [
-        "Mouchette",
-        "Clementine",
-        "Horla",
-        "Winkle"
-      ],
-      "realm": "ULTRA",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Mouchette hypercarry with Ultra support (weak/vuln, multihit crit buffs). Realm: CHAOS+ULTRA. Alternates (swap-ins if missing pieces): Hameln, Ogier, Ryker, Casiah. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Mouchette — Pure Chaos",
-      "awakenerIds": [
-        "awakener-0033",
-        "awakener-0022",
-        "awakener-0020",
-        "awakener-0029"
-      ],
-      "awakenerNames": [
-        "Mouchette",
-        "Hameln",
-        "Ramona: Timeworn",
-        "Lily"
-      ],
-      "realm": "CHAOS",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Mouchette hypercarry in pure Chaos. Realm: CHAOS. Alternates (swap-ins if missing pieces): Ryker, Ogier. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Mouchette — user's team (Chaos+Caro)",
-      "awakenerIds": [
-        "awakener-0033",
-        "awakener-0023",
-        "awakener-0048",
-        "awakener-0016"
-      ],
-      "awakenerNames": [
-        "Mouchette",
-        "Helot",
-        "Thais",
-        "Faint"
-      ],
-      "realm": "CARO",
-      "source": "user",
-      "notes": "User's Mouchette team: Helot feeds Strikes, Thais premium embryo/aliemus/copy support, Faint Death Resistance sustain. Realm: CHAOS+CARO. Source: user."
-    },
-    {
-      "name": "Tawil — Pure Chaos (Monowil)",
-      "awakenerIds": [
-        "awakener-0047",
-        "awakener-0022",
-        "awakener-0043",
-        "awakener-0026"
-      ],
-      "awakenerNames": [
-        "Tawil",
-        "Hameln",
-        "Ryker",
-        "Karen"
-      ],
-      "realm": "CHAOS",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Tawil pure-Chaos carry (\"Monowil\") — aliemus/keyflare engine for endless exalts. Realm: CHAOS. Alternates (swap-ins if missing pieces): Ramona: Timeworn, Ogier, Ramona. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Tawil — Aequor (Chaos+Aequor)",
-      "awakenerIds": [
-        "awakener-0047",
-        "awakener-0022",
-        "awakener-0018",
-        "awakener-0006"
-      ],
-      "awakenerNames": [
-        "Tawil",
-        "Hameln",
-        "Doll: Inferno",
-        "Caecus"
-      ],
-      "realm": "AEQUOR",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Tawil carry with Aequor tentacle support and Chaos filler. Realm: CHAOS+AEQUOR. Alternates (swap-ins if missing pieces): Nautila, Murphy. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Tawil — %HP Build (Chaos+Caro)",
-      "awakenerIds": [
-        "awakener-0047",
-        "awakener-0018",
-        "awakener-0031",
-        "awakener-0054"
-      ],
-      "awakenerNames": [
-        "Tawil",
-        "Doll: Inferno",
-        "Lotan",
-        "Xu"
-      ],
-      "realm": "CHAOS",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Tawil %Max-HP scaling build leaning on Caro sustain. Realm: CHAOS+CARO. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Pollux — Pure Ultra",
-      "awakenerIds": [
-        "awakener-0041",
-        "awakener-0008",
-        "awakener-0024",
-        "awakener-0010"
-      ],
-      "awakenerNames": [
-        "Pollux",
-        "Castor",
-        "Horla",
-        "Clementine"
-      ],
-      "realm": "ULTRA",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Pollux scaling combo DPS (core Castor) with Ultra weak/vuln support. Realm: ULTRA. Alternates (swap-ins if missing pieces): Tinct, Winkle, Hameln. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Pollux — Caro (Ultra+Caro)",
-      "awakenerIds": [
-        "awakener-0041",
-        "awakener-0003",
-        "awakener-0048",
-        "awakener-0028"
-      ],
-      "awakenerNames": [
-        "Pollux",
-        "Aigis",
-        "Thais",
-        "Leigh"
-      ],
-      "realm": "CARO",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Pollux DPS supported by a Caro core (Aigis + Thais cores, Leigh heals). Realm: CARO+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Alternates (swap-ins if missing pieces): Castor, Clementine, Horla. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Pollux — Aequor (Ultra+Aequor)",
-      "awakenerIds": [
-        "awakener-0041",
-        "awakener-0009",
-        "awakener-0034",
-        "awakener-0024"
-      ],
-      "awakenerNames": [
-        "Pollux",
-        "Celeste",
-        "Murphy",
-        "Horla"
-      ],
-      "realm": "AEQUOR",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Pollux DPS with Aequor support and Celeste revive. Realm: AEQUOR+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Castor — Caro (Ultra+Caro)",
-      "awakenerIds": [
-        "awakener-0008",
-        "awakener-0002",
-        "awakener-0024",
-        "awakener-0054"
-      ],
-      "awakenerNames": [
-        "Castor",
-        "Agrippa",
-        "Horla",
-        "Xu"
-      ],
-      "realm": "CARO",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Castor stall/shield DPS with Agrippa alert-stacking and Caro sustain. Realm: CARO+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Alternates (swap-ins if missing pieces): Clementine, Jenkin, Erica, Wanda. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Castor — Pure Ultra",
-      "awakenerIds": [
-        "awakener-0008",
-        "awakener-0015",
-        "awakener-0010",
-        "awakener-0025"
-      ],
-      "awakenerNames": [
-        "Castor",
-        "Erica",
-        "Clementine",
-        "Jenkin"
-      ],
-      "realm": "ULTRA",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Castor shield/Corrosion DPS in pure Ultra with Erica/Clementine support and Jenkin crit buffs. Realm: ULTRA. Alternates (swap-ins if missing pieces): Alva, Pollux, Hameln. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Helot: Catena — Caro core",
-      "awakenerIds": [
-        "awakener-0019",
-        "awakener-0048",
-        "awakener-0003",
-        "awakener-0023"
-      ],
-      "awakenerNames": [
-        "Helot: Catena",
-        "Thais",
-        "Aigis",
-        "Helot"
-      ],
-      "realm": "CARO",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Catena multihit Caro DPS with Thais (embryo/copy), Aigis (vuln) and Helot (Strike feed). Realm: CARO. Alternates (swap-ins if missing pieces): Horla, Celeste, Salvador, Clementine. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Doresain — Caro core",
-      "awakenerIds": [
-        "awakener-0014",
-        "awakener-0040",
-        "awakener-0048",
-        "awakener-0016"
-      ],
-      "awakenerNames": [
-        "Doresain",
-        "Pickman",
-        "Thais",
-        "Faint"
-      ],
-      "realm": "CARO",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Doresain Corpse-stacking DPS; Pickman builds STR, Thais enables embryo/copies, Faint sustains. Realm: CARO. Alternates (swap-ins if missing pieces): Casiah, Clementine, Salvador. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Murphy: Fauxborn — Lemurian (Astral Reign only)",
-      "awakenerIds": [
-        "awakener-0035",
-        "awakener-0032",
-        "awakener-0021",
-        "awakener-0050"
-      ],
-      "awakenerNames": [
-        "Murphy: Fauxborn",
-        "Miryam",
-        "Goliath",
-        "Tulu"
-      ],
-      "realm": "AEQUOR",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "All-Lemurian GMurphy team; Soulforge scales with 3 other Lemurians (max HP/shield). Arc-2 only — Lemurian Soulforge is inert in Faded Legacy. Realm: AEQUOR. Alternates (swap-ins if missing pieces): Faros, Thais, Murphy. Source: Mythag Compendium Meta Team Comp.",
-      "arcContext": "arc2"
-    },
-    {
-      "name": "Murphy: Fauxborn — Discard (Aequor+Ultra)",
-      "awakenerIds": [
-        "awakener-0035",
-        "awakener-0011",
-        "awakener-0005",
-        "awakener-0053"
-      ],
-      "awakenerNames": [
-        "Murphy: Fauxborn",
-        "Corposant",
-        "Aurita",
-        "Winkle"
-      ],
-      "realm": "AEQUOR",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Discard/Aftershock GMurphy team with Corposant pilots and Aurita multihit. Realm: AEQUOR+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Murphy: Fauxborn — Arc 1",
-      "awakenerIds": [
-        "awakener-0035",
-        "awakener-0034",
-        "awakener-0048",
-        "awakener-0032"
-      ],
-      "awakenerNames": [
-        "Murphy: Fauxborn",
-        "Murphy",
-        "Thais",
-        "Miryam"
-      ],
-      "realm": "AEQUOR",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "GMurphy team that doesn't rely on Lemurian Soulforge (better for Arc 1); base Murphy reduces self-inflicted Sacrifice. Realm: CARO+AEQUOR. Alternates (swap-ins if missing pieces): Tulu. Source: Mythag Compendium Meta Team Comp.",
-      "arcContext": "arc1"
-    },
-    {
-      "name": "Corposant — Aequor core (Aequor+Ultra)",
-      "awakenerIds": [
-        "awakener-0011",
-        "awakener-0005",
-        "awakener-0007",
-        "awakener-0035"
-      ],
-      "awakenerNames": [
-        "Corposant",
-        "Aurita",
-        "Casiah",
-        "Murphy: Fauxborn"
-      ],
-      "realm": "AEQUOR",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Corposant discard/shield support-DPS with Aurita multihit, Casiah card draw, GMurphy. Realm: AEQUOR+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Alternates (swap-ins if missing pieces): Murphy, Tulu, Clementine, Tinct. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Doll: Inferno — Poison (Chaos+Caro)",
-      "awakenerIds": [
-        "awakener-0018",
-        "awakener-0029",
-        "awakener-0016",
-        "awakener-0037"
-      ],
-      "awakenerNames": [
-        "Doll: Inferno",
-        "Lily",
-        "Faint",
-        "Nymphaea"
-      ],
-      "realm": "CHAOS",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "GDoll poison applier with Nymphaea instant triggers and Faint sustain. Realm: CHAOS+CARO. Alternates (swap-ins if missing pieces): Xu, Agrippa. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Liz — Chaos (Ultra+Chaos)",
-      "awakenerIds": [
-        "awakener-0030",
-        "awakener-0029",
-        "awakener-0018",
-        "awakener-0010"
-      ],
-      "awakenerNames": [
-        "Liz",
-        "Lily",
-        "Doll: Inferno",
-        "Clementine"
-      ],
-      "realm": "CHAOS",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Liz poison DPS with Chaos poison support and Clementine Ultra buffs. Realm: CHAOS+ULTRA. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Liz — Caro (Ultra+Caro)",
-      "awakenerIds": [
-        "awakener-0030",
-        "awakener-0010",
-        "awakener-0054",
-        "awakener-0044"
-      ],
-      "awakenerNames": [
-        "Liz",
-        "Clementine",
-        "Xu",
-        "Salvador"
-      ],
-      "realm": "CARO",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Liz poison DPS with Xu poison triggers and Salvador sustain. Realm: CARO+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Daffodil — Ultra (Ultra+Chaos)",
-      "awakenerIds": [
-        "awakener-0012",
-        "awakener-0010",
-        "awakener-0024",
-        "awakener-0029"
-      ],
-      "awakenerNames": [
-        "Daffodil",
-        "Clementine",
-        "Horla",
-        "Lily"
-      ],
-      "realm": "ULTRA",
-      "source": "Mythag Compendium Meta Team Comp",
-      "notes": "Daffodil burst DPS with Ultra weak/vuln support and Lily defensive Chaos filler. Realm: CHAOS+ULTRA. Source: Mythag Compendium Meta Team Comp."
-    },
-    {
-      "name": "Hypercarry (Chaos+Caro)",
-      "awakenerIds": [
-        "awakener-0033",
-        "awakener-0042",
-        "awakener-0003",
-        "awakener-0023"
-      ],
-      "awakenerNames": [
-        "Mouchette",
-        "Ramona",
-        "Aigis",
-        "Helot"
-      ],
-      "realm": "CARO",
-      "source": "Cheri New Player Handbook",
-      "notes": "Classic hypercarry: three supports around one carry (Mouchette), Caro-leaning. Realm: CHAOS+CARO. Source: Cheri New Player Handbook."
-    },
-    {
-      "name": "Stall (Ultra+Caro)",
-      "awakenerIds": [
-        "awakener-0008",
-        "awakener-0028",
-        "awakener-0002",
-        "awakener-0015"
-      ],
-      "awakenerNames": [
-        "Castor",
-        "Leigh",
-        "Agrippa",
-        "Erica"
-      ],
-      "realm": "ULTRA",
-      "source": "Cheri New Player Handbook",
-      "notes": "Stall archetype: Castor shields, Agrippa permanent alert, Leigh heals, Erica alert/weakness. Realm: CARO+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Source: Cheri New Player Handbook."
-    },
-    {
-      "name": "Poison (Chaos+Caro)",
-      "awakenerIds": [
-        "awakener-0054",
-        "awakener-0037",
-        "awakener-0018",
-        "awakener-0016"
-      ],
-      "awakenerNames": [
-        "Xu",
-        "Nymphaea",
-        "Doll: Inferno",
-        "Faint"
-      ],
-      "realm": "CARO",
-      "source": "Cheri New Player Handbook",
-      "notes": "Poison archetype: Xu applies/triggers, Nymphaea instant trigger, GDoll aliemus/weakness, Faint sustain. Realm: CHAOS+CARO. Source: Cheri New Player Handbook."
-    },
-    {
-      "name": "Counter (Chaos+Aequor)",
-      "awakenerIds": [
-        "awakener-0047",
-        "awakener-0022",
-        "awakener-0006",
-        "awakener-0036"
-      ],
-      "awakenerNames": [
-        "Tawil",
-        "Hameln",
-        "Caecus",
-        "Nautila"
-      ],
-      "realm": "AEQUOR",
-      "source": "Cheri New Player Handbook",
-      "notes": "Counter archetype: Caecus stacks counter, Nautila multiplies/AOEs it, Tawil/Hameln STR + debuffs. Realm: CHAOS+AEQUOR. Source: Cheri New Player Handbook."
-    },
-    {
-      "name": "Sorel — Caro core",
-      "awakenerIds": [
-        "awakener-0046",
-        "awakener-0040",
-        "awakener-0048",
-        "awakener-0028"
-      ],
-      "awakenerNames": [
-        "Sorel",
-        "Pickman",
-        "Thais",
-        "Leigh"
-      ],
-      "realm": "CARO",
-      "source": "Cheri New Player Handbook",
-      "notes": "Sorel greedy multihit Exalt DPS; Pickman builds/buffs her Exalt via temp STR, Thais embryo/aliemus, Leigh heals at low HP. Realm: CARO. Source: Cheri New Player Handbook.",
-      "tier": "S"
-    },
-    {
-      "name": "Sorel — Caro alt",
-      "awakenerIds": [
-        "awakener-0046",
-        "awakener-0048",
-        "awakener-0003",
-        "awakener-0016"
-      ],
-      "awakenerNames": [
-        "Sorel",
-        "Thais",
-        "Aigis",
-        "Faint"
-      ],
-      "realm": "CARO",
-      "source": "Cheri New Player Handbook",
-      "notes": "Sorel with Thais embryo/copies, Aigis vuln/petrify, Faint Death Resistance. Realm: CARO. Source: Cheri New Player Handbook.",
-      "tier": "S"
-    },
-    {
-      "name": "Saya — Propagation Caro",
-      "awakenerIds": [
-        "awakener-0057",
-        "awakener-0046",
-        "awakener-0048",
-        "awakener-0016"
-      ],
-      "awakenerNames": [
-        "Saya",
-        "Sorel",
-        "Thais",
-        "Faint"
-      ],
-      "realm": "CARO",
-      "source": "Beginner Guide to Caro + Character Guide",
-      "notes": "Mono-Caro Propagation team. Saya stacks Corrosion, funnels Aliemus and seeds 0-cost card copies that supercharge Sorel's Exalt; Thais embryo support, Faint sustain. Realm: CARO. Source: Beginner Guide to Caro + Character Guide.",
-      "tier": "S"
-    },
-    {
-      "name": "Vortice — Divine Aequor",
-      "awakenerIds": [
-        "awakener-0055",
-        "awakener-0034",
-        "awakener-0045",
-        "awakener-0009"
-      ],
-      "awakenerNames": [
-        "Vortice",
-        "Murphy",
-        "Sanga",
-        "Celeste"
-      ],
-      "realm": "AEQUOR",
-      "source": "Cheri New Player Handbook",
-      "notes": "Mono-Aequor. Vortice ramping AOE DPS (needs Drowned Innocence posse + Reload!/soulforge); defensive Aequor teammates stall while she ramps, Celeste revive. Realm: AEQUOR. Source: Cheri New Player Handbook.",
-      "tier": "A"
-    },
-    {
-      "name": "Arachne — Singularity Ultra",
-      "awakenerIds": [
-        "awakener-0056",
-        "awakener-0012",
-        "awakener-0008",
-        "awakener-0025"
-      ],
-      "awakenerNames": [
-        "Arachne",
-        "Daffodil",
-        "Castor",
-        "Jenkin"
-      ],
-      "realm": "ULTRA",
-      "source": "Cheri New Player Handbook",
-      "notes": "Mono-Ultra. Arachne Singularity carry with Daffodil/Castor and Jenkin crit buffs. Realm: ULTRA. Source: Cheri New Player Handbook.",
-      "tier": "S"
-    }
-  ]
+ "_note": "Reference compositions from the Mythag Compendium Meta Team Comp doc and Cheri's New Player Handbook. The lead/core unit is included in each 4-stack; 'Alternates' are swap-in suggestions, not part of the four. All IDs verified against SKeyDB. Validated: every team is 4 unique awakeners spanning at most 2 distinct realms total (Chaos counts toward that cap).",
+ "teams": [
+  {
+   "name": "Kathigu-Ra — Ultra (Chaos+Ultra)",
+   "awakenerIds": [
+    "awakener-0027",
+    "awakener-0010",
+    "awakener-0049",
+    "awakener-0024"
+   ],
+   "awakenerNames": [
+    "Kathigu-Ra",
+    "Clementine",
+    "Tinct",
+    "Horla"
+   ],
+   "realm": "ULTRA",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Kathigu-Ra DPS with Ultra support (Clementine/Horla weakness+vulnerable+Ultra access, Tinct buffs). Realm: CHAOS+ULTRA. Alternates (swap-ins if missing pieces): Ryker, Karen, Castor. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Kathigu-Ra — Pure Chaos",
+   "awakenerIds": [
+    "awakener-0027",
+    "awakener-0026",
+    "awakener-0001",
+    "awakener-0020"
+   ],
+   "awakenerNames": [
+    "Kathigu-Ra",
+    "Karen",
+    "24",
+    "Ramona: Timeworn"
+   ],
+   "realm": "CHAOS",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Kathigu-Ra DPS in pure Chaos — exalt/posse spam with aliemus from Karen and \"24\". Realm: CHAOS. Alternates (swap-ins if missing pieces): Ryker. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Kathigu-Ra — Aequor (Chaos+Aequor)",
+   "awakenerIds": [
+    "awakener-0027",
+    "awakener-0029",
+    "awakener-0038",
+    "awakener-0034"
+   ],
+   "awakenerNames": [
+    "Kathigu-Ra",
+    "Lily",
+    "Ogier",
+    "Murphy"
+   ],
+   "realm": "AEQUOR",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Kathigu-Ra DPS with tentacle/Aequor support and Chaos filler. Realm: CHAOS+AEQUOR. Alternates (swap-ins if missing pieces): Hameln, Ryker. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Mouchette — Caro (Chaos+Caro)",
+   "awakenerIds": [
+    "awakener-0033",
+    "awakener-0023",
+    "awakener-0022",
+    "awakener-0042"
+   ],
+   "awakenerNames": [
+    "Mouchette",
+    "Helot",
+    "Hameln",
+    "Ramona"
+   ],
+   "realm": "CARO",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Mouchette hypercarry; Helot (core) feeds Strikes for her Pursuit triggers, Ramona cycles, Hameln debuffs. Realm: CHAOS+CARO. Alternates (swap-ins if missing pieces): Ryker, Alva, Faint, Ogier. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Mouchette — Ultra (Chaos+Ultra)",
+   "awakenerIds": [
+    "awakener-0033",
+    "awakener-0010",
+    "awakener-0024",
+    "awakener-0053"
+   ],
+   "awakenerNames": [
+    "Mouchette",
+    "Clementine",
+    "Horla",
+    "Winkle"
+   ],
+   "realm": "ULTRA",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Mouchette hypercarry with Ultra support (weak/vuln, multihit crit buffs). Realm: CHAOS+ULTRA. Alternates (swap-ins if missing pieces): Hameln, Ogier, Ryker, Casiah. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Mouchette — Pure Chaos",
+   "awakenerIds": [
+    "awakener-0033",
+    "awakener-0022",
+    "awakener-0020",
+    "awakener-0029"
+   ],
+   "awakenerNames": [
+    "Mouchette",
+    "Hameln",
+    "Ramona: Timeworn",
+    "Lily"
+   ],
+   "realm": "CHAOS",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Mouchette hypercarry in pure Chaos. Realm: CHAOS. Alternates (swap-ins if missing pieces): Ryker, Ogier. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Mouchette — user's team (Chaos+Caro)",
+   "awakenerIds": [
+    "awakener-0033",
+    "awakener-0023",
+    "awakener-0048",
+    "awakener-0016"
+   ],
+   "awakenerNames": [
+    "Mouchette",
+    "Helot",
+    "Thais",
+    "Faint"
+   ],
+   "realm": "CARO",
+   "source": "user",
+   "notes": "User's Mouchette team: Helot feeds Strikes, Thais premium embryo/aliemus/copy support, Faint Death Resistance sustain. Realm: CHAOS+CARO. Source: user."
+  },
+  {
+   "name": "Tawil — Pure Chaos (Monowil)",
+   "awakenerIds": [
+    "awakener-0047",
+    "awakener-0022",
+    "awakener-0043",
+    "awakener-0026"
+   ],
+   "awakenerNames": [
+    "Tawil",
+    "Hameln",
+    "Ryker",
+    "Karen"
+   ],
+   "realm": "CHAOS",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Tawil pure-Chaos carry (\"Monowil\") — aliemus/keyflare engine for endless exalts. Realm: CHAOS. Alternates (swap-ins if missing pieces): Ramona: Timeworn, Ogier, Ramona. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Tawil — Aequor (Chaos+Aequor)",
+   "awakenerIds": [
+    "awakener-0047",
+    "awakener-0022",
+    "awakener-0018",
+    "awakener-0006"
+   ],
+   "awakenerNames": [
+    "Tawil",
+    "Hameln",
+    "Doll: Inferno",
+    "Caecus"
+   ],
+   "realm": "AEQUOR",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Tawil carry with Aequor tentacle support and Chaos filler. Realm: CHAOS+AEQUOR. Alternates (swap-ins if missing pieces): Nautila, Murphy. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Tawil — %HP Build (Chaos+Caro)",
+   "awakenerIds": [
+    "awakener-0047",
+    "awakener-0018",
+    "awakener-0031",
+    "awakener-0054"
+   ],
+   "awakenerNames": [
+    "Tawil",
+    "Doll: Inferno",
+    "Lotan",
+    "Xu"
+   ],
+   "realm": "CHAOS",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Tawil %Max-HP scaling build leaning on Caro sustain. Realm: CHAOS+CARO. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Pollux — Pure Ultra",
+   "awakenerIds": [
+    "awakener-0041",
+    "awakener-0008",
+    "awakener-0024",
+    "awakener-0010"
+   ],
+   "awakenerNames": [
+    "Pollux",
+    "Castor",
+    "Horla",
+    "Clementine"
+   ],
+   "realm": "ULTRA",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Pollux scaling combo DPS (core Castor) with Ultra weak/vuln support. Realm: ULTRA. Alternates (swap-ins if missing pieces): Tinct, Winkle, Hameln. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Pollux — Caro (Ultra+Caro)",
+   "awakenerIds": [
+    "awakener-0041",
+    "awakener-0003",
+    "awakener-0048",
+    "awakener-0028"
+   ],
+   "awakenerNames": [
+    "Pollux",
+    "Aigis",
+    "Thais",
+    "Leigh"
+   ],
+   "realm": "CARO",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Pollux DPS supported by a Caro core (Aigis + Thais cores, Leigh heals). Realm: CARO+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Alternates (swap-ins if missing pieces): Castor, Clementine, Horla. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Pollux — Aequor (Ultra+Aequor)",
+   "awakenerIds": [
+    "awakener-0041",
+    "awakener-0009",
+    "awakener-0034",
+    "awakener-0024"
+   ],
+   "awakenerNames": [
+    "Pollux",
+    "Celeste",
+    "Murphy",
+    "Horla"
+   ],
+   "realm": "AEQUOR",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Pollux DPS with Aequor support and Celeste revive. Realm: AEQUOR+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Castor — Caro (Ultra+Caro)",
+   "awakenerIds": [
+    "awakener-0008",
+    "awakener-0002",
+    "awakener-0024",
+    "awakener-0054"
+   ],
+   "awakenerNames": [
+    "Castor",
+    "Agrippa",
+    "Horla",
+    "Xu"
+   ],
+   "realm": "CARO",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Castor stall/shield DPS with Agrippa alert-stacking and Caro sustain. Realm: CARO+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Alternates (swap-ins if missing pieces): Clementine, Jenkin, Erica, Wanda. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Castor — Pure Ultra",
+   "awakenerIds": [
+    "awakener-0008",
+    "awakener-0015",
+    "awakener-0010",
+    "awakener-0025"
+   ],
+   "awakenerNames": [
+    "Castor",
+    "Erica",
+    "Clementine",
+    "Jenkin"
+   ],
+   "realm": "ULTRA",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Castor shield/Corrosion DPS in pure Ultra with Erica/Clementine support and Jenkin crit buffs. Realm: ULTRA. Alternates (swap-ins if missing pieces): Alva, Pollux, Hameln. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Helot: Catena — Caro core",
+   "awakenerIds": [
+    "awakener-0019",
+    "awakener-0048",
+    "awakener-0003",
+    "awakener-0023"
+   ],
+   "awakenerNames": [
+    "Helot: Catena",
+    "Thais",
+    "Aigis",
+    "Helot"
+   ],
+   "realm": "CARO",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Catena multihit Caro DPS with Thais (embryo/copy), Aigis (vuln) and Helot (Strike feed). Realm: CARO. Alternates (swap-ins if missing pieces): Horla, Celeste, Salvador, Clementine. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Doresain — Caro core",
+   "awakenerIds": [
+    "awakener-0014",
+    "awakener-0040",
+    "awakener-0048",
+    "awakener-0057"
+   ],
+   "awakenerNames": [
+    "Doresain",
+    "Pickman",
+    "Thais",
+    "Saya"
+   ],
+   "realm": "CARO",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Doresain Corpse-stacking DPS (sole assault); Pickman builds STR, Thais enables embryo/copies, Saya provides corrosion + Aliemus battery. Realm: CARO. Alternates (swap-ins if Saya is missing): Aigis, then Faint. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Murphy: Fauxborn — Lemurian (Astral Reign only)",
+   "awakenerIds": [
+    "awakener-0035",
+    "awakener-0032",
+    "awakener-0021",
+    "awakener-0050"
+   ],
+   "awakenerNames": [
+    "Murphy: Fauxborn",
+    "Miryam",
+    "Goliath",
+    "Tulu"
+   ],
+   "realm": "AEQUOR",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "All-Lemurian GMurphy team; Soulforge scales with 3 other Lemurians (max HP/shield). Arc-2 only — Lemurian Soulforge is inert in Faded Legacy. Realm: AEQUOR. Alternates (swap-ins if missing pieces): Faros, Thais, Murphy. Source: Mythag Compendium Meta Team Comp.",
+   "arcContext": "arc2"
+  },
+  {
+   "name": "Murphy: Fauxborn — Discard (Aequor+Ultra)",
+   "awakenerIds": [
+    "awakener-0035",
+    "awakener-0011",
+    "awakener-0005",
+    "awakener-0053"
+   ],
+   "awakenerNames": [
+    "Murphy: Fauxborn",
+    "Corposant",
+    "Aurita",
+    "Winkle"
+   ],
+   "realm": "AEQUOR",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Discard/Aftershock GMurphy team with Corposant pilots and Aurita multihit. Realm: AEQUOR+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Murphy: Fauxborn — Arc 1",
+   "awakenerIds": [
+    "awakener-0035",
+    "awakener-0034",
+    "awakener-0048",
+    "awakener-0032"
+   ],
+   "awakenerNames": [
+    "Murphy: Fauxborn",
+    "Murphy",
+    "Thais",
+    "Miryam"
+   ],
+   "realm": "AEQUOR",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "GMurphy team that doesn't rely on Lemurian Soulforge (better for Arc 1); base Murphy reduces self-inflicted Sacrifice. Realm: CARO+AEQUOR. Alternates (swap-ins if missing pieces): Tulu. Source: Mythag Compendium Meta Team Comp.",
+   "arcContext": "arc1"
+  },
+  {
+   "name": "Corposant — Aequor core (Aequor+Ultra)",
+   "awakenerIds": [
+    "awakener-0011",
+    "awakener-0005",
+    "awakener-0007",
+    "awakener-0035"
+   ],
+   "awakenerNames": [
+    "Corposant",
+    "Aurita",
+    "Casiah",
+    "Murphy: Fauxborn"
+   ],
+   "realm": "AEQUOR",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Corposant discard/shield support-DPS with Aurita multihit, Casiah card draw, GMurphy. Realm: AEQUOR+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Alternates (swap-ins if missing pieces): Murphy, Tulu, Clementine, Tinct. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Doll: Inferno — Poison (Chaos+Caro)",
+   "awakenerIds": [
+    "awakener-0018",
+    "awakener-0029",
+    "awakener-0016",
+    "awakener-0037"
+   ],
+   "awakenerNames": [
+    "Doll: Inferno",
+    "Lily",
+    "Faint",
+    "Nymphaea"
+   ],
+   "realm": "CHAOS",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "GDoll poison applier with Nymphaea instant triggers and Faint sustain. Realm: CHAOS+CARO. Alternates (swap-ins if missing pieces): Xu, Agrippa. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Liz — Chaos (Ultra+Chaos)",
+   "awakenerIds": [
+    "awakener-0030",
+    "awakener-0029",
+    "awakener-0018",
+    "awakener-0010"
+   ],
+   "awakenerNames": [
+    "Liz",
+    "Lily",
+    "Doll: Inferno",
+    "Clementine"
+   ],
+   "realm": "CHAOS",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Liz poison DPS with Chaos poison support and Clementine Ultra buffs. Realm: CHAOS+ULTRA. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Liz — Caro (Ultra+Caro)",
+   "awakenerIds": [
+    "awakener-0030",
+    "awakener-0010",
+    "awakener-0054",
+    "awakener-0044"
+   ],
+   "awakenerNames": [
+    "Liz",
+    "Clementine",
+    "Xu",
+    "Salvador"
+   ],
+   "realm": "CARO",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Liz poison DPS with Xu poison triggers and Salvador sustain. Realm: CARO+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Daffodil — Ultra (Ultra+Chaos)",
+   "awakenerIds": [
+    "awakener-0012",
+    "awakener-0010",
+    "awakener-0024",
+    "awakener-0029"
+   ],
+   "awakenerNames": [
+    "Daffodil",
+    "Clementine",
+    "Horla",
+    "Lily"
+   ],
+   "realm": "ULTRA",
+   "source": "Mythag Compendium Meta Team Comp",
+   "notes": "Daffodil burst DPS with Ultra weak/vuln support and Lily defensive Chaos filler. Realm: CHAOS+ULTRA. Source: Mythag Compendium Meta Team Comp."
+  },
+  {
+   "name": "Hypercarry (Chaos+Caro)",
+   "awakenerIds": [
+    "awakener-0033",
+    "awakener-0042",
+    "awakener-0003",
+    "awakener-0023"
+   ],
+   "awakenerNames": [
+    "Mouchette",
+    "Ramona",
+    "Aigis",
+    "Helot"
+   ],
+   "realm": "CARO",
+   "source": "Cheri New Player Handbook",
+   "notes": "Classic hypercarry: three supports around one carry (Mouchette), Caro-leaning. Realm: CHAOS+CARO. Source: Cheri New Player Handbook."
+  },
+  {
+   "name": "Stall (Ultra+Caro)",
+   "awakenerIds": [
+    "awakener-0008",
+    "awakener-0028",
+    "awakener-0002",
+    "awakener-0015"
+   ],
+   "awakenerNames": [
+    "Castor",
+    "Leigh",
+    "Agrippa",
+    "Erica"
+   ],
+   "realm": "ULTRA",
+   "source": "Cheri New Player Handbook",
+   "notes": "Stall archetype: Castor shields, Agrippa permanent alert, Leigh heals, Erica alert/weakness. Realm: CARO+ULTRA. Ultra mixed with Aequor/Caro — 25% reduction to all Ultra-Turn effects (Annihilation unaffected). Source: Cheri New Player Handbook."
+  },
+  {
+   "name": "Poison (Chaos+Caro)",
+   "awakenerIds": [
+    "awakener-0054",
+    "awakener-0037",
+    "awakener-0018",
+    "awakener-0016"
+   ],
+   "awakenerNames": [
+    "Xu",
+    "Nymphaea",
+    "Doll: Inferno",
+    "Faint"
+   ],
+   "realm": "CARO",
+   "source": "Cheri New Player Handbook",
+   "notes": "Poison archetype: Xu applies/triggers, Nymphaea instant trigger, GDoll aliemus/weakness, Faint sustain. Realm: CHAOS+CARO. Source: Cheri New Player Handbook."
+  },
+  {
+   "name": "Counter (Chaos+Aequor)",
+   "awakenerIds": [
+    "awakener-0047",
+    "awakener-0022",
+    "awakener-0006",
+    "awakener-0036"
+   ],
+   "awakenerNames": [
+    "Tawil",
+    "Hameln",
+    "Caecus",
+    "Nautila"
+   ],
+   "realm": "AEQUOR",
+   "source": "Cheri New Player Handbook",
+   "notes": "Counter archetype: Caecus stacks counter, Nautila multiplies/AOEs it, Tawil/Hameln STR + debuffs. Realm: CHAOS+AEQUOR. Source: Cheri New Player Handbook."
+  },
+  {
+   "name": "Sorel — Caro core",
+   "awakenerIds": [
+    "awakener-0046",
+    "awakener-0040",
+    "awakener-0048",
+    "awakener-0028"
+   ],
+   "awakenerNames": [
+    "Sorel",
+    "Pickman",
+    "Thais",
+    "Leigh"
+   ],
+   "realm": "CARO",
+   "source": "Cheri New Player Handbook",
+   "notes": "Sorel greedy multihit Exalt DPS; Pickman builds/buffs her Exalt via temp STR, Thais embryo/aliemus, Leigh heals at low HP. Realm: CARO. Source: Cheri New Player Handbook.",
+   "tier": "S"
+  },
+  {
+   "name": "Sorel — Caro alt",
+   "awakenerIds": [
+    "awakener-0046",
+    "awakener-0048",
+    "awakener-0003",
+    "awakener-0016"
+   ],
+   "awakenerNames": [
+    "Sorel",
+    "Thais",
+    "Aigis",
+    "Faint"
+   ],
+   "realm": "CARO",
+   "source": "Cheri New Player Handbook",
+   "notes": "Sorel with Thais embryo/copies, Aigis vuln/petrify, Faint Death Resistance. Realm: CARO. Source: Cheri New Player Handbook.",
+   "tier": "S"
+  },
+  {
+   "name": "Saya — Propagation Caro",
+   "awakenerIds": [
+    "awakener-0057",
+    "awakener-0046",
+    "awakener-0048",
+    "awakener-0016"
+   ],
+   "awakenerNames": [
+    "Saya",
+    "Sorel",
+    "Thais",
+    "Faint"
+   ],
+   "realm": "CARO",
+   "source": "Beginner Guide to Caro + Character Guide",
+   "notes": "Mono-Caro Propagation team. Saya stacks Corrosion, funnels Aliemus and seeds 0-cost card copies that supercharge Sorel's Exalt; Thais embryo support, Faint sustain. Realm: CARO. Source: Beginner Guide to Caro + Character Guide.",
+   "tier": "S"
+  },
+  {
+   "name": "Vortice — Divine Aequor",
+   "awakenerIds": [
+    "awakener-0055",
+    "awakener-0034",
+    "awakener-0045",
+    "awakener-0009"
+   ],
+   "awakenerNames": [
+    "Vortice",
+    "Murphy",
+    "Sanga",
+    "Celeste"
+   ],
+   "realm": "AEQUOR",
+   "source": "Cheri New Player Handbook",
+   "notes": "Mono-Aequor. Vortice ramping AOE DPS (needs Drowned Innocence posse + Reload!/soulforge); defensive Aequor teammates stall while she ramps, Celeste revive. Realm: AEQUOR. Source: Cheri New Player Handbook.",
+   "tier": "A"
+  },
+  {
+   "name": "Arachne — Singularity Ultra",
+   "awakenerIds": [
+    "awakener-0056",
+    "awakener-0012",
+    "awakener-0008",
+    "awakener-0025"
+   ],
+   "awakenerNames": [
+    "Arachne",
+    "Daffodil",
+    "Castor",
+    "Jenkin"
+   ],
+   "realm": "ULTRA",
+   "source": "Cheri New Player Handbook",
+   "notes": "Mono-Ultra. Arachne Singularity carry with Daffodil/Castor and Jenkin crit buffs. Realm: ULTRA. Source: Cheri New Player Handbook.",
+   "tier": "S"
+  }
+ ]
 }
