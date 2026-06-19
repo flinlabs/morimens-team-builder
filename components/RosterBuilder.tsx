@@ -6,8 +6,13 @@ import type { Realm, EnlightenSlot, CharacterAssignment, TeamRecommendation } fr
 import type { GenerateResult } from "@/lib/generate";
 import { RealmSigil, REALMS, REALM_RANK, RARITY_RANK } from "./realm";
 import DetailModal, { type DetailTarget } from "./DetailModal";
-import FormationBoard, { type SlotPlan, type GearOptions } from "./FormationBoard";
+import FormationBoard, {
+  type SlotPlan,
+  type GearOptions,
+  type PosseInfo,
+} from "./FormationBoard";
 import { keeperHpMultiplier } from "@/lib/stats";
+import { recommendGearFor } from "@/lib/bis-client";
 
 const ROLE_LABEL: Record<string, string> = {
   main_dps: "Main DPS",
@@ -359,6 +364,7 @@ function TeamFormation({
   planFor,
   wheelMeta,
   covenantMeta,
+  posseMeta,
 }: {
   team: TeamRecommendation;
   awakeners: Catalog["awakeners"];
@@ -366,6 +372,7 @@ function TeamFormation({
   planFor: (c: CharacterAssignment) => SlotPlan;
   wheelMeta?: Record<string, { name: string }>;
   covenantMeta?: Record<string, { name: string }>;
+  posseMeta?: Record<string, PosseInfo>;
 }) {
   const initialSlots = useMemo(() => {
     const s: (string | null)[] = [null, null, null, null];
@@ -379,9 +386,7 @@ function TeamFormation({
   }, [team, planFor]);
 
   const [slots, setSlots] = useState<(string | null)[]>(initialSlots);
-  const posseName = team.posseRecommendations?.[0]
-    ? maps.posse[team.posseRecommendations[0].posseId]
-    : undefined;
+  const altPosseId = team.posseRecommendations?.[0]?.posseId;
 
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)]/40 p-3 sm:p-4">
@@ -399,10 +404,11 @@ function TeamFormation({
         awakeners={awakeners}
         slots={slots}
         plans={initialPlans}
-        posseName={posseName}
+        posseId={altPosseId}
         onChangeSlots={setSlots}
         wheelMeta={wheelMeta}
         covenantMeta={covenantMeta}
+        posseMeta={posseMeta}
       />
 
       {team.investmentWarnings.length > 0 && (
@@ -501,7 +507,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const [wheelRarity, setWheelRarity] = useState<WheelRarity>("ALL");
   const [slots, setSlots] = useState<(string | null)[]>([null, null, null, null]);
   const [plans, setPlans] = useState<Record<string, SlotPlan>>({});
-  const [posseName, setPosseName] = useState<string | undefined>(undefined);
+  const [posseId, setPosseId] = useState<string | undefined>(undefined);
   // Slots the player placed by hand — preserved when Generate fills the board.
   const [pinned, setPinned] = useState<boolean[]>([false, false, false, false]);
   // Bumped every successful generation so the per-team boards remount with fresh state.
@@ -529,20 +535,26 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     return { awk, wheel, covenant, posse };
   }, [catalog]);
 
-  // Owned wheels/covenants and unlocked posses, for editing gear directly on a board.
+  // Owned wheels/covenants and unlocked posses, for editing gear in the drawer.
   const gearOptions: GearOptions = useMemo(
     () => ({
       wheels: catalog.wheels
         .filter((w) => roster.wheels[w.id]?.owned)
-        .map((w) => ({ id: w.id, name: w.name }))
+        .map((w) => ({
+          id: w.id,
+          name: w.name,
+          rarity: w.rarity,
+          realm: w.realm,
+          mainstat: w.mainstatKey ? MAINSTAT_LABEL[w.mainstatKey] ?? w.mainstatKey : undefined,
+        }))
         .sort((a, b) => a.name.localeCompare(b.name)),
       covenants: catalog.covenants
         .filter((c) => roster.covenants[c.id]?.owned)
-        .map((c) => ({ id: c.id, name: c.name }))
+        .map((c) => ({ id: c.id, name: c.name, effect: c.effect }))
         .sort((a, b) => a.name.localeCompare(b.name)),
       posses: catalog.posses
         .filter((p) => roster.posses[p.id]?.unlocked)
-        .map((p) => ({ id: p.id, name: p.name }))
+        .map((p) => ({ id: p.id, name: p.name, realm: p.realm, effect: p.effect }))
         .sort((a, b) => a.name.localeCompare(b.name)),
     }),
     [catalog, roster]
@@ -559,6 +571,11 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     for (const c of catalog.covenants) m[c.id] = { name: c.name };
     return m;
   }, [catalog.covenants]);
+  const posseMeta = useMemo(() => {
+    const m: Record<string, PosseInfo> = {};
+    for (const p of catalog.posses) m[p.id] = { name: p.name, realm: p.realm, effect: p.effect };
+    return m;
+  }, [catalog.posses]);
 
   const ownedCount = mounted
     ? catalog.awakeners.filter((a) => roster.awakeners[a.id]?.owned).length
@@ -690,11 +707,35 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
 
   // The board calls this on every manual deploy / clear. A slot the player sets
   // by hand becomes pinned; clearing a slot unpins it. Generate then keeps the
-  // pinned slots and only fills the rest.
+  // pinned slots and only fills the rest. Newly-placed characters without a
+  // plan get their recommended gear auto-filled (the player can still change it).
   function handleSlotsChange(next: (string | null)[]) {
     setPinned((prev) =>
       next.map((id, i) => (id ? (slots[i] !== id ? true : prev[i]) : false))
     );
+    setPlans((prev) => {
+      const np = { ...prev };
+      next.forEach((id, i) => {
+        if (!id || slots[i] === id) return; // unchanged or cleared
+        const existing = np[id];
+        if (existing && (existing.wheelIds?.length || existing.covenantId)) return;
+        const awk = catalog.awakeners.find((a) => a.id === id);
+        const role = awk?.roles?.[0];
+        const g = recommendGearFor(
+          id,
+          role,
+          (w) => !!roster.wheels[w]?.owned,
+          (c) => !!roster.covenants[c]?.owned
+        );
+        np[id] = {
+          ...(existing ?? {}),
+          role: existing?.role ?? (role ? humanRole(role) : undefined),
+          wheelIds: g.wheelIds,
+          covenantId: g.covenantId,
+        };
+      });
+      return np;
+    });
     setSlots(next);
   }
 
@@ -717,11 +758,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     }
     setSlots(result);
     setPlans(nextPlans);
-    setPosseName(
-      top.posseRecommendations?.[0]
-        ? maps.posse[top.posseRecommendations[0].posseId]
-        : undefined
-    );
+    setPosseId(top.posseRecommendations?.[0]?.posseId);
   }
 
   // Fill the five D-Tide boards from a generated lineup.
@@ -734,9 +771,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         next[ti][si] = c.awakenerId;
         nextPlans[c.awakenerId] = planFromAssignment(c);
       });
-      posses[ti] = t.posseRecommendations?.[0]
-        ? maps.posse[t.posseRecommendations[0].posseId]
-        : undefined;
+      posses[ti] = t.posseRecommendations?.[0]?.posseId;
     });
     setDtideSlots(next);
     setDtidePlans(nextPlans);
@@ -898,7 +933,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             awakeners={catalog.awakeners}
             slots={slots}
             plans={plans}
-            posseName={posseName}
+            posseId={posseId}
             onChangeSlots={handleSlotsChange}
             gear={gearOptions}
             onChangeSlotGear={(i, patch) => {
@@ -906,14 +941,15 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               if (!id) return;
               setPlans((p) => ({ ...p, [id]: { ...p[id], ...patch } }));
             }}
-            onChangePosse={(name) => setPosseName(name)}
+            onChangePosse={(id) => setPosseId(id)}
             wheelMeta={wheelMeta}
             covenantMeta={covenantMeta}
+            posseMeta={posseMeta}
             onClearAll={() => {
               setSlots([null, null, null, null]);
               setPinned([false, false, false, false]);
               setPlans({});
-              setPosseName(undefined);
+              setPosseId(undefined);
             }}
           />
           {pinned.some(Boolean) && (
@@ -935,7 +971,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               awakeners={catalog.awakeners}
               slots={s}
               plans={dtidePlans}
-              posseName={dtidePosses[i]}
+              posseId={dtidePosses[i]}
               onChangeSlots={(n) =>
                 setDtideSlots((prev) => prev.map((x, xi) => (xi === i ? n : x)))
               }
@@ -945,11 +981,12 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 if (!id) return;
                 setDtidePlans((p) => ({ ...p, [id]: { ...p[id], ...patch } }));
               }}
-              onChangePosse={(name) =>
-                setDtidePosses((prev) => prev.map((x, xi) => (xi === i ? name : x)))
+              onChangePosse={(id) =>
+                setDtidePosses((prev) => prev.map((x, xi) => (xi === i ? id : x)))
               }
               wheelMeta={wheelMeta}
               covenantMeta={covenantMeta}
+              posseMeta={posseMeta}
               onClearAll={() => {
                 setDtideSlots((prev) =>
                   prev.map((x, xi) => (xi === i ? [null, null, null, null] : x))
@@ -992,6 +1029,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                       planFor={planFromAssignment}
                       wheelMeta={wheelMeta}
                       covenantMeta={covenantMeta}
+                      posseMeta={posseMeta}
                     />
                   ))}
                 </div>
