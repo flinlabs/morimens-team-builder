@@ -220,7 +220,7 @@ function Stepper({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h4 className="font-title mb-2 text-[11px] uppercase tracking-wider text-[var(--text-dim)]">
+      <h4 className="font-title mb-2 text-[12.5px] uppercase tracking-wider text-[var(--text-dim)]">
         {title}
       </h4>
       <div className="space-y-2">{children}</div>
@@ -247,7 +247,7 @@ function EnlightenTrack({
         <span className="text-sm text-[var(--text)]">Enlightenment</span>
         <span className="tabular-nums text-sm font-semibold text-[var(--gold-bright)]">
           {trackLabel(total)}
-          <span className="ml-1.5 text-[10px] font-normal text-[var(--text-dim)]">
+          <span className="ml-1.5 text-[12px] font-normal text-[var(--text-dim)]">
             {total} {total === 1 ? "copy" : "copies"}
           </span>
         </span>
@@ -258,7 +258,7 @@ function EnlightenTrack({
         {ENLIGHTEN_MILESTONES.map((m) => (
           <span
             key={m.slot}
-            className={`absolute -translate-x-1/2 text-[10px] font-medium ${
+            className={`absolute -translate-x-1/2 text-[12px] font-medium ${
               total >= m.copies ? "text-[var(--gold-bright)]" : "text-[var(--text-dim)]"
             }`}
             style={{ left: `${pct(m.copies)}%` }}
@@ -291,7 +291,7 @@ function EnlightenTrack({
         ))}
       </div>
       {plus > 0 && (
-        <p className="mt-1.5 text-[10px] text-[var(--text-dim)]">
+        <p className="mt-1.5 text-[12px] text-[var(--text-dim)]">
           {plus >= 4 && plus < 12 && "Over-Exalt active. "}
           {plus >= 12 && "Absolute Axiom active. "}
           {plus} dupe{plus === 1 ? "" : "s"} past Enlighten III.
@@ -316,20 +316,20 @@ function SkillCard({
   return (
     <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] p-2.5">
       <div className="mb-1 flex items-center gap-2">
-        <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+        <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[12px] uppercase tracking-wider text-[var(--text-dim)]">
           {SKILL_LABEL[block.slot] ?? block.slot}
         </span>
         <span className="font-display truncate text-sm font-semibold text-[var(--text)]">
           {block.name}
         </span>
         {typeof block.cost === "number" && block.cost > 0 && (
-          <span className="ml-auto shrink-0 rounded bg-[var(--panel)] px-1.5 py-0.5 text-[10px] text-[var(--gold-bright)]">
+          <span className="ml-auto shrink-0 rounded bg-[var(--panel)] px-1.5 py-0.5 text-[12px] text-[var(--gold-bright)]">
             Cost {block.cost}
           </span>
         )}
       </div>
       <div className="mb-2 flex items-center gap-2">
-        <span className="text-[10px] uppercase tracking-wider text-[var(--text-dim)]">Lv</span>
+        <span className="text-[12px] uppercase tracking-wider text-[var(--text-dim)]">Lv</span>
         <input
           type="range"
           min={1}
@@ -345,7 +345,7 @@ function SkillCard({
         args={block.descriptionArgs}
         index={level - 1}
         resolveStat={resolveStat}
-        className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+        className="text-[13.5px] leading-relaxed text-[var(--text-muted)]"
       />
     </div>
   );
@@ -435,7 +435,7 @@ export default function DetailModal({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               {realm && realm !== "NEUTRAL" && <RealmSigil realm={realm} size={18} />}
-              <span className="font-title text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+              <span className="font-title text-[12px] uppercase tracking-wider text-[var(--text-dim)]">
                 {target.kind}
                 {detail && detail.kind === "awakener" && detail.type
                   ? ` · ${detail.type.toLowerCase()}`
@@ -447,25 +447,25 @@ export default function DetailModal({
             </h3>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               {rarity && (
-                <span className="rounded border border-[var(--border)] px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-[var(--text-muted)]">
+                <span className="rounded border border-[var(--border)] px-1.5 py-0.5 text-[12px] uppercase tracking-wide text-[var(--text-muted)]">
                   {rarity}
                 </span>
               )}
               {realm && realm !== "NEUTRAL" && (
                 <span
-                  className="rounded px-1.5 py-0.5 text-[10px] uppercase tracking-wide"
+                  className="rounded px-1.5 py-0.5 text-[12px] uppercase tracking-wide"
                   style={{ color: REALM_COLOR[realm] ?? "var(--text-dim)" }}
                 >
                   {realm}
                 </span>
               )}
               {target.kind === "awakener" && target.isDivineRealm && (
-                <span className="rounded px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-[var(--silver)]">
+                <span className="rounded px-1.5 py-0.5 text-[12px] uppercase tracking-wide text-[var(--silver)]">
                   Divine
                 </span>
               )}
               {target.kind === "awakener" && target.isLemurian && (
-                <span className="rounded px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-[var(--silver)]">
+                <span className="rounded px-1.5 py-0.5 text-[12px] uppercase tracking-wide text-[var(--silver)]">
                   Lemurian
                 </span>
               )}
@@ -474,7 +474,7 @@ export default function DetailModal({
                 (detail.teamRoles ?? []).slice(0, 3).map((r) => (
                   <span
                     key={r}
-                    className="rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] text-[var(--text-muted)]"
+                    className="rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[12px] text-[var(--text-muted)]"
                   >
                     {r.replace(/_/g, " ")}
                   </span>
@@ -550,14 +550,14 @@ export default function DetailModal({
                             }`}
                           >
                             <div className="mb-0.5 flex items-center gap-2">
-                              <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+                              <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[12px] uppercase tracking-wider text-[var(--text-dim)]">
                                 {node.slot}
                               </span>
                               <span className="font-display text-sm font-semibold text-[var(--text)]">
                                 {node.name}
                               </span>
                               {!lit && (
-                                <span className="ml-auto text-[10px] text-[var(--text-dim)]">
+                                <span className="ml-auto text-[12px] text-[var(--text-dim)]">
                                   locked
                                 </span>
                               )}
@@ -566,7 +566,7 @@ export default function DetailModal({
                               template={node.descriptionTemplate}
                               args={node.descriptionArgs}
                               index={0}
-                              className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                              className="text-[13.5px] leading-relaxed text-[var(--text-muted)]"
                             />
                           </div>
                         );
@@ -623,14 +623,14 @@ export default function DetailModal({
                           }`}
                         >
                           <div className="mb-1 flex items-center gap-2">
-                            <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--gold-bright)]">
+                            <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[12px] uppercase tracking-wider text-[var(--gold-bright)]">
                               Over-Exalt
                             </span>
-                            <span className="text-[10px] text-[var(--text-dim)]">
+                            <span className="text-[12px] text-[var(--text-dim)]">
                               follows Exalt Lv{exaltLevel} · fires at 200 Aliemus
                             </span>
                             {!unlocked && (
-                              <span className="ml-auto text-[10px] text-[var(--text-dim)]">
+                              <span className="ml-auto text-[12px] text-[var(--text-dim)]">
                                 unlocks at OE (+4)
                               </span>
                             )}
@@ -640,7 +640,7 @@ export default function DetailModal({
                             args={oe.descriptionArgs}
                             index={exaltLevel - 1}
                             resolveStat={resolveStat}
-                            className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                            className="text-[13.5px] leading-relaxed text-[var(--text-muted)]"
                           />
                         </div>
                       );
@@ -658,7 +658,7 @@ export default function DetailModal({
                             <span className="font-display text-sm font-semibold text-[var(--text)]">
                               {p.name}
                             </span>
-                            <span className="ml-auto text-[10px] uppercase tracking-wider text-[var(--silver)]">
+                            <span className="ml-auto text-[12px] uppercase tracking-wider text-[var(--silver)]">
                               always active
                             </span>
                           </div>
@@ -666,7 +666,7 @@ export default function DetailModal({
                             template={p.descriptionTemplate}
                             args={p.descriptionArgs}
                             index={0}
-                            className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                            className="text-[13.5px] leading-relaxed text-[var(--text-muted)]"
                           />
                         </div>
                       ))}
@@ -724,12 +724,12 @@ export default function DetailModal({
                                   template={t.descriptionTemplate}
                                   args={t.descriptionArgs}
                                   index={row.value - 1}
-                                  className="text-[11.5px] leading-relaxed text-[var(--text-dim)]"
+                                  className="text-[13px] leading-relaxed text-[var(--text-dim)]"
                                 />
                               </div>
                             )}
                             {t && !active && (
-                              <p className="px-1 text-[11px] italic text-[var(--text-dim)]">
+                              <p className="px-1 text-[12.5px] italic text-[var(--text-dim)]">
                                 Not unlocked — raise to Lv 1 to activate.
                               </p>
                             )}
@@ -741,7 +741,7 @@ export default function DetailModal({
 
                   {d?.annotationNotes && (
                     <Section title="Notes">
-                      <p className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-[12.5px] leading-relaxed text-[var(--text-muted)]">
+                      <p className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-[13.5px] leading-relaxed text-[var(--text-muted)]">
                         {d.annotationNotes}
                       </p>
                     </Section>
@@ -766,7 +766,7 @@ export default function DetailModal({
                   {d && (
                     <div className="rounded-lg border border-[var(--gold)]/30 bg-[var(--bg-2)] px-3 py-2.5">
                       <div className="flex items-baseline justify-between">
-                        <span className="text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+                        <span className="text-[12px] uppercase tracking-wider text-[var(--text-dim)]">
                           Main Stat
                         </span>
                         <span className="tabular-nums text-xs text-[var(--text-dim)]">
@@ -786,7 +786,7 @@ export default function DetailModal({
                           ) : null;
                         })()}
                       </div>
-                      <p className="mt-0.5 text-[11px] text-[var(--text-dim)]">
+                      <p className="mt-0.5 text-[12.5px] text-[var(--text-dim)]">
                         Grows with each +X stack past 3★ (up to +12).
                       </p>
                       <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
@@ -818,7 +818,7 @@ export default function DetailModal({
                       onChange={(v) => setWheelStackLevel(target.id, v)}
                     />
                     {stack >= 12 && (
-                      <p className="text-[11px] text-[var(--realm-aequor)]">
+                      <p className="text-[12.5px] text-[var(--realm-aequor)]">
                         Stack +12 unlocks the dual-SSR exception — a second SSR/Mythic wheel may be
                         equipped alongside this one.
                       </p>
@@ -832,16 +832,16 @@ export default function DetailModal({
                           template={d.descriptionTemplate}
                           args={d.descriptionArgs}
                           index={star}
-                          className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                          className="text-[13.5px] leading-relaxed text-[var(--text-muted)]"
                         />
                       </div>
                       {maxScalingIndex(d.descriptionArgs) > 0 && (
-                        <p className="text-[11px] text-[var(--text-dim)]">
+                        <p className="text-[12.5px] text-[var(--text-dim)]">
                           Values shown at {star}★; raise the star level to scale sub-properties.
                         </p>
                       )}
                       {rarity === "R" && arc === "ASTRAL_REIGN" && (
-                        <p className="text-[11px] text-[var(--realm-caro)]">
+                        <p className="text-[12.5px] text-[var(--realm-caro)]">
                           Astral Reign: Common (R) secondary effects are disabled — only the main
                           stat applies.
                         </p>
@@ -849,7 +849,7 @@ export default function DetailModal({
                     </Section>
                   ) : (
                     d && (
-                      <p className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-[12px] text-[var(--text-dim)]">
+                      <p className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-[13px] text-[var(--text-dim)]">
                         This wheel has no combat effect — it contributes its main stat only.
                       </p>
                     )
@@ -899,7 +899,7 @@ export default function DetailModal({
                       />
                       <span className="text-sm text-[var(--text-dim)]">%</span>
                     </div>
-                    <p className="text-[11px] text-[var(--text-dim)]">
+                    <p className="text-[12.5px] text-[var(--text-dim)]">
                       Well-rolled priority substats at lower completion can beat scattered substats
                       at higher completion.
                     </p>
@@ -914,7 +914,7 @@ export default function DetailModal({
                             key={s.key}
                             className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-2.5 py-1.5"
                           >
-                            <span className="min-w-0 flex-1 truncate text-[12px] text-[var(--text-muted)]">
+                            <span className="min-w-0 flex-1 truncate text-[13px] text-[var(--text-muted)]">
                               {s.label}
                             </span>
                             <input
@@ -932,16 +932,16 @@ export default function DetailModal({
                                   Number.isFinite(raw) ? Math.max(0, raw) : 0
                                 );
                               }}
-                              className="w-16 rounded border border-[var(--border)] bg-[var(--panel)] px-1.5 py-1 text-right text-[12px] tabular-nums text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
+                              className="w-16 rounded border border-[var(--border)] bg-[var(--panel)] px-1.5 py-1 text-right text-[13px] tabular-nums text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
                             />
                             {s.suffix && (
-                              <span className="text-[11px] text-[var(--text-dim)]">{s.suffix}</span>
+                              <span className="text-[12.5px] text-[var(--text-dim)]">{s.suffix}</span>
                             )}
                           </label>
                         );
                       })}
                     </div>
-                    <p className="text-[11px] text-[var(--text-dim)]">
+                    <p className="text-[12.5px] text-[var(--text-dim)]">
                       Record your rolled substat totals across the set (optional).
                     </p>
                   </Section>
@@ -962,24 +962,24 @@ export default function DetailModal({
                               }`}
                             >
                               <div className="mb-0.5 flex items-center gap-2">
-                                <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+                                <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[12px] uppercase tracking-wider text-[var(--text-dim)]">
                                   {se.set}-piece
                                 </span>
                                 {active && (
-                                  <span className="text-[10px] text-[var(--gold-bright)]">active</span>
+                                  <span className="text-[12px] text-[var(--gold-bright)]">active</span>
                                 )}
                               </div>
                               <ScaledText
                                 template={se.descriptionTemplate}
                                 args={se.descriptionArgs}
                                 index={0}
-                                className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                                className="text-[13.5px] leading-relaxed text-[var(--text-muted)]"
                               />
                             </div>
                           );
                         })}
                       {d.acquisitionSource && (
-                        <p className="text-[11px] text-[var(--text-dim)]">
+                        <p className="text-[12.5px] text-[var(--text-dim)]">
                           Source: {d.acquisitionSource}
                         </p>
                       )}
@@ -1008,7 +1008,7 @@ export default function DetailModal({
                           template={d.descriptionTemplate}
                           args={d.descriptionArgs}
                           index={0}
-                          className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                          className="text-[13.5px] leading-relaxed text-[var(--text-muted)]"
                         />
                       </div>
                     </Section>
@@ -1016,12 +1016,12 @@ export default function DetailModal({
                   {d && (d.hasCharacterBonus || d.acquisitionSource) && (
                     <Section title="Details">
                       {d.hasCharacterBonus && (
-                        <p className="rounded-lg border border-[var(--gold)]/30 bg-[var(--bg-2)] px-3 py-2 text-[12px] text-[var(--gold-bright)]">
+                        <p className="rounded-lg border border-[var(--gold)]/30 bg-[var(--bg-2)] px-3 py-2 text-[13px] text-[var(--gold-bright)]">
                           Grants a personal bonus to its affiliated awakener.
                         </p>
                       )}
                       {d.acquisitionSource && (
-                        <p className="text-[11px] text-[var(--text-dim)]">
+                        <p className="text-[12.5px] text-[var(--text-dim)]">
                           Source: {d.acquisitionSource}
                         </p>
                       )}
