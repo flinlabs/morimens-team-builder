@@ -20,6 +20,7 @@ import {
   posseEffectText,
   signatureWheelIds,
 } from "@/lib/catalog-client";
+import { KeywordText } from "@/lib/template";
 
 const ROLE_LABEL: Record<string, string> = {
   main_dps: "Main DPS",
@@ -355,7 +356,7 @@ function GearTile({
         )}
         {effect && (
           <p className="mt-1 line-clamp-3 text-[13px] leading-snug text-[var(--text-muted)]">
-            {effect}
+            <KeywordText text={effect} />
           </p>
         )}
       </div>
