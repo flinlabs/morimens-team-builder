@@ -299,8 +299,10 @@ function GearTile({
       }`}
     >
       {/* owned tick + details, top corners */}
-      <div className="absolute right-1 top-1 flex items-center gap-0.5">
-        {owned && <span className="text-[11px] text-[var(--gold)]">✓</span>}
+      <div className="absolute right-1 top-1 z-10 flex items-center gap-0.5">
+        {owned && (
+          <span className="rounded bg-black/45 px-1 text-[11px] text-[var(--gold)]">✓</span>
+        )}
         {onDetails && (
           <button
             onClick={(e) => {
@@ -308,7 +310,7 @@ function GearTile({
               onDetails();
             }}
             title="Customize / view details"
-            className="flex h-5 w-5 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-black/45 text-sm text-white/80 backdrop-blur-sm hover:bg-black/70 hover:text-white"
           >
             ⋯
           </button>
