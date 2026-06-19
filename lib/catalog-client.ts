@@ -12,10 +12,12 @@ import { wheelMainStat } from "./stats";
 interface WheelRec {
   id: string;
   rarity: string;
+  realm?: string;
   mainstatKey?: string;
   hasCombatEffect?: boolean;
   descriptionTemplate?: string;
   descriptionArgs?: Record<string, unknown>;
+  ownerAwakenerId?: string;
 }
 interface SetEffect {
   set: number;
@@ -35,6 +37,24 @@ interface PosseRec {
 const WHEELS = wheelsData as unknown as Record<string, WheelRec>;
 const COVENANTS = covenantsData as unknown as Record<string, CovRec>;
 const POSSES = possesData as unknown as Record<string, PosseRec>;
+
+// Each limited awakener has a signature SSR + SR wheel (linked via
+// ownerAwakenerId in the source data). Build owner -> {ssr, sr} once.
+const SIGNATURE: Record<string, { ssr?: string; sr?: string }> = (() => {
+  const m: Record<string, { ssr?: string; sr?: string }> = {};
+  for (const w of Object.values(WHEELS)) {
+    if (!w.ownerAwakenerId) continue;
+    const slot = m[w.ownerAwakenerId] ?? (m[w.ownerAwakenerId] = {});
+    if (w.rarity === "SSR" && !slot.ssr) slot.ssr = w.id;
+    else if (w.rarity === "SR" && !slot.sr) slot.sr = w.id;
+  }
+  return m;
+})();
+
+/** Signature SSR/SR wheel ids for a limited awakener (empty for permanents). */
+export function signatureWheelIds(awakenerId: string): { ssr?: string; sr?: string } {
+  return SIGNATURE[awakenerId] ?? {};
+}
 
 const MAINSTAT_LABEL: Record<string, string> = {
   CRIT_RATE: "Crit Rate",
@@ -95,4 +115,25 @@ export function posseEffectText(id: string, accountLevel?: number): string | und
   const p = POSSES[id];
   if (!p) return undefined;
   return plain(p.descriptionTemplate, p.descriptionArgs, accountLevel) || undefined;
+}
+
+/** Hover tooltip for a wheel: main-stat plus combat effect if any. */
+export function wheelTooltip(id: string, stackLevel = 0, accountLevel?: number): string | undefined {
+  const ms = wheelMainstatText(id, stackLevel);
+  const ef = wheelEffectText(id, accountLevel);
+  return [ms, ef].filter(Boolean).join(" — ") || undefined;
+}
+
+/** Hover tooltip for a covenant: 3-piece and 6-piece set effects. */
+export function covenantTooltip(id: string): string | undefined {
+  const sets = COVENANTS[id]?.setEffects;
+  if (!sets) return undefined;
+  const three = sets.find((s) => s.set === 3);
+  const six = sets.find((s) => s.set === 6) ?? sets[sets.length - 1];
+  const t3 = three ? plain(three.descriptionTemplate, three.descriptionArgs) : "";
+  const t6 = six ? plain(six.descriptionTemplate, six.descriptionArgs) : "";
+  const parts: string[] = [];
+  if (t3) parts.push(`3-Piece: ${t3}`);
+  if (t6 && t6 !== t3) parts.push(`6-Piece: ${t6}`);
+  return parts.join("\n") || undefined;
 }
