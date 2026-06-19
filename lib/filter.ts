@@ -338,7 +338,23 @@ export function buildCandidateTeam(
 
   const synergyBonus = synergScore(awakenerIds, awakeners)
   const penaltyDeduction = hasPenalty ? 0.1 : 0
-  const score = viabilitySum / awakenerIds.length + synergyBonus - penaltyDeduction
+
+  // Conditional-unit fit: a Lemurian-gated unit (Murphy: Fauxborn) only performs
+  // with a full Lemurian core — she scales off 3 *other* Lemurians. Discount
+  // teams that field her short of that so she isn't forced onto comps she can't
+  // carry (e.g. with an off-realm Chaos slot taking a Lemurian seat).
+  let conditionPenalty = 0
+  for (const id of awakenerIds) {
+    if (awakeners[id]?.annotation?.requiresCondition === 'lemurian_team_arc2') {
+      const otherLemurians = awakenerIds.filter(
+        (x) => x !== id && awakeners[x]?.isLemurian
+      ).length
+      conditionPenalty += (3 - Math.min(3, otherLemurians)) * 0.2
+    }
+  }
+
+  const score =
+    viabilitySum / awakenerIds.length + synergyBonus - penaltyDeduction - conditionPenalty
 
   const allGaps = [
     ...gaps,
