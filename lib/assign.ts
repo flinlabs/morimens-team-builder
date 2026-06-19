@@ -292,6 +292,28 @@ export function recommendPosses(
     seen.add(posseId)
   }
 
+  // Lead DPS signature — the posse owned by the team's main carry comes first.
+  // A teammate's character-bonus posse (often a support's) shouldn't override
+  // the carry's own posse just because it happens to grant a character bonus;
+  // that bonus is still offered below as a situational alternative.
+  if (posses) {
+    const ownerIndex: Record<string, EnrichedPosse> = {}
+    for (const posse of Object.values(posses)) {
+      if (posse.ownerAwakenerId) ownerIndex[posse.ownerAwakenerId] = posse
+    }
+    for (const id of teamIds) {
+      if (!awakeners[id]?.annotation?.teamRoles?.includes('main_dps')) continue
+      const owned = ownerIndex[id]
+      if (!owned) continue
+      addIfUnlocked(
+        owned.id,
+        'lead',
+        `Signature posse for lead DPS ${awakeners[id].name}`,
+        owned.hasCharacterBonus ? awakeners[id].name : undefined
+      )
+    }
+  }
+
   // Anchors — character-bonus posses for units on the team.
   for (const id of teamIds) {
     const ann = awakeners[id]?.annotation
