@@ -5,7 +5,7 @@ import { useRosterStore } from "@/lib/store";
 import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
 import { ScaledText, maxScalingIndex, type StatResolver } from "@/lib/template";
-import { resolvePrimaryStat, wheelMainStat } from "@/lib/stats";
+import { resolvePrimaryStat, wheelMainStat, maxCharLevel } from "@/lib/stats";
 import {
   ENLIGHTEN_MILESTONES,
   ENLIGHTEN_MAX,
@@ -562,13 +562,24 @@ export default function DetailModal({
                   </Section>
 
                   <Section title="Level">
-                    <Stepper
-                      label="Character level"
-                      value={e?.characterLevel ?? 1}
-                      min={1}
-                      max={90}
-                      onChange={(v) => setCharacterLevel(target.id, v)}
-                    />
+                    {(() => {
+                      const cap = maxCharLevel(roster.keeperLevel, plusCount(total));
+                      const cur = e?.characterLevel ?? 1;
+                      return (
+                        <>
+                          <Stepper
+                            label="Character level"
+                            value={Math.min(cur, cap)}
+                            min={1}
+                            max={cap}
+                            onChange={(v) => setCharacterLevel(target.id, Math.min(v, cap))}
+                          />
+                          <p className="mt-1 px-1 text-[10px] text-[var(--text-dim)]">
+                            Cap {cap} — limited by keeper level {roster.keeperLevel} and the dupe cap.
+                          </p>
+                        </>
+                      );
+                    })()}
                   </Section>
 
                   <Section title="Skills">
