@@ -325,11 +325,15 @@ function TeamFormation({
   awakeners,
   maps,
   planFor,
+  wheelMeta,
+  covenantMeta,
 }: {
   team: TeamRecommendation;
   awakeners: Catalog["awakeners"];
   maps: NameMaps;
   planFor: (c: CharacterAssignment) => SlotPlan;
+  wheelMeta?: Record<string, { name: string }>;
+  covenantMeta?: Record<string, { name: string }>;
 }) {
   const initialSlots = useMemo(() => {
     const s: (string | null)[] = [null, null, null, null];
@@ -365,6 +369,8 @@ function TeamFormation({
         plans={initialPlans}
         posseName={posseName}
         onChangeSlots={setSlots}
+        wheelMeta={wheelMeta}
+        covenantMeta={covenantMeta}
       />
 
       {team.investmentWarnings.length > 0 && (
@@ -510,6 +516,18 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     [catalog, roster]
   );
 
+  // Full id -> name lookups so a board can label any equipped wheel/covenant.
+  const wheelMeta = useMemo(() => {
+    const m: Record<string, { name: string }> = {};
+    for (const w of catalog.wheels) m[w.id] = { name: w.name };
+    return m;
+  }, [catalog.wheels]);
+  const covenantMeta = useMemo(() => {
+    const m: Record<string, { name: string }> = {};
+    for (const c of catalog.covenants) m[c.id] = { name: c.name };
+    return m;
+  }, [catalog.covenants]);
+
   const ownedCount = mounted
     ? catalog.awakeners.filter((a) => roster.awakeners[a.id]?.owned).length
     : 0;
@@ -601,7 +619,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
           mode,
           options:
             mode === "single"
-              ? { maxResults: 3, pinnedIds: pinnedIds.length ? pinnedIds : undefined }
+              ? { maxResults: 4, pinnedIds: pinnedIds.length ? pinnedIds : undefined }
               : undefined,
         }),
       });
@@ -633,10 +651,8 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     return {
       role: humanRole(c.roleInThisTeam),
       blurb: c.skillNote || c.talentNote || undefined,
-      wheelNames: c.wheelAssignments
-        .map((w) => maps.wheel[w.wheelId])
-        .filter((n): n is string => !!n),
-      covenantName: maps.covenant[c.covenantRecommendation?.covenantId] ?? undefined,
+      wheelIds: c.wheelAssignments.map((w) => w.wheelId).filter(Boolean),
+      covenantId: c.covenantRecommendation?.covenantId || undefined,
     };
   }
 
@@ -859,6 +875,14 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               setPlans((p) => ({ ...p, [id]: { ...p[id], ...patch } }));
             }}
             onChangePosse={(name) => setPosseName(name)}
+            wheelMeta={wheelMeta}
+            covenantMeta={covenantMeta}
+            onClearAll={() => {
+              setSlots([null, null, null, null]);
+              setPinned([false, false, false, false]);
+              setPlans({});
+              setPosseName(undefined);
+            }}
           />
           {pinned.some(Boolean) && (
             <p className="mt-1.5 text-[11px] text-[var(--text-dim)]">
@@ -892,6 +916,14 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               onChangePosse={(name) =>
                 setDtidePosses((prev) => prev.map((x, xi) => (xi === i ? name : x)))
               }
+              wheelMeta={wheelMeta}
+              covenantMeta={covenantMeta}
+              onClearAll={() => {
+                setDtideSlots((prev) =>
+                  prev.map((x, xi) => (xi === i ? [null, null, null, null] : x))
+                );
+                setDtidePosses((prev) => prev.map((x, xi) => (xi === i ? undefined : x)));
+              }}
             />
           ))}
         </section>
@@ -914,18 +946,20 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                   ))}
                 </ul>
               )}
-              {result.teams.length > 0 && mode === "single" && (
+              {result.teams.length > 1 && mode === "single" && (
                 <div className="space-y-5">
                   <h2 className="font-title text-xs uppercase tracking-wider text-[var(--text-dim)]">
                     Alternate Teams
                   </h2>
-                  {result.teams.map((t) => (
+                  {result.teams.slice(1).map((t) => (
                     <TeamFormation
                       key={`${genId}-${t.rank}`}
                       team={t}
                       awakeners={catalog.awakeners}
                       maps={maps}
                       planFor={planFromAssignment}
+                      wheelMeta={wheelMeta}
+                      covenantMeta={covenantMeta}
                     />
                   ))}
                 </div>
