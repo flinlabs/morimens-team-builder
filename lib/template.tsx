@@ -1,5 +1,10 @@
 import React from "react";
 import type { DescriptionArg } from "./types";
+import { cardNumber } from "./stats";
+
+/** Resolves a primary stat key (ATK/DEF/CON) to the character's value at their
+ *  current level, so percentage-of-stat args can render as real card numbers. */
+export type StatResolver = (statKey: string) => number | null;
 
 /* ---------------------------------------------------------------------------
    Scaling description renderer.
@@ -31,7 +36,11 @@ const TOKEN =
 const BRACKET = /^\[(?:([^\]:]+):)?([A-Za-z0-9_]+)\]$/;
 const PLURAL = /\{plural:\[([^\]]+)\]\|([^|]*)\|([^}]*)\}/;
 
-function resolveArg(arg: DescriptionArg | undefined, index: number): string {
+function resolveArg(
+  arg: DescriptionArg | undefined,
+  index: number,
+  resolveStat?: StatResolver
+): string {
   if (!arg || typeof arg !== "object") return "?";
   const a = arg as Record<string, unknown>;
   const suffix = typeof a.suffix === "string" ? a.suffix : "";
@@ -42,7 +51,15 @@ function resolveArg(arg: DescriptionArg | undefined, index: number): string {
       const values = Array.isArray(a.values) ? (a.values as string[]) : [];
       if (values.length === 0) return "?";
       const i = Math.max(0, Math.min(values.length - 1, index));
-      return `${values[i] ?? ""}${suffix}`;
+      const raw = values[i] ?? "";
+      // Percentage-of-a-stat -> show the real card number (ATK*%/100 etc.).
+      if (resolveStat && suffix === "%" && typeof a.stat === "string") {
+        const statVal = resolveStat(a.stat);
+        if (statVal != null && Number.isFinite(Number(raw))) {
+          return String(cardNumber(statVal, Number(raw)));
+        }
+      }
+      return `${raw}${suffix}`;
     }
     case "linear": {
       const base = Number(a.base ?? 0);
@@ -78,7 +95,8 @@ export type Segment =
 export function segmentTemplate(
   template: string | undefined,
   args: Args,
-  index: number
+  index: number,
+  resolveStat?: StatResolver
 ): Segment[] {
   if (!template) return [];
   const a = args ?? {};
@@ -99,7 +117,7 @@ export function segmentTemplate(
     if (m[1]) {
       const pm = PLURAL.exec(m[1]);
       if (pm) {
-        const val = parseFloat(resolveArg(a[pm[1]], index));
+        const val = parseFloat(resolveArg(a[pm[1]], index, resolveStat));
         pushText(val === 1 ? pm[2] : pm[3]);
       }
     } else if (m[2]) {
@@ -107,7 +125,7 @@ export function segmentTemplate(
       if (bm) {
         const name = bm[1];
         const key = bm[2];
-        const value = resolveArg(a[key], index);
+        const value = resolveArg(a[key], index, resolveStat);
         if (name && name.startsWith("{")) {
           segs.push({ kind: "keyword", text: name.slice(1, -1) });
           segs.push({ kind: "value", text: ` ${value}`.replace(/%%/g, "%") });
@@ -142,13 +160,15 @@ export function ScaledText({
   args,
   index,
   className,
+  resolveStat,
 }: {
   template: string | undefined;
   args: Args;
   index: number;
   className?: string;
+  resolveStat?: StatResolver;
 }) {
-  const segs = segmentTemplate(template, args, index);
+  const segs = segmentTemplate(template, args, index, resolveStat);
   if (segs.length === 0) {
     return (
       <span className={className} style={{ color: "var(--text-dim)" }}>
