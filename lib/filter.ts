@@ -51,6 +51,17 @@ export function isValidRealmComposition(
   return getRealmsInTeam(awakenerIds, awakeners).length <= 2
 }
 
+// At most two ASSAULT-class units per team — a team can't run three damage
+// dealers without falling apart for lack of sustain/support.
+const MAX_ASSAULT_PER_TEAM = 2
+export function withinClassLimits(
+  awakenerIds: string[],
+  awakeners: Record<string, EnrichedAwakener>
+): boolean {
+  const assault = awakenerIds.filter((id) => awakeners[id]?.type === 'ASSAULT').length
+  return assault <= MAX_ASSAULT_PER_TEAM
+}
+
 export function getMixingPenalty(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>
@@ -399,6 +410,9 @@ export function generateCandidateTeams(
 
     // Realm validity
     if (!isValidRealmComposition(teamIds, awakeners)) continue
+
+    // Class limits (no more than two ASSAULT units)
+    if (!withinClassLimits(teamIds, awakeners)) continue
 
     // Preferred realm filter (soft — don't exclude, just deprioritize)
     if (preferredRealm) {
