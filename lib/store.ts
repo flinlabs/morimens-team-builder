@@ -63,6 +63,7 @@ interface RosterStore {
   setCovenantThreePiece: (id: string, complete: boolean) => void
   setCovenantSixPiece: (id: string, complete: boolean) => void
   setCovenantCompletion: (id: string, percent: number) => void
+  setCovenantSubstat: (id: string, statKey: string, value: number) => void
 
   // Posse actions
   setPosseUnlocked: (id: string, unlocked: boolean) => void
@@ -175,6 +176,14 @@ export const useRosterStore = create<RosterStore>((set, get) => ({
     updateAndSave(set, (r) =>
       setCovenantEntry(r, id, { completionPercent: percent })
     ),
+
+  setCovenantSubstat: (id, statKey, value) =>
+    updateAndSave(set, (r) => {
+      const prev = r.covenants[id]?.substatTotals ?? {}
+      return setCovenantEntry(r, id, {
+        substatTotals: { ...prev, [statKey]: value },
+      })
+    }),
 
   // ---------------------------------------------------------------------------
   // Posse actions
