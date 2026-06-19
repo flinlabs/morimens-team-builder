@@ -43,6 +43,39 @@ export function getPosses(): Record<string, EnrichedPosse> {
   return readDB<Record<string, EnrichedPosse>>('posses.json')
 }
 
+export interface BisWheel {
+  tier: string
+  wheelId: string
+  wheelName: string
+}
+export interface BisCovenant {
+  covenantId: string
+  covenantName: string
+}
+export interface BisVariant {
+  variant: string
+  wheels: BisWheel[]
+  covenants: BisCovenant[]
+  preferredStats: string[]
+  notes: string
+}
+export interface BisEntry {
+  awakenerId: string
+  variants: BisVariant[]
+}
+
+let _bisCache: Record<string, BisEntry> | null = null
+/** Per-character BiS wheels/covenants parsed from the Mythag Compendium tables. */
+export function getBisData(): Record<string, BisEntry> {
+  if (_bisCache) return _bisCache
+  try {
+    _bisCache = readDB<Record<string, BisEntry>>('bis.json')
+  } catch {
+    _bisCache = {}
+  }
+  return _bisCache
+}
+
 // ---------------------------------------------------------------------------
 // Convenience helpers
 // ---------------------------------------------------------------------------
