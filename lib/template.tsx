@@ -347,18 +347,15 @@ export function KeywordText({ text }: { text?: string | null }) {
   const parts = text.split(KEYWORD_RE);
   return (
     <>
-      {parts.map((p, i) => {
-        const st = keywordStyle(p);
-        return st ? (
-          <span
-            key={i}
-            style={{ color: st.color, fontWeight: st.bold ? 700 : undefined }}
-          >
-            {p}
-          </span>
+    {parts.map((p, i) => {
+      const st = keywordStyle(p);
+      return st ? (
+      <span key={i} style={{ color: st.color, fontWeight: 700 }}>
+        {p}
+        </span>
         ) : (
-          <React.Fragment key={i}>{p}</React.Fragment>
-        );
+        <React.Fragment key={i}>{p}</React.Fragment>
+      );
       })}
     </>
   );
@@ -391,23 +388,22 @@ export function ScaledText({
         if (s.kind === "keyword") {
           const sem = keywordStyle(s.text);
           return (
-            <span
-              key={i}
-              className="rounded-[3px] px-1 py-px text-[0.92em] font-medium"
-              style={
-                sem
-                  ? {
-                      color: sem.color,
-                      fontWeight: sem.bold ? 700 : 500,
-                      background: "rgba(255,255,255,0.05)",
-                    }
-                  : {
-                      color: "var(--gold-bright)",
-                      background: "rgba(198,163,82,0.10)",
-                    }
-              }
-            >
-              {s.text}
+          <span
+          key={i}
+          className="rounded-[3px] px-1 py-px text-[0.92em] font-bold"
+          style={
+            sem
+            ? {
+              color: sem.color,
+              background: "rgba(255,255,255,0.05)",
+            }
+            : {
+              color: "var(--gold-bright)",
+              background: "rgba(198,163,82,0.10)",
+            }
+          }
+          >
+            {s.text}
             </span>
           );
         }
@@ -426,7 +422,7 @@ export function ScaledText({
           return (
             <span
               key={i}
-              className="font-semibold tabular-nums"
+              className="font-bold tabular-nums"
               style={{ color: valueColor }}
             >
               {s.text}
