@@ -108,7 +108,8 @@ export function assignWheels(
   const ranked = [...recommendedWheelsFor(awakener, role)].sort(
     (a, b) => WHEEL_TIER_ORDER.indexOf(a.tier) - WHEEL_TIER_ORDER.indexOf(b.tier)
   )
-  if (!ranked.length) return []
+  // No early return on empty BiS — signature wheels (Pass 0) and owned SR/R
+  // fillers (Pass 2) still apply (e.g. a limited character without a BiS row).
 
   const wheels = getWheels()
   const isHighRarity = (id: string): boolean => {
@@ -126,6 +127,20 @@ export function assignWheels(
     !isDualSSRUnlocked(roster, out[0].wheelId)
 
   const out: WheelAssignment[] = []
+
+  // Pass 0 — a limited character's signature SSR + SR are their canonical gear.
+  for (const w of Object.values(wheels)) {
+    if (out.length >= 2) break
+    if (w.ownerAwakenerId !== awakener.id) continue
+    const id = w.id
+    if (out.some(a => a.wheelId === id)) continue
+    if (!getWheelEntry(roster, id).owned) continue
+    const inUse = usedWheelIds.has(id)
+    if (inUse && (!allowDualSSR || !isDualSSRUnlocked(roster, id))) continue
+    if (breaksOverlimit(id)) continue
+    out.push({ slot: (out.length + 1) as 1 | 2, wheelId: id, tier: w.rarity === 'SR' || w.rarity === 'R' || w.rarity === 'N' ? 'BIS_SR' : 'BIS_SSR' })
+    usedWheelIds.add(id)
+  }
 
   // Pass 1 — fill from owned wheels, honouring the physical-item + Overlimit constraints.
   for (const rec of ranked) {
