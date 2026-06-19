@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useRosterStore } from "@/lib/store";
 import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
-import { ScaledText, maxScalingIndex } from "@/lib/template";
+import { ScaledText, maxScalingIndex, type StatResolver } from "@/lib/template";
+import { resolvePrimaryStat, wheelMainStat } from "@/lib/stats";
 import {
   ENLIGHTEN_MILESTONES,
   ENLIGHTEN_MAX,
@@ -89,6 +90,9 @@ interface AwakenerDetail {
   enlightens: (EffectBlock & { slot: EnlightenSlot })[];
   skills: (EffectBlock & { slot: SkillSlot })[];
   talents: (EffectBlock & { family: string; maxLevel: number; defaultMaxed: boolean })[];
+  primaryScalingBase?: number | null;
+  statScaling?: { CON: number; ATK: number; DEF: number } | null;
+  baseStatsLv1?: { CON: number; ATK: number; DEF: number } | null;
 }
 interface WheelDetail {
   kind: "wheel";
@@ -291,10 +295,12 @@ function SkillCard({
   block,
   level,
   onLevel,
+  resolveStat,
 }: {
   block: EffectBlock & { slot: SkillSlot };
   level: number;
   onLevel: (v: number) => void;
+  resolveStat?: StatResolver;
 }) {
   return (
     <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] p-2.5">
@@ -327,6 +333,7 @@ function SkillCard({
         template={block.descriptionTemplate}
         args={block.descriptionArgs}
         index={level - 1}
+        resolveStat={resolveStat}
         className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
       />
     </div>
@@ -489,6 +496,23 @@ export default function DetailModal({
               const total = toTotal(slot, copies);
               const d = detail && detail.kind === "awakener" ? detail : null;
               const passives = d?.talents.filter((t) => t.family === "passive") ?? [];
+              // Resolve ATK/DEF/CON at the character's current level so skill cards
+              // can show real numbers instead of percentages.
+              const charLevel = e?.characterLevel ?? 1;
+              const resolveStat: StatResolver | undefined =
+                d?.statScaling && d.primaryScalingBase != null
+                  ? (statKey) => {
+                      const k = statKey.toUpperCase();
+                      if (k !== "ATK" && k !== "DEF" && k !== "CON") return null;
+                      return resolvePrimaryStat(
+                        d.primaryScalingBase as number,
+                        (d.statScaling as { CON: number; ATK: number; DEF: number })[
+                          k as "CON" | "ATK" | "DEF"
+                        ],
+                        charLevel
+                      );
+                    }
+                  : undefined;
               return (
                 <>
                   <Toggle label="Owned" checked={owned} onChange={(v) => setAwakenerOwned(target.id, v)} />
@@ -555,6 +579,7 @@ export default function DetailModal({
                             block={sk}
                             level={e?.skillLevels?.[sk.slot] ?? 1}
                             onLevel={(v) => setSkillLevel(target.id, sk.slot, v)}
+                            resolveStat={resolveStat}
                           />
                         ))
                       : SKILLS.map(({ slot: sk, label }) => (
@@ -691,12 +716,22 @@ export default function DetailModal({
                         <span className="text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
                           Main Stat
                         </span>
-                        <span className="tabular-nums text-xs text-[var(--gold-bright)]">
+                        <span className="tabular-nums text-xs text-[var(--text-dim)]">
                           {stack > 0 ? `+${stack}` : "3★ base"}
                         </span>
                       </div>
-                      <div className="font-display text-base font-semibold text-[var(--text)]">
-                        {MAINSTAT_LABEL[d.mainstatKey] ?? d.mainstatKey}
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="font-display text-base font-semibold text-[var(--text)]">
+                          {MAINSTAT_LABEL[d.mainstatKey] ?? d.mainstatKey}
+                        </span>
+                        {(() => {
+                          const ms = wheelMainStat(rarity ?? "SSR", d.mainstatKey, stack);
+                          return ms ? (
+                            <span className="font-display tabular-nums text-lg font-bold text-[var(--gold-bright)]">
+                              {ms.display}
+                            </span>
+                          ) : null;
+                        })()}
                       </div>
                       <p className="mt-0.5 text-[11px] text-[var(--text-dim)]">
                         Grows with each +X stack past 3★ (up to +12).
