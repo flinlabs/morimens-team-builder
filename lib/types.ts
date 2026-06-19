@@ -299,6 +299,7 @@ export interface EnrichedPosse {
   descriptionArgs?: Record<string, DescriptionArg>
   acquisitionSource?: string
   lore?: string
+  ownerAwakenerId?: string
   hasCharacterBonus: boolean
   characterBonusFor: string | null
   assets?: Record<string, string>
@@ -435,7 +436,7 @@ export interface CovenantRecommendation {
 
 export interface PosseRecommendation {
   posseId: string
-  priority: 'anchor' | 'strong' | 'situational' | 'chaos_memory_pick'
+  priority: 'lead' | 'anchor' | 'strong' | 'situational' | 'chaos_memory_pick'
   reason: string
   characterBonusActive?: string
 }
