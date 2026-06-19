@@ -5,7 +5,7 @@ import { useRosterStore } from "@/lib/store";
 import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
 import { ScaledText, maxScalingIndex, type StatResolver } from "@/lib/template";
-import { resolvePrimaryStat, wheelMainStat, maxCharLevel } from "@/lib/stats";
+import { resolvePrimaryStat, wheelMainStat } from "@/lib/stats";
 import {
   ENLIGHTEN_MILESTONES,
   ENLIGHTEN_MAX,
@@ -47,7 +47,6 @@ const SKILLS: { slot: SkillSlot; label: string }[] = [
   { slot: "Skill2", label: "Skill 2" },
   { slot: "Rouse", label: "Rouse" },
   { slot: "Exalt", label: "Exalt" },
-  { slot: "OverExalt", label: "Over-Exalt" },
 ];
 const SKILL_LABEL: Record<string, string> = Object.fromEntries(
   SKILLS.map((s) => [s.slot, s.label])
@@ -562,37 +561,28 @@ export default function DetailModal({
                   </Section>
 
                   <Section title="Level">
-                    {(() => {
-                      const cap = maxCharLevel(roster.keeperLevel, plusCount(total));
-                      const cur = e?.characterLevel ?? 1;
-                      return (
-                        <>
-                          <Stepper
-                            label="Character level"
-                            value={Math.min(cur, cap)}
-                            min={1}
-                            max={cap}
-                            onChange={(v) => setCharacterLevel(target.id, Math.min(v, cap))}
-                          />
-                          <p className="mt-1 px-1 text-[10px] text-[var(--text-dim)]">
-                            Cap {cap} — limited by keeper level {roster.keeperLevel} and the dupe cap.
-                          </p>
-                        </>
-                      );
-                    })()}
+                    <Stepper
+                      label="Character level"
+                      value={e?.characterLevel ?? 1}
+                      min={1}
+                      max={90}
+                      onChange={(v) => setCharacterLevel(target.id, v)}
+                    />
                   </Section>
 
                   <Section title="Skills">
                     {d && d.skills.length > 0
-                      ? d.skills.map((sk) => (
-                          <SkillCard
-                            key={sk.id ?? sk.slot}
-                            block={sk}
-                            level={e?.skillLevels?.[sk.slot] ?? 1}
-                            onLevel={(v) => setSkillLevel(target.id, sk.slot, v)}
-                            resolveStat={resolveStat}
-                          />
-                        ))
+                      ? d.skills
+                          .filter((sk) => sk.slot !== "OverExalt")
+                          .map((sk) => (
+                            <SkillCard
+                              key={sk.id ?? sk.slot}
+                              block={sk}
+                              level={e?.skillLevels?.[sk.slot] ?? 1}
+                              onLevel={(v) => setSkillLevel(target.id, sk.slot, v)}
+                              resolveStat={resolveStat}
+                            />
+                          ))
                       : SKILLS.map(({ slot: sk, label }) => (
                           <Stepper
                             key={sk}
@@ -603,6 +593,45 @@ export default function DetailModal({
                             onChange={(v) => setSkillLevel(target.id, sk, v)}
                           />
                         ))}
+                    {(() => {
+                      const oe = d?.skills.find((sk) => sk.slot === "OverExalt");
+                      if (!oe) return null;
+                      // Over-Exalt is a single effect layered on Exalt at 200 Aliemus.
+                      // It has no level of its own — it follows the Exalt level and is
+                      // unlocked by the Over-Exalt enlighten milestone (+4 / 8 copies).
+                      const exaltLevel = e?.skillLevels?.Exalt ?? 1;
+                      const unlocked = total >= 8;
+                      return (
+                        <div
+                          className={`rounded-lg border p-2.5 ${
+                            unlocked
+                              ? "border-[var(--gold)]/40 bg-[var(--bg-2)]"
+                              : "border-[var(--border)] bg-transparent opacity-70"
+                          }`}
+                        >
+                          <div className="mb-1 flex items-center gap-2">
+                            <span className="font-title rounded bg-[var(--panel-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--gold-bright)]">
+                              Over-Exalt
+                            </span>
+                            <span className="text-[10px] text-[var(--text-dim)]">
+                              follows Exalt Lv{exaltLevel} · fires at 200 Aliemus
+                            </span>
+                            {!unlocked && (
+                              <span className="ml-auto text-[10px] text-[var(--text-dim)]">
+                                unlocks at OE (+4)
+                              </span>
+                            )}
+                          </div>
+                          <ScaledText
+                            template={oe.descriptionTemplate}
+                            args={oe.descriptionArgs}
+                            index={exaltLevel - 1}
+                            resolveStat={resolveStat}
+                            className="text-[12.5px] leading-relaxed text-[var(--text-muted)]"
+                          />
+                        </div>
+                      );
+                    })()}
                   </Section>
 
                   {passives.length > 0 && (
