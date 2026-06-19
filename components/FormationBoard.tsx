@@ -5,6 +5,7 @@ import { useRosterStore } from "@/lib/store";
 import type { Realm, EnlightenSlot } from "@/lib/types";
 import { RealmSigil, REALM_COLOR, REALM_RANK } from "./realm";
 import { toTotal, plusCount, ENLIGHTEN_MILESTONES } from "@/lib/enlighten";
+import { wheelTooltip, covenantTooltip, posseEffectText } from "@/lib/catalog-client";
 
 /* ---------------------------------------------------------------------------
    Formation board — the in-game Lineup screen, but editable.
@@ -42,6 +43,7 @@ interface DrawerItem {
   realm?: string;
   rarity?: string;
   subtitle?: string;
+  tooltip?: string;
 }
 
 const DRAWER_ASSET: Record<DrawerKind, string> = {
@@ -88,15 +90,41 @@ function ItemDrawer({
 
   const list = useMemo(() => {
     const term = q.trim().toLowerCase();
+    const realmRank = (r?: string) => REALM_RANK[r as Realm] ?? 9;
+    const rarityRank = (r?: string) => {
+      const i = WHEEL_RARITIES.indexOf(r ?? "");
+      return i < 0 ? 9 : i;
+    };
     return items
       .filter((it) => (term ? it.name.toLowerCase().includes(term) : true))
       .filter((it) => (realm ? it.realm === realm : true))
       .filter((it) => (rarity ? it.rarity === rarity : true))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [items, q, realm, rarity]);
+      .sort((a, b) => {
+        // Wheels: rarity -> realm -> name. Characters/posses: realm -> name.
+        // Covenants: name. (Mirrors the inventory ordering.)
+        if (kind === "wheels") {
+          const r = rarityRank(a.rarity) - rarityRank(b.rarity);
+          if (r) return r;
+          const e = realmRank(a.realm) - realmRank(b.realm);
+          if (e) return e;
+        } else if (kind === "character" || kind === "posses") {
+          const e = realmRank(a.realm) - realmRank(b.realm);
+          if (e) return e;
+        }
+        return a.name.localeCompare(b.name);
+      });
+  }, [items, q, realm, rarity, kind]);
 
   const isIcon = kind === "covenants" || kind === "posses";
-  const imgFit = isIcon ? "object-contain p-2" : "object-cover object-top";
+  // Wheels show the whole card (contain); awakener portraits fill to the face
+  // (cover); covenant/posse emblems sit large and centred (contain).
+  const imgFit =
+    kind === "wheels"
+      ? "object-contain p-1"
+      : kind === "character"
+        ? "object-cover object-top"
+        : "object-contain p-2";
+  const imgHeight = isIcon ? 128 : kind === "wheels" ? 168 : 150;
   const cols = isIcon ? "grid-cols-2" : "grid-cols-3";
 
   return (
@@ -154,8 +182,8 @@ function ItemDrawer({
             {allowNone && (
               <button
                 onClick={() => onSelect(null)}
-                style={{ height: isIcon ? 80 : 128 }}
-                className="flex items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] text-xs text-[var(--text-dim)] hover:border-[var(--gold)]"
+                style={{ height: imgHeight }}
+                className="flex items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] text-sm text-[var(--text-dim)] hover:border-[var(--gold)]"
               >
                 — None —
               </button>
@@ -164,7 +192,7 @@ function ItemDrawer({
               <button
                 key={it.id}
                 onClick={() => onSelect(it.id)}
-                title={it.name}
+                title={it.tooltip ?? it.name}
                 className={`group flex flex-col overflow-hidden rounded-lg border text-left transition ${
                   it.id === currentId
                     ? "border-[var(--gold)] ring-1 ring-[var(--gold)]/50"
@@ -172,7 +200,7 @@ function ItemDrawer({
                 }`}
               >
                 <div
-                  style={{ height: isIcon ? 80 : 128 }}
+                  style={{ height: imgHeight }}
                   className="relative w-full shrink-0 bg-[var(--bg-2)]"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -186,16 +214,16 @@ function ItemDrawer({
                   />
                   {it.realm && it.realm !== "NEUTRAL" && (
                     <div className="absolute left-1 top-1">
-                      <RealmSigil realm={it.realm as Realm} size={13} />
+                      <RealmSigil realm={it.realm as Realm} size={14} />
                     </div>
                   )}
                 </div>
                 <div className="p-1.5">
-                  <div className="truncate text-[11px] font-medium text-[var(--text)]">
+                  <div className="truncate text-[13px] font-medium text-[var(--text)]">
                     {it.name}
                   </div>
                   {it.subtitle && (
-                    <div className="mt-0.5 line-clamp-2 text-[10px] leading-snug text-[var(--text-muted)]">
+                    <div className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-[var(--text-muted)]">
                       {it.subtitle}
                     </div>
                   )}
@@ -649,7 +677,7 @@ export default function FormationBoard({
           name: w.name,
           realm: w.realm,
           rarity: w.rarity,
-          subtitle: w.mainstat,
+          tooltip: wheelTooltip(w.id, roster.wheels[w.id]?.stackLevel ?? 0, roster.keeperLevel),
         })),
         currentId: cur[picker.wheelIndex],
         onSelect: (id) => {
@@ -669,7 +697,11 @@ export default function FormationBoard({
         kind: "covenants",
         title: "Covenant",
         allowNone: true,
-        items: gear.covenants.map((c) => ({ id: c.id, name: c.name, subtitle: c.effect })),
+        items: gear.covenants.map((c) => ({
+          id: c.id,
+          name: c.name,
+          tooltip: covenantTooltip(c.id),
+        })),
         currentId: sid && plans ? plans[sid]?.covenantId : undefined,
         onSelect: (id) => {
           onChangeSlotGear?.(picker.slotIndex, { covenantId: id ?? undefined });
@@ -687,7 +719,7 @@ export default function FormationBoard({
           id: p.id,
           name: p.name,
           realm: p.realm,
-          subtitle: p.effect,
+          tooltip: posseEffectText(p.id, roster.keeperLevel),
         })),
         currentId: posseId,
         onSelect: (id) => {
