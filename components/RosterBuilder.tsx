@@ -414,9 +414,63 @@ function TeamFormation({
           <span className="text-xs text-[var(--realm-caro)]">{team.realmNote}</span>
         )}
       </div>
-      <p className="font-display mb-3 text-[15px] leading-snug text-[var(--text)]">
+      <p className="font-display mb-2 text-[15px] leading-snug text-[var(--text)]">
         {team.compositionNote}
       </p>
+
+      {team.analysis && team.analysis.archetypes.length > 0 && (
+        <div className="mb-2 flex flex-wrap gap-1.5">
+          {team.analysis.archetypes.map((label) => (
+            <span
+              key={label}
+              className="rounded-full border border-[var(--gold)]/30 bg-[var(--gold)]/10 px-2 py-0.5 text-[11px] font-medium text-[var(--gold-bright)]"
+            >
+              {label}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {team.analysis &&
+        (team.analysis.chain.length > 0 || team.analysis.contributions.length > 0) && (
+          <details className="mb-3">
+            <summary className="cursor-pointer select-none text-[12.5px] text-[var(--text-dim)] transition hover:text-[var(--text-muted)]">
+              How this team works
+            </summary>
+            <div className="mt-2 space-y-2">
+              {team.analysis.chain.length > 0 && (
+                <ul className="space-y-1 text-[13px] leading-snug text-[var(--text-muted)]">
+                  {team.analysis.chain.map((line, i) => (
+                    <li key={i} className="flex gap-1.5">
+                      <span className="shrink-0 text-[var(--gold)]/60">→</span>
+                      <span>
+                        <KeywordText text={line} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {team.analysis.contributions.length > 0 && (
+                <div className="space-y-1 border-t border-[var(--border)] pt-2">
+                  {team.analysis.contributions.map((c) => (
+                    <div
+                      key={c.awakenerId}
+                      className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-[12.5px] leading-snug"
+                    >
+                      <span className="shrink-0 font-semibold text-[var(--text)]">{c.name}</span>
+                      <span className="shrink-0 rounded bg-[var(--panel-2)] px-1.5 text-[11px] text-[var(--text-dim)]">
+                        {c.roleLabel}
+                      </span>
+                      <span className="text-[var(--text-muted)]">
+                        <KeywordText text={c.text} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </details>
+        )}
 
       <FormationBoard
         awakeners={awakeners}
