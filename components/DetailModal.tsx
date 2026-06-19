@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRosterStore } from "@/lib/store";
 import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
-import { ScaledText, maxScalingIndex, type StatResolver } from "@/lib/template";
+import { ScaledText, maxScalingIndex, applySkillUpgrades, type StatResolver, type SkillUpgrade } from "@/lib/template";
 import { resolvePrimaryStat, wheelMainStat } from "@/lib/stats";
 import {
   ENLIGHTEN_MILESTONES,
@@ -91,6 +91,7 @@ interface EffectBlock {
   cost?: number | null;
   descriptionTemplate: string;
   descriptionArgs: Record<string, DescriptionArg>;
+  upgrades?: SkillUpgrade[];
 }
 interface AwakenerDetail {
   kind: "awakener";
@@ -587,15 +588,27 @@ export default function DetailModal({
                     {d && d.skills.length > 0
                       ? d.skills
                           .filter((sk) => sk.slot !== "OverExalt")
-                          .map((sk) => (
-                            <SkillCard
-                              key={sk.id ?? sk.slot}
-                              block={sk}
-                              level={e?.skillLevels?.[sk.slot] ?? 1}
-                              onLevel={(v) => setSkillLevel(target.id, sk.slot, v)}
-                              resolveStat={resolveStat}
-                            />
-                          ))
+                          .map((sk) => {
+                            const up = applySkillUpgrades(
+                              sk.descriptionTemplate,
+                              sk.descriptionArgs,
+                              sk.upgrades,
+                              total
+                            );
+                            return (
+                              <SkillCard
+                                key={sk.id ?? sk.slot}
+                                block={{
+                                  ...sk,
+                                  descriptionTemplate: up.template ?? sk.descriptionTemplate,
+                                  descriptionArgs: up.args ?? sk.descriptionArgs,
+                                }}
+                                level={e?.skillLevels?.[sk.slot] ?? 1}
+                                onLevel={(v) => setSkillLevel(target.id, sk.slot, v)}
+                                resolveStat={resolveStat}
+                              />
+                            );
+                          })
                       : SKILLS.map(({ slot: sk, label }) => (
                           <Stepper
                             key={sk}
@@ -614,6 +627,12 @@ export default function DetailModal({
                       // unlocked by the Over-Exalt enlighten milestone (+4 / 8 copies).
                       const exaltLevel = e?.skillLevels?.Exalt ?? 1;
                       const unlocked = total >= 8;
+                      const oeUp = applySkillUpgrades(
+                        oe.descriptionTemplate,
+                        oe.descriptionArgs,
+                        oe.upgrades,
+                        total
+                      );
                       return (
                         <div
                           className={`rounded-lg border p-2.5 ${
@@ -636,8 +655,8 @@ export default function DetailModal({
                             )}
                           </div>
                           <ScaledText
-                            template={oe.descriptionTemplate}
-                            args={oe.descriptionArgs}
+                            template={oeUp.template ?? oe.descriptionTemplate}
+                            args={oeUp.args ?? oe.descriptionArgs}
                             index={exaltLevel - 1}
                             resolveStat={resolveStat}
                             className="text-[13.5px] leading-relaxed text-[var(--text-muted)]"
