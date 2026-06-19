@@ -211,6 +211,8 @@ export interface EnrichedAwakener {
   primaryScalingBase?: number
   baseStatsLv1?: Record<string, number>
   substatsLv1?: Record<string, number>
+  statScaling?: { CON: number; ATK: number; DEF: number }
+  substatScaling?: Record<string, number>
 
   // Derived in the sync from searchTags (authoritative; not hand-maintained):
   // Divine units = Arachne/Saya/Vortice/Murphy: Fauxborn; Lemurians = the 5 with
