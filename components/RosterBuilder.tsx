@@ -18,6 +18,7 @@ import {
   wheelEffectText,
   covenantCategoryText,
   posseEffectText,
+  signatureWheelIds,
 } from "@/lib/catalog-client";
 
 const ROLE_LABEL: Record<string, string> = {
@@ -328,7 +329,7 @@ function GearTile({
           onError={(e) => {
             (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
           }}
-          className={`h-full w-full ${isWheel ? "object-cover" : "object-contain p-2"} ${owned ? "" : "opacity-50 grayscale"}`}
+          className={`h-full w-full ${isWheel ? "object-contain p-0.5" : "object-contain p-2"} ${owned ? "" : "opacity-50 grayscale"}`}
         />
         {realm && realm !== "NEUTRAL" && (
           <div className="absolute left-1 top-1">
@@ -339,19 +340,19 @@ function GearTile({
 
       {/* name + mainstat + badge + effect below */}
       <div className="mt-1.5 w-full">
-        <div className="font-display truncate text-[12.5px] font-medium leading-tight text-[var(--text)]">
+        <div className="font-display truncate text-sm font-semibold leading-tight text-[var(--text)]">
           {name}
         </div>
         {mainstat && (
-          <div className="mt-0.5 text-[11px] font-medium text-[var(--realm-aequor)]">{mainstat}</div>
+          <div className="mt-0.5 text-[12.5px] font-medium text-[var(--realm-aequor)]">{mainstat}</div>
         )}
         {badge && (
-          <div className="mt-0.5 text-[10px] font-medium" style={{ color: badgeColor }}>
+          <div className="mt-0.5 text-[11px] font-medium" style={{ color: badgeColor }}>
             {badge}
           </div>
         )}
         {effect && (
-          <p className="mt-1 line-clamp-3 text-[10.5px] leading-snug text-[var(--text-muted)]">
+          <p className="mt-1 line-clamp-3 text-[12px] leading-snug text-[var(--text-muted)]">
             {effect}
           </p>
         )}
@@ -767,6 +768,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
           isPlus12: (w) => (roster.wheels[w]?.stackLevel ?? 0) >= 12,
           ownedFillerWheels,
           awakenerRealm: awk?.realm,
+          signatureWheels: signatureWheelIds(id),
           usedWheelIds,
           usedCovenantIds,
         });
