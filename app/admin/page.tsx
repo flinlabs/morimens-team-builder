@@ -50,11 +50,17 @@ export default function Home() {
       const sets = c.setEffects ?? [];
       const six = sets.find((s) => s.set === 6) ?? sets[sets.length - 1];
       const three = sets.find((s) => s.set === 3);
+      // The 3-set is a flat stat (e.g. "Death Resistance +16.8%") — keep just the
+      // category for the tile subtitle.
+      const threePlain = three ? plain(three.descriptionTemplate, three.descriptionArgs) : "";
+      const cut = threePlain.split("+")[0].trim();
+      const mainstat = cut && cut.length <= 28 ? cut : undefined;
       return {
         id: c.id,
         name: c.name,
+        mainstat,
         effect: plain(six?.descriptionTemplate, six?.descriptionArgs),
-        effect3: three ? plain(three.descriptionTemplate, three.descriptionArgs) : undefined,
+        effect3: three ? threePlain : undefined,
       };
     }),
     posses: Object.values(posses).map((p) => ({
