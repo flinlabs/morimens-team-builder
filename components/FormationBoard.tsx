@@ -18,8 +18,8 @@ import { toTotal, plusCount, ENLIGHTEN_MILESTONES } from "@/lib/enlighten";
 export interface SlotPlan {
   role?: string;
   blurb?: string;
-  wheelNames?: string[];
-  covenantName?: string;
+  wheelIds?: string[]; // up to two equipped wheels
+  covenantId?: string;
 }
 
 export interface GearOptions {
@@ -93,6 +93,142 @@ function GearSelect({
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+/** Star diamonds (0–3) plus the stack/breakpoint number, the way the game shows a wheel. */
+function WheelPips({ stars, stack }: { stars: number; stack: number }) {
+  return (
+    <span className="inline-flex items-center gap-0.5 leading-none">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="text-[8px]"
+          style={{ color: i < stars ? "var(--gold-bright)" : "var(--border-bright)" }}
+        >
+          ◆
+        </span>
+      ))}
+      {stack > 0 && (
+        <span className="ml-0.5 text-[8px] font-semibold text-[var(--text-muted)]">{stack}</span>
+      )}
+    </span>
+  );
+}
+
+/** A popover grid of framed art for picking a wheel or covenant. */
+function ThumbPicker({
+  kind,
+  options,
+  onSelect,
+  trigger,
+  cols = 4,
+}: {
+  kind: "wheels" | "covenants";
+  options: { id: string; name: string }[];
+  onSelect: (id: string | null) => void;
+  trigger: React.ReactNode;
+  cols?: number;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((o) => !o);
+        }}
+        className="block w-full text-left"
+        title="Change"
+      >
+        {trigger}
+      </button>
+      {open && (
+        <>
+          <div
+            className="fixed inset-0 z-30"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+            }}
+          />
+          <div className="absolute left-0 z-40 mt-1 max-h-64 w-56 overflow-auto rounded-lg border border-[var(--border-bright)] bg-[var(--panel)] p-2 shadow-2xl">
+            <div
+              className="grid gap-1.5"
+              style={{ gridTemplateColumns: `repeat(${cols}, minmax(0,1fr))` }}
+            >
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect(null);
+                  setOpen(false);
+                }}
+                className="flex aspect-[3/4] items-center justify-center rounded border border-dashed border-[var(--border-bright)] text-[10px] text-[var(--text-dim)] hover:border-[var(--gold)]"
+              >
+                None
+              </button>
+              {options.map((o) => (
+                <button
+                  key={o.id}
+                  title={o.name}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelect(o.id);
+                    setOpen(false);
+                  }}
+                  className="overflow-hidden rounded border border-transparent hover:border-[var(--gold)]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/assets/${kind}/${o.id}.webp`}
+                    alt={o.name}
+                    loading="lazy"
+                    className={`w-full object-cover ${
+                      kind === "covenants" ? "aspect-square" : "aspect-[3/4]"
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+/** A framed wheel thumbnail with star/stack pips underneath. */
+function WheelThumb({
+  id,
+  name,
+  stars,
+  stack,
+}: {
+  id?: string;
+  name?: string;
+  stars: number;
+  stack: number;
+}) {
+  if (!id) {
+    return (
+      <div className="flex aspect-[3/4] items-center justify-center rounded border border-dashed border-[var(--border-bright)] text-base text-[var(--text-dim)]">
+        ＋
+      </div>
+    );
+  }
+  return (
+    <div className="overflow-hidden rounded border border-[var(--border)]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`/assets/wheels/${id}.webp`}
+        alt={name ?? "wheel"}
+        loading="lazy"
+        className="aspect-[3/4] w-full object-cover"
+      />
+      <div className="flex items-center justify-center bg-black/40 py-0.5">
+        <WheelPips stars={stars} stack={stack} />
+      </div>
     </div>
   );
 }
@@ -264,13 +400,17 @@ function Slot({
   onClear,
   gear,
   onChangeGear,
+  wheelMeta,
+  covenantMeta,
 }: {
   awk: AwkLite | null;
   plan?: SlotPlan;
   onClick: () => void;
   onClear: () => void;
   gear?: GearOptions;
-  onChangeGear?: (patch: { wheelNames?: string[]; covenantName?: string }) => void;
+  onChangeGear?: (patch: { wheelIds?: string[]; covenantId?: string }) => void;
+  wheelMeta?: Record<string, { name: string }>;
+  covenantMeta?: Record<string, { name: string }>;
 }) {
   const roster = useRosterStore((s) => s.roster);
   const editable = !!gear && !!onChangeGear;
@@ -299,7 +439,6 @@ function Slot({
   const talRow = tal
     ? `${tal.madnessOmen}/${tal.soulforgeAptitude}/${tal.gnosticPotential}`
     : "—";
-  const cov = e?.equippedCovenantId;
   const role =
     plan?.role ?? (awk.roles && awk.roles.length ? humanRole(awk.roles[0]) : undefined);
   const blurb =
@@ -307,7 +446,19 @@ function Slot({
     (awk.roles && awk.roles.length
       ? awk.roles.slice(0, 3).map(humanRole).join(" · ")
       : undefined);
-  const wheels = (plan?.wheelNames ?? []).filter(Boolean);
+  // Two wheel slots and a covenant, resolved to ids for visual display.
+  const wheelIds: (string | undefined)[] = [plan?.wheelIds?.[0], plan?.wheelIds?.[1]];
+  const covenantId = plan?.covenantId;
+  const wheelName = (id?: string) => (id ? wheelMeta?.[id]?.name ?? "Wheel" : undefined);
+  const covenantName = covenantId ? covenantMeta?.[covenantId]?.name : undefined;
+  const wheelStars = (id?: string) => (id ? roster.wheels[id]?.starLevel ?? 0 : 0);
+  const wheelStack = (id?: string) => (id ? roster.wheels[id]?.stackLevel ?? 0 : 0);
+
+  const setWheel = (index: number, id: string | null) => {
+    const next = [wheelIds[0], wheelIds[1]];
+    next[index] = id ?? undefined;
+    onChangeGear?.({ wheelIds: next.filter((x): x is string => !!x) });
+  };
 
   return (
     <div className="flex flex-col rounded-lg border border-[var(--border)] border-b-2 border-b-[var(--gold)] bg-[var(--panel)]">
@@ -323,8 +474,8 @@ function Slot({
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
         <button
           onClick={onClear}
-          title="Remove"
-          className="absolute right-1 top-1 rounded-full bg-black/55 px-1.5 text-xs text-white/75 backdrop-blur-sm hover:text-white"
+          title="Remove from lineup"
+          className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm text-white/85 backdrop-blur-sm transition hover:bg-[var(--realm-caro)]/80 hover:text-white"
         >
           ✕
         </button>
@@ -353,51 +504,85 @@ function Slot({
         <StatLine label="Skl">{skillRow}</StatLine>
         <StatLine label="Tal">{talRow}</StatLine>
 
-        <div className="mt-0.5 border-t border-[var(--border)] pt-1">
-          <div className="flex items-start gap-1.5 leading-tight">
-            <span className="w-7 shrink-0 pt-px text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
-              Whl
-            </span>
-            {editable ? (
-              <GearSelect
-                value={wheels[0]}
-                options={gear!.wheels}
-                onChange={(name) => onChangeGear!({ wheelNames: name ? [name] : [] })}
-                placeholder="None assigned"
-                valueClass="text-[var(--realm-aequor)]"
+        {/* covenant icon + name */}
+        <div className="mt-1 flex items-center gap-2 border-t border-[var(--border)] pt-1.5">
+          {editable ? (
+            <ThumbPicker
+              kind="covenants"
+              cols={4}
+              options={gear!.covenants}
+              onSelect={(id) => onChangeGear!({ covenantId: id ?? undefined })}
+              trigger={<CovIcon id={covenantId} />}
+            />
+          ) : (
+            <CovIcon id={covenantId} />
+          )}
+          <span className="min-w-0 flex-1 truncate text-[11px] text-[var(--text-muted)]">
+            {covenantName ?? (editable ? "Tap to set covenant" : "No covenant")}
+          </span>
+        </div>
+
+        {/* two wheel thumbnails */}
+        <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+          {[0, 1].map((wi) => {
+            const id = wheelIds[wi];
+            const thumb = (
+              <WheelThumb
+                id={id}
+                name={wheelName(id)}
+                stars={wheelStars(id)}
+                stack={wheelStack(id)}
               />
-            ) : wheels.length > 0 ? (
-              <span className="text-[11px] text-[var(--realm-aequor)]">{wheels.join(" · ")}</span>
-            ) : (
-              <span className="text-[11px] text-[var(--text-dim)]">None assigned</span>
-            )}
-          </div>
-          <div className="mt-0.5 flex items-start gap-1.5 leading-tight">
-            <span className="w-7 shrink-0 pt-px text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
-              Cov
-            </span>
-            {editable ? (
-              <GearSelect
-                value={plan?.covenantName}
-                options={gear!.covenants}
-                onChange={(name) => onChangeGear!({ covenantName: name })}
-                placeholder="None"
-                valueClass="text-[var(--text-muted)]"
-              />
-            ) : (
-              <span className="text-[11px] text-[var(--text-muted)]">
-                {plan?.covenantName ?? (cov ? "Equipped covenant" : "None")}
-              </span>
-            )}
-          </div>
+            );
+            return (
+              <div key={wi} className="min-w-0">
+                {editable ? (
+                  <ThumbPicker
+                    kind="wheels"
+                    cols={4}
+                    options={gear!.wheels}
+                    onSelect={(pickId) => setWheel(wi, pickId)}
+                    trigger={thumb}
+                  />
+                ) : (
+                  thumb
+                )}
+                <div className="mt-0.5 truncate text-center text-[9px] leading-tight text-[var(--text-dim)]">
+                  {wheelName(id) ?? "—"}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {blurb && (
-          <p className="mt-0.5 line-clamp-3 text-[11px] leading-snug text-[var(--text-muted)]">
+          <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-[var(--text-muted)]">
             {blurb}
           </p>
         )}
       </div>
+    </div>
+  );
+}
+
+/** Small framed covenant icon (or an empty placeholder). */
+function CovIcon({ id }: { id?: string }) {
+  if (!id) {
+    return (
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-dashed border-[var(--border-bright)] text-xs text-[var(--text-dim)]">
+        ◇
+      </div>
+    );
+  }
+  return (
+    <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full border border-[var(--gold)]/40">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`/assets/covenants/${id}.webp`}
+        alt="covenant"
+        loading="lazy"
+        className="h-full w-full object-cover"
+      />
     </div>
   );
 }
@@ -412,6 +597,9 @@ export default function FormationBoard({
   gear,
   onChangeSlotGear,
   onChangePosse,
+  onClearAll,
+  wheelMeta,
+  covenantMeta,
 }: {
   title?: string;
   awakeners: AwkLite[];
@@ -420,8 +608,11 @@ export default function FormationBoard({
   posseName?: string;
   onChangeSlots: (next: (string | null)[]) => void;
   gear?: GearOptions;
-  onChangeSlotGear?: (slotIndex: number, patch: { wheelNames?: string[]; covenantName?: string }) => void;
+  onChangeSlotGear?: (slotIndex: number, patch: { wheelIds?: string[]; covenantId?: string }) => void;
   onChangePosse?: (name: string | undefined) => void;
+  onClearAll?: () => void;
+  wheelMeta?: Record<string, { name: string }>;
+  covenantMeta?: Record<string, { name: string }>;
 }) {
   const roster = useRosterStore((s) => s.roster);
   const [pickFor, setPickFor] = useState<number | null>(null);
@@ -452,19 +643,29 @@ export default function FormationBoard({
         <h3 className="font-title text-sm uppercase tracking-wider text-[var(--gold-bright)]">
           {title ?? "Formation"}
         </h3>
-        {distinctRealms.length > 0 && (
-          <div className="flex items-center gap-1.5">
-            {distinctRealms.map((r) => (
-              <span
-                key={r}
-                className="flex items-center gap-1 rounded-full border border-[var(--border)] px-2 py-0.5 text-[10px]"
-                style={{ color: REALM_COLOR[r] }}
-              >
-                <RealmSigil realm={r} size={11} />
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          {distinctRealms.length > 0 && (
+            <div className="flex items-center gap-1.5">
+              {distinctRealms.map((r) => (
+                <span
+                  key={r}
+                  className="flex items-center gap-1 rounded-full border border-[var(--border)] px-2 py-0.5 text-[10px]"
+                  style={{ color: REALM_COLOR[r] }}
+                >
+                  <RealmSigil realm={r} size={11} />
+                </span>
+              ))}
+            </div>
+          )}
+          {onClearAll && slots.some(Boolean) && (
+            <button
+              onClick={onClearAll}
+              className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[10px] uppercase tracking-wider text-[var(--text-dim)] transition hover:border-[var(--realm-caro)] hover:text-[var(--realm-caro)]"
+            >
+              Clear all
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
@@ -486,6 +687,8 @@ export default function FormationBoard({
               onChangeGear={
                 awk && onChangeSlotGear ? (patch) => onChangeSlotGear(i, patch) : undefined
               }
+              wheelMeta={wheelMeta}
+              covenantMeta={covenantMeta}
             />
           );
         })}
