@@ -43,6 +43,8 @@ export interface GearContext {
   /** All owned SR/R/N wheels available as fillers. */
   ownedFillerWheels: () => { id: string; rarity: string; realm: string }[];
   awakenerRealm?: string;
+  /** Signature SSR/SR wheel ids for this awakener (limited characters). */
+  signatureWheels?: { ssr?: string; sr?: string };
   /** Wheels already used elsewhere on the board (kept unique). */
   usedWheelIds?: Set<string>;
   /** Covenant sets already used by teammates (kept unique). */
@@ -72,6 +74,19 @@ export function recommendGearFor(
     isHigh(wheelIds[0]) &&
     !ctx.isPlus12(cand) &&
     !ctx.isPlus12(wheelIds[0]);
+
+  // Pass 0 — a limited character's signature SSR + SR are their canonical gear.
+  const sig = ctx.signatureWheels;
+  if (sig) {
+    for (const id of [sig.ssr, sig.sr]) {
+      if (!id || wheelIds.length >= 2) continue;
+      if (wheelIds.includes(id) || used.has(id)) continue;
+      if (!ctx.ownsWheel(id)) continue;
+      if (breaksOverlimit(id)) continue;
+      wheelIds.push(id);
+      used.add(id);
+    }
+  }
 
   // Pass 1 — owned BiS wheels, honouring Overlimit + uniqueness.
   if (variant) {
