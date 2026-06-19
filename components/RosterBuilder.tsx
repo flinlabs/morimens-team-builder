@@ -56,7 +56,7 @@ export interface Catalog {
     isLemurian: boolean;
   }[];
   wheels: { id: string; name: string; realm: string; rarity: string; mainstatKey?: string; effect?: string }[];
-  covenants: { id: string; name: string; effect?: string; effect3?: string }[];
+  covenants: { id: string; name: string; mainstat?: string; effect?: string; effect3?: string }[];
   posses: { id: string; name: string; realm: string; hasCharacterBonus: boolean; effect?: string }[];
 }
 
@@ -285,15 +285,15 @@ function GearTile({
         if (e.key === "Enter" || e.key === " ") onToggle();
       }}
       title={name}
-      className={`relative flex cursor-pointer flex-col items-center rounded-lg border p-2.5 text-center transition ${
+      className={`relative flex cursor-pointer flex-col items-center rounded-lg border p-2 text-center transition ${
         owned
           ? "border-[var(--gold)] bg-[var(--panel-2)]"
           : "border-[var(--border)] bg-[var(--panel)] hover:border-[var(--border-bright)]"
       }`}
     >
       {/* owned tick + details, top corners */}
-      <div className="absolute right-1.5 top-1.5 flex items-center gap-1">
-        {owned && <span className="text-xs text-[var(--gold)]">✓</span>}
+      <div className="absolute right-1 top-1 flex items-center gap-0.5">
+        {owned && <span className="text-[11px] text-[var(--gold)]">✓</span>}
         {onDetails && (
           <button
             onClick={(e) => {
@@ -301,7 +301,7 @@ function GearTile({
               onDetails();
             }}
             title="Customize / view details"
-            className="flex h-6 w-6 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
+            className="flex h-5 w-5 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
           >
             ⋯
           </button>
@@ -311,7 +311,7 @@ function GearTile({
       {/* image on top */}
       <div
         className={`relative overflow-hidden rounded bg-[var(--bg-2)] ${
-          isWheel ? "h-[104px] w-[78px]" : "h-[84px] w-[84px]"
+          isWheel ? "h-[72px] w-[54px]" : "h-16 w-16"
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -319,32 +319,32 @@ function GearTile({
           src={`/assets/${category}/${id}.webp`}
           alt={name}
           loading="lazy"
-          className={`h-full w-full object-cover ${owned ? "" : "opacity-50 grayscale"}`}
+          className={`h-full w-full ${isWheel ? "object-cover" : "object-contain p-1"} ${owned ? "" : "opacity-50 grayscale"}`}
         />
         {realm && realm !== "NEUTRAL" && (
           <div className="absolute left-0.5 top-0.5">
-            <RealmSigil realm={realm} size={13} />
+            <RealmSigil realm={realm} size={12} />
           </div>
         )}
       </div>
 
-      {/* name + mainstat + effect below */}
-      <div className="mt-2 w-full">
-        <div className="font-display truncate text-[13px] font-medium text-[var(--text)]">
+      {/* name + mainstat + badge + effect below */}
+      <div className="mt-1.5 w-full">
+        <div className="font-display truncate text-[12.5px] font-medium leading-tight text-[var(--text)]">
           {name}
         </div>
         {mainstat && (
           <div className="mt-0.5 text-[11px] font-medium text-[var(--realm-aequor)]">{mainstat}</div>
         )}
-        {effect && (
-          <p className="mt-1 line-clamp-4 text-[10.5px] leading-snug text-[var(--text-muted)]">
-            {effect}
-          </p>
-        )}
         {badge && (
-          <div className="mt-1 text-[10px]" style={{ color: badgeColor }}>
+          <div className="mt-0.5 text-[10px] font-medium" style={{ color: badgeColor }}>
             {badge}
           </div>
+        )}
+        {effect && (
+          <p className="mt-1 line-clamp-3 text-[10.5px] leading-snug text-[var(--text-muted)]">
+            {effect}
+          </p>
         )}
       </div>
     </div>
@@ -1270,7 +1270,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         const grouped = wheelSort === "rarity" && wheelRarity === "ALL";
         if (!grouped) {
           return (
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
               {filteredWheels.map(renderTile)}
             </div>
           );
@@ -1289,7 +1289,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                     <span className="text-xs text-[var(--text-dim)]">{inGroup.length}</span>
                     <div className="gold-rule ml-1 flex-1" />
                   </div>
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
                     {inGroup.map(renderTile)}
                   </div>
                 </div>
@@ -1301,7 +1301,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
 
       {/* Covenants */}
       {tab === "covenants" && (
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
           {filteredCovenants.map((c) => {
             const owned = mounted ? !!roster.covenants[c.id]?.owned : false;
             return (
@@ -1311,7 +1311,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 name={c.name}
                 category="covenants"
                 owned={owned}
-                effect={c.effect}
+                mainstat={c.mainstat}
                 onToggle={() => setCovenantOwned(c.id, !owned)}
                 onDetails={() => setDetail({ kind: "covenant", id: c.id, name: c.name })}
               />
@@ -1337,15 +1337,6 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 badge={p.hasCharacterBonus ? "Character bonus" : undefined}
                 badgeColor="var(--gold)"
                 onToggle={() => setPosseUnlocked(p.id, !unlocked)}
-                onDetails={() =>
-                  setDetail({
-                    kind: "posse",
-                    id: p.id,
-                    name: p.name,
-                    realm: p.realm,
-                    hasCharacterBonus: p.hasCharacterBonus,
-                  })
-                }
               />
             );
           })}
