@@ -1,5 +1,5 @@
 import React from "react";
-import type { DescriptionArg } from "./types";
+import type { DescriptionArg, SkillUpgrade } from "./types";
 import { cardNumber } from "./stats";
 import { researchDepthValue } from "./research-formula";
 
@@ -31,6 +31,56 @@ export type StatResolver = (statKey: string) => number | null;
 --------------------------------------------------------------------------- */
 
 type Args = Record<string, DescriptionArg> | undefined;
+
+/* ---------------------------------------------------------------------------
+ * Enlighten skill upgrades. A skill carries `upgrades` that, at a given
+ * enlighten milestone (E1, E2, …), rewrite its template and/or args — adding
+ * clauses ("If HP below 50%, deal 1 extra hit…") and bumping coefficients. We
+ * apply every upgrade whose slot is unlocked at the character's enlighten total,
+ * in milestone order, so the description matches what the game shows.
+ * ------------------------------------------------------------------------- */
+// Copy-threshold for an enlighten slot, keyed by the exact `upgraderSlot`
+// values the data uses. E0=1, E1=2, E2=3, E3=4, then the "+N" dupes — OverExalt
+// lands at +4 (total 8) and Absolute Axiom at +12 (total 16).
+const SLOT_THRESHOLD: Record<string, number> = {
+  E0: 1,
+  E1: 2,
+  E2: 3,
+  E3: 4,
+  OverExalt: 8,
+  OE: 8,
+  AbsoluteAxiom: 16,
+  AA: 16,
+};
+
+export function applySkillUpgrades(
+  template: string | undefined,
+  args: Args,
+  upgrades: SkillUpgrade[] | undefined,
+  enlightenTotal: number
+): { template: string | undefined; args: Args } {
+  if (!upgrades?.length) return { template, args };
+  const active = upgrades
+    .filter(
+      (u) =>
+        u.upgraderType === "enlighten" &&
+        u.upgraderSlot != null &&
+        (SLOT_THRESHOLD[u.upgraderSlot] ?? Infinity) <= enlightenTotal
+    )
+    .sort(
+      (a, b) =>
+        (SLOT_THRESHOLD[a.upgraderSlot ?? ""] ?? 0) -
+        (SLOT_THRESHOLD[b.upgraderSlot ?? ""] ?? 0)
+    );
+  if (active.length === 0) return { template, args };
+  let t = template;
+  let a: Record<string, DescriptionArg> = { ...(args ?? {}) };
+  for (const u of active) {
+    if (u.patch?.descriptionTemplate) t = u.patch.descriptionTemplate;
+    if (u.patch?.descriptionArgs) a = { ...a, ...u.patch.descriptionArgs };
+  }
+  return { template: t, args: a };
+}
 
 const TOKEN =
   /(\{plural:\[[^\]]+\]\|[^|]*\|[^}]*\})|(\[(?:[^\]:]+:)?[A-Za-z0-9_]+\])|(\{[^}]+\})/g;
