@@ -102,7 +102,8 @@ export function assignWheels(
   awakener: EnrichedAwakener,
   roster: UserRoster,
   usedWheelIds: Set<string> = new Set(),
-  role?: string
+  role?: string,
+  allowDualSSR = true
 ): WheelAssignment[] {
   const ranked = [...recommendedWheelsFor(awakener, role)].sort(
     (a, b) => WHEEL_TIER_ORDER.indexOf(a.tier) - WHEEL_TIER_ORDER.indexOf(b.tier)
@@ -119,14 +120,14 @@ export function assignWheels(
       const entry = getWheelEntry(roster, wheelId)
       if (!entry.owned) continue
       const inUse = usedWheelIds.has(wheelId)
-      if (inUse && !isDualSSRUnlocked(roster, wheelId)) continue
+      if (inUse && (!allowDualSSR || !isDualSSRUnlocked(roster, wheelId))) continue
 
       const assignment: WheelAssignment = {
         slot: (out.length + 1) as 1 | 2,
         wheelId,
         tier: rec.tier,
       }
-      if (inUse && isDualSSRUnlocked(roster, wheelId)) {
+      if (inUse && allowDualSSR && isDualSSRUnlocked(roster, wheelId)) {
         assignment.dualSSRNote = 'Second copy fielded via unlocked Dual-SSR (+12)'
       }
       out.push(assignment)
@@ -329,7 +330,8 @@ export function buildTeamRecommendation(
   roster: UserRoster,
   awakeners: Record<string, EnrichedAwakener>,
   posses?: Record<string, EnrichedPosse>,
-  usedWheelIds: Set<string> = new Set()
+  usedWheelIds: Set<string> = new Set(),
+  allowDualSSR = true
 ): TeamRecommendation {
   const arc = roster.settings.arcRuleset
   const composition: CharacterAssignment[] = []
@@ -340,7 +342,7 @@ export function buildTeamRecommendation(
     if (!awakener) continue
     const ann = awakener.annotation
     const role = ann?.teamRoles?.[0] ?? 'flex'
-    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role)
+    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR)
     const covenantRecommendation = recommendCovenant(awakener, roster, role)
 
     if (wheelAssignments.some(w => w.tier === 'FALLBACK')) {
@@ -384,7 +386,9 @@ export function buildDtideRecommendation(
   posses?: Record<string, EnrichedPosse>
 ): TeamRecommendation[] {
   const usedWheelIds = new Set<string>()
+  // D-Tide fields all five teams at once, so every wheel must be unique across
+  // the lineup — no second copy even when Dual-SSR is unlocked.
   return teams.map((team, i) =>
-    buildTeamRecommendation(team, i + 1, roster, awakeners, posses, usedWheelIds)
+    buildTeamRecommendation(team, i + 1, roster, awakeners, posses, usedWheelIds, false)
   )
 }
