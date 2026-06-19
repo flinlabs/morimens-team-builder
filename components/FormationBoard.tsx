@@ -6,6 +6,7 @@ import type { Realm, EnlightenSlot } from "@/lib/types";
 import { RealmSigil, REALM_COLOR, REALM_RANK } from "./realm";
 import { toTotal, plusCount, ENLIGHTEN_MILESTONES } from "@/lib/enlighten";
 import { wheelTooltip, covenantTooltip, posseEffectText } from "@/lib/catalog-client";
+import { KeywordText } from "@/lib/template";
 
 /* ---------------------------------------------------------------------------
    Formation board — the in-game Lineup screen, but editable.
@@ -247,7 +248,7 @@ function ItemDrawer({
           className="pointer-events-none fixed top-1/2 z-[70] w-72 -translate-y-1/2 whitespace-pre-line rounded-lg border border-[var(--gold)]/40 bg-[var(--panel-2)] p-3 text-[13px] leading-snug text-[var(--text)] shadow-2xl"
           style={{ right: "5rem" }}
         >
-          {hover}
+          <KeywordText text={hover} />
         </div>
       )}
     </div>
