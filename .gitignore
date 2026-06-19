@@ -35,15 +35,18 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Generated DB files
-/db/*.json
-!/db/.gitkeep
-
-# Fetched game assets (© Qookka Games) — pulled by `npm run assets`, not committed
-/public/assets
-
 #morisources
 /morisources
 
-compressed.zip
-compressed zip.zip
+# Generated DB files — these are recreated by `npm run sync` (the prebuild hook)
+# fetching from SKeyDB at build time, so they don't need to be committed.
+!/db/.gitkeep
+
+# EXCEPTIONS: these two are NOT produced by the sync (bis.json is editorial/
+# derived; gameplay-math.json is a hand-maintained slim copy). They must be
+# committed so the build can import them on a clean checkout (e.g. Vercel).
+!/db/bis.json
+!/db/gameplay-math.json
+
+# Downloaded fan-use art (recreated by `npm run assets`); not committed.
+/public/assets

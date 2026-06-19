@@ -1,0 +1,570 @@
+{
+  "awakener-0001": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Poison",
+      "Bleed",
+      "Counter",
+      "STR Up",
+      "Tentacle DMG",
+      "Pierce DMG",
+      "Fixed DMG",
+      "Arithmetica",
+      "Hand Limit",
+      "Keyflare"
+    ]
+  },
+  "awakener-0002": {
+    "searchTags": [
+      "Poison",
+      "Alert",
+      "STR Up",
+      "Draw",
+      "Spider"
+    ]
+  },
+  "awakener-0003": {
+    "searchTags": [
+      "Vulnerable",
+      "Stun",
+      "Draw",
+      "Keyflare"
+    ]
+  },
+  "awakener-0004": {
+    "searchTags": [
+      "Vulnerable",
+      "Alert",
+      "Dispel",
+      "Death Resistance",
+      "Discard",
+      "Draw",
+      "Strike"
+    ]
+  },
+  "awakener-0005": {
+    "searchTags": [
+      "STR Up",
+      "Tentacle DMG",
+      "Pierce DMG",
+      "Aftershock",
+      "Discard",
+      "Draw",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0006": {
+    "searchTags": [
+      "Counter",
+      "STR Up",
+      "Tentacle DMG",
+      "Dispel",
+      "Heal",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0007": {
+    "searchTags": [
+      "STR Up",
+      "Aftershock",
+      "Arithmetica",
+      "Discard",
+      "Draw"
+    ]
+  },
+  "awakener-0008": {
+    "searchTags": [
+      "Weakness",
+      "Corrosion",
+      "Draw"
+    ]
+  },
+  "awakener-0009": {
+    "searchTags": [
+      "Weakness",
+      "Tentacle DMG",
+      "Dispel",
+      "Arithmetica",
+      "Heal",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0010": {
+    "searchTags": [
+      "Bleed",
+      "STR Up",
+      "Dispel",
+      "Keyflare"
+    ]
+  },
+  "awakener-0011": {
+    "searchTags": [
+      "Weakness",
+      "STR Up",
+      "Tentacle DMG",
+      "Aftershock",
+      "Death Resistance",
+      "Discard",
+      "Draw",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0012": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Poison",
+      "Counter",
+      "STR Up",
+      "Pierce DMG",
+      "Arithmetica",
+      "Draw",
+      "Keyflare"
+    ]
+  },
+  "awakener-0013": {
+    "searchTags": [
+      "Weakness",
+      "Dispel",
+      "Discard",
+      "Heal"
+    ]
+  },
+  "awakener-0014": {
+    "searchTags": [
+      "Vulnerable",
+      "STR Up",
+      "Pierce DMG",
+      "Fixed DMG",
+      "Self-Damage"
+    ]
+  },
+  "awakener-0015": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Alert",
+      "STR Up",
+      "Dispel",
+      "Keyflare"
+    ]
+  },
+  "awakener-0016": {
+    "searchTags": [
+      "Weakness",
+      "Counter",
+      "STR Up",
+      "STR Down",
+      "Steal STR",
+      "Fixed DMG",
+      "Dispel",
+      "Death Resistance",
+      "Heal"
+    ]
+  },
+  "awakener-0017": {
+    "searchTags": [
+      "Poison",
+      "Tentacle DMG",
+      "Dispel",
+      "Arithmetica",
+      "Draw",
+      "Hand Limit",
+      "Lemurian",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0018": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Poison",
+      "Fixed DMG",
+      "Arithmetica",
+      "Draw",
+      "Heal",
+      "Max HP DMG",
+      "Self-Damage"
+    ]
+  },
+  "awakener-0019": {
+    "searchTags": [
+      "Bleed",
+      "STR Up",
+      "Draw",
+      "Hand Limit",
+      "Heal",
+      "Self-Damage",
+      "Strike"
+    ]
+  },
+  "awakener-0020": {
+    "searchTags": [
+      "STR Up",
+      "STR Down",
+      "Arithmetica",
+      "Draw",
+      "Keyflare"
+    ]
+  },
+  "awakener-0021": {
+    "searchTags": [
+      "STR Up",
+      "Tentacle DMG",
+      "Dispel",
+      "Lemurian",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0022": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Poison",
+      "Bleed",
+      "STR Up",
+      "STR Down",
+      "Steal STR",
+      "Pierce DMG",
+      "Arithmetica"
+    ]
+  },
+  "awakener-0023": {
+    "searchTags": [
+      "Dispel",
+      "Discard",
+      "Draw",
+      "Hand Limit",
+      "Self-Damage",
+      "Strike"
+    ]
+  },
+  "awakener-0024": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Counter",
+      "STR Up",
+      "STR Down",
+      "Death Resistance",
+      "Heal"
+    ]
+  },
+  "awakener-0025": {
+    "searchTags": [
+      "Draw"
+    ]
+  },
+  "awakener-0026": {
+    "searchTags": [
+      "Weakness",
+      "Poison",
+      "Dispel",
+      "Arithmetica",
+      "Draw",
+      "Heal",
+      "Keyflare"
+    ]
+  },
+  "awakener-0027": {
+    "searchTags": [
+      "STR Up",
+      "Pierce DMG",
+      "Dispel",
+      "Discard",
+      "Draw"
+    ]
+  },
+  "awakener-0028": {
+    "searchTags": [
+      "STR Up",
+      "Pierce DMG",
+      "Dispel",
+      "Heal",
+      "Self-Damage"
+    ]
+  },
+  "awakener-0029": {
+    "searchTags": [
+      "Poison",
+      "Death Resistance",
+      "Heal",
+      "Strike"
+    ]
+  },
+  "awakener-0030": {
+    "searchTags": [
+      "Poison",
+      "STR Up",
+      "Pierce DMG",
+      "Discard",
+      "Draw"
+    ]
+  },
+  "awakener-0031": {
+    "searchTags": [
+      "STR Up",
+      "Fixed DMG",
+      "Dispel",
+      "Max HP DMG",
+      "Strike"
+    ]
+  },
+  "awakener-0032": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Poison",
+      "STR Up",
+      "STR Down",
+      "Tentacle DMG",
+      "Pierce DMG",
+      "Arithmetica",
+      "Draw",
+      "Heal",
+      "Lemurian",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0033": {
+    "searchTags": [
+      "Stun",
+      "Pursuit",
+      "Death Resistance",
+      "Strike"
+    ]
+  },
+  "awakener-0034": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Tentacle DMG",
+      "Aftershock",
+      "Dispel",
+      "Arithmetica",
+      "Keyflare",
+      "Tentacle Generation",
+      "Sacrifice"
+    ]
+  },
+  "awakener-0035": {
+    "searchTags": [
+      "Tentacle DMG",
+      "Aftershock",
+      "Arithmetica",
+      "Divine Realm",
+      "Draw",
+      "Keyflare",
+      "Lemurian",
+      "Tentacle Generation",
+      "Sacrifice"
+    ]
+  },
+  "awakener-0036": {
+    "searchTags": [
+      "Counter",
+      "Fixed DMG"
+    ]
+  },
+  "awakener-0037": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Poison",
+      "STR Up"
+    ]
+  },
+  "awakener-0038": {
+    "searchTags": [
+      "Vulnerable",
+      "STR Up",
+      "Pierce DMG",
+      "Dispel"
+    ]
+  },
+  "awakener-0039": {
+    "searchTags": [
+      "Vulnerable",
+      "Counter",
+      "STR Up",
+      "Steal STR",
+      "Dispel"
+    ]
+  },
+  "awakener-0040": {
+    "searchTags": [
+      "STR Up",
+      "Steal STR",
+      "Discover",
+      "Arithmetica",
+      "Draw"
+    ]
+  },
+  "awakener-0041": {
+    "searchTags": [
+      "Bleed",
+      "Discard",
+      "Draw"
+    ]
+  },
+  "awakener-0042": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "STR Up",
+      "STR Down",
+      "Arithmetica",
+      "Discard",
+      "Draw",
+      "Keyflare"
+    ]
+  },
+  "awakener-0043": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "STR Up",
+      "Arithmetica",
+      "Draw",
+      "Keyflare"
+    ]
+  },
+  "awakener-0044": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Barrier",
+      "STR Up",
+      "Heal",
+      "Self-Damage"
+    ]
+  },
+  "awakener-0045": {
+    "searchTags": [
+      "Tentacle DMG",
+      "Aftershock",
+      "Dispel",
+      "Death Resistance",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0046": {
+    "searchTags": [
+      "STR Up",
+      "Death Resistance",
+      "Heal",
+      "Self-Damage"
+    ]
+  },
+  "awakener-0047": {
+    "searchTags": [
+      "Barrier",
+      "STR Up",
+      "Pierce DMG",
+      "Fixed DMG",
+      "Arithmetica",
+      "Discard",
+      "Draw",
+      "Keyflare",
+      "Max HP DMG"
+    ]
+  },
+  "awakener-0048": {
+    "searchTags": [
+      "Weakness",
+      "Vulnerable",
+      "Poison",
+      "Bleed",
+      "Counter",
+      "STR Up",
+      "Arithmetica",
+      "Keyflare"
+    ]
+  },
+  "awakener-0049": {
+    "searchTags": [
+      "STR Up",
+      "Steal STR",
+      "Dispel",
+      "Arithmetica",
+      "Draw",
+      "Strike"
+    ]
+  },
+  "awakener-0050": {
+    "searchTags": [
+      "STR Up",
+      "STR Down",
+      "Tentacle DMG",
+      "Pierce DMG",
+      "Aftershock",
+      "Dispel",
+      "Lemurian",
+      "Tentacle Generation"
+    ]
+  },
+  "awakener-0051": {
+    "searchTags": [
+      "STR Up",
+      "Self-Damage"
+    ]
+  },
+  "awakener-0052": {
+    "searchTags": [
+      "Counter",
+      "STR Down"
+    ]
+  },
+  "awakener-0053": {
+    "searchTags": [
+      "Counter",
+      "Dispel",
+      "Discard",
+      "Draw",
+      "Keyflare"
+    ]
+  },
+  "awakener-0054": {
+    "searchTags": [
+      "Poison",
+      "STR Down",
+      "Fixed DMG",
+      "Arithmetica",
+      "Max HP DMG"
+    ]
+  },
+  "awakener-0055": {
+    "searchTags": [
+      "Tentacle DMG",
+      "Pursuit",
+      "Fixed DMG",
+      "Aftershock",
+      "Dispel",
+      "Divine Realm"
+    ]
+  },
+  "awakener-0056": {
+    "searchTags": [
+      "Poison",
+      "Counter",
+      "Final Verdict",
+      "STR Up",
+      "STR Down",
+      "Tentacle DMG",
+      "Pursuit",
+      "Fixed DMG",
+      "Divine Realm",
+      "Self-Damage",
+      "Spider"
+    ]
+  },
+  "awakener-0057": {
+    "searchTags": [
+      "Discard",
+      "Corrosion",
+      "Divine Realm",
+      "Self-Damage"
+    ]
+  }
+}

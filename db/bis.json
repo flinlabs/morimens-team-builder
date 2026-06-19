@@ -1,0 +1,3003 @@
+{
+ "awakener-0001": {
+  "awakenerId": "awakener-0001",
+  "variants": [
+   {
+    "variant": "DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0121",
+      "wheelName": "Sunfall"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0018",
+      "wheelName": "Celestial Beast"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0088",
+      "wheelName": "Nobleman's Staff"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0020",
+      "covenantName": "Steppenwolf"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare",
+     "DMG AMP"
+    ],
+    "notes": "Alt cov: Pulse. Alt SR: Critical Point (boss no mobs), Analysis of Death (mobs)."
+   },
+   {
+    "variant": "Support",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0016",
+      "wheelName": "Manikin of Oblivion"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0015",
+      "wheelName": "Deathless Ascent"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0077",
+      "wheelName": "Duty gravitas"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "DMG AMP"
+    ],
+    "notes": "Alt SSR: Aberrant Devour"
+   }
+  ]
+ },
+ "awakener-0004": {
+  "awakenerId": "awakener-0004",
+  "variants": [
+   {
+    "variant": "Standard Support",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0122",
+      "wheelName": "Birth of a Soul"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0021",
+      "wheelName": "Memory Spiral"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     },
+     {
+      "tier": "GOOD",
+      "wheelId": "wheel-0094",
+      "wheelName": "Isarau's Gaze"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "DMG AMP",
+     "DR"
+    ],
+    "notes": "Flexible filler \u2014 can carry any wheels/covenants. Alt SR: 35mm Magic. Alt cov: Paradox."
+   },
+   {
+    "variant": "DPS Arc 2",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0024",
+      "wheelName": "Grace Through Pain"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "DR"
+    ],
+    "notes": "Memory Spiral useful in team."
+   }
+  ]
+ },
+ "awakener-0013": {
+  "awakenerId": "awakener-0013",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0015",
+      "wheelName": "Deathless Ascent"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0016",
+      "wheelName": "Manikin of Oblivion"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     }
+    ],
+    "preferredStats": [
+     "Aliemus",
+     "Keyflare",
+     "DMG AMP"
+    ],
+    "notes": "Alt cov: Burial Ground's Sighs. Alt SR: Duty gravitas."
+   }
+  ]
+ },
+ "awakener-0018": {
+  "awakenerId": "awakener-0018",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0016",
+      "wheelName": "Manikin of Oblivion"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0034",
+      "wheelName": "Incalculable Factor"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     }
+    ],
+    "preferredStats": [
+     "Aliemus",
+     "Keyflare",
+     "DMG AMP"
+    ],
+    "notes": "Alt SR: Duty gravitas."
+   }
+  ]
+ },
+ "awakener-0022": {
+  "awakenerId": "awakener-0022",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0001",
+      "wheelName": "Merciful Nurturing"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     },
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Aliemus",
+     "DMG AMP"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "awakener-0027": {
+  "awakenerId": "awakener-0027",
+  "variants": [
+   {
+    "variant": "DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0028",
+      "wheelName": "Amber-Tinted Death"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "analisys of death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare",
+     "AMP"
+    ],
+    "notes": ""
+   },
+   {
+    "variant": "Tank",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0025",
+      "wheelName": "Will Unyielding"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     },
+     {
+      "covenantId": "covenant-0009",
+      "covenantName": "Paradox"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare",
+     "AMP"
+    ],
+    "notes": "Use Land or Will, not both. Alt SSR after Will: The Last Verse."
+   }
+  ]
+ },
+ "awakener-0026": {
+  "awakenerId": "awakener-0026",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0050",
+      "wheelName": "Hymn of the Sovereign"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0034",
+      "wheelName": "Incalculable Factor"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0001",
+      "covenantName": "Deus Ex Machina"
+     }
+    ],
+    "preferredStats": [
+     "Aliemus",
+     "Keyflare",
+     "DMG AMP"
+    ],
+    "notes": "Flexible filler \u2014 can carry any wheels/covenants."
+   }
+  ]
+ },
+ "awakener-0029": {
+  "awakenerId": "awakener-0029",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0024",
+      "wheelName": "Grace Through Pain"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0025",
+      "wheelName": "Will Unyielding"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     },
+     {
+      "covenantId": "covenant-0007",
+      "covenantName": "Twisted Twins: White"
+     }
+    ],
+    "preferredStats": [
+     "DR",
+     "Keyflare",
+     "Crit Rate"
+    ],
+    "notes": "Alt cov: Burial Ground's Sighs. Alt SSR: Dusk and Dawn."
+   }
+  ]
+ },
+ "awakener-0031": {
+  "awakenerId": "awakener-0031",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0024",
+      "wheelName": "Grace Through Pain"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0018",
+      "wheelName": "Celestial Beast"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0092",
+      "wheelName": "Hand of Oblivion"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Best in Arc 2 (Astral Reign) with soulforge + dupes. Alt SSR: Chains Unbound, Blade of the Titan."
+   }
+  ]
+ },
+ "awakener-0033": {
+  "awakenerId": "awakener-0033",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0024",
+      "wheelName": "Grace Through Pain"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "DR",
+     "Crit DMG"
+    ],
+    "notes": "SR 35mm Magic good if you proc DR. Alt SSR: Celestial Beast, Doomsday Rampage."
+   }
+  ]
+ },
+ "awakener-0036": {
+  "awakenerId": "awakener-0036",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0021",
+      "wheelName": "Memory Spiral"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0122",
+      "wheelName": "Birth of a Soul"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "AMP",
+     "Aliemus"
+    ],
+    "notes": "Flexible filler. Alt cov: Re-evolution."
+   }
+  ]
+ },
+ "awakener-0037": {
+  "awakenerId": "awakener-0037",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0016",
+      "wheelName": "Manikin of Oblivion"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0022",
+      "wheelName": "Gift of Decay"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0020",
+      "covenantName": "Steppenwolf"
+     },
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "AMP",
+     "Aliemus"
+    ],
+    "notes": "Flexible filler. Alt cov: Re-evolution."
+   }
+  ]
+ },
+ "awakener-0038": {
+  "awakenerId": "awakener-0038",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0122",
+      "wheelName": "Birth of a Soul"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "BSigils",
+     "Aliemus"
+    ],
+    "notes": "Flexible filler."
+   }
+  ]
+ },
+ "awakener-0039": {
+  "awakenerId": "awakener-0039",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0023",
+      "wheelName": "Drifting in Desire"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0008",
+      "wheelName": "Bloody Feast"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Alt cov: Ring of Chamber 36."
+   }
+  ]
+ },
+ "awakener-0042": {
+  "awakenerId": "awakener-0042",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0001",
+      "wheelName": "Merciful Nurturing"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     },
+     {
+      "covenantId": "covenant-0001",
+      "covenantName": "Deus Ex Machina"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "AMP",
+     "Aliemus"
+    ],
+    "notes": "Alt cov: any supportive w/ keyflare. Alt wheel: Winter's Requiem."
+   }
+  ]
+ },
+ "awakener-0020": {
+  "awakenerId": "awakener-0020",
+  "variants": [
+   {
+    "variant": "Support",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0001",
+      "wheelName": "Merciful Nurturing"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     },
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Aliemus",
+     "AMP"
+    ],
+    "notes": "Can use anything keyflare."
+   },
+   {
+    "variant": "DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0040",
+      "wheelName": "Eternal Requiem"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0009",
+      "covenantName": "Paradox"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Crit Rate",
+     "Crit DMG"
+    ],
+    "notes": "Alt cov: Dream of Medicine."
+   }
+  ]
+ },
+ "awakener-0043": {
+  "awakenerId": "awakener-0043",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0019",
+      "wheelName": "Hour of Fortune"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0036",
+      "wheelName": "Path Forsaken"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0103",
+      "wheelName": "Fate Roulette"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0003",
+      "covenantName": "Scarlet Embrace"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "BSigil",
+     "Keyflare"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "awakener-0047": {
+  "awakenerId": "awakener-0047",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0027",
+      "wheelName": "Wheel Unseen"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0090",
+      "wheelName": "Moment of Reunion"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Keyflare",
+     "Crit DMG"
+    ],
+    "notes": "Alt cov: Crimson Pulse or Life Drain for support."
+   }
+  ]
+ },
+ "awakener-0005": {
+  "awakenerId": "awakener-0005",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0036",
+      "wheelName": "Path Forsaken"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0090",
+      "wheelName": "Moment of Reunion"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0097",
+      "wheelName": "Til the Snow Melts"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0003",
+      "covenantName": "Scarlet Embrace"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Aliemus"
+    ],
+    "notes": "Alt SSR: By Rose Alone. Alt SR: Analysis of Death, Silver Cod."
+   }
+  ]
+ },
+ "awakener-0006": {
+  "awakenerId": "awakener-0006",
+  "variants": [
+   {
+    "variant": "defence",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0053",
+      "wheelName": "Fin of Sorrow"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0122",
+      "wheelName": "Birth of a Soul"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Aliemus",
+     "AMP"
+    ],
+    "notes": "Alt SR: Data is Flesh, Cloaked in the Night, Elevated Focus."
+   },
+   {
+    "variant": "counter carry",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0121",
+      "wheelName": "Sunfall"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0084",
+      "wheelName": "To My Dearest Friend"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0020",
+      "covenantName": "Steppenwolf"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "awakener-0009": {
+  "awakenerId": "awakener-0009",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0122",
+      "wheelName": "Birth of a Soul"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0123",
+      "wheelName": "Dusk and Dawn"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     },
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Aliemus",
+     "AMP"
+    ],
+    "notes": "Flexible filler."
+   }
+  ]
+ },
+ "awakener-0011": {
+  "awakenerId": "awakener-0011",
+  "variants": [
+   {
+    "variant": "DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0035",
+      "wheelName": "The Last Verse"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0084",
+      "wheelName": "To My Dearest Friend"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicaments"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Alt SSR: Chains Unbound."
+   },
+   {
+    "variant": "sup",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0035",
+      "wheelName": "The Last Verse"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0005",
+      "wheelName": "Chains Unbound"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0084",
+      "wheelName": "To My Dearest Friend"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "DR"
+    ],
+    "notes": "Alt SSR: Death of Ms. Coral. Alt cov: Re-evolution."
+   }
+  ]
+ },
+ "awakener-0017": {
+  "awakenerId": "awakener-0017",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0052",
+      "wheelName": "Amidst the Downpour"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0122",
+      "wheelName": "Birth of a Soul"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0102",
+      "wheelName": "Slumber Beneath the Glacier"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "AMP",
+     "Aliemus"
+    ],
+    "notes": "Alt cov: Re-evolution."
+   }
+  ]
+ },
+ "awakener-0021": {
+  "awakenerId": "awakener-0021",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0050",
+      "wheelName": "Hymn of the Sovereign"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0052",
+      "wheelName": "Amidst the Downpour"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0084",
+      "wheelName": "To My Dearest Friend"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "AMP",
+     "Aliemus"
+    ],
+    "notes": "Flexible filler. Opt SSR: Dream of the Sea, Birth of a Soul (w/ Twisted Twins: Black)."
+   }
+  ]
+ },
+ "awakener-0032": {
+  "awakenerId": "awakener-0032",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0056",
+      "wheelName": "Power of the Pious"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0034",
+      "wheelName": "Incalculable Factor"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Crit DMG",
+     "Aliemus"
+    ],
+    "notes": "Can be a Keyflare generator with Life-Drain + Keyflare wheels."
+   }
+  ]
+ },
+ "awakener-0034": {
+  "awakenerId": "awakener-0034",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0051",
+      "wheelName": "Shrouded Birth"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     },
+     {
+      "covenantId": "covenant-0007",
+      "covenantName": "Twisted Twins: White"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "AMP",
+     "Aliemus"
+    ],
+    "notes": "Alt SR: Moment of Reunion, Slumber Beneath the Glacier."
+   }
+  ]
+ },
+ "awakener-0035": {
+  "awakenerId": "awakener-0035",
+  "variants": [
+   {
+    "variant": "sup",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0131",
+      "wheelName": "Uteri Somnia"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0090",
+      "wheelName": "Moment of Reunion"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     },
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "AMP",
+     "Aliemus"
+    ],
+    "notes": "Alt SSR: Merciful Nurturing."
+   },
+   {
+    "variant": "dps",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0027",
+      "wheelName": "Wheel Unseen"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0090",
+      "wheelName": "Moment of Reunion"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Keyflare",
+     "Crit DMG"
+    ],
+    "notes": "Alt SSR: Rewinding Time (if high crit). Alt SR: Never-Ending Performance."
+   }
+  ]
+ },
+ "awakener-0045": {
+  "awakenerId": "awakener-0045",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0025",
+      "wheelName": "Will Unyielding"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0024",
+      "wheelName": "Grace Through Pain"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0093",
+      "wheelName": "35mm Magic"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0012",
+      "covenantName": "Ring of Chamber 36"
+     },
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "DR",
+     "Crit Rate",
+     "Crit DMG"
+    ],
+    "notes": "DPS build for specific cases. General defense: Feast + Land of Nonexistence."
+   }
+  ]
+ },
+ "awakener-0050": {
+  "awakenerId": "awakener-0050",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0050",
+      "wheelName": "Hymn of the Sovereign"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0034",
+      "wheelName": "Incalculable Factor"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0084",
+      "wheelName": "To My Dearest Friend"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0107",
+      "wheelName": "Blue Stone Throne"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     }
+    ],
+    "preferredStats": [
+     "Aliemus",
+     "Keyflare",
+     "Crit Rate"
+    ],
+    "notes": "Alt SR: Elevated Focus or other Aliemus regen wheels."
+   }
+  ]
+ },
+ "awakener-0055": {
+  "awakenerId": "awakener-0055",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0060",
+      "wheelName": "The Faraway Eden"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0021",
+      "wheelName": "Memory Spiral"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0011",
+      "covenantName": "Returnal Line"
+     },
+     {
+      "covenantId": "covenant-0001",
+      "covenantName": "Deus Ex Machina"
+     }
+    ],
+    "preferredStats": [
+     "Realm Mastery",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Alt SSR: We Will Meet Again (BiS). Alt SR: Imprisoned Madness. Alt cov: Dream of Medicine."
+   }
+  ]
+ },
+ "awakener-0002": {
+  "awakenerId": "awakener-0002",
+  "variants": [
+   {
+    "variant": "DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0121",
+      "wheelName": "Sunfall"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0020",
+      "covenantName": "Steppenwolf"
+     },
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicaments"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Thais is essential to make the DPS version work well."
+   },
+   {
+    "variant": "Support",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0007",
+      "wheelName": "Pale Descendant"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Sigil",
+     "AMP"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "awakener-0003": {
+  "awakenerId": "awakener-0003",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0001",
+      "wheelName": "Merciful Nurturing"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0003",
+      "wheelName": "Winter's Requiem"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     },
+     {
+      "covenantId": "covenant-0003",
+      "covenantName": "Scarlet Embrace"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Alt SSR: Rewinding Time. Alt SR: Moment of Reunion. Alt cov: Burial or any supportive."
+   }
+  ]
+ },
+ "awakener-0014": {
+  "awakenerId": "awakener-0014",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0011",
+      "wheelName": "Kiss of Repose"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0008",
+      "wheelName": "Bloody Feast"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Alt SSR: Amber-Tinted Death for STR staking. Use Crimson or Pulse depending on fight."
+   }
+  ]
+ },
+ "awakener-0016": {
+  "awakenerId": "awakener-0016",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0123",
+      "wheelName": "Dusk and Dawn"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0050",
+      "wheelName": "Hymn of the Sovereign"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0081",
+      "wheelName": "Cloaked in the Night"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0093",
+      "wheelName": "35mm Magic"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "DR",
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Likes to stack DR but not mandatory. Flexible filler."
+   }
+  ]
+ },
+ "awakener-0019": {
+  "awakenerId": "awakener-0019",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0006",
+      "wheelName": "Drowning in Crimson"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0092",
+      "wheelName": "Hand of Oblivion"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare",
+     "AMP"
+    ],
+    "notes": "Opt SSR: Celestial Beast."
+   }
+  ]
+ },
+ "awakener-0023": {
+  "awakenerId": "awakener-0023",
+  "variants": [
+   {
+    "variant": "Support",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0050",
+      "wheelName": "Hymn of the Sovereign"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0052",
+      "wheelName": "Amidst the Downpour"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Flexible filler."
+   },
+   {
+    "variant": "DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0006",
+      "wheelName": "Drowning in Crimson"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "awakener-0028": {
+  "awakenerId": "awakener-0028",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0122",
+      "wheelName": "Birth of a Soul"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0009",
+      "wheelName": "The Glutton's Tale"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     },
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Flexible filler."
+   }
+  ]
+ },
+ "awakener-0040": {
+  "awakenerId": "awakener-0040",
+  "variants": [
+   {
+    "variant": "supp",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0012",
+      "wheelName": "Paradoxical Realism"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0034",
+      "wheelName": "Incalculable Factor"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0084",
+      "wheelName": "To My Dearest Friend"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicaments"
+     },
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Aliemus",
+     "Any"
+    ],
+    "notes": "Opt SSR: Manikin of Oblivion, Deathless Ascent. Opt cov: Scarlet Embrace."
+   },
+   {
+    "variant": "Sub DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0006",
+      "wheelName": "Drowning in Crimson"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicaments"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Crit DMG",
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "If few mobs, use To My Dearest Friend or other crit dmg wheels. Opt SSR: Chains Unbound."
+   }
+  ]
+ },
+ "awakener-0044": {
+  "awakenerId": "awakener-0044",
+  "variants": [
+   {
+    "variant": "Support",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0002",
+      "wheelName": "Tablet of Scriptures"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0089",
+      "wheelName": "Data is Flesh"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0009",
+      "covenantName": "Paradox"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Alt SSR: The Last Verse."
+   },
+   {
+    "variant": "DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0002",
+      "wheelName": "Tablet of Scriptures"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0009",
+      "covenantName": "Paradox"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Alt SSR: The Last Verse."
+   }
+  ]
+ },
+ "awakener-0046": {
+  "awakenerId": "awakener-0046",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0004",
+      "wheelName": "By Rose Alone"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0008",
+      "wheelName": "Bloody Feast"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0101",
+      "wheelName": "Million Loving Gaze"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0012",
+      "covenantName": "Ring of Chamber 36"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Alt SSR: Path Forsaken."
+   }
+  ]
+ },
+ "awakener-0048": {
+  "awakenerId": "awakener-0048",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0001",
+      "wheelName": "Merciful Nurturing"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0034",
+      "wheelName": "Incalculable Factor"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     },
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Opt SSR: Deathless Ascent."
+   }
+  ]
+ },
+ "awakener-0051": {
+  "awakenerId": "awakener-0051",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0008",
+      "wheelName": "Bloody Feast"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "awakener-0054": {
+  "awakenerId": "awakener-0054",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0013",
+      "wheelName": "Vain Regrets"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0026",
+      "wheelName": "Silent Banquet"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicaments"
+     },
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     }
+    ],
+    "preferredStats": [
+     "AMP",
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Alt cov: Burial Ground (if enough Death Resist). Flexible filler."
+   }
+  ]
+ },
+ "awakener-0007": {
+  "awakenerId": "awakener-0007",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0052",
+      "wheelName": "Amidst the Downpour"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0038",
+      "wheelName": "Happy Magic Show"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0080",
+      "wheelName": "Sever and Scar"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     },
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "RM",
+     "AMP"
+    ],
+    "notes": "Alt cov: Scarlet Embrace. Flexible filler."
+   }
+  ]
+ },
+ "awakener-0008": {
+  "awakenerId": "awakener-0008",
+  "variants": [
+   {
+    "variant": "general/dps",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0121",
+      "wheelName": "Sunfall"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0005",
+      "wheelName": "Chains Unbound"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0080",
+      "wheelName": "Sever and Scar"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0094",
+      "wheelName": "Isarau\u2019s Gaze"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     },
+     {
+      "covenantId": "covenant-0005",
+      "covenantName": "Twisted Twins: Black"
+     }
+    ],
+    "preferredStats": [
+     "AMP",
+     "Crit DMG"
+    ],
+    "notes": "SSR opt: Drowning in Crimson. SR opt: Lone Feather. Cov opt: Steppenwolf or mixed Damage AMP."
+   },
+   {
+    "variant": "tank focus",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0039",
+      "wheelName": "Unbearable Freedom"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0052",
+      "wheelName": "Amidst the Downpour"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0094",
+      "wheelName": "Isarau\u2019s Gaze"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     },
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     }
+    ],
+    "preferredStats": [
+     "AMP",
+     "Keyflare",
+     "DR"
+    ],
+    "notes": "SSR opt: Memory Spiral."
+   },
+   {
+    "variant": "Support",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0039",
+      "wheelName": "Unbearable Freedom"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0052",
+      "wheelName": "Amidst the Downpour"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0080",
+      "wheelName": "Sever and Scar"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0094",
+      "wheelName": "Isarau\u2019s Gaze"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0005",
+      "covenantName": "Twisted Twins: Black"
+     },
+     {
+      "covenantId": "covenant-0010",
+      "covenantName": "Photosynthesis Rite"
+     }
+    ],
+    "preferredStats": [
+     "AMP",
+     "Keyflare",
+     "DR"
+    ],
+    "notes": "Use Photosynthesis only in Caro teams."
+   }
+  ]
+ },
+ "awakener-0010": {
+  "awakenerId": "awakener-0010",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0041",
+      "wheelName": "Veiled Anguish"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0052",
+      "wheelName": "Amidst the Downpour"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     },
+     {
+      "covenantId": "covenant-0005",
+      "covenantName": "Twisted Twins: Black"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Use Downpour with TT:Black + keyflare. Works with any keyflare wheel. Cov: Photosynthesis (caro only)."
+   }
+  ]
+ },
+ "awakener-0012": {
+  "awakenerId": "awakener-0012",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0031",
+      "wheelName": "Treasured Rarity"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0020",
+      "covenantName": "Steppenwolf"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare",
+     "AMP"
+    ],
+    "notes": "Before E2 can use Paradox cov. Alt SSR: Sunfall."
+   }
+  ]
+ },
+ "awakener-0015": {
+  "awakenerId": "awakener-0015",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0124",
+      "wheelName": "Heart of Silver"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0037",
+      "wheelName": "Core Meltdown"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     },
+     {
+      "covenantId": "covenant-0008",
+      "covenantName": "Cursed Rabbit"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "SR opt: Moment of Reunion, any keyflare."
+   }
+  ]
+ },
+ "awakener-0024": {
+  "awakenerId": "awakener-0024",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0123",
+      "wheelName": "Dusk and Dawn"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0035",
+      "wheelName": "The Last Verse"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0085",
+      "wheelName": "Memory Syndrome"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0100",
+      "wheelName": "Poetic Bygone Days"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "DR",
+     "Keyflare"
+    ],
+    "notes": "Alt cov: a Twin set (black/white) if E1 and want more vuln/weakness. Mouchette event SR good for stance on posse."
+   }
+  ]
+ },
+ "awakener-0025": {
+  "awakenerId": "awakener-0025",
+  "variants": [
+   {
+    "variant": "DPS",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0028",
+      "wheelName": "Amber-Tinted Death"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "Alt SSR: Treasured Rarity, Path Forsaken. Alt SR: Critical Point (no mobs)."
+   },
+   {
+    "variant": "Support",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0050",
+      "wheelName": "Hymn of the Sovereign"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0123",
+      "wheelName": "Dusk and Dawn"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0084",
+      "wheelName": "To My Dearest Friend"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0006",
+      "covenantName": "Burial Ground's Sighs"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Aliemus",
+     "AMP"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "awakener-0030": {
+  "awakenerId": "awakener-0030",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0121",
+      "wheelName": "Sunfall"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0030",
+      "wheelName": "Fouett\u00e9"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0110",
+      "wheelName": "Witch\u2019s Wide-brimmed Hat"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0020",
+      "covenantName": "Steppenwolf"
+     },
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": "A +2 hand size wheel preferable. Alt SSR: Unbearable Freedom, Chains Unbound, Gift of Decay."
+   }
+  ]
+ },
+ "awakener-0041": {
+  "awakenerId": "awakener-0041",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0042",
+      "wheelName": "Twisted Knight Ballad"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0055",
+      "wheelName": "Blade of the Titan"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0083",
+      "wheelName": "Analysis of Death"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0014",
+      "covenantName": "April Tribute"
+     },
+     {
+      "covenantId": "covenant-0004",
+      "covenantName": "Crimson Pulse"
+     }
+    ],
+    "preferredStats": [
+     "Crit Rate",
+     "Crit DMG",
+     "Keyflare"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "awakener-0049": {
+  "awakenerId": "awakener-0049",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0051",
+      "wheelName": "Shrouded Birth"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0021",
+      "wheelName": "Memory Spiral"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0091",
+      "wheelName": "The Land of Nonexistence"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0107",
+      "wheelName": "Blue Stone Throne"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0018",
+      "covenantName": "Feast from Afar"
+     },
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Sigil",
+     "AMP"
+    ],
+    "notes": "Flexible filler."
+   }
+  ]
+ },
+ "awakener-0052": {
+  "awakenerId": "awakener-0052",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0033",
+      "wheelName": "Queen's Edict"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0053",
+      "wheelName": "Fin of Sorrow"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0081",
+      "wheelName": "Cloaked in the Night"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0020",
+      "covenantName": "Steppenwolf"
+     },
+     {
+      "covenantId": "covenant-0017",
+      "covenantName": "Dream of Medicine"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "AMP"
+    ],
+    "notes": "Crit only in Arc 1. Alt SSR: Drifting in Desire. Alt SR: Elevated Focus."
+   }
+  ]
+ },
+ "awakener-0053": {
+  "awakenerId": "awakener-0053",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0041",
+      "wheelName": "Veiled Anguish"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0034",
+      "wheelName": "Incalculable Factor"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0078",
+      "wheelName": "Elevated Focus"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0095",
+      "wheelName": "Man in the Mirror"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     }
+    ],
+    "preferredStats": [
+     "Keyflare",
+     "Aliemus",
+     "AMP"
+    ],
+    "notes": "SSR opt: Deathless Ascent, Manikin of Oblivion, Hymn of the Sovereign, Happy Magic Show."
+   }
+  ]
+ },
+ "awakener-0056": {
+  "awakenerId": "awakener-0056",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0128",
+      "wheelName": "Eternal Weave"
+     },
+     {
+      "tier": "ALT_SSR",
+      "wheelId": "wheel-0014",
+      "wheelName": "Rewinding Time"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0089",
+      "wheelName": "Data is Flesh"
+     },
+     {
+      "tier": "SR_SHOP",
+      "wheelId": "wheel-0104",
+      "wheelName": "Gateway of Truth"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0001",
+      "covenantName": "Deus Ex Machina"
+     },
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     }
+    ],
+    "preferredStats": [
+     "AMP",
+     "Keyflare",
+     "RM"
+    ],
+    "notes": "SSR opt: We Will Meet Again, Memory Spiral. SR opt: Elevated Focus. Cov: Medicine, Burial, Rabbit."
+   }
+  ]
+ },
+ "awakener-0057": {
+  "awakenerId": "awakener-0057",
+  "variants": [
+   {
+    "variant": "standard",
+    "wheels": [
+     {
+      "tier": "BIS_SSR",
+      "wheelId": "wheel-0167",
+      "wheelName": "Fragrant Morphogenesis"
+     },
+     {
+      "tier": "BIS_SR",
+      "wheelId": "wheel-0168",
+      "wheelName": "Muddied Fairy Tale"
+     }
+    ],
+    "covenants": [
+     {
+      "covenantId": "covenant-0002",
+      "covenantName": "Re-evolution"
+     },
+     {
+      "covenantId": "covenant-0013",
+      "covenantName": "Life Drain"
+     }
+    ],
+    "preferredStats": [
+     "Aliemus",
+     "Keyflare",
+     "Any"
+    ],
+    "notes": "Signature wheels: Fragrant Morphogenesis (SSR) + Muddied Fairy Tale (SR). Aliemus-battery / corrosion CARO chorus."
+   }
+  ]
+ }
+}
