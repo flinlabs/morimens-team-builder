@@ -77,6 +77,15 @@ export type DescriptionArg =
   | { kind: 'scaling'; values: string[]; suffix?: string }
   | Record<string, unknown>
 
+export interface SkillUpgrade {
+  upgraderType?: string
+  upgraderSlot?: string
+  patch?: {
+    descriptionTemplate?: string
+    descriptionArgs?: Record<string, DescriptionArg>
+  }
+}
+
 // ---------------------------------------------------------------------------
 // SKeyDB base types (as they come from the per-record files)
 // ---------------------------------------------------------------------------
@@ -102,6 +111,7 @@ export interface SkeySkill {
   ownerAwakenerName: string
   descriptionTemplate: string
   descriptionArgs: Record<string, DescriptionArg>
+  upgrades?: SkillUpgrade[]
   route: { slug: string; canonicalPath: string }
 }
 
