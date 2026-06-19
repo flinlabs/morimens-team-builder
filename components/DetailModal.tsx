@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRosterStore } from "@/lib/store";
-import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg } from "@/lib/types";
+import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg, SkillUpgrade } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
-import { ScaledText, maxScalingIndex, applySkillUpgrades, type StatResolver, type SkillUpgrade } from "@/lib/template";
-import { resolvePrimaryStat, wheelMainStat } from "@/lib/stats";
+import { ScaledText, maxScalingIndex, applySkillUpgrades, type StatResolver } from "@/lib/template";
+import { resolvePrimaryStat, gnosticBonusLevels, wheelMainStat } from "@/lib/stats";
 import {
   ENLIGHTEN_MILESTONES,
   ENLIGHTEN_MAX,
@@ -510,8 +510,24 @@ export default function DetailModal({
               const d = detail && detail.kind === "awakener" ? detail : null;
               const passives = d?.talents.filter((t) => t.family === "passive") ?? [];
               // Resolve ATK/DEF/CON at the character's current level so skill cards
-              // can show real numbers instead of percentages.
+              // can show real numbers instead of percentages. Gnostic Potential
+              // ("+N Levels of Base Attributes") raises the effective level — for
+              // defaultMaxed units it's always maxed, matching the live game.
               const charLevel = e?.characterLevel ?? 1;
+              const gnosticTalent = d?.talents.find(
+                (t) => t.family === "gnostic_potential"
+              );
+              const gnosticLevel = gnosticTalent
+                ? gnosticTalent.defaultMaxed
+                  ? gnosticTalent.maxLevel ?? 0
+                  : e?.talentLevels?.gnosticPotential ?? 0
+                : 0;
+              const gnosticBonus = gnosticBonusLevels(
+                gnosticTalent?.descriptionArgs?.Arg1 as
+                  | { kind?: string; base?: string | number; gainPerLevel?: string | number }
+                  | undefined,
+                gnosticLevel
+              );
               const resolveStat: StatResolver | undefined =
                 d?.statScaling && d.primaryScalingBase != null
                   ? (statKey) => {
@@ -522,7 +538,8 @@ export default function DetailModal({
                         (d.statScaling as { CON: number; ATK: number; DEF: number })[
                           k as "CON" | "ATK" | "DEF"
                         ],
-                        charLevel
+                        charLevel,
+                        gnosticBonus
                       );
                     }
                   : undefined;
