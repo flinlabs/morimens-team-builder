@@ -50,12 +50,23 @@ export interface Catalog {
     isDivineRealm: boolean;
     isLemurian: boolean;
   }[];
-  wheels: { id: string; name: string; realm: string; rarity: string }[];
-  covenants: { id: string; name: string }[];
-  posses: { id: string; name: string; realm: string; hasCharacterBonus: boolean }[];
+  wheels: { id: string; name: string; realm: string; rarity: string; mainstatKey?: string }[];
+  covenants: { id: string; name: string; effect?: string; effect3?: string }[];
+  posses: { id: string; name: string; realm: string; hasCharacterBonus: boolean; effect?: string }[];
 }
 
 const ENLIGHTEN: EnlightenSlot[] = ["E0", "E1", "E2", "E3", "OE", "AA"];
+
+const MAINSTAT_LABEL: Record<string, string> = {
+  CRIT_RATE: "Crit Rate",
+  CRIT_DMG: "Crit DMG",
+  DMG_AMP: "DMG Amplification",
+  ALIEMUS_REGEN: "Aliemus Regen",
+  KEYFLARE_REGEN: "Keyflare Regen",
+  REALM_MASTERY: "Realm Mastery",
+  DEATH_RESISTANCE: "Death Resistance",
+  SIGIL_YIELD: "Sigil Yield",
+};
 /* ---------------------------------------------------------------------------
    Small UI atoms
 --------------------------------------------------------------------------- */
@@ -240,6 +251,8 @@ function GearTile({
   category,
   realm,
   owned,
+  mainstat,
+  effect,
   badge,
   badgeColor,
   onToggle,
@@ -250,11 +263,14 @@ function GearTile({
   category: "wheels" | "covenants" | "posses";
   realm?: string;
   owned: boolean;
+  mainstat?: string;
+  effect?: string;
   badge?: string;
   badgeColor?: string;
   onToggle: () => void;
   onDetails?: () => void;
 }) {
+  const isWheel = category === "wheels";
   return (
     <div
       role="button"
@@ -264,13 +280,17 @@ function GearTile({
         if (e.key === "Enter" || e.key === " ") onToggle();
       }}
       title={name}
-      className={`flex cursor-pointer items-center gap-2 rounded-md border p-1.5 text-left transition ${
+      className={`flex cursor-pointer gap-2.5 rounded-lg border p-2 text-left transition ${
         owned
           ? "border-[var(--gold)] bg-[var(--panel-2)]"
           : "border-[var(--border)] bg-[var(--panel)] hover:border-[var(--border-bright)]"
       }`}
     >
-      <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded bg-[var(--bg-2)]">
+      <div
+        className={`relative shrink-0 overflow-hidden rounded bg-[var(--bg-2)] ${
+          isWheel ? "h-[72px] w-[54px]" : "h-[60px] w-[60px]"
+        }`}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`/assets/${category}/${id}.webp`}
@@ -279,32 +299,44 @@ function GearTile({
           className={`h-full w-full object-cover ${owned ? "" : "opacity-50 grayscale"}`}
         />
         {realm && realm !== "NEUTRAL" && (
-          <div className="absolute left-0 top-0">
-            <RealmSigil realm={realm} size={11} />
+          <div className="absolute left-0.5 top-0.5">
+            <RealmSigil realm={realm} size={12} />
           </div>
         )}
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="truncate text-xs text-[var(--text)]">{name}</div>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex items-start gap-1">
+          <span className="font-display min-w-0 flex-1 truncate text-[13px] font-medium text-[var(--text)]">
+            {name}
+          </span>
+          {owned && <span className="text-xs text-[var(--gold)]">✓</span>}
+          {onDetails && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDetails();
+              }}
+              title="Customize / view details"
+              className="-mr-1 -mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
+            >
+              ⋯
+            </button>
+          )}
+        </div>
+        {mainstat && (
+          <div className="mt-0.5 text-[11px] font-medium text-[var(--realm-aequor)]">{mainstat}</div>
+        )}
+        {effect && (
+          <p className="mt-0.5 line-clamp-3 text-[10.5px] leading-snug text-[var(--text-muted)]">
+            {effect}
+          </p>
+        )}
         {badge && (
-          <div className="text-[10px]" style={{ color: badgeColor }}>
+          <div className="mt-auto pt-0.5 text-[10px]" style={{ color: badgeColor }}>
             {badge}
           </div>
         )}
       </div>
-      {owned && <span className="text-xs text-[var(--gold)]">✓</span>}
-      {onDetails && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDetails();
-          }}
-          title="Customize / view details"
-          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
-        >
-          ⋯
-        </button>
-      )}
     </div>
   );
 }
@@ -1183,8 +1215,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               category="wheels"
               realm={w.realm}
               owned={owned}
-              badge={w.rarity}
-              badgeColor="var(--text-dim)"
+              mainstat={w.mainstatKey ? MAINSTAT_LABEL[w.mainstatKey] ?? w.mainstatKey : undefined}
               onToggle={() => setWheelOwned(w.id, !owned)}
               onDetails={() =>
                 setDetail({ kind: "wheel", id: w.id, name: w.name, realm: w.realm, rarity: w.rarity })
@@ -1236,6 +1267,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 name={c.name}
                 category="covenants"
                 owned={owned}
+                effect={c.effect}
                 onToggle={() => setCovenantOwned(c.id, !owned)}
                 onDetails={() => setDetail({ kind: "covenant", id: c.id, name: c.name })}
               />
@@ -1257,9 +1289,19 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                 category="posses"
                 realm={p.realm}
                 owned={unlocked}
+                effect={p.effect}
                 badge={p.hasCharacterBonus ? "Character bonus" : undefined}
                 badgeColor="var(--gold)"
                 onToggle={() => setPosseUnlocked(p.id, !unlocked)}
+                onDetails={() =>
+                  setDetail({
+                    kind: "posse",
+                    id: p.id,
+                    name: p.name,
+                    realm: p.realm,
+                    hasCharacterBonus: p.hasCharacterBonus,
+                  })
+                }
               />
             );
           })}
