@@ -8,11 +8,17 @@ added later only narrates the result this returns. Kept as a plain function (no
 Next.js dependency) so it is unit-testable and reusable by a route handler or a
 server action. **/
 
-import type { UserRoster, TeamRecommendation } from './types'
-import { getAwakeners, getPosses } from './db'
-import { generateCandidateTeams, solveDtide, type FilterOptions } from './filter'
+import type { UserRoster, TeamRecommendation, CandidateTeam, EnrichedAwakener } from './types'
+import { getAwakeners, getPosses, getMetaTeams } from './db'
+import {
+  generateCandidateTeams,
+  solveDtide,
+  buildCandidateTeam,
+  getRealmsInTeam,
+  type FilterOptions,
+} from './filter'
 import { buildTeamRecommendation, buildDtideRecommendation } from './assign'
-import { getRosterSummary } from './roster'
+import { getRosterSummary, getAwakenerEntry } from './roster'
 
 export type GenerateMode = 'single' | 'dtide'
 
@@ -39,6 +45,40 @@ export interface GenerateResult {
   }
 }
 
+const teamKey = (ids: string[]): string => [...ids].sort().join('|')
+
+/**
+ * Curated meta compositions that the player can actually field: every member
+ * owned, all pinned units present, and (if set) matching the preferred realm.
+ * These are returned ahead of searched teams — a known-good comp beats a
+ * heuristic one. A small score bump keeps them on top when merged.
+ */
+function metaCandidates(
+  roster: UserRoster,
+  awakeners: Record<string, EnrichedAwakener>,
+  options: FilterOptions
+): CandidateTeam[] {
+  const pins = options.pinnedIds ?? []
+  const out: CandidateTeam[] = []
+  for (const t of getMetaTeams().teams) {
+    const ids = t.awakenerIds ?? []
+    if (ids.length !== 4) continue
+    if (!ids.every((id) => awakeners[id] && getAwakenerEntry(roster, id).owned)) continue
+    if (pins.length && !pins.every((p) => ids.includes(p))) continue
+    if (options.preferredRealm) {
+      const realms = getRealmsInTeam(ids, awakeners)
+      if (!realms.includes(options.preferredRealm)) continue
+    }
+    const cand = buildCandidateTeam(ids, awakeners, roster)
+    cand.metaName = t.name
+    cand.metaSource = t.source
+    cand.score = Math.round((cand.score + 1) * 100) / 100 // meta priority
+    out.push(cand)
+  }
+  out.sort((a, b) => b.score - a.score)
+  return out
+}
+
 export function generateTeams(req: GenerateRequest): GenerateResult {
   const mode: GenerateMode = req.mode ?? 'single'
   const awakeners = getAwakeners()
@@ -55,26 +95,47 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
   let teams: TeamRecommendation[] = []
 
   if (mode === 'dtide') {
-    const solution = solveDtide(req.roster, awakeners)
+    // Seed the solver with owned, non-overlapping meta comps so D-Tide is also
+    // meta-first; the greedy solver fills the remaining teams around them.
+    const metaAnchors: string[][] = []
+    const used = new Set<string>()
+    for (const c of metaCandidates(req.roster, awakeners, {})) {
+      if (metaAnchors.length >= 5) break
+      if (c.awakenerIds.some((id) => used.has(id))) continue
+      c.awakenerIds.forEach((id) => used.add(id))
+      metaAnchors.push(c.awakenerIds)
+    }
+    const solution = solveDtide(req.roster, awakeners, metaAnchors)
     if (solution && solution.teams.length) {
       if (solution.teams.length < 5) {
         warnings.push(
           `Only ${solution.teams.length}/5 D-Tide teams could be formed from the owned roster.`
         )
       }
-      // One shared wheel pool across all teams — a wheel is a physical item.
       teams = buildDtideRecommendation(solution.teams, req.roster, awakeners, posses)
     } else {
       warnings.push('Could not assemble a D-Tide lineup from the owned roster.')
     }
   } else {
-    const candidates = generateCandidateTeams(req.roster, awakeners, req.options ?? {})
-    if (candidates.length) {
-      // Each alternative is a standalone team the player might field, so gear
-      // them independently (a fresh wheel pool per team).
-      teams = candidates.map((candidate, i) =>
-        buildTeamRecommendation(candidate, i + 1, req.roster, awakeners, posses)
-      )
+    const options = req.options ?? {}
+    const maxResults = options.maxResults ?? 4
+    // Meta comps first, then searched teams, de-duplicated by member set.
+    const metaCands = metaCandidates(req.roster, awakeners, options)
+    const searchCands = generateCandidateTeams(req.roster, awakeners, options)
+    const seen = new Set<string>()
+    const merged: CandidateTeam[] = []
+    for (const c of [...metaCands, ...searchCands]) {
+      const k = teamKey(c.awakenerIds)
+      if (seen.has(k)) continue
+      seen.add(k)
+      merged.push(c)
+    }
+    if (merged.length) {
+      teams = merged
+        .slice(0, maxResults)
+        .map((candidate, i) =>
+          buildTeamRecommendation(candidate, i + 1, req.roster, awakeners, posses)
+        )
     } else {
       warnings.push(
         'No valid team could be formed. Try lowering the minimum viability tier, ' +
