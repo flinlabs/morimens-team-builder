@@ -51,6 +51,22 @@ export function resolvePrimaryStat(
   return Math.ceil(base * (1 + soulforgeBonusPercent / 100) - EPS);
 }
 
+/** Gnostic Potential grants "+N Levels of Base Attributes", applied equally to
+ *  CON/ATK/DEF. N is the talent's linear Arg1 evaluated at the talent's level
+ *  (index = level − 1), matching how the game raises a maxed unit's stats. */
+export function gnosticBonusLevels(
+  arg1:
+    | { kind?: string; base?: string | number; gainPerLevel?: string | number }
+    | undefined,
+  gnosticLevel: number
+): number {
+  if (!arg1 || arg1.kind !== "linear" || gnosticLevel <= 0) return 0;
+  const base = Number(arg1.base ?? 0);
+  const gain = Number(arg1.gainPerLevel ?? 0);
+  if (!Number.isFinite(base) || !Number.isFinite(gain)) return 0;
+  return base + gain * (gnosticLevel - 1);
+}
+
 /** Resolve all three primary stats at a level. */
 export function resolvePrimaryStats(
   primaryScalingBase: number,
