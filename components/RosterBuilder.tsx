@@ -6,7 +6,7 @@ import type { Realm, EnlightenSlot, CharacterAssignment, TeamRecommendation } fr
 import type { GenerateResult } from "@/lib/generate";
 import { RealmSigil, REALMS, REALM_RANK, RARITY_RANK } from "./realm";
 import DetailModal, { type DetailTarget } from "./DetailModal";
-import FormationBoard, { type SlotPlan } from "./FormationBoard";
+import FormationBoard, { type SlotPlan, type GearOptions } from "./FormationBoard";
 import { keeperHpMultiplier } from "@/lib/stats";
 
 const ROLE_LABEL: Record<string, string> = {
@@ -491,6 +491,25 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     return { awk, wheel, covenant, posse };
   }, [catalog]);
 
+  // Owned wheels/covenants and unlocked posses, for editing gear directly on a board.
+  const gearOptions: GearOptions = useMemo(
+    () => ({
+      wheels: catalog.wheels
+        .filter((w) => roster.wheels[w.id]?.owned)
+        .map((w) => ({ id: w.id, name: w.name }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+      covenants: catalog.covenants
+        .filter((c) => roster.covenants[c.id]?.owned)
+        .map((c) => ({ id: c.id, name: c.name }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+      posses: catalog.posses
+        .filter((p) => roster.posses[p.id]?.unlocked)
+        .map((p) => ({ id: p.id, name: p.name }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    }),
+    [catalog, roster]
+  );
+
   const ownedCount = mounted
     ? catalog.awakeners.filter((a) => roster.awakeners[a.id]?.owned).length
     : 0;
@@ -833,6 +852,13 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             plans={plans}
             posseName={posseName}
             onChangeSlots={handleSlotsChange}
+            gear={gearOptions}
+            onChangeSlotGear={(i, patch) => {
+              const id = slots[i];
+              if (!id) return;
+              setPlans((p) => ({ ...p, [id]: { ...p[id], ...patch } }));
+            }}
+            onChangePosse={(name) => setPosseName(name)}
           />
           {pinned.some(Boolean) && (
             <p className="mt-1.5 text-[11px] text-[var(--text-dim)]">
@@ -856,6 +882,15 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               posseName={dtidePosses[i]}
               onChangeSlots={(n) =>
                 setDtideSlots((prev) => prev.map((x, xi) => (xi === i ? n : x)))
+              }
+              gear={gearOptions}
+              onChangeSlotGear={(si, patch) => {
+                const id = dtideSlots[i][si];
+                if (!id) return;
+                setDtidePlans((p) => ({ ...p, [id]: { ...p[id], ...patch } }));
+              }}
+              onChangePosse={(name) =>
+                setDtidePosses((prev) => prev.map((x, xi) => (xi === i ? name : x)))
               }
             />
           ))}
