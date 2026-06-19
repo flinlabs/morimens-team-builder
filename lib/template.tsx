@@ -1,5 +1,5 @@
 import React from "react";
-import type { DescriptionArg, SkillUpgrade } from "./types";
+import type { DescriptionArg, SkeySkillUpgrade } from "./types";
 import { cardNumber } from "./stats";
 import { researchDepthValue } from "./research-formula";
 
@@ -56,7 +56,7 @@ const SLOT_THRESHOLD: Record<string, number> = {
 export function applySkillUpgrades(
   template: string | undefined,
   args: Args,
-  upgrades: SkillUpgrade[] | undefined,
+  upgrades: SkeySkillUpgrade[] | undefined,
   enlightenTotal: number
 ): { template: string | undefined; args: Args } {
   if (!upgrades?.length) return { template, args };

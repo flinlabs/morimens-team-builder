@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRosterStore } from "@/lib/store";
-import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg, SkillUpgrade } from "@/lib/types";
+import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg, SkeySkillUpgrade } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
 import { ScaledText, maxScalingIndex, applySkillUpgrades, type StatResolver } from "@/lib/template";
 import { resolvePrimaryStat, gnosticBonusLevels, wheelMainStat } from "@/lib/stats";
@@ -91,7 +91,7 @@ interface EffectBlock {
   cost?: number | null;
   descriptionTemplate: string;
   descriptionArgs: Record<string, DescriptionArg>;
-  upgrades?: SkillUpgrade[];
+  upgrades?: SkeySkillUpgrade[];
 }
 interface AwakenerDetail {
   kind: "awakener";
