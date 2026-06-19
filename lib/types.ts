@@ -392,6 +392,9 @@ export interface CandidateTeam {
   roleCoverage: TeamRole[]
   coverageGaps: string[]
   score: number
+  // Set when this team comes from the curated meta library rather than search.
+  metaName?: string
+  metaSource?: string
 }
 
 // ---------------------------------------------------------------------------
@@ -439,6 +442,9 @@ export interface TeamRecommendation {
   coverageGaps: string[]
   realmNote?: string
   investmentWarnings: string[]
+  // Present when the team is a curated meta composition.
+  metaName?: string
+  metaSource?: string
 }
 
 export interface AITeamResponse {
