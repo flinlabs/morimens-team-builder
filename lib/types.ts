@@ -322,6 +322,8 @@ export interface CovenantEntry {
   sixPieceComplete: boolean
   completionPercent: number
   pieces?: CovenantPiece[]
+  /** Aggregate rolled substats the player wants to record (by stat key). */
+  substatTotals?: Record<string, number>
 }
 
 export interface CovenantPiece {
