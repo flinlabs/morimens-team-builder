@@ -148,7 +148,7 @@ function DetailButton({ onClick }: { onClick: (e: React.MouseEvent) => void }) {
     <button
       onClick={onClick}
       title="Customize / view details"
-      className="flex h-5 w-5 items-center justify-center rounded-full bg-black/55 text-[11px] leading-none text-[var(--silver)] backdrop-blur-sm transition hover:bg-black/80 hover:text-white"
+      className="flex h-5 w-5 items-center justify-center rounded-full bg-black/55 text-[12.5px] leading-none text-[var(--silver)] backdrop-blur-sm transition hover:bg-black/80 hover:text-white"
     >
       ⋯
     </button>
@@ -203,7 +203,7 @@ function AwakenerCard({
         {/* top-right cluster: owned tick + details */}
         <div className="absolute right-1.5 top-1.5 flex items-center gap-1">
           {owned && (
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--gold)] text-[11px] font-bold text-[#1b150a]">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--gold)] text-[12.5px] font-bold text-[#1b150a]">
               ✓
             </span>
           )}
@@ -217,7 +217,7 @@ function AwakenerCard({
 
         {/* divine / lemurian tag */}
         {(item.isDivineRealm || item.isLemurian) && (
-          <div className="absolute bottom-9 left-1.5 rounded bg-black/55 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-[var(--silver)] backdrop-blur-sm">
+          <div className="absolute bottom-9 left-1.5 rounded bg-black/55 px-1.5 py-0.5 text-[11px] uppercase tracking-wider text-[var(--silver)] backdrop-blur-sm">
             {item.isDivineRealm ? "Divine" : "Lemurian"}
           </div>
         )}
@@ -232,7 +232,7 @@ function AwakenerCard({
       {/* compact enlighten selector — only when owned */}
       {owned && (
         <div className="flex items-center gap-1 border-t border-[var(--border)] bg-[var(--bg-2)] px-2 py-1.5">
-          <span className="text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+          <span className="text-[12px] uppercase tracking-wider text-[var(--text-dim)]">
             Enl.
           </span>
           <select
@@ -301,7 +301,7 @@ function GearTile({
       {/* owned tick + details, top corners */}
       <div className="absolute right-1 top-1 z-10 flex items-center gap-0.5">
         {owned && (
-          <span className="rounded bg-black/45 px-1 text-[11px] text-[var(--gold)]">✓</span>
+          <span className="rounded bg-black/45 px-1 text-[12.5px] text-[var(--gold)]">✓</span>
         )}
         {onDetails && (
           <button
@@ -346,15 +346,15 @@ function GearTile({
           {name}
         </div>
         {mainstat && (
-          <div className="mt-0.5 text-[12.5px] font-medium text-[var(--realm-aequor)]">{mainstat}</div>
+          <div className="mt-0.5 text-[13.5px] font-medium text-[var(--realm-aequor)]">{mainstat}</div>
         )}
         {badge && (
-          <div className="mt-0.5 text-[11px] font-medium" style={{ color: badgeColor }}>
+          <div className="mt-0.5 text-[12.5px] font-medium" style={{ color: badgeColor }}>
             {badge}
           </div>
         )}
         {effect && (
-          <p className="mt-1 line-clamp-3 text-[12px] leading-snug text-[var(--text-muted)]">
+          <p className="mt-1 line-clamp-3 text-[13px] leading-snug text-[var(--text-muted)]">
             {effect}
           </p>
         )}
@@ -429,7 +429,7 @@ function TeamFormation({
       />
 
       {team.investmentWarnings.length > 0 && (
-        <ul className="mt-2.5 space-y-0.5 text-[11px] text-[var(--realm-chaos)]">
+        <ul className="mt-2.5 space-y-0.5 text-[12.5px] text-[var(--realm-chaos)]">
           {team.investmentWarnings.map((w, i) => (
             <li key={i}>• {w}</li>
           ))}
@@ -888,7 +888,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
       {/* Header */}
       <header className="mb-5 flex items-center justify-between">
         <div>
-          <div className="font-title text-[11px] uppercase tracking-[0.35em] text-[var(--gold)]">
+          <div className="font-title text-[12.5px] uppercase tracking-[0.35em] text-[var(--gold)]">
             Morimens
           </div>
           <h1 className="font-display text-3xl font-semibold leading-none text-[var(--text)]">
@@ -1000,14 +1000,14 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             }}
           />
           {pinned.some(Boolean) && (
-            <p className="mt-1.5 text-[11px] text-[var(--text-dim)]">
+            <p className="mt-1.5 text-[12.5px] text-[var(--text-dim)]">
               Pinned characters are kept when you generate — only the empty slots get filled.
             </p>
           )}
         </section>
       ) : (
         <section className="mb-6 space-y-4">
-          <p className="text-[11px] text-[var(--text-dim)]">
+          <p className="text-[12.5px] text-[var(--text-dim)]">
             D-Tide fields five teams with no unit or wheel shared between them. Generate fills all
             five; you can edit any board afterward.
           </p>
