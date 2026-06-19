@@ -52,6 +52,18 @@ const SKILL_LABEL: Record<string, string> = Object.fromEntries(
   SKILLS.map((s) => [s.slot, s.label])
 );
 
+// The eight covenant substat categories (mirrors the in-game Attributes panel).
+const COVENANT_SUBSTATS: { key: string; label: string; suffix?: string }[] = [
+  { key: "CRIT_RATE", label: "Crit Rate", suffix: "%" },
+  { key: "CRIT_DMG", label: "Crit DMG", suffix: "%" },
+  { key: "DMG_AMP", label: "DMG Amplification", suffix: "%" },
+  { key: "DEATH_RESISTANCE", label: "Death Resistance", suffix: "%" },
+  { key: "REALM_MASTERY", label: "Realm Mastery" },
+  { key: "SIGIL_YIELD", label: "Sigil Yield", suffix: "%" },
+  { key: "ALIEMUS_REGEN", label: "Aliemus Regen Lv" },
+  { key: "KEYFLARE_REGEN", label: "Keyflare Regen Lv" },
+];
+
 const ASSET_DIR: Record<DetailTarget["kind"], string> = {
   awakener: "portraits",
   wheel: "wheels",
@@ -361,6 +373,7 @@ export default function DetailModal({
   const setCovenantThreePiece = useRosterStore((s) => s.setCovenantThreePiece);
   const setCovenantSixPiece = useRosterStore((s) => s.setCovenantSixPiece);
   const setCovenantCompletion = useRosterStore((s) => s.setCovenantCompletion);
+  const setCovenantSubstat = useRosterStore((s) => s.setCovenantSubstat);
   const setPosseUnlocked = useRosterStore((s) => s.setPosseUnlocked);
 
   const [detail, setDetail] = useState<Detail | null>(null);
@@ -889,6 +902,47 @@ export default function DetailModal({
                     <p className="text-[11px] text-[var(--text-dim)]">
                       Well-rolled priority substats at lower completion can beat scattered substats
                       at higher completion.
+                    </p>
+                  </Section>
+
+                  <Section title="Substats">
+                    <div className="grid grid-cols-2 gap-2">
+                      {COVENANT_SUBSTATS.map((s) => {
+                        const val = e?.substatTotals?.[s.key] ?? 0;
+                        return (
+                          <label
+                            key={s.key}
+                            className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-2.5 py-1.5"
+                          >
+                            <span className="min-w-0 flex-1 truncate text-[12px] text-[var(--text-muted)]">
+                              {s.label}
+                            </span>
+                            <input
+                              type="number"
+                              inputMode="decimal"
+                              step="0.1"
+                              min={0}
+                              value={val || ""}
+                              placeholder="0"
+                              onChange={(ev) => {
+                                const raw = parseFloat(ev.target.value);
+                                setCovenantSubstat(
+                                  target.id,
+                                  s.key,
+                                  Number.isFinite(raw) ? Math.max(0, raw) : 0
+                                );
+                              }}
+                              className="w-16 rounded border border-[var(--border)] bg-[var(--panel)] px-1.5 py-1 text-right text-[12px] tabular-nums text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
+                            />
+                            {s.suffix && (
+                              <span className="text-[11px] text-[var(--text-dim)]">{s.suffix}</span>
+                            )}
+                          </label>
+                        );
+                      })}
+                    </div>
+                    <p className="text-[11px] text-[var(--text-dim)]">
+                      Record your rolled substat totals across the set (optional).
                     </p>
                   </Section>
 
