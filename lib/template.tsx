@@ -180,6 +180,82 @@ export function renderTemplateString(
 }
 
 /** React render with keyword chips and scaled-value highlighting. */
+/* ---------------------------------------------------------------------------
+ * Keyword colouring — mirrors the in-game palette so descriptions read like the
+ * game. Stat names and "Team Unique" are bolded so they stand apart.
+ * ------------------------------------------------------------------------- */
+interface KwStyle {
+  color?: string;
+  bold?: boolean;
+}
+
+const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
+  { terms: ["Team Unique"], style: { color: "var(--gold-bright)", bold: true } },
+  // Debuffs — pink/purple. Listed before STR so "STR Down" wins over "STR".
+  { terms: ["STR Down", "STR-Down", "Weakness", "Weakened"], style: { color: "#d98fce" } },
+  { terms: ["Vulnerability", "Vulnerable"], style: { color: "#eb7d7d" } },
+  // Card keywords — orange.
+  { terms: ["Retain", "Exhaust", "Fleeting", "Prepare", "Countdown"], style: { color: "#e6a35c" } },
+  // Quasar / Leap — purple.
+  { terms: ["Quasar", "Leap"], style: { color: "#a98ff0" } },
+  // STR / buffs — green.
+  { terms: ["Strength", "STR"], style: { color: "#7dd39b" } },
+  // Stat names — bold amber, so a wheel's mainstat stands apart in the popup.
+  {
+    terms: [
+      "Aliemus Regen", "Keyflare Regen", "Crit. Rate", "Crit Rate",
+      "Crit. DMG", "Crit DMG", "DMG Amplification", "DMG Amp",
+      "Realm Mastery", "Death Resistance", "Sigil Yield",
+    ],
+    style: { color: "#d4b173", bold: true },
+  },
+  { terms: ["Shield"], style: { color: "#7db8e8" } },
+];
+
+const KEYWORD_STYLE = new Map<string, KwStyle>();
+for (const g of KEYWORD_GROUPS) for (const t of g.terms) KEYWORD_STYLE.set(t, g.style);
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// Longest terms first so multi-word keywords match before their substrings.
+const KEYWORD_RE = new RegExp(
+  "(\\b(?:" +
+    [...KEYWORD_STYLE.keys()]
+      .sort((a, b) => b.length - a.length)
+      .map(escapeRe)
+      .join("|") +
+    ")\\b)",
+  "g"
+);
+
+/** Semantic style for a single keyword term — also used to recolour the braced
+ *  {keyword} segments so they match the in-game palette instead of plain gold. */
+export function keywordStyle(term: string): KwStyle | undefined {
+  return KEYWORD_STYLE.get(term);
+}
+
+/** Colourises the special game keywords inside a plain description string. */
+export function KeywordText({ text }: { text?: string | null }) {
+  if (!text) return null;
+  const parts = text.split(KEYWORD_RE);
+  return (
+    <>
+      {parts.map((p, i) => {
+        const st = KEYWORD_STYLE.get(p);
+        return st ? (
+          <span
+            key={i}
+            style={{ color: st.color, fontWeight: st.bold ? 700 : undefined }}
+          >
+            {p}
+          </span>
+        ) : (
+          <React.Fragment key={i}>{p}</React.Fragment>
+        );
+      })}
+    </>
+  );
+}
+
 export function ScaledText({
   template,
   args,
@@ -205,14 +281,23 @@ export function ScaledText({
     <span className={className} style={{ whiteSpace: "pre-wrap" }}>
       {segs.map((s, i) => {
         if (s.kind === "keyword") {
+          const sem = keywordStyle(s.text);
           return (
             <span
               key={i}
               className="rounded-[3px] px-1 py-px text-[0.92em] font-medium"
-              style={{
-                color: "var(--gold-bright)",
-                background: "rgba(198,163,82,0.10)",
-              }}
+              style={
+                sem
+                  ? {
+                      color: sem.color,
+                      fontWeight: sem.bold ? 700 : 500,
+                      background: "rgba(255,255,255,0.05)",
+                    }
+                  : {
+                      color: "var(--gold-bright)",
+                      background: "rgba(198,163,82,0.10)",
+                    }
+              }
             >
               {s.text}
             </span>
@@ -229,7 +314,7 @@ export function ScaledText({
             </span>
           );
         }
-        return <React.Fragment key={i}>{s.text}</React.Fragment>;
+        return <KeywordText key={i} text={s.text} />;
       })}
     </span>
   );
