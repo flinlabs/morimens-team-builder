@@ -59,6 +59,16 @@ export async function GET(req: Request) {
           cardKeywords: s.cardKeywords ?? [],
           descriptionTemplate: s.descriptionTemplate,
           descriptionArgs: s.descriptionArgs ?? {},
+          upgrades: (s.upgrades ?? []).map((u) => ({
+            upgraderType: u.upgraderType,
+            upgraderSlot: u.upgraderSlot,
+            patch: u.patch
+              ? {
+                  descriptionTemplate: u.patch.descriptionTemplate,
+                  descriptionArgs: u.patch.descriptionArgs,
+                }
+              : undefined,
+          })),
         }))
         .sort((x, y) => (SKILL_ORDER[x.slot] ?? 9) - (SKILL_ORDER[y.slot] ?? 9));
 
