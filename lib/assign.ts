@@ -364,10 +364,14 @@ export function buildTeamRecommendation(
     rank,
     composition,
     posseRecommendations: recommendPosses(candidate.awakenerIds, awakeners, roster, posses),
-    compositionNote: compositionNote(candidate, awakeners),
+    compositionNote: candidate.metaName
+      ? `${candidate.metaName} — ${compositionNote(candidate, awakeners)}`
+      : compositionNote(candidate, awakeners),
     coverageGaps: candidate.coverageGaps,
     realmNote: candidate.mixingNote,
     investmentWarnings,
+    metaName: candidate.metaName,
+    metaSource: candidate.metaSource,
   }
 }
 
