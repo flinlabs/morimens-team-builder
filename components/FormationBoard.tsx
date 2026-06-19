@@ -23,77 +23,206 @@ export interface SlotPlan {
 }
 
 export interface GearOptions {
-  wheels: { id: string; name: string }[];
-  covenants: { id: string; name: string }[];
-  posses: { id: string; name: string }[];
+  wheels: { id: string; name: string; rarity?: string; realm?: string; mainstat?: string }[];
+  covenants: { id: string; name: string; effect?: string }[];
+  posses: { id: string; name: string; realm?: string; effect?: string }[];
 }
 
-/** Inline single-select picker used for editing wheels / covenant / posse on a board. */
-function GearSelect({
-  value,
-  options,
-  onChange,
-  placeholder,
-  valueClass,
+export interface PosseInfo {
+  name: string;
+  realm?: string;
+  effect?: string;
+}
+
+type DrawerKind = "character" | "wheels" | "covenants" | "posses";
+
+interface DrawerItem {
+  id: string;
+  name: string;
+  realm?: string;
+  rarity?: string;
+  subtitle?: string;
+}
+
+const DRAWER_ASSET: Record<DrawerKind, string> = {
+  character: "portraits",
+  wheels: "wheels",
+  covenants: "covenants",
+  posses: "posses",
+};
+
+const WHEEL_RARITIES = ["MYTHIC", "SSR", "SR", "R", "N"];
+
+/**
+ * A right-hand side panel for selecting a character, wheel, covenant, or posse.
+ * Has search, realm/rarity filters, and a roomy image grid — replaces the old
+ * cramped popovers.
+ */
+function ItemDrawer({
+  title,
+  kind,
+  items,
+  currentId,
+  allowNone,
+  onSelect,
+  onClose,
 }: {
-  value?: string;
-  options: { id: string; name: string }[];
-  onChange: (name: string | undefined) => void;
-  placeholder: string;
-  valueClass?: string;
+  title: string;
+  kind: DrawerKind;
+  items: DrawerItem[];
+  currentId?: string;
+  allowNone?: boolean;
+  onSelect: (id: string | null) => void;
+  onClose: () => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const [realm, setRealm] = useState<string | null>(null);
+  const [rarity, setRarity] = useState<string | null>(null);
+
+  const realms = useMemo(() => {
+    const set = new Set<string>();
+    for (const it of items) if (it.realm && it.realm !== "NEUTRAL") set.add(it.realm);
+    return [...set].sort((a, b) => (REALM_RANK[a as Realm] ?? 9) - (REALM_RANK[b as Realm] ?? 9));
+  }, [items]);
+  const hasRarity = kind === "wheels" && items.some((it) => it.rarity);
+
+  const list = useMemo(() => {
+    const term = q.trim().toLowerCase();
+    return items
+      .filter((it) => (term ? it.name.toLowerCase().includes(term) : true))
+      .filter((it) => (realm ? it.realm === realm : true))
+      .filter((it) => (rarity ? it.rarity === rarity : true))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [items, q, realm, rarity]);
+
+  const aspect = kind === "character" || kind === "wheels" ? "aspect-[3/4]" : "aspect-square";
+  const cols = kind === "covenants" || kind === "posses" ? "grid-cols-2" : "grid-cols-3";
+
   return (
-    <div className="relative min-w-0 flex-1">
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          setOpen((o) => !o);
-        }}
-        title="Change"
-        className={`max-w-full truncate text-left text-[11px] hover:underline ${
-          value ? valueClass ?? "text-[var(--text)]" : "text-[var(--text-dim)]"
-        }`}
+    <div className="fixed inset-0 z-[60]" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <div
+        className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-[var(--gold)]/30 bg-[var(--panel)] shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
       >
-        {value ?? placeholder} <span className="text-[var(--text-dim)]">▾</span>
-      </button>
-      {open && (
-        <>
-          <div
-            className="fixed inset-0 z-30"
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(false);
-            }}
+        <div className="flex items-center gap-2 border-b border-[var(--border)] p-3">
+          <span className="font-title text-sm uppercase tracking-wider text-[var(--gold-bright)]">
+            {title}
+          </span>
+          <button
+            onClick={onClose}
+            className="ml-auto flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-sm text-[var(--text-muted)] hover:text-[var(--text)]"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="space-y-2 border-b border-[var(--border)] p-3">
+          <input
+            autoFocus
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search…"
+            className="w-full rounded border border-[var(--border)] bg-[var(--panel-2)] px-3 py-2 text-sm text-[var(--text)] placeholder-[var(--text-dim)] focus:border-[var(--gold)] focus:outline-none"
           />
-          <div className="absolute left-0 z-40 mt-1 max-h-52 w-44 overflow-auto rounded-md border border-[var(--border-bright)] bg-[var(--panel)] py-1 shadow-xl">
+          {(realms.length > 1 || hasRarity) && (
+            <div className="flex flex-wrap gap-1.5">
+              {hasRarity &&
+                WHEEL_RARITIES.filter((r) => items.some((it) => it.rarity === r)).map((r) => (
+                  <FilterChip
+                    key={r}
+                    active={rarity === r}
+                    onClick={() => setRarity(rarity === r ? null : r)}
+                    label={r}
+                  />
+                ))}
+              {realms.map((r) => (
+                <FilterChip
+                  key={r}
+                  active={realm === r}
+                  onClick={() => setRealm(realm === r ? null : r)}
+                  label={r[0] + r.slice(1).toLowerCase()}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className={`grid flex-1 gap-2 overflow-y-auto p-3 ${cols}`}>
+          {allowNone && (
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onChange(undefined);
-                setOpen(false);
-              }}
-              className="block w-full px-2 py-1 text-left text-[11px] text-[var(--text-dim)] hover:bg-black/30"
+              onClick={() => onSelect(null)}
+              className="flex aspect-square items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] text-xs text-[var(--text-dim)] hover:border-[var(--gold)]"
             >
               — None —
             </button>
-            {options.map((o) => (
-              <button
-                key={o.id}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onChange(o.name);
-                  setOpen(false);
-                }}
-                className="block w-full truncate px-2 py-1 text-left text-[11px] text-[var(--text-muted)] hover:bg-black/30 hover:text-[var(--text)]"
-              >
-                {o.name}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
+          )}
+          {list.map((it) => (
+            <button
+              key={it.id}
+              onClick={() => onSelect(it.id)}
+              title={it.name}
+              className={`group overflow-hidden rounded-lg border text-left transition ${
+                it.id === currentId
+                  ? "border-[var(--gold)] ring-1 ring-[var(--gold)]/50"
+                  : "border-[var(--border)] hover:border-[var(--gold)]"
+              }`}
+            >
+              <div className={`relative ${aspect} bg-[var(--bg-2)]`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`/assets/${DRAWER_ASSET[kind]}/${it.id}.webp`}
+                  alt={it.name}
+                  loading="lazy"
+                  className="h-full w-full object-cover object-top"
+                />
+                {it.realm && it.realm !== "NEUTRAL" && (
+                  <div className="absolute left-1 top-1">
+                    <RealmSigil realm={it.realm as Realm} size={13} />
+                  </div>
+                )}
+              </div>
+              <div className="p-1.5">
+                <div className="truncate text-[11px] font-medium text-[var(--text)]">{it.name}</div>
+                {it.subtitle && (
+                  <div className="mt-0.5 line-clamp-2 text-[10px] leading-snug text-[var(--text-muted)]">
+                    {it.subtitle}
+                  </div>
+                )}
+              </div>
+            </button>
+          ))}
+          {list.length === 0 && (
+            <p className="col-span-full py-8 text-center text-sm text-[var(--text-dim)]">
+              Nothing matches.
+            </p>
+          )}
+        </div>
+      </div>
     </div>
+  );
+}
+
+function FilterChip({
+  active,
+  onClick,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-full border px-2.5 py-0.5 text-[11px] transition ${
+        active
+          ? "border-[var(--gold)] text-[var(--gold-bright)]"
+          : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-bright)]"
+      }`}
+    >
+      {label}
+    </button>
   );
 }
 
@@ -114,87 +243,6 @@ function WheelPips({ stars, stack }: { stars: number; stack: number }) {
         <span className="ml-0.5 text-[8px] font-semibold text-[var(--text-muted)]">{stack}</span>
       )}
     </span>
-  );
-}
-
-/** A popover grid of framed art for picking a wheel or covenant. */
-function ThumbPicker({
-  kind,
-  options,
-  onSelect,
-  trigger,
-  cols = 4,
-}: {
-  kind: "wheels" | "covenants";
-  options: { id: string; name: string }[];
-  onSelect: (id: string | null) => void;
-  trigger: React.ReactNode;
-  cols?: number;
-}) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="relative">
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          setOpen((o) => !o);
-        }}
-        className="block w-full text-left"
-        title="Change"
-      >
-        {trigger}
-      </button>
-      {open && (
-        <>
-          <div
-            className="fixed inset-0 z-30"
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(false);
-            }}
-          />
-          <div className="absolute left-0 z-40 mt-1 max-h-64 w-56 overflow-auto rounded-lg border border-[var(--border-bright)] bg-[var(--panel)] p-2 shadow-2xl">
-            <div
-              className="grid gap-1.5"
-              style={{ gridTemplateColumns: `repeat(${cols}, minmax(0,1fr))` }}
-            >
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onSelect(null);
-                  setOpen(false);
-                }}
-                className="flex aspect-[3/4] items-center justify-center rounded border border-dashed border-[var(--border-bright)] text-[10px] text-[var(--text-dim)] hover:border-[var(--gold)]"
-              >
-                None
-              </button>
-              {options.map((o) => (
-                <button
-                  key={o.id}
-                  title={o.name}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSelect(o.id);
-                    setOpen(false);
-                  }}
-                  className="overflow-hidden rounded border border-transparent hover:border-[var(--gold)]"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`/assets/${kind}/${o.id}.webp`}
-                    alt={o.name}
-                    loading="lazy"
-                    className={`w-full object-cover ${
-                      kind === "covenants" ? "aspect-square" : "aspect-[3/4]"
-                    }`}
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
-    </div>
   );
 }
 
@@ -306,100 +354,15 @@ function StatLine({ label, children }: { label: string; children: React.ReactNod
   );
 }
 
-/* Owned-character picker for one slot. */
-function SlotPicker({
-  awakeners,
-  excludeIds,
-  onPick,
-  onClose,
-}: {
-  awakeners: AwkLite[];
-  excludeIds: string[];
-  onPick: (id: string) => void;
-  onClose: () => void;
-}) {
-  const [q, setQ] = useState("");
-  const list = useMemo(() => {
-    const term = q.trim().toLowerCase();
-    return awakeners
-      .filter((a) => !excludeIds.includes(a.id))
-      .filter((a) => (term ? a.name.toLowerCase().includes(term) : true))
-      .sort(
-        (a, b) =>
-          (REALM_RANK[a.realm] ?? 9) - (REALM_RANK[b.realm] ?? 9) ||
-          a.name.localeCompare(b.name)
-      );
-  }, [awakeners, excludeIds, q]);
-
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-      <div
-        className="relative z-10 max-h-[80vh] w-full max-w-lg overflow-hidden rounded-2xl border border-[var(--gold)]/40 bg-[var(--panel)]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center gap-2 border-b border-[var(--border)] p-3">
-          <span className="font-title text-xs uppercase tracking-wider text-[var(--gold-bright)]">
-            Deploy
-          </span>
-          <input
-            autoFocus
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search owned…"
-            className="ml-auto w-48 rounded border border-[var(--border)] bg-[var(--panel-2)] px-2 py-1 text-sm text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
-          />
-          <button
-            onClick={onClose}
-            className="rounded-full border border-[var(--border)] px-2 py-0.5 text-sm text-[var(--text-muted)] hover:text-[var(--text)]"
-          >
-            ✕
-          </button>
-        </div>
-        <div className="grid max-h-[64vh] grid-cols-4 gap-2 overflow-y-auto p-3 sm:grid-cols-5">
-          {list.length === 0 && (
-            <p className="col-span-full py-8 text-center text-sm text-[var(--text-dim)]">
-              No owned awakeners available.
-            </p>
-          )}
-          {list.map((a) => (
-            <button
-              key={a.id}
-              onClick={() => onPick(a.id)}
-              className="group relative overflow-hidden rounded-lg border border-[var(--border)] hover:border-[var(--gold)]"
-              title={a.name}
-            >
-              <div className="aspect-[3/4]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`/assets/portraits/${a.id}.webp`}
-                  alt={a.name}
-                  loading="lazy"
-                  className="h-full w-full object-cover object-top"
-                />
-              </div>
-              <div className="absolute left-1 top-1">
-                <RealmSigil realm={a.realm} size={13} />
-              </div>
-              <div className="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/90 to-transparent px-1 pb-1 pt-3 text-[10px] font-medium text-white">
-                {a.name}
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* A single deploy slot — empty placeholder or a filled lineup card. */
 function Slot({
   awk,
   plan,
   onClick,
   onClear,
-  gear,
-  onChangeGear,
+  editable,
+  onEditWheel,
+  onEditCovenant,
   wheelMeta,
   covenantMeta,
 }: {
@@ -407,13 +370,13 @@ function Slot({
   plan?: SlotPlan;
   onClick: () => void;
   onClear: () => void;
-  gear?: GearOptions;
-  onChangeGear?: (patch: { wheelIds?: string[]; covenantId?: string }) => void;
+  editable?: boolean;
+  onEditWheel?: (wheelIndex: number) => void;
+  onEditCovenant?: () => void;
   wheelMeta?: Record<string, { name: string }>;
   covenantMeta?: Record<string, { name: string }>;
 }) {
   const roster = useRosterStore((s) => s.roster);
-  const editable = !!gear && !!onChangeGear;
 
   if (!awk) {
     return (
@@ -453,12 +416,6 @@ function Slot({
   const covenantName = covenantId ? covenantMeta?.[covenantId]?.name : undefined;
   const wheelStars = (id?: string) => (id ? roster.wheels[id]?.starLevel ?? 0 : 0);
   const wheelStack = (id?: string) => (id ? roster.wheels[id]?.stackLevel ?? 0 : 0);
-
-  const setWheel = (index: number, id: string | null) => {
-    const next = [wheelIds[0], wheelIds[1]];
-    next[index] = id ?? undefined;
-    onChangeGear?.({ wheelIds: next.filter((x): x is string => !!x) });
-  };
 
   return (
     <div className="flex flex-col rounded-lg border border-[var(--border)] border-b-2 border-b-[var(--gold)] bg-[var(--panel)]">
@@ -507,13 +464,9 @@ function Slot({
         {/* covenant icon + name */}
         <div className="mt-1 flex items-center gap-2 border-t border-[var(--border)] pt-1.5">
           {editable ? (
-            <ThumbPicker
-              kind="covenants"
-              cols={4}
-              options={gear!.covenants}
-              onSelect={(id) => onChangeGear!({ covenantId: id ?? undefined })}
-              trigger={<CovIcon id={covenantId} />}
-            />
+            <button onClick={onEditCovenant} title="Change covenant" className="shrink-0">
+              <CovIcon id={covenantId} />
+            </button>
           ) : (
             <CovIcon id={covenantId} />
           )}
@@ -537,13 +490,13 @@ function Slot({
             return (
               <div key={wi} className="min-w-0">
                 {editable ? (
-                  <ThumbPicker
-                    kind="wheels"
-                    cols={4}
-                    options={gear!.wheels}
-                    onSelect={(pickId) => setWheel(wi, pickId)}
-                    trigger={thumb}
-                  />
+                  <button
+                    onClick={() => onEditWheel?.(wi)}
+                    title="Change wheel"
+                    className="block w-full"
+                  >
+                    {thumb}
+                  </button>
                 ) : (
                   thumb
                 )}
@@ -587,12 +540,18 @@ function CovIcon({ id }: { id?: string }) {
   );
 }
 
+type PickerState =
+  | { kind: "character"; slotIndex: number }
+  | { kind: "wheels"; slotIndex: number; wheelIndex: number }
+  | { kind: "covenants"; slotIndex: number }
+  | { kind: "posse" };
+
 export default function FormationBoard({
   title,
   awakeners,
   slots,
   plans,
-  posseName,
+  posseId,
   onChangeSlots,
   gear,
   onChangeSlotGear,
@@ -600,22 +559,25 @@ export default function FormationBoard({
   onClearAll,
   wheelMeta,
   covenantMeta,
+  posseMeta,
 }: {
   title?: string;
   awakeners: AwkLite[];
   slots: (string | null)[]; // length 4
   plans?: Record<string, SlotPlan>;
-  posseName?: string;
+  posseId?: string;
   onChangeSlots: (next: (string | null)[]) => void;
   gear?: GearOptions;
   onChangeSlotGear?: (slotIndex: number, patch: { wheelIds?: string[]; covenantId?: string }) => void;
-  onChangePosse?: (name: string | undefined) => void;
+  onChangePosse?: (id: string | undefined) => void;
   onClearAll?: () => void;
   wheelMeta?: Record<string, { name: string }>;
   covenantMeta?: Record<string, { name: string }>;
+  posseMeta?: Record<string, PosseInfo>;
 }) {
   const roster = useRosterStore((s) => s.roster);
-  const [pickFor, setPickFor] = useState<number | null>(null);
+  const editable = !!gear && !!onChangeSlotGear;
+  const [picker, setPicker] = useState<PickerState | null>(null);
 
   const byId = useMemo(() => {
     const m: Record<string, AwkLite> = {};
@@ -636,6 +598,93 @@ export default function FormationBoard({
   const distinctRealms = Array.from(new Set(realms));
   const nonChaos = distinctRealms.filter((r) => r !== "CHAOS");
   const realmWarning = nonChaos.length > 2;
+
+  const posse = posseId ? posseMeta?.[posseId] : undefined;
+
+  // Build the drawer's item list + commit handler for the active picker.
+  function drawerProps(): React.ComponentProps<typeof ItemDrawer> | null {
+    if (!picker) return null;
+    if (picker.kind === "character") {
+      const taken = new Set(slots.filter((s): s is string => !!s));
+      return {
+        kind: "character",
+        title: "Deploy Awakener",
+        items: ownedAwakeners
+          .filter((a) => !taken.has(a.id))
+          .map((a) => ({ id: a.id, name: a.name, realm: a.realm, rarity: a.rarity })),
+        currentId: slots[picker.slotIndex] ?? undefined,
+        onSelect: (id) => {
+          const next = [...slots];
+          next[picker.slotIndex] = id;
+          onChangeSlots(next);
+          setPicker(null);
+        },
+        onClose: () => setPicker(null),
+      };
+    }
+    if (picker.kind === "wheels" && gear) {
+      const sid = slots[picker.slotIndex];
+      const cur = sid && plans ? plans[sid]?.wheelIds ?? [] : [];
+      return {
+        kind: "wheels",
+        title: `Wheel ${picker.wheelIndex + 1}`,
+        allowNone: true,
+        items: gear.wheels.map((w) => ({
+          id: w.id,
+          name: w.name,
+          realm: w.realm,
+          rarity: w.rarity,
+          subtitle: w.mainstat,
+        })),
+        currentId: cur[picker.wheelIndex],
+        onSelect: (id) => {
+          const next: (string | undefined)[] = [cur[0], cur[1]];
+          next[picker.wheelIndex] = id ?? undefined;
+          onChangeSlotGear?.(picker.slotIndex, {
+            wheelIds: next.filter((x): x is string => !!x),
+          });
+          setPicker(null);
+        },
+        onClose: () => setPicker(null),
+      };
+    }
+    if (picker.kind === "covenants" && gear) {
+      const sid = slots[picker.slotIndex];
+      return {
+        kind: "covenants",
+        title: "Covenant",
+        allowNone: true,
+        items: gear.covenants.map((c) => ({ id: c.id, name: c.name, subtitle: c.effect })),
+        currentId: sid && plans ? plans[sid]?.covenantId : undefined,
+        onSelect: (id) => {
+          onChangeSlotGear?.(picker.slotIndex, { covenantId: id ?? undefined });
+          setPicker(null);
+        },
+        onClose: () => setPicker(null),
+      };
+    }
+    if (picker.kind === "posse" && gear) {
+      return {
+        kind: "posses",
+        title: "Posse",
+        allowNone: true,
+        items: gear.posses.map((p) => ({
+          id: p.id,
+          name: p.name,
+          realm: p.realm,
+          subtitle: p.effect,
+        })),
+        currentId: posseId,
+        onSelect: (id) => {
+          onChangePosse?.(id ?? undefined);
+          setPicker(null);
+        },
+        onClose: () => setPicker(null),
+      };
+    }
+    return null;
+  }
+  const dp = drawerProps();
 
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)]/60 p-3 sm:p-4">
@@ -677,16 +726,15 @@ export default function FormationBoard({
               key={i}
               awk={awk}
               plan={id && plans ? plans[id] : undefined}
-              onClick={() => setPickFor(i)}
+              onClick={() => setPicker({ kind: "character", slotIndex: i })}
               onClear={() => {
                 const next = [...slots];
                 next[i] = null;
                 onChangeSlots(next);
               }}
-              gear={awk ? gear : undefined}
-              onChangeGear={
-                awk && onChangeSlotGear ? (patch) => onChangeSlotGear(i, patch) : undefined
-              }
+              editable={!!awk && editable}
+              onEditWheel={(wheelIndex) => setPicker({ kind: "wheels", slotIndex: i, wheelIndex })}
+              onEditCovenant={() => setPicker({ kind: "covenants", slotIndex: i })}
               wheelMeta={wheelMeta}
               covenantMeta={covenantMeta}
             />
@@ -694,44 +742,80 @@ export default function FormationBoard({
         })}
       </div>
 
-      {/* posse + warnings bar */}
-      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-[var(--border)] pt-2.5 text-xs">
-        <span className="flex items-center gap-1.5 text-[var(--text-muted)]">
-          <span className="text-[var(--gold)]">❀</span>
-          {gear && onChangePosse ? (
-            <GearSelect
-              value={posseName}
-              options={gear.posses}
-              onChange={(name) => onChangePosse(name)}
-              placeholder="Posse Not Equipped"
-              valueClass="text-[var(--text)]"
-            />
-          ) : posseName ? (
-            <span className="text-[var(--text)]">{posseName}</span>
-          ) : (
-            <span className="text-[var(--text-dim)]">Posse Not Equipped</span>
-          )}
-        </span>
+      {/* posse bar — prominent, with its icon */}
+      <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-[var(--border)] pt-3">
+        <PosseBar
+          posseId={posseId}
+          info={posse}
+          editable={editable}
+          onEdit={() => setPicker({ kind: "posse" })}
+        />
         {realmWarning && (
-          <span className="ml-auto text-[var(--realm-caro)]">
+          <span className="ml-auto text-xs text-[var(--realm-caro)]">
             Realm conflict — at most two non-Chaos realms per team.
           </span>
         )}
       </div>
 
-      {pickFor !== null && (
-        <SlotPicker
-          awakeners={ownedAwakeners}
-          excludeIds={slots.filter((s): s is string => !!s)}
-          onPick={(id) => {
-            const next = [...slots];
-            next[pickFor] = id;
-            onChangeSlots(next);
-            setPickFor(null);
-          }}
-          onClose={() => setPickFor(null)}
-        />
-      )}
+      {dp && <ItemDrawer {...dp} />}
     </div>
+  );
+}
+
+/** The team's equipped posse, shown big with its icon and effect. */
+function PosseBar({
+  posseId,
+  info,
+  editable,
+  onEdit,
+}: {
+  posseId?: string;
+  info?: PosseInfo;
+  editable?: boolean;
+  onEdit: () => void;
+}) {
+  const inner = (
+    <>
+      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-[var(--gold)]/40 bg-[var(--bg-2)]">
+        {posseId ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`/assets/posses/${posseId}.webp`}
+            alt={info?.name ?? "posse"}
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-lg text-[var(--gold)]">
+            ❀
+          </div>
+        )}
+      </div>
+      <div className="min-w-0 flex-1 text-left">
+        <div className="font-title text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+          Posse
+        </div>
+        <div className="truncate text-sm font-medium text-[var(--text)]">
+          {info?.name ?? (editable ? "Tap to equip a posse" : "Not equipped")}
+        </div>
+        {info?.effect && (
+          <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-[var(--text-muted)]">
+            {info.effect}
+          </p>
+        )}
+      </div>
+    </>
+  );
+  if (!editable) {
+    return <div className="flex min-w-0 flex-1 items-center gap-3">{inner}</div>;
+  }
+  return (
+    <button
+      onClick={onEdit}
+      title="Change posse"
+      className="flex min-w-0 flex-1 items-center gap-3 rounded-lg border border-transparent p-1 text-left transition hover:border-[var(--border-bright)]"
+    >
+      {inner}
+    </button>
   );
 }
