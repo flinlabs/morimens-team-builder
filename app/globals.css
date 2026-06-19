@@ -44,6 +44,11 @@ body {
   margin: 0;
 }
 
+/* Site-wide readability bump — scales all rem-based text and spacing. */
+html {
+  font-size: 17px;
+}
+
 body {
   background:
     radial-gradient(1200px 700px at 78% -8%, rgba(56, 72, 102, 0.45), transparent 60%),
