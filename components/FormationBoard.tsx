@@ -95,8 +95,10 @@ function ItemDrawer({
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [items, q, realm, rarity]);
 
-  const aspect = kind === "character" || kind === "wheels" ? "aspect-[3/4]" : "aspect-square";
-  const cols = kind === "covenants" || kind === "posses" ? "grid-cols-2" : "grid-cols-3";
+  const isIcon = kind === "covenants" || kind === "posses";
+  const imgH = isIcon ? "h-24" : "h-36";
+  const imgFit = isIcon ? "object-contain p-2" : "object-cover object-top";
+  const cols = isIcon ? "grid-cols-2" : "grid-cols-3";
 
   return (
     <div className="fixed inset-0 z-[60]" onClick={onClose}>
@@ -148,11 +150,11 @@ function ItemDrawer({
           )}
         </div>
 
-        <div className={`grid flex-1 gap-2 overflow-y-auto p-3 ${cols}`}>
+        <div className={`grid flex-1 content-start gap-2 overflow-y-auto p-3 ${cols}`}>
           {allowNone && (
             <button
               onClick={() => onSelect(null)}
-              className="flex aspect-square items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] text-xs text-[var(--text-dim)] hover:border-[var(--gold)]"
+              className={`flex ${imgH} items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] text-xs text-[var(--text-dim)] hover:border-[var(--gold)]`}
             >
               — None —
             </button>
@@ -168,13 +170,12 @@ function ItemDrawer({
                   : "border-[var(--border)] hover:border-[var(--gold)]"
               }`}
             >
-              <div className={`relative ${aspect} bg-[var(--bg-2)]`}>
+              <div className={`relative ${imgH} w-full bg-[var(--bg-2)]`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`/assets/${DRAWER_ASSET[kind]}/${it.id}.webp`}
                   alt={it.name}
-                  loading="lazy"
-                  className="h-full w-full object-cover object-top"
+                  className={`h-full w-full ${imgFit}`}
                 />
                 {it.realm && it.realm !== "NEUTRAL" && (
                   <div className="absolute left-1 top-1">
