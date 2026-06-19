@@ -7,6 +7,7 @@ import type { GenerateResult } from "@/lib/generate";
 import { RealmSigil, REALMS, REALM_RANK, RARITY_RANK } from "./realm";
 import DetailModal, { type DetailTarget } from "./DetailModal";
 import FormationBoard, { type SlotPlan } from "./FormationBoard";
+import { keeperHpMultiplier } from "@/lib/stats";
 
 const ROLE_LABEL: Record<string, string> = {
   main_dps: "Main DPS",
@@ -467,6 +468,16 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const [pinned, setPinned] = useState<boolean[]>([false, false, false, false]);
   // Bumped every successful generation so the per-team boards remount with fresh state.
   const [genId, setGenId] = useState(0);
+  // Top-level view: inventory customization vs team generation.
+  const [view, setView] = useState<"inventory" | "teams">("teams");
+  // D-Tide always fields five teams of four; these boards are independently editable.
+  const [dtideSlots, setDtideSlots] = useState<(string | null)[][]>(() =>
+    Array.from({ length: 5 }, () => [null, null, null, null])
+  );
+  const [dtidePlans, setDtidePlans] = useState<Record<string, SlotPlan>>({});
+  const [dtidePosses, setDtidePosses] = useState<(string | undefined)[]>(() =>
+    Array(5).fill(undefined)
+  );
 
   const maps: NameMaps = useMemo(() => {
     const awk: NameMaps["awk"] = {};
@@ -584,7 +595,8 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         setResult(gen);
         setGenId((g) => g + 1);
         setError(null);
-        applyTeamToFormation(gen);
+        if (mode === "dtide") applyDtide(gen);
+        else applyTeamToFormation(gen);
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Network error.");
@@ -643,6 +655,25 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         ? maps.posse[top.posseRecommendations[0].posseId]
         : undefined
     );
+  }
+
+  // Fill the five D-Tide boards from a generated lineup.
+  function applyDtide(gen: GenerateResult) {
+    const next = Array.from({ length: 5 }, () => [null, null, null, null] as (string | null)[]);
+    const nextPlans: Record<string, SlotPlan> = {};
+    const posses: (string | undefined)[] = Array(5).fill(undefined);
+    gen.teams.slice(0, 5).forEach((t, ti) => {
+      t.composition.slice(0, 4).forEach((c, si) => {
+        next[ti][si] = c.awakenerId;
+        nextPlans[c.awakenerId] = planFromAssignment(c);
+      });
+      posses[ti] = t.posseRecommendations?.[0]
+        ? maps.posse[t.posseRecommendations[0].posseId]
+        : undefined;
+    });
+    setDtideSlots(next);
+    setDtidePlans(nextPlans);
+    setDtidePosses(posses);
   }
 
   // Drives the Own all / Own none control for whichever tab is active. It acts
@@ -720,6 +751,30 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         </div>
       </header>
 
+      {/* Top-level view tabs */}
+      <nav className="mb-5 flex items-center gap-2">
+        {(
+          [
+            ["teams", "Teams"],
+            ["inventory", "Inventory"],
+          ] as ["inventory" | "teams", string][]
+        ).map(([key, label]) => (
+          <button
+            key={key}
+            onClick={() => setView(key)}
+            className={`font-title rounded-lg border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition ${
+              view === key
+                ? "border-[var(--gold)] bg-[var(--gold)]/10 text-[var(--gold-bright)]"
+                : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--border-bright)] hover:text-[var(--text-muted)]"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
+
+      {view === "teams" && (
+        <>
       {/* Controls */}
       <section className="sticky top-0 z-20 mb-5 rounded-xl border border-[var(--border)] bg-[var(--bg-2)]/85 p-3 backdrop-blur-md">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
@@ -747,18 +802,6 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             />
           </label>
 
-          <label className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-            <span className="uppercase tracking-wider text-[var(--text-dim)]">Keeper Lv</span>
-            <input
-              type="number"
-              min={1}
-              max={80}
-              value={roster.keeperLevel}
-              onChange={(e) => setKeeperLevel(Number(e.target.value) || 1)}
-              className="w-16 rounded border border-[var(--border)] bg-[var(--panel)] px-2 py-1.5 text-sm text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
-            />
-          </label>
-
           <div className="ml-auto flex items-center gap-4">
             <span className="text-sm text-[var(--text-muted)]">
               <span className="font-semibold text-[var(--text)]">{ownedCount}</span>
@@ -780,22 +823,44 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         )}
       </section>
 
-      {/* Formation — editable working lineup; Generate fills the open slots */}
-      <section className="mb-6">
-        <FormationBoard
-          title="Your Lineup"
-          awakeners={catalog.awakeners}
-          slots={slots}
-          plans={plans}
-          posseName={posseName}
-          onChangeSlots={handleSlotsChange}
-        />
-        {pinned.some(Boolean) && (
-          <p className="mt-1.5 text-[11px] text-[var(--text-dim)]">
-            Pinned characters are kept when you generate — only the empty slots get filled.
+      {/* Lineup — single working board, or five D-Tide boards */}
+      {mode === "single" ? (
+        <section className="mb-6">
+          <FormationBoard
+            title="Your Lineup"
+            awakeners={catalog.awakeners}
+            slots={slots}
+            plans={plans}
+            posseName={posseName}
+            onChangeSlots={handleSlotsChange}
+          />
+          {pinned.some(Boolean) && (
+            <p className="mt-1.5 text-[11px] text-[var(--text-dim)]">
+              Pinned characters are kept when you generate — only the empty slots get filled.
+            </p>
+          )}
+        </section>
+      ) : (
+        <section className="mb-6 space-y-4">
+          <p className="text-[11px] text-[var(--text-dim)]">
+            D-Tide fields five teams with no unit or wheel shared between them. Generate fills all
+            five; you can edit any board afterward.
           </p>
-        )}
-      </section>
+          {dtideSlots.map((s, i) => (
+            <FormationBoard
+              key={i}
+              title={`Team ${i + 1}`}
+              awakeners={catalog.awakeners}
+              slots={s}
+              plans={dtidePlans}
+              posseName={dtidePosses[i]}
+              onChangeSlots={(n) =>
+                setDtideSlots((prev) => prev.map((x, xi) => (xi === i ? n : x)))
+              }
+            />
+          ))}
+        </section>
+      )}
 
       {/* Results */}
       {(result || error) && (
@@ -814,21 +879,63 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
                   ))}
                 </ul>
               )}
-              <div className="space-y-5">
-                {result.teams.map((t) => (
-                  <TeamFormation
-                    key={`${genId}-${t.rank}`}
-                    team={t}
-                    awakeners={catalog.awakeners}
-                    maps={maps}
-                    planFor={planFromAssignment}
-                  />
-                ))}
-              </div>
+              {result.teams.length > 0 && mode === "single" && (
+                <div className="space-y-5">
+                  <h2 className="font-title text-xs uppercase tracking-wider text-[var(--text-dim)]">
+                    Alternate Teams
+                  </h2>
+                  {result.teams.map((t) => (
+                    <TeamFormation
+                      key={`${genId}-${t.rank}`}
+                      team={t}
+                      awakeners={catalog.awakeners}
+                      maps={maps}
+                      planFor={planFromAssignment}
+                    />
+                  ))}
+                </div>
+              )}
             </>
           )}
         </section>
       )}
+        </>
+      )}
+
+      {view === "inventory" && (
+        <>
+      {/* Keeper level */}
+      <section className="mb-5 rounded-xl border border-[var(--border)] bg-[var(--bg-2)]/85 p-3">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <label className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+            <span className="uppercase tracking-wider text-[var(--text-dim)]">Keeper Lv</span>
+            <input
+              type="number"
+              min={1}
+              max={100}
+              value={roster.keeperLevel}
+              onChange={(e) =>
+                setKeeperLevel(Math.max(1, Math.min(100, Number(e.target.value) || 1)))
+              }
+              className="w-16 rounded border border-[var(--border)] bg-[var(--panel)] px-2 py-1.5 text-sm text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
+            />
+          </label>
+          <span className="text-xs text-[var(--text-dim)]">
+            Max HP ×
+            <span className="ml-1 tabular-nums text-[var(--gold-bright)]">
+              {keeperHpMultiplier(roster.keeperLevel).toFixed(2)}
+            </span>
+          </span>
+          <span className="text-xs text-[var(--text-dim)]">
+            Caps character level at
+            <span className="ml-1 tabular-nums text-[var(--gold-bright)]">
+              {Math.min(roster.keeperLevel, 90)}
+            </span>
+            <span className="ml-1">(before dupe cap)</span>
+          </span>
+        </div>
+      </section>
+
 
       {/* Roster tabs */}
       <nav className="mb-3 flex items-center gap-1 border-b border-[var(--border)]">
@@ -1088,6 +1195,8 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             );
           })}
         </div>
+      )}
+        </>
       )}
 
       {detail && <DetailModal target={detail} onClose={() => setDetail(null)} />}
