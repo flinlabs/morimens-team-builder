@@ -246,7 +246,7 @@ const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
 
   // STR-down debuff — pink. The in-game token is the glyph "STR⯆" (not "STR Down"),
   // and longest-match-first colours it before the green "STR".
-  { terms: ["STR⯆", "Weakness"], style: { color: "#a8549b" } },
+  { terms: ["STR⯆", "Weakness"], style: { color: "#bd5eaf" } },
 
   // Damage-over-time & damage-class debuffs — red.
   {
@@ -255,7 +255,7 @@ const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
       "Sin Mark", "Fragile", "Spellbound", "Sealed", "Dormancy",
       "Madness", "Fantasia", "Creativity", "Fiamma", "Gynoecium", "Corpse",
     ],
-    style: { color: "#a13939" },
+    style: { color: "#b93f3f" },
   },
 
   // Card / mechanic keywords — orange (triangle-icon class in-game).
@@ -265,13 +265,13 @@ const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
       "Insight", "Endure", "Steal", "Loop", "Alert", "Finale", "Resonance",
       "Quasar", "Leap", "Devour", "Discover", "Aftershock", "Destroy",
       "Fixed DMG", "Pierce DMG", "Tentacle DMG", "Decapitation Damage",
-      "Scion of Purity",
+      "Scion of Purity", "Void",
     ],
-    style: { color: "#af773b" },
+    style: { color: "#c68743" },
   },
 
   // Buffs — green.
-  { terms: ["Strength", "STR", "Counter", "Death Resistance", "Realm Mastery"], style: { color: "#358c53" } },
+  { terms: ["Strength", "STR", "Death Resistance", "Realm Mastery"], style: { color: "#3e9c5f" } },
 
   // Stats & resources — bold amber. Longer forms (Embryo Fusion, Aliemus Regen)
   // are matched before their bare roots (Embryo, Aliemus) by the length sort.
@@ -284,25 +284,25 @@ const KEYWORD_GROUPS: { terms: string[]; style: KwStyle }[] = [
       "Crimson Furnace", "Emotion",
       "Arithmetica",
     ],
-    style: { color: "#c79b4e", bold: true },
+    style: { color: "#d7a54e", bold: true },
   },
 
   // Protection / Aequor Divine stances — blue.
   {
     terms: [
       "Shield", "Life Seal", "Birth Ritual", "Sacrifice",
-      "Tranquil Sea", "Raging Waves", "Surging Tides", "Gland Division",
+      "Tranquil Sea", "Raging Waves", "Surging Tides", "Gland Division", "Counter",
     ],
-    style: { color: "#5697cd" },
+    style: { color: "#67a8de" },
   },
 
   // Status effects / Ultra mechanics / unique — purple.
   {
     terms: [
-      "Poison", "Stagnation", "Void", "Singularity Warp", "Final Verdict",
+      "Poison", "Stagnation", "Singularity Warp", "Final Verdict",
       "Ultra Space", "Ultra Round", "Annihilation", "Symbiosis",
     ],
-    style: { color: "#7056b9" },
+    style: { color: "#7858d2" },
   },
 
   // Realm names — tinted to their realm colour. (Single-term groups so each
