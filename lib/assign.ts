@@ -29,7 +29,7 @@ import {
   getCovenantEntry,
   getPosseEntry,
 } from './roster'
-import { getBisData, type BisVariant } from './db'
+import { getBisData, getWheels, type BisVariant } from './db'
 
 // Best-to-worst wheel tier order.
 const WHEEL_TIER_ORDER: WheelTier[] = ['BIS_SSR', 'ALT_SSR', 'BIS_SR', 'GOOD']
@@ -110,9 +110,24 @@ export function assignWheels(
   )
   if (!ranked.length) return []
 
+  const wheels = getWheels()
+  const isHighRarity = (id: string): boolean => {
+    const r = wheels[id]?.rarity
+    return r === 'SSR' || r === 'MYTHIC'
+  }
+  // Overlimit Causality: a character may field two SSR/Mythic wheels only if at
+  // least one equipped wheel is +12. Otherwise the second wheel must be lower
+  // rarity (SR/R/N are strong fillers).
+  const breaksOverlimit = (candidate: string): boolean =>
+    out.length === 1 &&
+    isHighRarity(candidate) &&
+    isHighRarity(out[0].wheelId) &&
+    !isDualSSRUnlocked(roster, candidate) &&
+    !isDualSSRUnlocked(roster, out[0].wheelId)
+
   const out: WheelAssignment[] = []
 
-  // Pass 1 — fill from owned wheels, honouring the physical-item constraint.
+  // Pass 1 — fill from owned wheels, honouring the physical-item + Overlimit constraints.
   for (const rec of ranked) {
     if (out.length >= 2) break
     for (const wheelId of rec.wheelIds) {
@@ -121,6 +136,7 @@ export function assignWheels(
       if (!entry.owned) continue
       const inUse = usedWheelIds.has(wheelId)
       if (inUse && (!allowDualSSR || !isDualSSRUnlocked(roster, wheelId))) continue
+      if (breaksOverlimit(wheelId)) continue
 
       const assignment: WheelAssignment = {
         slot: (out.length + 1) as 1 | 2,
@@ -136,12 +152,18 @@ export function assignWheels(
     }
   }
 
-  // Pass 2 — recommend acquisition targets for any unfilled slot.
+  // Pass 2 — recommend acquisition targets for any unfilled slot. Respects the
+  // shared used-pool (so D-Tide never repeats a wheel) and the Overlimit rule.
   for (const rec of ranked) {
     if (out.length >= 2) break
-    const target = rec.wheelIds[0]
-    if (!target || out.some(a => a.wheelId === target)) continue
-    out.push({ slot: (out.length + 1) as 1 | 2, wheelId: target, tier: 'FALLBACK' })
+    for (const target of rec.wheelIds) {
+      if (out.some(a => a.wheelId === target)) continue
+      if (usedWheelIds.has(target)) continue
+      if (breaksOverlimit(target)) continue
+      out.push({ slot: (out.length + 1) as 1 | 2, wheelId: target, tier: 'FALLBACK' })
+      usedWheelIds.add(target)
+      break
+    }
   }
 
   return out
