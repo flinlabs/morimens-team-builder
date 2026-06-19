@@ -96,7 +96,6 @@ function ItemDrawer({
   }, [items, q, realm, rarity]);
 
   const isIcon = kind === "covenants" || kind === "posses";
-  const imgH = isIcon ? "h-24" : "h-36";
   const imgFit = isIcon ? "object-contain p-2" : "object-cover object-top";
   const cols = isIcon ? "grid-cols-2" : "grid-cols-3";
 
@@ -150,54 +149,65 @@ function ItemDrawer({
           )}
         </div>
 
-        <div className={`grid flex-1 content-start gap-2 overflow-y-auto p-3 ${cols}`}>
-          {allowNone && (
-            <button
-              onClick={() => onSelect(null)}
-              className={`flex ${imgH} items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] text-xs text-[var(--text-dim)] hover:border-[var(--gold)]`}
-            >
-              — None —
-            </button>
-          )}
-          {list.map((it) => (
-            <button
-              key={it.id}
-              onClick={() => onSelect(it.id)}
-              title={it.name}
-              className={`group overflow-hidden rounded-lg border text-left transition ${
-                it.id === currentId
-                  ? "border-[var(--gold)] ring-1 ring-[var(--gold)]/50"
-                  : "border-[var(--border)] hover:border-[var(--gold)]"
-              }`}
-            >
-              <div className={`relative ${imgH} w-full bg-[var(--bg-2)]`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`/assets/${DRAWER_ASSET[kind]}/${it.id}.webp`}
-                  alt={it.name}
-                  className={`h-full w-full ${imgFit}`}
-                />
-                {it.realm && it.realm !== "NEUTRAL" && (
-                  <div className="absolute left-1 top-1">
-                    <RealmSigil realm={it.realm as Realm} size={13} />
+        <div className="min-h-0 flex-1 overflow-y-auto p-3">
+          <div className={`grid gap-2 ${cols}`}>
+            {allowNone && (
+              <button
+                onClick={() => onSelect(null)}
+                style={{ height: isIcon ? 80 : 128 }}
+                className="flex items-center justify-center rounded-lg border border-dashed border-[var(--border-bright)] text-xs text-[var(--text-dim)] hover:border-[var(--gold)]"
+              >
+                — None —
+              </button>
+            )}
+            {list.map((it) => (
+              <button
+                key={it.id}
+                onClick={() => onSelect(it.id)}
+                title={it.name}
+                className={`group flex flex-col overflow-hidden rounded-lg border text-left transition ${
+                  it.id === currentId
+                    ? "border-[var(--gold)] ring-1 ring-[var(--gold)]/50"
+                    : "border-[var(--border)] hover:border-[var(--gold)]"
+                }`}
+              >
+                <div
+                  style={{ height: isIcon ? 80 : 128 }}
+                  className="relative w-full shrink-0 bg-[var(--bg-2)]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/assets/${DRAWER_ASSET[kind]}/${it.id}.webp`}
+                    alt={it.name}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
+                    }}
+                    className={`h-full w-full ${imgFit}`}
+                  />
+                  {it.realm && it.realm !== "NEUTRAL" && (
+                    <div className="absolute left-1 top-1">
+                      <RealmSigil realm={it.realm as Realm} size={13} />
+                    </div>
+                  )}
+                </div>
+                <div className="p-1.5">
+                  <div className="truncate text-[11px] font-medium text-[var(--text)]">
+                    {it.name}
                   </div>
-                )}
-              </div>
-              <div className="p-1.5">
-                <div className="truncate text-[11px] font-medium text-[var(--text)]">{it.name}</div>
-                {it.subtitle && (
-                  <div className="mt-0.5 line-clamp-2 text-[10px] leading-snug text-[var(--text-muted)]">
-                    {it.subtitle}
-                  </div>
-                )}
-              </div>
-            </button>
-          ))}
-          {list.length === 0 && (
-            <p className="col-span-full py-8 text-center text-sm text-[var(--text-dim)]">
-              Nothing matches.
-            </p>
-          )}
+                  {it.subtitle && (
+                    <div className="mt-0.5 line-clamp-2 text-[10px] leading-snug text-[var(--text-muted)]">
+                      {it.subtitle}
+                    </div>
+                  )}
+                </div>
+              </button>
+            ))}
+            {list.length === 0 && (
+              <p className="col-span-full py-8 text-center text-sm text-[var(--text-dim)]">
+                Nothing matches.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
