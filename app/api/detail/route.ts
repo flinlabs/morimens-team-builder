@@ -88,6 +88,9 @@ export async function GET(req: Request) {
         enlightens,
         skills,
         talents,
+        primaryScalingBase: a.primaryScalingBase ?? null,
+        statScaling: a.statScaling ?? null,
+        baseStatsLv1: a.baseStatsLv1 ?? null,
       });
     }
 
