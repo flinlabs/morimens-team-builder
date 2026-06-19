@@ -226,11 +226,11 @@ function ItemDrawer({
                   )}
                 </div>
                 <div className="p-1.5">
-                  <div className="truncate text-[13px] font-medium text-[var(--text)]">
+                  <div className="truncate text-[14px] font-medium text-[var(--text)]">
                     {it.name}
                   </div>
                   {it.subtitle && (
-                    <div className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-[var(--text-muted)]">
+                    <div className="mt-0.5 line-clamp-2 text-[12.5px] leading-snug text-[var(--text-muted)]">
                       {it.subtitle}
                     </div>
                   )}
@@ -249,9 +249,9 @@ function ItemDrawer({
       {/* custom hover popup — sits to the left of the panel, follows the cursor */}
       {hover && (
         <div
-          className="pointer-events-none fixed z-[70] w-72 whitespace-pre-line rounded-lg border border-[var(--gold)]/40 bg-[var(--panel-2)] p-3 text-[12px] leading-snug text-[var(--text)] shadow-2xl"
+          className="pointer-events-none fixed z-[70] w-72 whitespace-pre-line rounded-lg border border-[var(--gold)]/40 bg-[var(--panel-2)] p-3 text-[13px] leading-snug text-[var(--text)] shadow-2xl"
           style={{
-            right: "calc(28rem + 14px)",
+            right: "5rem",
             top: Math.max(12, Math.min(hover.y - 20, (typeof window !== "undefined" ? window.innerHeight : 800) - 160)),
           }}
         >
@@ -274,7 +274,7 @@ function FilterChip({
   return (
     <button
       onClick={onClick}
-      className={`rounded-full border px-2.5 py-0.5 text-[11px] transition ${
+      className={`rounded-full border px-2.5 py-0.5 text-[12.5px] transition ${
         active
           ? "border-[var(--gold)] text-[var(--gold-bright)]"
           : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-bright)]"
@@ -292,14 +292,14 @@ function WheelPips({ stars, stack }: { stars: number; stack: number }) {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="text-[8px]"
+          className="text-[10px]"
           style={{ color: i < stars ? "var(--gold-bright)" : "var(--border-bright)" }}
         >
           ◆
         </span>
       ))}
       {stack > 0 && (
-        <span className="ml-0.5 text-[8px] font-semibold text-[var(--text-muted)]">{stack}</span>
+        <span className="ml-0.5 text-[10px] font-semibold text-[var(--text-muted)]">{stack}</span>
       )}
     </span>
   );
@@ -388,7 +388,7 @@ function Diamonds({ slot, copies }: { slot: EnlightenSlot; copies: number }) {
       {named.map((m) => (
         <span
           key={m.slot}
-          className="text-[11px] leading-none"
+          className="text-[12.5px] leading-none"
           style={{ color: total >= m.copies ? "var(--gold-bright)" : "var(--border-bright)" }}
           title={m.full}
         >
@@ -396,7 +396,7 @@ function Diamonds({ slot, copies }: { slot: EnlightenSlot; copies: number }) {
         </span>
       ))}
       {plus > 0 && (
-        <span className="ml-0.5 text-[11px] font-semibold text-[var(--gold-bright)]">+{plus}</span>
+        <span className="ml-0.5 text-[12.5px] font-semibold text-[var(--gold-bright)]">+{plus}</span>
       )}
     </span>
   );
@@ -405,10 +405,10 @@ function Diamonds({ slot, copies }: { slot: EnlightenSlot; copies: number }) {
 function StatLine({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-1.5 leading-tight">
-      <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+      <span className="w-7 shrink-0 text-[11px] uppercase tracking-wider text-[var(--text-dim)]">
         {label}
       </span>
-      <span className="tabular-nums text-[12px] text-[var(--text)]">{children}</span>
+      <span className="tabular-nums text-[13px] text-[var(--text)]">{children}</span>
     </div>
   );
 }
@@ -506,7 +506,7 @@ function Slot({
       {/* solid info panel — readable */}
       <div className="flex flex-1 flex-col gap-1 p-2">
         {role && (
-          <div className="self-start rounded bg-[var(--gold)]/90 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#1b150a]">
+          <div className="self-start rounded bg-[var(--gold)]/90 px-1.5 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-[#1b150a]">
             {role}
           </div>
         )}
@@ -515,7 +515,7 @@ function Slot({
           <div className="flex min-w-0 flex-1 flex-col gap-1">
             <StatLine label="Lv">{level} / 90</StatLine>
             <div className="flex items-center gap-1.5 leading-tight">
-              <span className="w-7 shrink-0 text-[9px] uppercase tracking-wider text-[var(--text-dim)]">
+              <span className="w-7 shrink-0 text-[11px] uppercase tracking-wider text-[var(--text-dim)]">
                 Enl
               </span>
               <Diamonds slot={slot} copies={copies} />
@@ -532,7 +532,7 @@ function Slot({
             ) : (
               <CovIcon id={covenantId} />
             )}
-            <span className="w-full truncate text-center text-[9px] leading-tight text-[var(--text-muted)]">
+            <span className="w-full truncate text-center text-[11px] leading-tight text-[var(--text-muted)]">
               {covenantName ?? (editable ? "Set" : "—")}
             </span>
           </div>
@@ -563,7 +563,7 @@ function Slot({
                 ) : (
                   thumb
                 )}
-                <div className="mt-0.5 truncate text-center text-[9px] leading-tight text-[var(--text-dim)]">
+                <div className="mt-0.5 truncate text-center text-[11px] leading-tight text-[var(--text-dim)]">
                   {wheelName(id) ?? "—"}
                 </div>
               </div>
@@ -572,7 +572,7 @@ function Slot({
         </div>
 
         {blurb && (
-          <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-[var(--text-muted)]">
+          <p className="mt-1 line-clamp-2 text-[12.5px] leading-snug text-[var(--text-muted)]">
             {blurb}
           </p>
         )}
@@ -765,7 +765,7 @@ export default function FormationBoard({
               {distinctRealms.map((r) => (
                 <span
                   key={r}
-                  className="flex items-center gap-1 rounded-full border border-[var(--border)] px-2 py-0.5 text-[10px]"
+                  className="flex items-center gap-1 rounded-full border border-[var(--border)] px-2 py-0.5 text-[12px]"
                   style={{ color: REALM_COLOR[r] }}
                 >
                   <RealmSigil realm={r} size={11} />
@@ -776,7 +776,7 @@ export default function FormationBoard({
           {onClearAll && slots.some(Boolean) && (
             <button
               onClick={onClearAll}
-              className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[10px] uppercase tracking-wider text-[var(--text-dim)] transition hover:border-[var(--realm-caro)] hover:text-[var(--realm-caro)]"
+              className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[12px] uppercase tracking-wider text-[var(--text-dim)] transition hover:border-[var(--realm-caro)] hover:text-[var(--realm-caro)]"
             >
               Clear all
             </button>
@@ -859,14 +859,14 @@ function PosseBar({
         )}
       </div>
       <div className="min-w-0 flex-1 text-left">
-        <div className="font-title text-[10px] uppercase tracking-wider text-[var(--text-dim)]">
+        <div className="font-title text-[12px] uppercase tracking-wider text-[var(--text-dim)]">
           Posse
         </div>
         <div className="truncate text-sm font-medium text-[var(--text)]">
           {info?.name ?? (editable ? "Tap to equip a posse" : "Not equipped")}
         </div>
         {info?.effect && (
-          <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-[var(--text-muted)]">
+          <p className="mt-0.5 line-clamp-2 text-[12.5px] leading-snug text-[var(--text-muted)]">
             {info.effect}
           </p>
         )}
