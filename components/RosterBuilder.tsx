@@ -55,7 +55,7 @@ export interface Catalog {
     isDivineRealm: boolean;
     isLemurian: boolean;
   }[];
-  wheels: { id: string; name: string; realm: string; rarity: string; mainstatKey?: string }[];
+  wheels: { id: string; name: string; realm: string; rarity: string; mainstatKey?: string; effect?: string }[];
   covenants: { id: string; name: string; effect?: string; effect3?: string }[];
   posses: { id: string; name: string; realm: string; hasCharacterBonus: boolean; effect?: string }[];
 }
@@ -285,15 +285,33 @@ function GearTile({
         if (e.key === "Enter" || e.key === " ") onToggle();
       }}
       title={name}
-      className={`flex cursor-pointer gap-2.5 rounded-lg border p-2 text-left transition ${
+      className={`relative flex cursor-pointer flex-col items-center rounded-lg border p-2.5 text-center transition ${
         owned
           ? "border-[var(--gold)] bg-[var(--panel-2)]"
           : "border-[var(--border)] bg-[var(--panel)] hover:border-[var(--border-bright)]"
       }`}
     >
+      {/* owned tick + details, top corners */}
+      <div className="absolute right-1.5 top-1.5 flex items-center gap-1">
+        {owned && <span className="text-xs text-[var(--gold)]">✓</span>}
+        {onDetails && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDetails();
+            }}
+            title="Customize / view details"
+            className="flex h-6 w-6 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
+          >
+            ⋯
+          </button>
+        )}
+      </div>
+
+      {/* image on top */}
       <div
-        className={`relative shrink-0 overflow-hidden rounded bg-[var(--bg-2)] ${
-          isWheel ? "h-[72px] w-[54px]" : "h-[60px] w-[60px]"
+        className={`relative overflow-hidden rounded bg-[var(--bg-2)] ${
+          isWheel ? "h-[104px] w-[78px]" : "h-[84px] w-[84px]"
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -305,39 +323,26 @@ function GearTile({
         />
         {realm && realm !== "NEUTRAL" && (
           <div className="absolute left-0.5 top-0.5">
-            <RealmSigil realm={realm} size={12} />
+            <RealmSigil realm={realm} size={13} />
           </div>
         )}
       </div>
-      <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex items-start gap-1">
-          <span className="font-display min-w-0 flex-1 truncate text-[13px] font-medium text-[var(--text)]">
-            {name}
-          </span>
-          {owned && <span className="text-xs text-[var(--gold)]">✓</span>}
-          {onDetails && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDetails();
-              }}
-              title="Customize / view details"
-              className="-mr-1 -mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm text-[var(--text-dim)] hover:bg-black/30 hover:text-[var(--text)]"
-            >
-              ⋯
-            </button>
-          )}
+
+      {/* name + mainstat + effect below */}
+      <div className="mt-2 w-full">
+        <div className="font-display truncate text-[13px] font-medium text-[var(--text)]">
+          {name}
         </div>
         {mainstat && (
           <div className="mt-0.5 text-[11px] font-medium text-[var(--realm-aequor)]">{mainstat}</div>
         )}
         {effect && (
-          <p className="mt-0.5 line-clamp-3 text-[10.5px] leading-snug text-[var(--text-muted)]">
+          <p className="mt-1 line-clamp-4 text-[10.5px] leading-snug text-[var(--text-muted)]">
             {effect}
           </p>
         )}
         {badge && (
-          <div className="mt-auto pt-0.5 text-[10px]" style={{ color: badgeColor }}>
+          <div className="mt-1 text-[10px]" style={{ color: badgeColor }}>
             {badge}
           </div>
         )}
@@ -1254,6 +1259,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               realm={w.realm}
               owned={owned}
               mainstat={w.mainstatKey ? MAINSTAT_LABEL[w.mainstatKey] ?? w.mainstatKey : undefined}
+              effect={w.effect}
               onToggle={() => setWheelOwned(w.id, !owned)}
               onDetails={() =>
                 setDetail({ kind: "wheel", id: w.id, name: w.name, realm: w.realm, rarity: w.rarity })
