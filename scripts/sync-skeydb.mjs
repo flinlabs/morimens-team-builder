@@ -412,6 +412,16 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error('❌ Sync failed:', err)
+  console.error('⚠ SKeyDB sync failed:', err)
+  // A sync failure (network blip, upstream moved/renamed) must not break the
+  // build when a committed db/ snapshot already exists — fall back to it and
+  // continue. Only hard-fail when there is no local data at all to build on.
+  const required = ['awakeners.json', 'wheels.json', 'covenants.json', 'posses.json']
+  const haveSnapshot = required.every((f) => fs.existsSync(path.join(DB_DIR, f)))
+  if (haveSnapshot) {
+    console.warn('↪ Falling back to the committed db/ snapshot. Build continues.')
+    process.exit(0)
+  }
+  console.error('✖ No committed db/ snapshot to fall back to — cannot build.')
   process.exit(1)
 })
