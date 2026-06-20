@@ -1,1 +1,2079 @@
-{}
+{
+  "awakener-0001": {
+    "id": "awakener-0001",
+    "teamRoles": [
+      "main_dps",
+      "sub_dps",
+      "weak_applier",
+      "vuln_applier"
+    ],
+    "synergyTags": [
+      "aliemus_hungry"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0018",
+      "awakener-0029",
+      "awakener-0032",
+      "awakener-0012"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0005"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Realm-flexible exalt-spam DPS/support whose kit changes per realm (poison in Aequor, counter in Ultra, embryo/keyflare in Caro/Chaos). Chaos 24 is a viable endgame single-target boss DPS; likes teammates that grant Aliemus to fuel her exalt spam.",
+    "contentNotes": {
+      "arc1": "Ultra 24 is very strong in Faded Legacy",
+      "arc2": "Ultra 24 was nerfed hard; run her as Chaos/boss DPS"
+    }
+  },
+  "awakener-0002": {
+    "id": "awakener-0002",
+    "teamRoles": [
+      "shielder",
+      "embryo_gen",
+      "poison_stacker",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "poison_stacker"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0008",
+      "awakener-0015",
+      "awakener-0054",
+      "awakener-0018"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0004"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Alert-stalling poison tank. Exalt permanently stacks Alert (boosts teamwide shields over time) — the ideal support for Castor stall teams. Also generates embryo and triggers poison; at high investment Colorless Spiral makes her a poison DPS.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0008",
+        "reason": "Permanent Alert stacking from her Exalt scales Castor's shields, enabling indefinite stall"
+      }
+    ],
+    "contentNotes": {
+      "arc1": "Usable as filler shield/embryo support",
+      "dtide": "Strong stall enabler for long single-target waves"
+    }
+  },
+  "awakener-0003": {
+    "id": "awakener-0003",
+    "teamRoles": [
+      "vuln_applier",
+      "keyflare_support",
+      "embryo_gen"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0019",
+      "awakener-0041",
+      "awakener-0033"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "S",
+    "notes": "Best vulnerable applier in the game; her petrify effectively grants an extra turn each fight. Excellent keyflare and embryo generator; OE adds +25% Final DMG. Pairs especially well with glass-cannon DPS that need breathing room. 'Adding Aigis and mixing in Caro' is the easiest strong team for new players.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0033",
+        "reason": "Petrify buys a free setup turn for glass-cannon carries; vulnerable multiplies their burst"
+      }
+    ]
+  },
+  "awakener-0004": {
+    "id": "awakener-0004",
+    "teamRoles": [
+      "shielder",
+      "vuln_applier",
+      "strike_enabler",
+      "main_dps"
+    ],
+    "synergyTags": [
+      "strike_synergy"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0036",
+      "awakener-0048",
+      "awakener-0023",
+      "awakener-0045"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0023"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Anti-'bullshit' utility support — dispels Seals and discards enemy-inflicted symptom/status cards, while providing shields and vulnerable. At E3 a Precision-Slash/Combat-Stance burst DPS that wants a team making shields and copying/replaying her cards."
+  },
+  "awakener-0005": {
+    "id": "awakener-0005",
+    "teamRoles": [
+      "main_dps",
+      "tentacle_enabler"
+    ],
+    "synergyTags": [
+      "tentacle_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0011",
+      "awakener-0050",
+      "awakener-0017",
+      "awakener-0034"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E1",
+    "enlightenBreakpoints": [
+      "E1",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0010"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Multihit tentacle driver — triggers 25+ tentacle attacks in one Raging Waves turn, converting stacked STR and Tentacle DMG into burst. Her own damage is low, so she needs a team stacking STR/Tentacle DMG or a tentacle-hit payoff like Faros's Deep Currents.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0017",
+        "reason": "Deep Currents gives her 25+ tentacle hits a damage payoff"
+      }
+    ]
+  },
+  "awakener-0006": {
+    "id": "awakener-0006",
+    "teamRoles": [
+      "healer",
+      "vuln_applier",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "counter_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0047",
+      "awakener-0040",
+      "awakener-0056"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0013"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Offensive healer and counter driver — strong healing-over-time and consistent Vulnerable from his Exalt, and he can multiply Counter triggers for a turn. One of the rare endgame-viable Counter stackers (scales with STR and crits) given enough team buffs."
+  },
+  "awakener-0007": {
+    "id": "awakener-0007",
+    "teamRoles": [
+      "card_cycler",
+      "ultra_space_manager",
+      "str_support"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0033",
+      "awakener-0011",
+      "awakener-0012",
+      "awakener-0047"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Deck-cycling card-trick support — fills your hand, replays cards from Ultra Space and sets up multi-card combo turns; staple of Aftershock teams. Her Astral Reign image relic makes her Exalt inflict permanent STR-down for stall strategies."
+  },
+  "awakener-0008": {
+    "id": "awakener-0008",
+    "teamRoles": [
+      "shielder",
+      "corrosion_applier",
+      "weak_applier",
+      "annihilation_support",
+      "card_cycler"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0041",
+      "awakener-0056",
+      "awakener-0002"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Defense",
+      "Exalt"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Corrosive shield-stall tank — hoards Onyx Plumes to accumulate end-of-turn shields; alone a great defensive support, with shield-buffers (Agrippa/Erica) he stalls the hardest bosses forever. Tosses Plumes for Corrosion, but needs another damage source to trigger it.",
+    "anchorPosse": "posse-0036",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0002",
+        "reason": "Permanent Alert scales his Onyx-Plume shields for indefinite stall"
+      },
+      {
+        "partnerId": "awakener-0015",
+        "reason": "Temp Alert per shield amplifies his stacking"
+      }
+    ],
+    "leapPriority": "mid",
+    "leapNote": "His wheel triggers on Annihilation rather than on the Ultra Turn — relevant when building his Ultra Space play."
+  },
+  "awakener-0009": {
+    "id": "awakener-0009",
+    "teamRoles": [
+      "healer",
+      "weak_applier"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0055",
+      "awakener-0046",
+      "awakener-0019"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Extra-life and arithmetica support — her Exalt revives the team from death once per fight (every 6 turns at E3), letting a glass-cannon DPS be carried through mob fights to the boss. Also makes a little arithmetica and Tentacle DMG; retainable defensive skills keep the deck clean.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0055",
+        "reason": "Buys turns for ramping carries with her revive"
+      }
+    ]
+  },
+  "awakener-0010": {
+    "id": "awakener-0010",
+    "teamRoles": [
+      "keyflare_support",
+      "str_support",
+      "healer",
+      "sub_dps"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0014",
+      "awakener-0027",
+      "awakener-0030"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "S",
+    "notes": "The best keyflare generator and STR-stacking support in the game; her Exalt's unique debuffs are multiplicative with Weakness, Vulnerable and Final DMG. Excellent healer on Rouse, and at E2 her Exalt can end mob fights by itself. Best with STR-reliant DPS but improves almost any team.",
+    "anchorPosse": "posse-0034"
+  },
+  "awakener-0011": {
+    "id": "awakener-0011",
+    "teamRoles": [
+      "sub_dps",
+      "shielder",
+      "str_support",
+      "weak_applier",
+      "vuln_applier",
+      "tentacle_enabler",
+      "card_cycler"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0050",
+      "awakener-0005",
+      "awakener-0007",
+      "awakener-0055"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E2",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [
+      "soulforge_aptitude"
+    ],
+    "recommendedPosses": [
+      "posse-0001"
+    ],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Discard-abusing story-mode champion and core of discard teams — repeatedly discards to cut Lightning Retribution's cost, generating Pilots that rapidly stack STR and Tentacle DMG and shield the burst turn. Weakness+Vulnerable at E3; her 2-cost feels bad before E2/E3.",
+    "anchorPosse": "posse-0035",
+    "contentNotes": {
+      "arc2": "Soulforge makes her deal high damage to Aequor-tagged enemies (incl. chapter bosses)"
+    }
+  },
+  "awakener-0012": {
+    "id": "awakener-0012",
+    "teamRoles": [
+      "main_dps",
+      "sub_dps",
+      "vuln_applier",
+      "poison_stacker"
+    ],
+    "synergyTags": [
+      "counter_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0056",
+      "awakener-0010",
+      "awakener-0018",
+      "awakener-0036"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0005"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Counter & poison combo witch — Skull Reaver scales with last hits early; at endgame her Thousand Mirages make tons of temp Counter/Poison for high-damage combo turns with Arachne/Nautila. OE puts 3 Mirages in hand for big burst.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0056",
+        "reason": "Thousand Mirages set up huge counter/poison combo turns"
+      },
+      {
+        "partnerId": "awakener-0036",
+        "reason": "Converts her counter into AOE"
+      }
+    ]
+  },
+  "awakener-0013": {
+    "id": "awakener-0013",
+    "teamRoles": [
+      "weak_applier",
+      "keyflare_support",
+      "healer",
+      "aliemus_battery"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0047",
+      "awakener-0027",
+      "awakener-0042"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E1",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "The best Weakness applier among standard-banner characters and a cheap keyflare bot (high base Keyflare Regen + Life Drain). Equivalent Exchange discards enemy symptom/status cards; also light healing and Aliemus. Great for surviving harder content on a new account."
+  },
+  "awakener-0014": {
+    "id": "awakener-0014",
+    "teamRoles": [
+      "main_dps",
+      "sub_dps",
+      "vuln_applier",
+      "str_support",
+      "healer"
+    ],
+    "synergyTags": [
+      "kill_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0040",
+      "awakener-0010",
+      "awakener-0048",
+      "awakener-0055"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0021"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Burst DPS that snowballs with kills and excels at executing low-HP enemies; also stacks STR, applies vulnerable, and heals. Strong early but falls off against full-HP bosses with no minions — wants a partner that sets up kills.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0040",
+        "reason": "Feeds STR so Doresain's executes hit hard"
+      }
+    ],
+    "contentNotes": {
+      "dtide": "Best on add-heavy waves; weak on single full-HP boss waves"
+    },
+    "anchorPosse": "posse-0037"
+  },
+  "awakener-0015": {
+    "id": "awakener-0015",
+    "teamRoles": [
+      "keyflare_support",
+      "shielder",
+      "weak_applier",
+      "vuln_applier"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0008",
+      "awakener-0002",
+      "awakener-0011",
+      "awakener-0053"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Alert-stalling keyflare bot — free keyflare support whose Exalt inflicts Weakness and Vulnerable; on Rouse she makes temp Alert each time she shields, and Function Overload gives a huge shield + one-turn shielding buff. Core of Castor stall teams.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0008",
+        "reason": "Each Onyx Plume benefits from her temp Alert, letting Castor stack giant shields"
+      }
+    ]
+  },
+  "awakener-0016": {
+    "id": "awakener-0016",
+    "teamRoles": [
+      "death_resist",
+      "healer",
+      "shielder",
+      "weak_applier"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0018",
+      "awakener-0033",
+      "awakener-0051"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Top-tier endgame Death-Resistance tank — her Exalt stacks DR to survive multiple lethal hits; the harder the fight, the better she is versus other defensive options. Fits any team that needs to live longer. (Tier-list support rank is B, but her endgame value is higher.)",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0018",
+        "reason": "Standard boss-fight survivability pairing"
+      },
+      {
+        "partnerId": "awakener-0033",
+        "reason": "Death-Resistance stacks fuel Mouchette's E1 stacking buff"
+      }
+    ],
+    "contentNotes": {
+      "dtide": "Premium survivability for high-Alert waves"
+    }
+  },
+  "awakener-0017": {
+    "id": "awakener-0017",
+    "teamRoles": [
+      "poison_stacker",
+      "card_cycler",
+      "shielder",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "lemurian_preferred",
+      "poison_stacker"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0032",
+      "awakener-0054",
+      "awakener-0018",
+      "awakener-0005"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0025"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Lemurian defensive card-draw support and AOE poison applier — her Exalt is a powerful card-selection tool plus a shield (set up a perfect opening hand). As a DPS she spams Deep Currents for AOE poison, best in full poison teams or with heavy tentacle-attack triggers."
+  },
+  "awakener-0018": {
+    "id": "awakener-0018",
+    "teamRoles": [
+      "aliemus_battery",
+      "sub_dps",
+      "poison_stacker",
+      "weak_applier",
+      "vuln_applier",
+      "healer"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0029",
+      "awakener-0054",
+      "awakener-0037",
+      "awakener-0001"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E1",
+    "enlightenBreakpoints": [
+      "E1",
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0030"
+    ],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Genesis Doll — boss-destroying Aliemus battery with big DMG-Amp buffs and Weakness+Vulnerable at E1. Deletes 25-30% of a boss's HP bar and boosts the team in Finale Form; shines in poison teams and solo-carries boss fights at OE.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0016",
+        "reason": "Standard boss-fight pairing for survivability"
+      },
+      {
+        "partnerId": "awakener-0029",
+        "reason": "Core of poison teams"
+      }
+    ]
+  },
+  "awakener-0019": {
+    "id": "awakener-0019",
+    "teamRoles": [
+      "main_dps"
+    ],
+    "synergyTags": [
+      "bleed_stacker",
+      "strike_synergy"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0048",
+      "awakener-0003",
+      "awakener-0023",
+      "awakener-0024"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E3",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Strike",
+      "Exalt"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0023"
+    ],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Genesis Helot — devastating bleed/Strike combo DPS. Stacking Crimson Shackles yields Bloodthirsty Flail (prepare+retain); copy it via The Lone Seed + Thais for one-shot Exalt turns. Needs E3 and The Lone Seed for consistency.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0048",
+        "reason": "Copies Bloodthirsty Flail to set up one-shot combo turns"
+      },
+      {
+        "partnerId": "awakener-0003",
+        "reason": "Buys time while she sets up"
+      }
+    ],
+    "contentNotes": {
+      "arc1": "Functional combo carry",
+      "dtide": "High burst on boss waves with setup time"
+    }
+  },
+  "awakener-0020": {
+    "id": "awakener-0020",
+    "teamRoles": [
+      "card_cycler",
+      "keyflare_support"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0033",
+      "awakener-0027",
+      "awakener-0047",
+      "awakener-0022"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E2",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0006"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Genesis Ramona — time-looping toolbox. Exalt returns the last 3 cards you played for perfect setups; at E3 she can swap your posse to anything (e.g. Voices In Your Head for on-demand weak/vuln). Complex; her dual-posse DPS build is slow and not newbie-friendly."
+  },
+  "awakener-0021": {
+    "id": "awakener-0021",
+    "teamRoles": [
+      "str_support",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "lemurian_preferred"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0035",
+      "awakener-0050",
+      "awakener-0032",
+      "awakener-0005"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0021"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Lemurian STR support and AOE mob clearer — with lots of Tentacle DMG his Usurp Exalt makes tons of temporary STR, the best offensive support for Astral Reign Lemurian teams with Tulu. STR steal has niche uses; his STR-scaling exalt cleans up low-HP enemies even at endgame."
+  },
+  "awakener-0022": {
+    "id": "awakener-0022",
+    "teamRoles": [
+      "card_cycler",
+      "str_support"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0047",
+      "awakener-0033",
+      "awakener-0031",
+      "awakener-0007"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Arithmetica printer and card copyist — draws cards, copies card effects, and banks +2 Arithmetica per turn on Rouse. Enables near-infinite combo turns; wants teammates that play many cards.",
+    "contentNotes": {
+      "arc1": "Sets up near-infinite combo turns",
+      "arc2": "Falls off due to the per-turn card soft cap"
+    }
+  },
+  "awakener-0023": {
+    "id": "awakener-0023",
+    "teamRoles": [
+      "strike_enabler",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "strike_synergy"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0033",
+      "awakener-0019",
+      "awakener-0056",
+      "awakener-0003"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0023"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Strike-DMG multiplier support: Exalt draws two Strikes and multiplies all Strike damage for the turn — fantastic for Strike DPS (Mouchette, GHelot). Can DPS via Shattering Strikes but needs heavy setup.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0033",
+        "reason": "Exalt draws Strikes and multiplies all Strike damage — fuels Mouchette's Strike combos"
+      },
+      {
+        "partnerId": "awakener-0019",
+        "reason": "Same Strike-multiplier payoff"
+      }
+    ]
+  },
+  "awakener-0024": {
+    "id": "awakener-0024",
+    "teamRoles": [
+      "weak_applier",
+      "vuln_applier",
+      "aliemus_battery",
+      "card_cycler"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0041",
+      "awakener-0019",
+      "awakener-0027"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E1",
+    "enlightenBreakpoints": [
+      "E1",
+      "E2"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "S",
+    "notes": "Universal multiplier aura support — a single card play gives a teamwide buff for the whole exploration (scales with her Death Resistance). Carol Psalm is strong Aliemus and lets you retain Arithmetica across turns; at E1 one of the most consistent Weakness/Vulnerable appliers in the game.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0012",
+        "reason": "Carol Psalm retains arithmetica across turns to set up her combo turns"
+      }
+    ]
+  },
+  "awakener-0025": {
+    "id": "awakener-0025",
+    "teamRoles": [
+      "sub_dps",
+      "main_dps"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0010",
+      "awakener-0008",
+      "awakener-0057",
+      "awakener-0053"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0021"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Multihit crit-buff support — her Exalt and Rouse generate buckets of Crit DMG and Crit Rate for any crit DPS, and her AOE hits pop barriers / tank Chains of Resentment. Can main-DPS but needs high levels or STR buffs versus endgame bosses."
+  },
+  "awakener-0026": {
+    "id": "awakener-0026",
+    "teamRoles": [
+      "aliemus_battery",
+      "poison_stacker",
+      "weak_applier",
+      "healer"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0027",
+      "awakener-0047",
+      "awakener-0043",
+      "awakener-0020"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Arithmetica delivery service — Exalt banks 3 Arithmetica to spend any time (random buffs at E3) for characters that need lots of mana; applies decent poison in Astral Reign. OE makes her a top-tier Arithmetica support."
+  },
+  "awakener-0027": {
+    "id": "awakener-0027",
+    "teamRoles": [
+      "main_dps",
+      "shielder",
+      "str_support"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0010",
+      "awakener-0024",
+      "awakener-0049",
+      "awakener-0026"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E3",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt",
+      "Defense"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Tanky ramping juggernaut — generates big shields off her defense card and ramps Base DMG/STR via Fiamma cards and 0-cost Hyperflare resets until Hyperflare one-shots bosses. Needs E3 and her posse; wants STR/crit buffs and Arithmetica to fuel Combust cycles.",
+    "anchorPosse": "posse-0038"
+  },
+  "awakener-0028": {
+    "id": "awakener-0028",
+    "teamRoles": [
+      "healer",
+      "embryo_gen",
+      "shielder",
+      "str_support"
+    ],
+    "synergyTags": [
+      "low_hp_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0051",
+      "awakener-0046",
+      "awakener-0019"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Dedicated healer that heals most when the team is low — ideal for low-HP-threshold carries (Uvhash, Sorel). Makes lots of embryo on Rouse and STR on OE; unlike Faint she has no long-exploration diminishing returns.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0051",
+        "reason": "Heals hard at low HP to keep sub-25%-HP carries alive"
+      },
+      {
+        "partnerId": "awakener-0046",
+        "reason": "Sustains a squishy Exalt carry through back-to-back fights"
+      }
+    ]
+  },
+  "awakener-0029": {
+    "id": "awakener-0029",
+    "teamRoles": [
+      "death_resist",
+      "healer",
+      "shielder",
+      "poison_stacker",
+      "sub_dps"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0018",
+      "awakener-0012",
+      "awakener-0030"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E3",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt",
+      "Defense"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0030"
+    ],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Immortal poison tank — at E3 with Death Resistance stats she out-heals all incoming damage and can carry the team; also a surprising secondary DPS. The main shielder/healer for poison teams, but fits any team needing survivability."
+  },
+  "awakener-0030": {
+    "id": "awakener-0030",
+    "teamRoles": [
+      "main_dps",
+      "poison_stacker"
+    ],
+    "synergyTags": [
+      "poison_stacker"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0054",
+      "awakener-0010",
+      "awakener-0029",
+      "awakener-0053"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E1",
+    "enlightenBreakpoints": [
+      "E1",
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "High-maintenance poison DPS — once set up, Deadly Flames applies massive poison and she becomes the best sustained damage dealer on the standard banner. Finicky early; wants defense, Aliemus and STR from teammates, her posse, E1+, and a hand-size wheel on a support.",
+    "anchorPosse": "posse-0032",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0054",
+        "reason": "Triggers her stacked poison"
+      }
+    ]
+  },
+  "awakener-0031": {
+    "id": "awakener-0031",
+    "teamRoles": [
+      "main_dps"
+    ],
+    "synergyTags": [
+      "strike_synergy"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0048",
+      "awakener-0022",
+      "awakener-0023",
+      "awakener-0040"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E3",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Strike",
+      "Exalt"
+    ],
+    "keyTalents": [
+      "soulforge_aptitude"
+    ],
+    "recommendedPosses": [
+      "posse-0005"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Strike-spamming Exalt DPS using 0-cost Blade of Defiance combos to power her Exalt. Good at mobs, struggles on high-HP bosses; OE deals +15% enemy Max HP, making her worth bringing purely for OE.",
+    "contentNotes": {
+      "arc2": "Works best in Astral Reign with Soulforge investment"
+    }
+  },
+  "awakener-0032": {
+    "id": "awakener-0032",
+    "teamRoles": [
+      "aliemus_battery",
+      "weak_applier",
+      "vuln_applier",
+      "healer",
+      "poison_stacker"
+    ],
+    "synergyTags": [
+      "lemurian_preferred"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0035",
+      "awakener-0001",
+      "awakener-0045"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "The premier do-everything Aequor support — makes Aliemus, applies premium Weakness/Vulnerable debuffs, boosts team damage, heals at low HP and triggers poison. One of only two units (with Vortice) who can stack Realm Mastery in combat. Reliant on her Rouse; staple of GMurphy Lemurian teams but fits any team 'with blue in it'."
+  },
+  "awakener-0033": {
+    "id": "awakener-0033",
+    "teamRoles": [
+      "main_dps"
+    ],
+    "synergyTags": [
+      "strike_synergy"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0003",
+      "awakener-0023",
+      "awakener-0056",
+      "awakener-0020"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E2",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt",
+      "Strike"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "S",
+    "notes": "Death-defying glass-cannon carry — one of the highest-damage units in the game; melts story with Exalt + Mortal Blast combos. Needs E3 for full damage and loves a Death-Resistance team (her E1 stacks buffs each time DR triggers).",
+    "anchorPosse": "posse-0046",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0023",
+        "reason": "Feeds and multiplies Strikes for her combos"
+      },
+      {
+        "partnerId": "awakener-0003",
+        "reason": "Vulnerable + petrify set up her burst turn"
+      }
+    ]
+  },
+  "awakener-0034": {
+    "id": "awakener-0034",
+    "teamRoles": [
+      "keyflare_support",
+      "shielder",
+      "weak_applier",
+      "vuln_applier"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0055",
+      "awakener-0035",
+      "awakener-0045"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E1",
+    "enlightenBreakpoints": [
+      "E1",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Damage-delaying keyflare tank — her Exalt converts incoming damage into damage-over-time, letting an Aequor team survive massive hits, then self-cleanses with Vortex Reversal. Strong defensive keyflare bot with Weakness/Vulnerable and arithmetica.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0035",
+        "reason": "Not a Lemurian, but clears GMurphy's self-inflicted Sacrifice stacks"
+      }
+    ]
+  },
+  "awakener-0035": {
+    "id": "awakener-0035",
+    "teamRoles": [
+      "main_dps",
+      "keyflare_support",
+      "shielder",
+      "card_cycler",
+      "tentacle_enabler",
+      "sacrifice_engine"
+    ],
+    "synergyTags": [
+      "lemurian_preferred",
+      "divine_realm",
+      "sacrifice_synergy"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0032",
+      "awakener-0050",
+      "awakener-0021",
+      "awakener-0034"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [
+      "soulforge_aptitude"
+    ],
+    "recommendedPosses": [
+      "posse-0004"
+    ],
+    "isDivineRealm": true,
+    "tier": "A",
+    "notes": "Genesis Murphy — stance-switching keyflare support-carry with powered-up tentacle stances at the cost of cooldowns and self-inflicted damage. Viable endgame DPS at OE/high investment. Her Soulforge scales with the number of OTHER Lemurians (Faros/Goliath/Miryam/Tulu): 1/2/3 → +6%/15%/30% Max HP and Shield.",
+    "anchorPosse": "posse-0044",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0034",
+        "reason": "Base Murphy clears her self-inflicted Sacrifice stacks"
+      },
+      {
+        "partnerId": "awakener-0032",
+        "reason": "Lemurian teammate for Soulforge scaling"
+      }
+    ],
+    "divineRealmNote": "Triggers Divine Realm: Aequor — Tentacle DMG becomes 5% of team Max HP, Tentacle Gathering is removed, +50% team DMG Amp at exploration start (doubled for pure Aequor/Chaos), and Tranquil Sea / Raging Waves gain 3-turn cooldowns.",
+    "requiresCondition": "lemurian_team_arc2",
+    "contentNotes": {
+      "arc2": "Lemurian Soulforge scaling only works in Astral Reign — her signature team is Arc-2 only"
+    }
+  },
+  "awakener-0036": {
+    "id": "awakener-0036",
+    "teamRoles": [
+      "shielder",
+      "aliemus_battery",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "counter_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0045",
+      "awakener-0004",
+      "awakener-0012",
+      "awakener-0006"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Shield-stall and counter support — her Exalt multiplies the team's existing shield (great for Sanga/Alva), converts Counter into AOE damage, and at E3 blocks incoming debuffs.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0045",
+        "reason": "Exalt multiplies existing shields — huge for shield-scaling teammates"
+      },
+      {
+        "partnerId": "awakener-0004",
+        "reason": "Same shield-multiply payoff"
+      }
+    ]
+  },
+  "awakener-0037": {
+    "id": "awakener-0037",
+    "teamRoles": [
+      "poison_stacker",
+      "keyflare_support",
+      "weak_applier",
+      "vuln_applier"
+    ],
+    "synergyTags": [
+      "poison_stacker"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0018",
+      "awakener-0054",
+      "awakener-0029",
+      "awakener-0030"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0030"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Poison-trigger keyflare support — Exalt instantly triggers poison (speeding up poison teams) and boosts teamwide poison in Astral Reign; high base Keyflare Regen makes her a solid keyflare bot. Best in full poison teams."
+  },
+  "awakener-0038": {
+    "id": "awakener-0038",
+    "teamRoles": [
+      "shielder",
+      "str_support",
+      "vuln_applier"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0012",
+      "awakener-0025",
+      "awakener-0030",
+      "awakener-0047"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "OE",
+    "enlightenBreakpoints": [
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "C",
+    "notes": "Defensive STR buffer — Exalt gives a burst of temporary STR (good for STR-reliant DPS) plus shields. Scales hard with investment and is excellent at +12 / level 90, but outclassed before that."
+  },
+  "awakener-0039": {
+    "id": "awakener-0039",
+    "teamRoles": [
+      "sub_dps",
+      "main_dps"
+    ],
+    "synergyTags": [
+      "counter_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0012",
+      "awakener-0056",
+      "awakener-0052",
+      "awakener-0053"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0013"
+    ],
+    "isDivineRealm": false,
+    "tier": "C",
+    "notes": "Counter-removal bot — strips enemy Counter with Wax-Hot Desire and can be an early-game Counter DPS (converts counter to damage in Faded Legacy). Caught in the Astral Reign Ultra-24 nerf, so unusable as a DPS for most endgame now."
+  },
+  "awakener-0040": {
+    "id": "awakener-0040",
+    "teamRoles": [
+      "sub_dps",
+      "str_support",
+      "embryo_gen",
+      "aliemus_battery",
+      "weak_applier",
+      "vuln_applier",
+      "relic_gen"
+    ],
+    "synergyTags": [
+      "creativity_engine"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0046",
+      "awakener-0014",
+      "awakener-0048",
+      "awakener-0055"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E2",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0040"
+    ],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Buff-stacking sub-DPS — Discovers relics and spams Chromaphage for AOE damage and a big one-turn temp-STR boost to the main DPS. Wants an Exalt-reliant carry that doesn't need arithmetica. Voracious Resolve posse highly recommended.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0046",
+        "reason": "Builds STR and massively buffs her Exalt with Chromaphage temp STR"
+      }
+    ],
+    "anchorPosse": "posse-0042"
+  },
+  "awakener-0041": {
+    "id": "awakener-0041",
+    "teamRoles": [
+      "main_dps"
+    ],
+    "synergyTags": [
+      "bleed_stacker",
+      "sin_stacker"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0008",
+      "awakener-0003",
+      "awakener-0024",
+      "awakener-0053"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E1",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Scaling glass-cannon combo DPS — Atonement by Pain boosts his first card each turn and grows after every fight, making him incredible in long explorations. Needs setup and teammates that buy time; E1 for consistency, E3 for high damage, OE makes him a top DPS.",
+    "anchorPosse": "posse-0039",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0008",
+        "reason": "Buys time while his Atonement by Pain ramps"
+      }
+    ]
+  },
+  "awakener-0042": {
+    "id": "awakener-0042",
+    "teamRoles": [
+      "keyflare_support",
+      "card_cycler"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0033",
+      "awakener-0047",
+      "awakener-0022"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Card-searching keyflare support — solid keyflare bot whose Exalt searches any card and reduces its cost to 0, very flexible. Best with teammates that have high-cost or specific must-have cards.",
+    "anchorPosse": "posse-0045"
+  },
+  "awakener-0043": {
+    "id": "awakener-0043",
+    "teamRoles": [
+      "sub_dps",
+      "vuln_applier",
+      "keyflare_support",
+      "card_cycler"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0047",
+      "awakener-0027",
+      "awakener-0033",
+      "awakener-0026"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "High-rolling damage-buff dispenser — hands out money and permanent upgrades through the exploration that snowball into a big boss-fight damage boost, plus excellent card draw/search for DPS that need specific cards."
+  },
+  "awakener-0044": {
+    "id": "awakener-0044",
+    "teamRoles": [
+      "shielder",
+      "weak_applier",
+      "vuln_applier",
+      "main_dps"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0048",
+      "awakener-0054",
+      "awakener-0024"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0023"
+    ],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Crimson Furnace tank — huge shields via End of Suffering, plus weakness and vulnerable. With Lone Seed + Thais copies he becomes a slow unkillable carry. Crimson Furnace scales with Max HP, so wants high-CON teammates.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0048",
+        "reason": "Copy End of Suffering repeatedly for an unkillable grind carry"
+      }
+    ]
+  },
+  "awakener-0045": {
+    "id": "awakener-0045",
+    "teamRoles": [
+      "shielder",
+      "sub_dps"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0057",
+      "awakener-0032",
+      "awakener-0036",
+      "awakener-0053"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0005"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Mob-clearing shield support — converts a big one-turn shield into significant AOE damage, useful in stall teams that struggle to kill mobs. Can solo-DPS at low levels but needs OE or a damage multiplier (Saya) to scale on high-HP enemies.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0036",
+        "reason": "Nautila multiplies the big shield Sanga stacks"
+      },
+      {
+        "partnerId": "awakener-0057",
+        "reason": "Saya's Corrosion multiplies Sanga's damage"
+      }
+    ]
+  },
+  "awakener-0046": {
+    "id": "awakener-0046",
+    "teamRoles": [
+      "main_dps"
+    ],
+    "synergyTags": [
+      "infinite_devour",
+      "embryo_consumer",
+      "aliemus_hungry",
+      "low_hp_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0040",
+      "awakener-0048",
+      "awakener-0028",
+      "awakener-0009"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0011"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Greedy multihit Exalt DPS, fully reliant on supports for embryos/STR/buffs — weak at low investment, serious damage when enabled, Infinite Devour at OE. Also triggers many tentacle hits in Raging Waves (Aequor/Caro).",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0040",
+        "reason": "Feeds STR and buffs her Exalt"
+      },
+      {
+        "partnerId": "awakener-0048",
+        "reason": "Feeds embryos and double-Devour"
+      },
+      {
+        "partnerId": "awakener-0028",
+        "reason": "Heals her at low HP"
+      }
+    ],
+    "contentNotes": {
+      "dtide": "Burst carry when supports are available"
+    }
+  },
+  "awakener-0047": {
+    "id": "awakener-0047",
+    "teamRoles": [
+      "main_dps",
+      "keyflare_support",
+      "card_cycler",
+      "str_support"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0022",
+      "awakener-0035",
+      "awakener-0043",
+      "awakener-0026"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E2",
+    "enlightenBreakpoints": [
+      "E2",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0004"
+    ],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Ridiculously versatile utility toolbox — can play cards from any teammate or realm and his Wings do a bit of everything. Cosplays as a DPS by spamming Four/Six Wings for temp STR ('Monowil' pure-Chaos carry). Needs E2 and lots of Arithmetica; complex to pilot."
+  },
+  "awakener-0048": {
+    "id": "awakener-0048",
+    "teamRoles": [
+      "embryo_gen",
+      "aliemus_battery",
+      "keyflare_support",
+      "card_cycler",
+      "weak_applier",
+      "vuln_applier",
+      "str_support"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0019",
+      "awakener-0044",
+      "awakener-0046"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E2",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "S",
+    "notes": "The best embryo maker and an elite keyflare/aliemus generator, card-copier and weak/vuln/STR support — does everything a Caro DPS wants. Scions of Purity can trigger Devour twice. At E2 arguably the best support in the game; a 'premium support' to ration carefully in D-Tide.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0046",
+        "reason": "Premium embryo/aliemus/copy support that everything in Caro wants"
+      }
+    ],
+    "contentNotes": {
+      "dtide": "Premium non-repeatable support — assign deliberately across waves"
+    }
+  },
+  "awakener-0049": {
+    "id": "awakener-0049",
+    "teamRoles": [
+      "shielder",
+      "card_cycler",
+      "vuln_applier"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0027",
+      "awakener-0041",
+      "awakener-0019",
+      "awakener-0014"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Arithmetica and crit-buff support — big crit buffs plus up to 5 Arithmetica discounted per Exalt, perfect for DPS that retain full hands for combo turns. Dispels many debuffs and can pull Weakness/Vulnerable from Rouse (inconsistently); at E2 a usable Ultra shielder."
+  },
+  "awakener-0050": {
+    "id": "awakener-0050",
+    "teamRoles": [
+      "tentacle_enabler",
+      "str_support",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "lemurian_preferred",
+      "tentacle_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0032",
+      "awakener-0035",
+      "awakener-0021",
+      "awakener-0005"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0005"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "The King of Tentacle DMG — his Exalt's Tentacle DMG and Crit Rate let multihit attackers hit like trucks in Raging Waves. Usable as a solo DPS early; at endgame he's the damage buffer in Corposant or GMurphy tentacle teams."
+  },
+  "awakener-0051": {
+    "id": "awakener-0051",
+    "teamRoles": [
+      "main_dps"
+    ],
+    "synergyTags": [
+      "low_hp_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0048",
+      "awakener-0010",
+      "awakener-0057",
+      "awakener-0016"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "OE",
+    "enlightenBreakpoints": [
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt",
+      "Rouse"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0011"
+    ],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Self-harming berserker who must stay under 25% HP for full damage; Rouse grants Seal immunity (his niche). Mediocre ceiling but a decent fragile endgame DPS at OE.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0016",
+        "reason": "Keeps him alive while he sits under 25% HP"
+      },
+      {
+        "partnerId": "awakener-0028",
+        "reason": "Low-HP healing to sustain his threshold"
+      }
+    ]
+  },
+  "awakener-0052": {
+    "id": "awakener-0052",
+    "teamRoles": [
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "counter_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0056",
+      "awakener-0012",
+      "awakener-0001",
+      "awakener-0053"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0013"
+    ],
+    "isDivineRealm": false,
+    "tier": "C",
+    "notes": "STR-draining counter support — inflicts heavy STR-down and forces enemies into many small hits instead of one big one. Strong at low levels but needs high investment to keep up later; mainly an endgame pick for specific stages or counter teams."
+  },
+  "awakener-0053": {
+    "id": "awakener-0053",
+    "teamRoles": [
+      "aliemus_battery",
+      "weak_applier",
+      "keyflare_support",
+      "shielder"
+    ],
+    "synergyTags": [],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0012",
+      "awakener-0052",
+      "awakener-0045",
+      "awakener-0025"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Exalt"
+    ],
+    "keyTalents": [],
+    "recommendedPosses": [],
+    "isDivineRealm": false,
+    "tier": "B",
+    "notes": "Aliemus & defensive utility support — a low-cost, well-rounded filler aliemus battery for Ultra teams. The only character who can let a teammate Exalt twice in one turn (E3 Exalt removes their Exalt cooldown); Energy Beam can remove enemy Barrier (useful in Ch 8/9).",
+    "contentNotes": {
+      "arc1": "Core member of Ultra Retaliate teams"
+    }
+  },
+  "awakener-0054": {
+    "id": "awakener-0054",
+    "teamRoles": [
+      "poison_stacker",
+      "sub_dps",
+      "str_support",
+      "embryo_gen"
+    ],
+    "synergyTags": [
+      "poison_stacker"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0037",
+      "awakener-0030",
+      "awakener-0017",
+      "awakener-0002"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [],
+    "recommendedPosses": [
+      "posse-0023"
+    ],
+    "isDivineRealm": false,
+    "tier": "A",
+    "notes": "Defensive support and poison-trigger queen — Bonesick Longing and her Exalt are the biggest poison triggers in the game; high CON raises the team poison cap in Astral Reign, making her a top secondary DPS in poison teams. Also brings unique debuffs, STR-down, arithmetica, AOE and HP%-damage.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0030",
+        "reason": "Triggers Liz's poison stacks"
+      },
+      {
+        "partnerId": "awakener-0017",
+        "reason": "Pairs as poison applier + trigger"
+      }
+    ],
+    "anchorPosse": "posse-0047"
+  },
+  "awakener-0055": {
+    "id": "awakener-0055",
+    "teamRoles": [
+      "main_dps",
+      "shielder",
+      "tentacle_enabler"
+    ],
+    "synergyTags": [
+      "divine_realm",
+      "tentacle_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0034",
+      "awakener-0045",
+      "awakener-0009",
+      "awakener-0040"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [
+      "soulforge_aptitude"
+    ],
+    "recommendedPosses": [],
+    "isDivineRealm": true,
+    "tier": "S",
+    "notes": "Ramping artillery cannon — builds Vortex Reload (via Reload! and her posse) then unloads a huge AOE Exalt that, at E3 with her wheel, one-shots endgame bosses; also boosts Tentacle DMG and Tranquil Sea shields. Requires her posse Drowned Innocence, Reload! skill levels and Soulforge; likes defensive teammates who stall while she sets up.",
+    "anchorPosse": "posse-0049",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0034",
+        "reason": "Defensive teammate that stalls while she ramps"
+      }
+    ],
+    "divineRealmNote": "Provides Divine Realm: Aequor (25% Max HP Tranquil Sea shield every 3 turns); also the first DPS with Realm Mastery scaling built into her kit, which she stacks in combat."
+  },
+  "awakener-0056": {
+    "id": "awakener-0056",
+    "teamRoles": [
+      "main_dps",
+      "annihilation_support",
+      "ultra_space_manager",
+      "shielder"
+    ],
+    "synergyTags": [
+      "divine_realm",
+      "high_aliemus_cost"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0012",
+      "awakener-0033",
+      "awakener-0008",
+      "awakener-0025"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [
+      "gnostic_potential"
+    ],
+    "recommendedPosses": [
+      "posse-0025"
+    ],
+    "isDivineRealm": true,
+    "tier": "S",
+    "notes": "Damage amplifier and harbinger of doom — her Rouse and Pursuit multiply the team's command cards, with big DMG-Amp buffs and shields. Final Verdict out-damages many DPS while ignoring shields and invulnerability, trivializing many boss mechanics; best supporting a card-rich DPS but can solo many fights.",
+    "anchorPosse": "posse-0050",
+    "leapPriority": "high",
+    "leapNote": "Triggers Singularity: Ultra — command cards are buffed, Ultra Round extends the current turn instead of starting a new one, and Annihilation puts the leftmost Ultra-Space card into hand on a 3-turn cooldown.",
+    "divineRealmNote": "Singularity: Ultra. Exalt 'Moira, As I Decree' costs 150 Aliemus; Weaver stacks (cap 3, expanded at E3), Singularity Beacon/Prism, and Final Verdict damage that ignores shields and invulnerability."
+  },
+  "awakener-0057": {
+    "id": "awakener-0057",
+    "teamRoles": [
+      "corrosion_applier",
+      "aliemus_battery",
+      "card_cycler",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "high_aliemus_cost",
+      "divine_realm"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0045",
+      "awakener-0021",
+      "awakener-0025"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [
+      "madness_omen"
+    ],
+    "recommendedPosses": [
+      "posse-0001"
+    ],
+    "isDivineRealm": true,
+    "tier": "S",
+    "notes": "Divine Caro corrosion nuker and combo setup artist. Viscera Blossoms applies massive Corrosion (≈4x damage multiplier) enabling even weak DPS to clear; she funnels Aliemus and seeds 0-cost card copies, so she pairs best with carries that don't rely on specific cards. Exalt costs 200 Aliemus — wants Madness Omen and Aliemus batteries.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0046",
+        "reason": "Seeds 0-cost copies and funnels Aliemus into an Exalt carry that doesn't need specific cards"
+      }
+    ],
+    "divineRealmNote": "Mutates Caro into Propagation: Caro — Embryos become Propagule Embryos that grant Propagation Fiesta (Exalt buffs) instead of shield/STR; Crimson Furnace becomes stronger but gains a 3-turn cooldown and inflicts Corrosion.",
+    "contentNotes": {
+      "arc2": "Soulforge and Realm Mastery further amplify Propagation Fiesta"
+    },
+    "anchorPosse": "posse-0051"
+  }
+}
