@@ -226,7 +226,11 @@ function ItemDrawer({
                     {it.name}
                   </div>
                   {it.subtitle && (
-                    <div className="mt-0.5 line-clamp-2 text-[12.5px] leading-snug text-[var(--text-muted)]">
+                    <div
+                      className={`mt-0.5 text-[12.5px] leading-snug text-[var(--text-muted)]${
+                        kind === "wheels" ? " line-clamp-2" : ""
+                      }`}
+                    >
                       {it.subtitle}
                     </div>
                   )}
@@ -859,7 +863,7 @@ function PosseBar({
           {info?.name ?? (editable ? "Tap to equip a posse" : "Not equipped")}
         </div>
         {info?.effect && (
-          <p className="mt-0.5 line-clamp-2 text-[12.5px] leading-snug text-[var(--text-muted)]">
+          <p className="mt-0.5 text-[12.5px] leading-snug text-[var(--text-muted)]">
             {info.effect}
           </p>
         )}
