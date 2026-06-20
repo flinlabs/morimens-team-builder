@@ -9,7 +9,7 @@
     "lint": "next lint",
     "sync": "node scripts/sync-skeydb.mjs",
     "assets": "node scripts/fetch-assets.mjs",
-    "prebuild": "node scripts/sync-skeydb.mjs && node scripts/fetch-assets.mjs"
+    "prebuild": "node scripts/fetch-assets.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.2",
