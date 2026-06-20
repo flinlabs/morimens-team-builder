@@ -127,6 +127,10 @@ async function main() {
 }
 
 main().catch(err => {
-  console.error('❌ Asset fetch failed:', err.message)
-  process.exit(1)
+  console.warn('⚠ Asset fetch failed:', err.message)
+  // Art is cosmetic and the UI falls back to placeholders, so a fetch failure
+  // (network blip, manifest moved) must not break the production build. The
+  // deploy ships without freshly-pulled art; a later build repopulates it.
+  console.warn('↪ Continuing build without freshly-fetched art.')
+  process.exit(0)
 })
