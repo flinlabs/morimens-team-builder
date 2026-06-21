@@ -638,6 +638,41 @@ export default function FormationBoard({
   const roster = useRosterStore((s) => s.roster);
   const editable = !!gear && !!onChangeSlotGear;
   const [picker, setPicker] = useState<PickerState | null>(null);
+  const [exportState, setExportState] = useState<
+    { loading: boolean; code?: string; error?: string } | null
+  >(null);
+  const [copied, setCopied] = useState(false);
+
+  async function exportToMorimens() {
+    setExportState({ loading: true });
+    setCopied(false);
+    try {
+      const payload = {
+        slots: slots.map((awakenerId) => {
+          const plan = awakenerId && plans ? plans[awakenerId] : undefined;
+          return {
+            awakenerId: awakenerId ?? null,
+            wheelIds: [plan?.wheelIds?.[0] ?? null, plan?.wheelIds?.[1] ?? null],
+            covenantId: plan?.covenantId ?? null,
+          };
+        }),
+        posseId: posseId ?? null,
+      };
+      const res = await fetch("/api/export-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setExportState({ loading: false, error: data.error ?? "Could not build the code." });
+      } else {
+        setExportState({ loading: false, code: data.code });
+      }
+    } catch {
+      setExportState({ loading: false, error: "Network error — please try again." });
+    }
+  }
 
   const byId = useMemo(() => {
     const m: Record<string, AwkLite> = {};
@@ -770,6 +805,14 @@ export default function FormationBoard({
               ))}
             </div>
           )}
+          {slots.some(Boolean) && (
+            <button
+              onClick={exportToMorimens}
+              className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[12px] uppercase tracking-wider text-[var(--text-dim)] transition hover:border-[var(--gold)] hover:text-[var(--gold-bright)]"
+            >
+              Export to Morimens
+            </button>
+          )}
           {onClearAll && slots.some(Boolean) && (
             <button
               onClick={onClearAll}
@@ -822,6 +865,59 @@ export default function FormationBoard({
       </div>
 
       {dp && <ItemDrawer {...dp} />}
+
+      {exportState && (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setExportState(null)}
+        >
+          <div
+            className="w-full max-w-md rounded-xl border border-[var(--gold)]/40 bg-[var(--panel-2)] p-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-2 font-title text-sm uppercase tracking-wider text-[var(--gold-bright)]">
+              Export to Morimens
+            </div>
+            {exportState.loading ? (
+              <p className="text-sm text-[var(--text-muted)]">Building code…</p>
+            ) : exportState.error ? (
+              <p className="text-sm text-[var(--realm-caro)]">{exportState.error}</p>
+            ) : (
+              <>
+                <p className="mb-2 text-[12.5px] leading-snug text-[var(--text-muted)]">
+                  Paste this into Morimens&apos; lineup import. It carries the units,
+                  their wheels and covenants, and the posse — not investment levels.
+                </p>
+                <textarea
+                  readOnly
+                  value={exportState.code}
+                  onFocus={(e) => e.currentTarget.select()}
+                  className="h-20 w-full resize-none rounded-md border border-[var(--border)] bg-[var(--bg-2)] p-2 font-mono text-[12px] text-[var(--text)]"
+                />
+                <div className="mt-2 flex justify-end gap-2">
+                  <button
+                    onClick={() => {
+                      if (exportState.code) {
+                        navigator.clipboard?.writeText(exportState.code);
+                        setCopied(true);
+                      }
+                    }}
+                    className="rounded-md border border-[var(--gold)]/50 px-3 py-1 text-[12px] uppercase tracking-wider text-[var(--gold-bright)] transition hover:bg-[var(--gold)]/10"
+                  >
+                    {copied ? "Copied!" : "Copy"}
+                  </button>
+                  <button
+                    onClick={() => setExportState(null)}
+                    className="rounded-md border border-[var(--border)] px-3 py-1 text-[12px] uppercase tracking-wider text-[var(--text-dim)] transition hover:text-[var(--text)]"
+                  >
+                    Close
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
