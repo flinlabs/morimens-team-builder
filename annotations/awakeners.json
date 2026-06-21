@@ -52,7 +52,8 @@
       "awakener-0008",
       "awakener-0015",
       "awakener-0054",
-      "awakener-0018"
+      "awakener-0018",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -323,7 +324,8 @@
     "synergizesWith": [
       "awakener-0014",
       "awakener-0027",
-      "awakener-0030"
+      "awakener-0030",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -356,7 +358,8 @@
       "awakener-0050",
       "awakener-0005",
       "awakener-0007",
-      "awakener-0055"
+      "awakener-0055",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E2",
@@ -396,7 +399,8 @@
       "awakener-0056",
       "awakener-0010",
       "awakener-0018",
-      "awakener-0036"
+      "awakener-0036",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -584,7 +588,8 @@
       "awakener-0032",
       "awakener-0054",
       "awakener-0018",
-      "awakener-0005"
+      "awakener-0005",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -617,7 +622,8 @@
       "awakener-0029",
       "awakener-0054",
       "awakener-0037",
-      "awakener-0001"
+      "awakener-0001",
+      "awakener-0056"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E1",
@@ -706,7 +712,8 @@
       "awakener-0033",
       "awakener-0027",
       "awakener-0047",
-      "awakener-0022"
+      "awakener-0022",
+      "awakener-0056"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E2",
@@ -738,7 +745,8 @@
       "awakener-0035",
       "awakener-0050",
       "awakener-0032",
-      "awakener-0005"
+      "awakener-0005",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -766,7 +774,8 @@
       "awakener-0047",
       "awakener-0033",
       "awakener-0031",
-      "awakener-0007"
+      "awakener-0007",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -839,7 +848,8 @@
     "synergizesWith": [
       "awakener-0041",
       "awakener-0019",
-      "awakener-0027"
+      "awakener-0027",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E1",
@@ -872,7 +882,8 @@
       "awakener-0010",
       "awakener-0008",
       "awakener-0057",
-      "awakener-0053"
+      "awakener-0053",
+      "awakener-0056"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -904,7 +915,8 @@
       "awakener-0027",
       "awakener-0047",
       "awakener-0043",
-      "awakener-0020"
+      "awakener-0020",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1003,7 +1015,8 @@
     "synergizesWith": [
       "awakener-0018",
       "awakener-0012",
-      "awakener-0030"
+      "awakener-0030",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E3",
@@ -1117,7 +1130,8 @@
     "synergizesWith": [
       "awakener-0035",
       "awakener-0001",
-      "awakener-0045"
+      "awakener-0045",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1144,7 +1158,8 @@
       "awakener-0003",
       "awakener-0023",
       "awakener-0056",
-      "awakener-0020"
+      "awakener-0020",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E2",
@@ -1456,7 +1471,8 @@
       "awakener-0008",
       "awakener-0003",
       "awakener-0024",
-      "awakener-0053"
+      "awakener-0053",
+      "awakener-0056"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E1",
@@ -1492,7 +1508,8 @@
     "synergizesWith": [
       "awakener-0033",
       "awakener-0047",
-      "awakener-0022"
+      "awakener-0022",
+      "awakener-0056"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1546,7 +1563,8 @@
     "synergizesWith": [
       "awakener-0048",
       "awakener-0054",
-      "awakener-0024"
+      "awakener-0024",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1581,7 +1599,8 @@
       "awakener-0057",
       "awakener-0032",
       "awakener-0036",
-      "awakener-0053"
+      "awakener-0053",
+      "awakener-0055"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1674,7 +1693,8 @@
       "awakener-0022",
       "awakener-0035",
       "awakener-0043",
-      "awakener-0026"
+      "awakener-0026",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E2",
@@ -1709,7 +1729,9 @@
     "synergizesWith": [
       "awakener-0019",
       "awakener-0044",
-      "awakener-0046"
+      "awakener-0046",
+      "awakener-0057",
+      "awakener-0056"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1779,7 +1801,8 @@
       "awakener-0032",
       "awakener-0035",
       "awakener-0021",
-      "awakener-0005"
+      "awakener-0005",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1852,7 +1875,8 @@
       "awakener-0056",
       "awakener-0012",
       "awakener-0001",
-      "awakener-0053"
+      "awakener-0053",
+      "awakener-0057"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1884,7 +1908,8 @@
       "awakener-0012",
       "awakener-0052",
       "awakener-0045",
-      "awakener-0025"
+      "awakener-0025",
+      "awakener-0056"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1978,7 +2003,9 @@
     "keyTalents": [
       "soulforge_aptitude"
     ],
-    "recommendedPosses": [],
+    "recommendedPosses": [
+      "posse-0049"
+    ],
     "isDivineRealm": true,
     "tier": "S",
     "notes": "Ramping artillery cannon — builds Vortex Reload (via Reload! and her posse) then unloads a huge AOE Exalt that, at E3 with her wheel, one-shots endgame bosses; also boosts Tentacle DMG and Tranquil Sea shields. Requires her posse Drowned Innocence, Reload! skill levels and Soulforge; likes defensive teammates who stall while she sets up.",
@@ -2008,7 +2035,13 @@
       "awakener-0012",
       "awakener-0033",
       "awakener-0008",
-      "awakener-0025"
+      "awakener-0025",
+      "awakener-0018",
+      "awakener-0020",
+      "awakener-0041",
+      "awakener-0042",
+      "awakener-0048",
+      "awakener-0053"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -2047,9 +2080,28 @@
     "synergizesWith": [
       "awakener-0045",
       "awakener-0021",
-      "awakener-0025"
+      "awakener-0025",
+      "awakener-0048",
+      "awakener-0002",
+      "awakener-0032",
+      "awakener-0017",
+      "awakener-0029",
+      "awakener-0026",
+      "awakener-0047",
+      "awakener-0024",
+      "awakener-0052",
+      "awakener-0012",
+      "awakener-0010",
+      "awakener-0011",
+      "awakener-0050",
+      "awakener-0022",
+      "awakener-0033",
+      "awakener-0044"
     ],
-    "conflictsWith": [],
+    "conflictsWith": [
+      "awakener-0019",
+      "awakener-0041"
+    ],
     "viabilityFloor": "E0",
     "enlightenBreakpoints": [
       "E1"
