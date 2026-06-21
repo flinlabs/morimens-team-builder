@@ -41,6 +41,7 @@ interface RosterStore {
   // Lifecycle
   hydrate: () => void
   reset: () => void
+  importRoster: (roster: UserRoster) => void
 
   // Awakener actions
   setAwakenerOwned: (id: string, owned: boolean) => void
@@ -121,6 +122,11 @@ export const useRosterStore = create<RosterStore>((set, get) => ({
     const fresh = createEmptyRoster()
     saveRoster(fresh)
     set({ roster: fresh })
+  },
+
+  importRoster: (roster) => {
+    saveRoster(roster)
+    set({ roster })
   },
 
   // ---------------------------------------------------------------------------
