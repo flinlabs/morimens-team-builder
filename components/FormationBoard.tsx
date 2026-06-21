@@ -617,6 +617,7 @@ export default function FormationBoard({
   onChangeSlotGear,
   onChangePosse,
   onClearAll,
+  onImport,
   wheelMeta,
   covenantMeta,
   posseMeta,
@@ -631,6 +632,11 @@ export default function FormationBoard({
   onChangeSlotGear?: (slotIndex: number, patch: { wheelIds?: string[]; covenantId?: string }) => void;
   onChangePosse?: (id: string | undefined) => void;
   onClearAll?: () => void;
+  onImport?: (lineup: {
+    slots: (string | null)[];
+    plans: Record<string, SlotPlan>;
+    posseId?: string;
+  }) => void;
   wheelMeta?: Record<string, { name: string }>;
   covenantMeta?: Record<string, { name: string }>;
   posseMeta?: Record<string, PosseInfo>;
@@ -642,6 +648,12 @@ export default function FormationBoard({
     { loading: boolean; code?: string; error?: string } | null
   >(null);
   const [copied, setCopied] = useState(false);
+  const [importBox, setImportBox] = useState<{
+    text: string;
+    loading: boolean;
+    error?: string;
+    loadedWarnings?: number;
+  } | null>(null);
 
   async function exportToMorimens() {
     setExportState({ loading: true });
@@ -671,6 +683,53 @@ export default function FormationBoard({
       }
     } catch {
       setExportState({ loading: false, error: "Network error — please try again." });
+    }
+  }
+
+  async function importFromCode() {
+    if (!importBox) return;
+    setImportBox({ ...importBox, loading: true, error: undefined });
+    try {
+      const res = await fetch("/api/import-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: importBox.text }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setImportBox((b) =>
+          b ? { ...b, loading: false, error: data.error ?? "Could not read that code." } : b
+        );
+        return;
+      }
+      const decodedSlots = (data.slots ?? []) as {
+        awakenerId?: string;
+        wheelIds: [string | null, string | null];
+        covenantId?: string;
+      }[];
+      const newSlots: (string | null)[] = [0, 1, 2, 3].map(
+        (i) => decodedSlots[i]?.awakenerId ?? null
+      );
+      const newPlans: Record<string, SlotPlan> = {};
+      for (const s of decodedSlots) {
+        if (s.awakenerId) {
+          newPlans[s.awakenerId] = {
+            wheelIds: [s.wheelIds?.[0], s.wheelIds?.[1]].filter((x): x is string => !!x),
+            covenantId: s.covenantId,
+          };
+        }
+      }
+      onImport?.({ slots: newSlots, plans: newPlans, posseId: data.posseId ?? undefined });
+      const warnings = Array.isArray(data.warnings) ? data.warnings.length : 0;
+      if (warnings > 0) {
+        setImportBox((b) => (b ? { ...b, loading: false, loadedWarnings: warnings } : b));
+      } else {
+        setImportBox(null);
+      }
+    } catch {
+      setImportBox((b) =>
+        b ? { ...b, loading: false, error: "Network error — please try again." } : b
+      );
     }
   }
 
@@ -805,6 +864,14 @@ export default function FormationBoard({
               ))}
             </div>
           )}
+          {onImport && (
+            <button
+              onClick={() => setImportBox({ text: "", loading: false })}
+              className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[12px] uppercase tracking-wider text-[var(--text-dim)] transition hover:border-[var(--realm-aequor)] hover:text-[var(--realm-aequor)]"
+            >
+              Import code
+            </button>
+          )}
           {slots.some(Boolean) && (
             <button
               onClick={exportToMorimens}
@@ -911,6 +978,73 @@ export default function FormationBoard({
                     className="rounded-md border border-[var(--border)] px-3 py-1 text-[12px] uppercase tracking-wider text-[var(--text-dim)] transition hover:text-[var(--text)]"
                   >
                     Close
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {importBox && (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setImportBox(null)}
+        >
+          <div
+            className="w-full max-w-md rounded-xl border border-[var(--realm-aequor)]/40 bg-[var(--panel-2)] p-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-2 font-title text-sm uppercase tracking-wider text-[var(--realm-aequor)]">
+              Import a lineup
+            </div>
+            {importBox.loadedWarnings ? (
+              <>
+                <p className="text-sm text-[var(--text-muted)]">
+                  Lineup loaded. {importBox.loadedWarnings} item
+                  {importBox.loadedWarnings === 1 ? "" : "s"} in the code couldn&apos;t be
+                  matched and were left empty.
+                </p>
+                <div className="mt-2 flex justify-end">
+                  <button
+                    onClick={() => setImportBox(null)}
+                    className="rounded-md border border-[var(--border)] px-3 py-1 text-[12px] uppercase tracking-wider text-[var(--text-dim)] transition hover:text-[var(--text)]"
+                  >
+                    Close
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="mb-2 text-[12.5px] leading-snug text-[var(--text-muted)]">
+                  Paste a Morimens lineup code (the whole copied block is fine — the
+                  <span className="font-mono"> @@…@@ </span> part is read automatically).
+                </p>
+                <textarea
+                  value={importBox.text}
+                  onChange={(e) =>
+                    setImportBox((b) => (b ? { ...b, text: e.target.value, error: undefined } : b))
+                  }
+                  placeholder="@@…@@"
+                  autoFocus
+                  className="h-24 w-full resize-none rounded-md border border-[var(--border)] bg-[var(--bg-2)] p-2 font-mono text-[12px] text-[var(--text)]"
+                />
+                {importBox.error && (
+                  <p className="mt-1 text-[12px] text-[var(--realm-caro)]">{importBox.error}</p>
+                )}
+                <div className="mt-2 flex justify-end gap-2">
+                  <button
+                    onClick={importFromCode}
+                    disabled={importBox.loading || !importBox.text.trim()}
+                    className="rounded-md border border-[var(--realm-aequor)]/50 px-3 py-1 text-[12px] uppercase tracking-wider text-[var(--realm-aequor)] transition hover:bg-[var(--realm-aequor)]/10 disabled:opacity-40"
+                  >
+                    {importBox.loading ? "Loading…" : "Load lineup"}
+                  </button>
+                  <button
+                    onClick={() => setImportBox(null)}
+                    className="rounded-md border border-[var(--border)] px-3 py-1 text-[12px] uppercase tracking-wider text-[var(--text-dim)] transition hover:text-[var(--text)]"
+                  >
+                    Cancel
                   </button>
                 </div>
               </>
