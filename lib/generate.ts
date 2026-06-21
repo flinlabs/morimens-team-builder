@@ -118,24 +118,77 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
     }
   } else {
     const options = req.options ?? {}
-    const maxResults = options.maxResults ?? 4
-    // Meta comps first, then searched teams, de-duplicated by member set.
+    const maxResults = options.maxResults ?? 6
     const metaCands = metaCandidates(req.roster, awakeners, options)
-    const searchCands = generateCandidateTeams(req.roster, awakeners, options)
+    // Pull a deeper slice of engine-built teams so the reserve below has real
+    // variety to choose from, not just the top three.
+    // Pull a generous slice so the novelty-preferring reserve below can reach
+    // synergy-dense comps that tie-break just under the top cluster. A unit like
+    // Saya, whose ideal poison comp scores a hundredth below the densest Ultra
+    // teams, otherwise sits outside a shallow slice and never gets considered
+    // despite being a distinct, guide-sanctioned team worth showing.
+    const searchCands = generateCandidateTeams(req.roster, awakeners, {
+      ...options,
+      maxResults: Math.max(options.maxResults ?? 0, 30),
+    })
+
     const seen = new Set<string>()
-    const merged: CandidateTeam[] = []
-    for (const c of [...metaCands, ...searchCands]) {
+    const usedUnits = new Set<string>()
+    const picked: CandidateTeam[] = []
+    const push = (c: CandidateTeam): boolean => {
       const k = teamKey(c.awakenerIds)
-      if (seen.has(k)) continue
+      if (seen.has(k)) return false
       seen.add(k)
-      merged.push(c)
+      picked.push(c)
+      c.awakenerIds.forEach((id) => usedUnits.add(id))
+      return true
     }
-    if (merged.length) {
-      teams = merged
-        .slice(0, maxResults)
-        .map((candidate, i) =>
-          buildTeamRecommendation(candidate, i + 1, req.roster, awakeners, posses)
-        )
+
+    // Curated meta comps lead (a known-good comp beats a heuristic one), but
+    // reserve roughly a third of the slots for engine-built teams. Without this
+    // the meta library crowds the algorithm out entirely on a full roster, so
+    // strong units whose ideal comps aren't curated meta (e.g. Saya's poison or
+    // counter teams) would never surface despite the engine building them well.
+    const algoReserve = Math.min(searchCands.length, Math.max(1, Math.round(maxResults / 3)))
+    const metaSlots = maxResults - algoReserve
+
+    for (const c of metaCands) {
+      if (picked.length >= metaSlots) break
+      push(c)
+    }
+
+    // Fill the reserve with engine-built teams, preferring those that introduce
+    // units not already on screen — that variety is what brings up comps the
+    // curated set misses, instead of re-showing the same carries.
+    let reserved = 0
+    while (reserved < algoReserve) {
+      let best: CandidateTeam | null = null
+      let bestNovel = -1
+      let bestScore = -Infinity
+      for (const c of searchCands) {
+        if (seen.has(teamKey(c.awakenerIds))) continue
+        const novel = c.awakenerIds.filter((id) => !usedUnits.has(id)).length
+        if (novel > bestNovel || (novel === bestNovel && c.score > bestScore)) {
+          best = c
+          bestNovel = novel
+          bestScore = c.score
+        }
+      }
+      if (!best || !push(best)) break
+      reserved++
+    }
+
+    // Backfill any open slots (meta ran short, or fewer engine teams than
+    // reserved) by score, meta first.
+    for (const c of [...metaCands, ...searchCands]) {
+      if (picked.length >= maxResults) break
+      push(c)
+    }
+
+    if (picked.length) {
+      teams = picked.map((candidate, i) =>
+        buildTeamRecommendation(candidate, i + 1, req.roster, awakeners, posses)
+      )
     } else {
       warnings.push(
         'No valid team could be formed. Try lowering the minimum viability tier, ' +
