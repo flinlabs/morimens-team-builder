@@ -35,11 +35,31 @@ describe('ingame-codec', () => {
     expect(dec.posseId).toBe(po[0].id)
   })
 
-  it('decodes a real game-format code from SKeyDB into known entities', () => {
-    const dec = decodeIngameTeamCode('@@Oir7xbxSxYxHmJyUyTxfhQuExRxp6gNKxCxfhQuExRxfhQuEyAG@@')
-    const names = dec.slots.map((s) => s.awakenerId)
-    console.log('decoded awakeners:', JSON.stringify(names))
-    console.log('decoded posse:', dec.posseId, '| warnings:', dec.warnings.length)
-    expect(dec.slots).toHaveLength(4)
+  it('decodes a real copied in-game lineup to the exact units, gear, and posse', () => {
+    const awById = getAwakeners()
+    const whById = getWheels()
+    const cvById = getCovenants()
+    const poById = getPosses()
+    // A genuine block copied out of Morimens, header and all.
+    const block = `Investigation Lineup
+Keeper: mercury child（101242880） Team: Team7
+Clementine, Veiled Anguish, Elevated Focus, Life Drain
+Horla, The Last Verse, Poetic Bygone Days, Dream of Medicine
+Arachne, Eternal Weave, Amidst the Downpour, Steppenwolf
+Kathigu-Ra, Amber-Tinted Death, Blade of the Titan, April Tribute
+Undying Sun
+@@9B41yfxDkxRyivyn1nowbR@@`
+    const dec = decodeIngameTeamCode(block)
+    expect(dec.warnings).toEqual([])
+    const resolved = dec.slots.map((s) => ({
+      awk: s.awakenerId ? awById[s.awakenerId].name : null,
+      wheels: s.wheelIds.map((id) => (id ? whById[id].name : null)),
+      cov: s.covenantId ? cvById[s.covenantId].name : null,
+    }))
+    expect(resolved[0]).toEqual({ awk: 'Clementine', wheels: ['Veiled Anguish', 'Elevated Focus'], cov: 'Life Drain' })
+    expect(resolved[1]).toEqual({ awk: 'Horla', wheels: ['The Last Verse', 'Poetic Bygone Days'], cov: 'Dream of Medicine' })
+    expect(resolved[2]).toEqual({ awk: 'Arachne', wheels: ['Eternal Weave', 'Amidst the Downpour'], cov: 'Steppenwolf' })
+    expect(resolved[3]).toEqual({ awk: 'Kathigu-Ra', wheels: ['Amber-Tinted Death', 'Blade of the Titan'], cov: 'April Tribute' })
+    expect(dec.posseId ? poById[dec.posseId].name : null).toBe('Undying Sun')
   })
 })
