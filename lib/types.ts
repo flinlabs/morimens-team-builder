@@ -254,6 +254,7 @@ export interface EnrichedWheel {
   mainstatKey: string
   ownerAwakenerId?: string
   ownerAwakenerName?: string
+  lineupToken?: string
   searchTags: string[]
   descriptionTemplate?: string
   descriptionArgs?: Record<string, DescriptionArg>
@@ -300,6 +301,7 @@ export interface EnrichedPosse {
   acquisitionSource?: string
   lore?: string
   ownerAwakenerId?: string
+  lineupToken?: string
   hasCharacterBonus: boolean
   characterBonusFor: string | null
   assets?: Record<string, string>
