@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRosterStore } from "@/lib/store";
-import type { Realm, EnlightenSlot, CharacterAssignment, TeamRecommendation } from "@/lib/types";
+import type { Realm, EnlightenSlot, CharacterAssignment, TeamRecommendation, UserRoster } from "@/lib/types";
 import type { GenerateResult } from "@/lib/generate";
 import { RealmSigil, REALMS, REALM_RANK, RARITY_RANK } from "./realm";
 import DetailModal, { type DetailTarget } from "./DetailModal";
@@ -547,6 +547,7 @@ function OwnControl({
 export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const roster = useRosterStore((s) => s.roster);
   const hydrate = useRosterStore((s) => s.hydrate);
+  const importRoster = useRosterStore((s) => s.importRoster);
   const setAwakenerOwned = useRosterStore((s) => s.setAwakenerOwned);
   const setEnlightenLevel = useRosterStore((s) => s.setEnlightenLevel);
   const setWheelOwned = useRosterStore((s) => s.setWheelOwned);
@@ -586,6 +587,57 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const [genId, setGenId] = useState(0);
   // Top-level view: inventory customization vs team generation.
   const [view, setView] = useState<"inventory" | "teams">("teams");
+
+  // --- Inventory backup (export / import) -----------------------------------
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function exportRoster() {
+    const blob = new Blob([JSON.stringify(roster, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `morimens-inventory-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result));
+        const looksValid =
+          parsed &&
+          typeof parsed === "object" &&
+          typeof parsed.awakeners === "object" &&
+          typeof parsed.wheels === "object" &&
+          typeof parsed.covenants === "object" &&
+          typeof parsed.posses === "object";
+        if (!looksValid) {
+          alert("That doesn't look like a Morimens inventory file.");
+          return;
+        }
+        if (
+          !confirm(
+            "Import this inventory? It replaces everything currently saved in this browser."
+          )
+        )
+          return;
+        importRoster(parsed as UserRoster);
+      } catch {
+        alert(
+          "Couldn't read that file — make sure it's an inventory exported from this app."
+        );
+      } finally {
+        e.target.value = ""; // let the same file be re-selected later
+      }
+    };
+    reader.readAsText(file);
+  }
   // D-Tide always fields five teams of four; these boards are independently editable.
   const [dtideSlots, setDtideSlots] = useState<(string | null)[][]>(() =>
     Array.from({ length: 5 }, () => [null, null, null, null])
@@ -1044,6 +1096,12 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               setPlans((p) => ({ ...p, [id]: { ...p[id], ...patch } }));
             }}
             onChangePosse={(id) => setPosseId(id)}
+            onImport={(lineup) => {
+              setSlots(lineup.slots);
+              setPlans(lineup.plans);
+              setPosseId(lineup.posseId);
+              setPinned([false, false, false, false]);
+            }}
             wheelMeta={wheelMeta}
             covenantMeta={covenantMeta}
             posseMeta={posseMeta}
@@ -1145,6 +1203,38 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
 
       {view === "inventory" && (
         <>
+      {/* Inventory backup — export / import (no account, so this is the safety net) */}
+      <section className="mb-5 rounded-xl border border-[var(--border)] bg-[var(--bg-2)]/85 p-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="font-title text-xs uppercase tracking-wider text-[var(--text-dim)]">
+            Backup
+          </span>
+          <button
+            onClick={exportRoster}
+            className="rounded-md border border-[var(--border)] px-3 py-1.5 text-xs font-semibold text-[var(--text-muted)] transition hover:border-[var(--gold)] hover:text-[var(--gold-bright)]"
+          >
+            Export inventory
+          </button>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="rounded-md border border-[var(--border)] px-3 py-1.5 text-xs font-semibold text-[var(--text-muted)] transition hover:border-[var(--gold)] hover:text-[var(--gold-bright)]"
+          >
+            Import inventory
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json,.json"
+            onChange={handleImportFile}
+            className="hidden"
+          />
+          <span className="text-[11px] text-[var(--text-dim)]">
+            Your inventory saves automatically in this browser. Export a file to
+            back it up or move it to another device.
+          </span>
+        </div>
+      </section>
+
       {/* Keeper level */}
       <section className="mb-5 rounded-xl border border-[var(--border)] bg-[var(--bg-2)]/85 p-3">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
