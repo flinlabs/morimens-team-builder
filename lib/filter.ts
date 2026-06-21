@@ -253,13 +253,19 @@ function synergScore(
 ): number {
   let bonus = 0
   for (const id of awakenerIds) {
-    const synergizesWith = awakeners[id]?.annotation?.synergizesWith ?? []
+    const annotation = awakeners[id]?.annotation
+    const synergizesWith = annotation?.synergizesWith ?? []
+    const conflictsWith = annotation?.conflictsWith ?? []
     for (const otherId of awakenerIds) {
       if (otherId === id) continue
       if (synergizesWith.includes(otherId)) bonus += 0.1
+      // Anti-synergy: a flagged conflict (e.g. Saya kicking away Helot:Catena's
+      // hoarded cards) costs slightly more than a synergy is worth, so a team
+      // pairing the two is actively demoted rather than merely unrewarded.
+      if (conflictsWith.includes(otherId)) bonus -= 0.15
     }
   }
-  return Math.min(bonus, 0.5) // cap at 0.5 bonus
+  return Math.min(bonus, 0.7) // cap upside; conflicts can push below zero
 }
 
 export function isLemurian(awakener: EnrichedAwakener): boolean {
