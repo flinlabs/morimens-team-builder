@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent, type MouseEvent, type ReactNode } from "react";
 import { useRosterStore } from "@/lib/store";
 import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg, SkeySkillUpgrade } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
@@ -173,6 +173,8 @@ function Stepper({
   max,
   suffix,
   onChange,
+  locked,
+  lockedHint,
 }: {
   label: string;
   value: number;
@@ -180,8 +182,29 @@ function Stepper({
   max: number;
   suffix?: string;
   onChange: (v: number) => void;
+  locked?: boolean;
+  lockedHint?: string;
 }) {
   const clamp = (v: number) => Math.max(min, Math.min(max, v));
+  if (locked) {
+    return (
+      <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 opacity-90">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-[var(--text)]">{label}</span>
+          <span className="tabular-nums text-xs text-[var(--text-dim)]">
+            {value}
+            {suffix ?? ""} / {max}
+            {suffix ?? ""}
+          </span>
+        </div>
+        {lockedHint && (
+          <div className="mt-1 text-[11px] leading-tight text-[var(--text-dim)]">
+            {lockedHint}
+          </div>
+        )}
+      </div>
+    );
+  }
   return (
     <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2">
       <div className="mb-1.5 flex items-center justify-between">
@@ -204,7 +227,7 @@ function Stepper({
           min={min}
           max={max}
           value={value}
-          onChange={(e) => onChange(clamp(Number(e.target.value)))}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(clamp(Number(e.target.value)))}
           className="flex-1 accent-[var(--gold)]"
         />
         <button
@@ -218,7 +241,7 @@ function Stepper({
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
       <h4 className="font-title mb-2 text-[12.5px] uppercase tracking-wider text-[var(--text-dim)]">
@@ -275,7 +298,7 @@ function EnlightenTrack({
         min={ENLIGHTEN_MIN}
         max={ENLIGHTEN_MAX}
         value={total}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(Number(e.target.value))}
         className="w-full accent-[var(--gold)]"
       />
 
@@ -336,7 +359,7 @@ function SkillCard({
           min={1}
           max={6}
           value={level}
-          onChange={(e) => onLevel(Number(e.target.value))}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onLevel(Number(e.target.value))}
           className="flex-1 accent-[var(--gold)]"
         />
         <span className="tabular-nums text-xs text-[var(--text-muted)]">{level}/6</span>
@@ -421,7 +444,7 @@ export default function DetailModal({
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div
         className="relative z-10 max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-[var(--gold)]/40 bg-[var(--panel)] shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-start gap-4 border-b border-[var(--border)] bg-[var(--panel)] p-4">
@@ -719,6 +742,8 @@ export default function DetailModal({
                         label: string;
                         max: number;
                         value: number;
+                        locked?: boolean;
+                        lockedHint?: string;
                       }[] = [
                         {
                           key: "madnessOmen",
@@ -739,7 +764,13 @@ export default function DetailModal({
                           family: "gnostic_potential",
                           label: "Gnostic Potential",
                           max: fam("gnostic_potential")?.maxLevel ?? 5,
-                          value: e?.talentLevels?.gnosticPotential ?? 0,
+                          // Permanent/limited units come with it maxed; only
+                          // welfare units level it manually.
+                          value: fam("gnostic_potential")?.defaultMaxed
+                            ? fam("gnostic_potential")?.maxLevel ?? 5
+                            : e?.talentLevels?.gnosticPotential ?? 0,
+                          locked: !!fam("gnostic_potential")?.defaultMaxed,
+                          lockedHint: "Fully unlocked on acquisition",
                         },
                       ];
                       return rows.map((row) => {
@@ -753,6 +784,8 @@ export default function DetailModal({
                               min={0}
                               max={row.max}
                               onChange={(v) => setTalentLevel(target.id, row.key, v)}
+                              locked={row.locked}
+                              lockedHint={row.lockedHint}
                             />
                             {t && active && (
                               <div className="px-1">
@@ -960,7 +993,7 @@ export default function DetailModal({
                               min={0}
                               value={val || ""}
                               placeholder="0"
-                              onChange={(ev) => {
+                              onChange={(ev: ChangeEvent<HTMLInputElement>) => {
                                 const raw = parseFloat(ev.target.value);
                                 setCovenantSubstat(
                                   target.id,
