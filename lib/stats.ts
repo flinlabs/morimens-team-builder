@@ -51,6 +51,21 @@ export function resolvePrimaryStat(
   return Math.ceil(base * (1 + soulforgeBonusPercent / 100) - EPS);
 }
 
+/** A character's effective Gnostic Potential level. Permanent and limited units
+ *  have it fully unlocked the moment you own them (`defaultMaxed`), so they sit
+ *  at max regardless of any stored value; welfare units must level it manually,
+ *  so their stored level is used. */
+export function effectiveGnosticLevel(
+  awakener:
+    | { talents?: Array<{ family: string; defaultMaxed?: boolean; maxLevel?: number }> }
+    | undefined,
+  storedLevel: number | undefined
+): number {
+  const g = awakener?.talents?.find((t) => t.family === "gnostic_potential");
+  if (g?.defaultMaxed) return g.maxLevel ?? 5;
+  return storedLevel ?? 0;
+}
+
 /** Gnostic Potential grants "+N Levels of Base Attributes", applied equally to
  *  CON/ATK/DEF. N is the talent's linear Arg1 evaluated at the talent's level
  *  (index = level − 1), matching how the game raises a maxed unit's stats. */
