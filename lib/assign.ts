@@ -422,7 +422,8 @@ export function buildTeamRecommendation(
   awakeners: Record<string, EnrichedAwakener>,
   posses?: Record<string, EnrichedPosse>,
   usedWheelIds: Set<string> = new Set(),
-  allowDualSSR = true
+  allowDualSSR = true,
+  usedPosseIds?: Set<string>
 ): TeamRecommendation {
   const arc = roster.settings.arcRuleset
   const composition: CharacterAssignment[] = []
@@ -455,10 +456,27 @@ export function buildTeamRecommendation(
     })
   }
 
+  // Pick this team's posse. In D-Tide every posse is locked to a single team
+  // for the whole season, so when a shared `usedPosseIds` set is threaded we
+  // surface the best posse not already claimed and reserve it; without it
+  // (normal single-team recommendations) the full ranked list stands.
+  let posseRecommendations = recommendPosses(
+    candidate.awakenerIds,
+    awakeners,
+    roster,
+    posses
+  )
+  if (usedPosseIds) {
+    const free = posseRecommendations.filter((p) => !usedPosseIds.has(p.posseId))
+    const taken = posseRecommendations.filter((p) => usedPosseIds.has(p.posseId))
+    posseRecommendations = [...free, ...taken]
+    if (free[0]) usedPosseIds.add(free[0].posseId)
+  }
+
   return {
     rank,
     composition,
-    posseRecommendations: recommendPosses(candidate.awakenerIds, awakeners, roster, posses),
+    posseRecommendations,
     compositionNote: candidate.metaName
       ? `${candidate.metaName} — ${compositionNote(candidate, awakeners)}`
       : compositionNote(candidate, awakeners),
@@ -481,8 +499,11 @@ export function buildDtideRecommendation(
 ): TeamRecommendation[] {
   const usedWheelIds = new Set<string>()
   // D-Tide fields all five teams at once, so every wheel must be unique across
-  // the lineup — no second copy even when Dual-SSR is unlocked.
+  // the lineup — no second copy even when Dual-SSR is unlocked — and likewise
+  // every posse is locked to one team for the season, so no team may reuse a
+  // posse another already runs.
+  const usedPosseIds = new Set<string>()
   return teams.map((team, i) =>
-    buildTeamRecommendation(team, i + 1, roster, awakeners, posses, usedWheelIds, false)
+    buildTeamRecommendation(team, i + 1, roster, awakeners, posses, usedWheelIds, false, usedPosseIds)
   )
 }
