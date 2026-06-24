@@ -143,82 +143,39 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
       maxResults: Math.max(options.maxResults ?? 0, 30),
     })
 
+    // Built first, meta second. Pool every candidate — curated and engine-built
+    // alike — and rank by score, which is dominated by how invested the team's
+    // units are; curated comps carry only a small, investment-scaled bonus. So a
+    // well-built engine team outranks an underbuilt meta comp, and a carry's
+    // curated teams surface only when the player has actually built them.
+    //
+    // Among teams within a small score band of the best remaining one, we prefer
+    // the one introducing units not yet on screen. This is a tiebreak, not an
+    // override: a clearly better-built team always wins, but a cluster of nearly
+    // identical scores (a full E0 roster, say) gets variety instead of six
+    // near-duplicate comps, so niche carries like Vortice still appear.
+    const NOVELTY_BAND = 0.15
     const seen = new Set<string>()
     const usedUnits = new Set<string>()
     const picked: CandidateTeam[] = []
-    const push = (c: CandidateTeam): boolean => {
-      const k = teamKey(c.awakenerIds)
-      if (seen.has(k)) return false
-      seen.add(k)
-      picked.push(c)
-      c.awakenerIds.forEach((id) => usedUnits.add(id))
-      return true
-    }
-
-    // Curated meta comps lead (a known-good comp beats a heuristic one), but
-    // reserve roughly a third of the slots for engine-built teams. Without this
-    // the meta library crowds the algorithm out entirely on a full roster, so
-    // strong units whose ideal comps aren't curated meta (e.g. Saya's poison or
-    // counter teams) would never surface despite the engine building them well.
-    const algoReserve = Math.min(searchCands.length, Math.max(1, Math.round(maxResults / 3)))
-    const metaSlots = maxResults - algoReserve
-
-    // Cap how many displayed meta teams may share any one unit. A carry like
-    // Tawil sits in four curated comps, and without this he'd monopolise every
-    // meta slot with near-identical teams instead of leaving room for variety.
-    const META_CAP_PER_UNIT = 1
-    const metaUnitUses = new Map<string, number>()
-    const metaUnitsFull = (c: CandidateTeam): boolean =>
-      c.awakenerIds.some((id) => (metaUnitUses.get(id) ?? 0) >= META_CAP_PER_UNIT)
-    const pushMeta = (c: CandidateTeam): void => {
-      if (metaUnitsFull(c)) return
-      if (push(c)) c.awakenerIds.forEach((id) => metaUnitUses.set(id, (metaUnitUses.get(id) ?? 0) + 1))
-    }
-
-    for (const c of metaCands) {
-      if (picked.length >= metaSlots) break
-      pushMeta(c)
-    }
-
-    // Fill the reserve with engine-built teams. We pick the highest-scoring
-    // comp that still introduces at least one unit not already on screen — a
-    // novelty gate, not a novelty maximiser. Maximising raw new-unit count would
-    // let a mediocre all-fresh comp beat an excellent comp that happens to share
-    // a universal support (Thais) with a meta pick, which is how niche carries
-    // like Saya got starved out.
-    let reserved = 0
-    while (reserved < algoReserve) {
-      let best: CandidateTeam | null = null
-      let bestScore = -Infinity
-      let fallback: CandidateTeam | null = null
-      let fallbackScore = -Infinity
-      for (const c of searchCands) {
-        if (seen.has(teamKey(c.awakenerIds))) continue
-        if (c.score > fallbackScore) {
-          fallback = c
-          fallbackScore = c.score
-        }
+    const ranked = [...metaCands, ...searchCands].sort((a, b) => b.score - a.score)
+    while (picked.length < maxResults) {
+      const remaining = ranked.filter((c) => !seen.has(teamKey(c.awakenerIds)))
+      if (!remaining.length) break
+      const topScore = remaining[0].score
+      let best = remaining[0]
+      let bestNovel = -1
+      for (const c of remaining) {
+        if (c.score < topScore - NOVELTY_BAND) break // ranked desc — past the band
         const novel = c.awakenerIds.filter((id) => !usedUnits.has(id)).length
-        if (novel >= 1 && c.score > bestScore) {
+        if (novel > bestNovel) {
           best = c
-          bestScore = c.score
+          bestNovel = novel
         }
       }
-      const pick = best ?? fallback
-      if (!pick || !push(pick)) break
-      reserved++
-    }
-
-    // Backfill any open slots (meta ran short under the per-unit cap, or fewer
-    // engine teams than reserved). Engine teams go first for variety, then any
-    // remaining meta still within the cap.
-    for (const c of searchCands) {
-      if (picked.length >= maxResults) break
-      push(c)
-    }
-    for (const c of metaCands) {
-      if (picked.length >= maxResults) break
-      pushMeta(c)
+      seen.add(teamKey(best.awakenerIds))
+      best.awakenerIds.forEach((id) => usedUnits.add(id))
+      picked.push(best)
     }
 
     if (picked.length) {
