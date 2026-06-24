@@ -20359,8 +20359,7 @@
         "awakener-0056"
       ],
       "conflictsWith": [
-        "awakener-0012",
-        "awakener-0008"
+        "awakener-0012"
       ],
       "viabilityFloor": "E0",
       "enlightenBreakpoints": [
