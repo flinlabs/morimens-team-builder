@@ -93,6 +93,19 @@ function primaryVariant(awakener: EnrichedAwakener): SkeyBuildVariant | null {
 // Wheel assignment
 // ---------------------------------------------------------------------------
 
+// MYTHIC wheels that are paid/event exclusives with niche team-specific effects.
+// They should never be auto-assigned as generic filler — only equip them when
+// they explicitly appear in a unit's BiS list.
+const NICHE_MYTHIC_WHEEL_IDS = new Set([
+  'wheel-0043', // Special Training — Posse-triggered crit, very situational
+  'wheel-0044', // School Day — D-Mark/Ashen Ruins aliemus, highly mode-specific
+  'wheel-0045', // Dear Papa Noel — event wheel, niche use
+  'wheel-0046', // Countdown Moment — event wheel, niche use
+  'wheel-0047', // Stakes of Wisdom — event wheel, niche use
+  'wheel-0130', // Private Afternoon — event wheel, niche use
+  'wheel-0165', // Sakura Reveries — paid event wheel
+])
+
 // Assign up to 2 wheels to a unit, best-tier-first, from owned inventory.
 // A wheel is a physical item: it cannot sit on two units at once unless its
 // Dual-SSR copy is unlocked (stackLevel 12). `usedWheelIds` is mutated so the
@@ -118,29 +131,47 @@ export function assignWheels(
     const r = wheels[id]?.rarity
     return r === 'SSR' || r === 'MYTHIC'
   }
-  // Overlimit Causality: a character may field two SSR/Mythic wheels only if at
-  // least one equipped wheel is +12. Otherwise the second wheel must be lower
-  // rarity (SR/R/N are strong fillers).
-  const breaksOverlimit = (candidate: string): boolean =>
-    out.length === 1 &&
-    isHighRarity(candidate) &&
-    isHighRarity(out[0].wheelId) &&
-    !isDualSSRUnlocked(roster, candidate) &&
-    !isDualSSRUnlocked(roster, out[0].wheelId)
+
+  // Overlimit Causality: a character may field two SSR/MYTHIC wheels only if
+  // the FIRST equipped SSR/MYTHIC wheel is at +12 (stackLevel 12). The rule
+  // gates on the first slot being maxed — it does not matter whether the second
+  // candidate is maxed. If both slots would be high-rarity but the first isn't
+  // at +12, the second slot must be filled with SR/R/N instead.
+  const breaksOverlimit = (candidate: string): boolean => {
+    if (out.length !== 1) return false
+    if (!isHighRarity(candidate)) return false
+    if (!isHighRarity(out[0].wheelId)) return false
+    // The first wheel must be +12 to allow a second SSR/MYTHIC.
+    return !isDualSSRUnlocked(roster, out[0].wheelId)
+  }
+
+  // Whether a wheel can be taken from the shared pool (not already in use, or
+  // Dual-SSR unlocked AND single-team mode only — D-Tide never shares copies).
+  const isAvailable = (id: string): boolean => {
+    if (!usedWheelIds.has(id)) return true
+    return allowDualSSR && isDualSSRUnlocked(roster, id)
+  }
 
   const out: WheelAssignment[] = []
 
-  // Pass 0 — a limited character's signature SSR + SR are their canonical gear.
+  // Pass 0 — a limited character's signature SSR wheel is their canonical primary.
+  // Signature SR wheels are skipped here; they compete in Pass 1b against generic
+  // SR fillers so that a maxed generic SSR (e.g. Blade of the Titan at +12) can
+  // claim the second slot instead of a weaker SR signature.
   for (const w of Object.values(wheels)) {
-    if (out.length >= 2) break
+    if (out.length >= 1) break // only claim primary slot in Pass 0
     if (w.ownerAwakenerId !== awakener.id) continue
+    if (w.rarity !== 'SSR' && w.rarity !== 'MYTHIC') continue // SSR signatures only
     const id = w.id
     if (out.some(a => a.wheelId === id)) continue
     if (!getWheelEntry(roster, id).owned) continue
-    const inUse = usedWheelIds.has(id)
-    if (inUse && (!allowDualSSR || !isDualSSRUnlocked(roster, id))) continue
+    if (!isAvailable(id)) continue
     if (breaksOverlimit(id)) continue
-    out.push({ slot: (out.length + 1) as 1 | 2, wheelId: id, tier: w.rarity === 'SR' || w.rarity === 'R' || w.rarity === 'N' ? 'BIS_SR' : 'BIS_SSR' })
+    const assignment: WheelAssignment = { slot: 1, wheelId: id, tier: 'BIS_SSR' }
+    if (usedWheelIds.has(id) && allowDualSSR) {
+      assignment.dualSSRNote = 'Second copy fielded via unlocked Dual-SSR (+12)'
+    }
+    out.push(assignment)
     usedWheelIds.add(id)
   }
 
@@ -153,8 +184,7 @@ export function assignWheels(
         if (out.some(a => a.wheelId === wheelId)) continue
         const entry = getWheelEntry(roster, wheelId)
         if (!entry.owned) continue
-        const inUse = usedWheelIds.has(wheelId)
-        if (inUse && (!allowDualSSR || !isDualSSRUnlocked(roster, wheelId))) continue
+        if (!isAvailable(wheelId)) continue
         if (breaksOverlimit(wheelId)) continue
 
         const assignment: WheelAssignment = {
@@ -162,7 +192,7 @@ export function assignWheels(
           wheelId,
           tier: rec.tier,
         }
-        if (inUse && allowDualSSR && isDualSSRUnlocked(roster, wheelId)) {
+        if (usedWheelIds.has(wheelId) && allowDualSSR) {
           assignment.dualSSRNote = 'Second copy fielded via unlocked Dual-SSR (+12)'
         }
         out.push(assignment)
@@ -179,13 +209,23 @@ export function assignWheels(
 
   // Pass 1.5 — when the unit's BiS SSR isn't owned, substitute the strongest
   // owned high-rarity wheel rather than dropping straight to a weak filler. A
-  // player's idle +12 SSR is worth far more than a generic SR. Generic wheels go
-  // first; a signature wheel may be borrowed only if its owner isn't on this
-  // team (otherwise it belongs to that teammate). Ranked by copy strength.
+  // player's idle +12 SSR is worth far more than a generic SR.
+  // Rules for substitution candidates:
+  //   • Must be owned and not already in use.
+  //   • Niche paid/event MYTHICs (School Day, Special Training, etc.) are
+  //     excluded — they offer less value than most generic SR wheels and should
+  //     only be assigned when they appear explicitly in a unit's BiS list.
+  //   • Signature wheels belonging to a teammate are excluded — they belong to
+  //     that teammate.
+  //   • A signature wheel whose owner is this unit is allowed as a primary
+  //     (owned but unassigned SSR signature).
+  //   • Generic SSRs are preferred over borrowed signatures.
+  //   • Within each group, +12 wheels rank first, then star level.
   if (out.length < 2) {
     const teammates = new Set(teammateIds)
     const subs = Object.values(wheels)
       .filter((w) => isHighRarity(w.id))
+      .filter((w) => !NICHE_MYTHIC_WHEEL_IDS.has(w.id))
       .filter((w) => getWheelEntry(roster, w.id).owned)
       .filter((w) => !usedWheelIds.has(w.id) && !out.some((a) => a.wheelId === w.id))
       .filter((w) => !w.ownerAwakenerId || !teammates.has(w.ownerAwakenerId))
@@ -211,8 +251,26 @@ export function assignWheels(
   }
 
   // Pass 1b — owned BiS wheels of SR tier, after the strong-SSR substitute, so a
-  // player's idle +12 SSR is preferred over a lower-rarity BiS wheel.
+  // player's idle +12 SSR is preferred over a lower-rarity BiS wheel. Also picks
+  // up owned signature SR wheels for this unit if they weren't superseded above.
   assignFromRecs(ranked.filter((r) => !isSsrTier(r.tier)))
+
+  // Pass 1c — signature SR wheel for this unit, if not yet assigned and not
+  // superseded by a better option in prior passes.
+  if (out.length < 2) {
+    for (const w of Object.values(wheels)) {
+      if (out.length >= 2) break
+      if (w.ownerAwakenerId !== awakener.id) continue
+      if (w.rarity !== 'SR' && w.rarity !== 'R') continue
+      const id = w.id
+      if (out.some(a => a.wheelId === id)) continue
+      if (!getWheelEntry(roster, id).owned) continue
+      if (!isAvailable(id)) continue
+      if (breaksOverlimit(id)) continue
+      out.push({ slot: (out.length + 1) as 1 | 2, wheelId: id, tier: 'BIS_SR' })
+      usedWheelIds.add(id)
+    }
+  }
 
   // Pass 2 — fill any remaining slot from an owned SR/R/N wheel. These are
   // strong, plentiful fillers and never trip the Overlimit rule. Honours the
