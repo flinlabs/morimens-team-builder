@@ -12,7 +12,6 @@ import type { UserRoster, TeamRecommendation, CandidateTeam, EnrichedAwakener } 
 import { getAwakeners, getPosses, getMetaTeams } from './db'
 import {
   generateCandidateTeams,
-  solveDtide,
   buildCandidateTeam,
   getRealmsInTeam,
   type FilterOptions,
@@ -106,24 +105,43 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
   let teams: TeamRecommendation[] = []
 
   if (mode === 'dtide') {
-    // Seed the solver with owned, non-overlapping meta comps so D-Tide is also
-    // meta-first; the greedy solver fills the remaining teams around them.
-    const metaAnchors: string[][] = []
-    const used = new Set<string>()
-    for (const c of metaCandidates(req.roster, awakeners, {})) {
-      if (metaAnchors.length >= 5) break
-      if (c.awakenerIds.some((id) => used.has(id))) continue
-      c.awakenerIds.forEach((id) => used.add(id))
-      metaAnchors.push(c.awakenerIds)
+    const options = req.options ?? {}
+
+    // Build the same candidate pool as single-team: meta comps (investment-
+    // scaled) merged with engine-built teams, all ranked by score. Then greedily
+    // pick 5 non-overlapping teams in score order — best-invested first.
+    // This means user pins are respected, meta comps only win when the player
+    // has actually built them, and a well-invested Arachne team beats a meta
+    // comp the player owns but hasn't levelled.
+    const metaCands = metaCandidates(req.roster, awakeners, options)
+    const searchCands = generateCandidateTeams(req.roster, awakeners, {
+      ...options,
+      maxResults: 60, // deep pool so 5 non-overlapping teams can always be found
+    })
+
+    const seen = new Set<string>()
+    const usedIds = new Set<string>()
+    const picked: CandidateTeam[] = []
+    const ranked = [...metaCands, ...searchCands].sort((a, b) => b.score - a.score)
+
+    while (picked.length < 5) {
+      const remaining = ranked.filter(
+        (c) => !seen.has(teamKey(c.awakenerIds)) && !c.awakenerIds.some((id) => usedIds.has(id))
+      )
+      if (!remaining.length) break
+      const best = remaining[0]
+      seen.add(teamKey(best.awakenerIds))
+      best.awakenerIds.forEach((id) => usedIds.add(id))
+      picked.push(best)
     }
-    const solution = solveDtide(req.roster, awakeners, metaAnchors)
-    if (solution && solution.teams.length) {
-      if (solution.teams.length < 5) {
+
+    if (picked.length) {
+      if (picked.length < 5) {
         warnings.push(
-          `Only ${solution.teams.length}/5 D-Tide teams could be formed from the owned roster.`
+          `Only ${picked.length}/5 D-Tide teams could be formed from the owned roster.`
         )
       }
-      teams = buildDtideRecommendation(solution.teams, req.roster, awakeners, posses)
+      teams = buildDtideRecommendation(picked, req.roster, awakeners, posses)
     } else {
       warnings.push('Could not assemble a D-Tide lineup from the owned roster.')
     }
