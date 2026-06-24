@@ -104,7 +104,8 @@ export function assignWheels(
   roster: UserRoster,
   usedWheelIds: Set<string> = new Set(),
   role?: string,
-  allowDualSSR = true
+  allowDualSSR = true,
+  teammateIds: string[] = []
 ): WheelAssignment[] {
   const ranked = [...recommendedWheelsFor(awakener, role)].sort(
     (a, b) => WHEEL_TIER_ORDER.indexOf(a.tier) - WHEEL_TIER_ORDER.indexOf(b.tier)
@@ -143,30 +144,75 @@ export function assignWheels(
     usedWheelIds.add(id)
   }
 
-  // Pass 1 — fill from owned wheels, honouring the physical-item + Overlimit constraints.
-  for (const rec of ranked) {
-    if (out.length >= 2) break
-    for (const wheelId of rec.wheelIds) {
-      if (out.some(a => a.wheelId === wheelId)) continue
-      const entry = getWheelEntry(roster, wheelId)
-      if (!entry.owned) continue
-      const inUse = usedWheelIds.has(wheelId)
-      if (inUse && (!allowDualSSR || !isDualSSRUnlocked(roster, wheelId))) continue
-      if (breaksOverlimit(wheelId)) continue
+  // Assign from a set of BiS recommendations (owned only), honouring the
+  // physical-item + Overlimit constraints.
+  const assignFromRecs = (recs: { tier: WheelTier; wheelIds: string[] }[]): void => {
+    for (const rec of recs) {
+      if (out.length >= 2) break
+      for (const wheelId of rec.wheelIds) {
+        if (out.some(a => a.wheelId === wheelId)) continue
+        const entry = getWheelEntry(roster, wheelId)
+        if (!entry.owned) continue
+        const inUse = usedWheelIds.has(wheelId)
+        if (inUse && (!allowDualSSR || !isDualSSRUnlocked(roster, wheelId))) continue
+        if (breaksOverlimit(wheelId)) continue
 
-      const assignment: WheelAssignment = {
-        slot: (out.length + 1) as 1 | 2,
-        wheelId,
-        tier: rec.tier,
+        const assignment: WheelAssignment = {
+          slot: (out.length + 1) as 1 | 2,
+          wheelId,
+          tier: rec.tier,
+        }
+        if (inUse && allowDualSSR && isDualSSRUnlocked(roster, wheelId)) {
+          assignment.dualSSRNote = 'Second copy fielded via unlocked Dual-SSR (+12)'
+        }
+        out.push(assignment)
+        usedWheelIds.add(wheelId)
+        break
       }
-      if (inUse && allowDualSSR && isDualSSRUnlocked(roster, wheelId)) {
-        assignment.dualSSRNote = 'Second copy fielded via unlocked Dual-SSR (+12)'
-      }
-      out.push(assignment)
-      usedWheelIds.add(wheelId)
-      break
     }
   }
+
+  const isSsrTier = (t: WheelTier): boolean => t === 'BIS_SSR' || t === 'ALT_SSR'
+
+  // Pass 1 — owned BiS wheels of SSR/Mythic tier first.
+  assignFromRecs(ranked.filter((r) => isSsrTier(r.tier)))
+
+  // Pass 1.5 — when the unit's BiS SSR isn't owned, substitute the strongest
+  // owned high-rarity wheel rather than dropping straight to a weak filler. A
+  // player's idle +12 SSR is worth far more than a generic SR. Generic wheels go
+  // first; a signature wheel may be borrowed only if its owner isn't on this
+  // team (otherwise it belongs to that teammate). Ranked by copy strength.
+  if (out.length < 2) {
+    const teammates = new Set(teammateIds)
+    const subs = Object.values(wheels)
+      .filter((w) => isHighRarity(w.id))
+      .filter((w) => getWheelEntry(roster, w.id).owned)
+      .filter((w) => !usedWheelIds.has(w.id) && !out.some((a) => a.wheelId === w.id))
+      .filter((w) => !w.ownerAwakenerId || !teammates.has(w.ownerAwakenerId))
+      .filter((w) => !breaksOverlimit(w.id))
+      .sort((a, b) => {
+        const ga = a.ownerAwakenerId ? 1 : 0
+        const gb = b.ownerAwakenerId ? 1 : 0
+        if (ga !== gb) return ga - gb // generic before borrowed signature
+        const ra = a.realm === awakener.realm ? 0 : 1
+        const rb = b.realm === awakener.realm ? 0 : 1
+        if (ra !== rb) return ra - rb // prefer the unit's realm
+        const ea = getWheelEntry(roster, a.id)
+        const eb = getWheelEntry(roster, b.id)
+        if ((eb.stackLevel ?? 0) !== (ea.stackLevel ?? 0))
+          return (eb.stackLevel ?? 0) - (ea.stackLevel ?? 0) // +12 first
+        return (eb.starLevel ?? 0) - (ea.starLevel ?? 0)
+      })
+    for (const w of subs) {
+      if (out.length >= 2) break
+      out.push({ slot: (out.length + 1) as 1 | 2, wheelId: w.id, tier: 'GOOD' })
+      usedWheelIds.add(w.id)
+    }
+  }
+
+  // Pass 1b — owned BiS wheels of SR tier, after the strong-SSR substitute, so a
+  // player's idle +12 SSR is preferred over a lower-rarity BiS wheel.
+  assignFromRecs(ranked.filter((r) => !isSsrTier(r.tier)))
 
   // Pass 2 — fill any remaining slot from an owned SR/R/N wheel. These are
   // strong, plentiful fillers and never trip the Overlimit rule. Honours the
@@ -422,7 +468,8 @@ export function buildTeamRecommendation(
   awakeners: Record<string, EnrichedAwakener>,
   posses?: Record<string, EnrichedPosse>,
   usedWheelIds: Set<string> = new Set(),
-  allowDualSSR = true
+  allowDualSSR = true,
+  usedPosseIds?: Set<string>
 ): TeamRecommendation {
   const arc = roster.settings.arcRuleset
   const composition: CharacterAssignment[] = []
@@ -435,7 +482,7 @@ export function buildTeamRecommendation(
     if (!awakener) continue
     const ann = awakener.annotation
     const role = ann?.teamRoles?.[0] ?? 'flex'
-    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR)
+    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR, candidate.awakenerIds)
     const covenantRecommendation = recommendCovenant(awakener, roster, role, usedCovenantIds)
 
     if (wheelAssignments.some(w => w.tier === 'FALLBACK')) {
@@ -455,10 +502,27 @@ export function buildTeamRecommendation(
     })
   }
 
+  // Pick this team's posse. In D-Tide every posse is locked to a single team
+  // for the whole season, so when a shared `usedPosseIds` set is threaded we
+  // surface the best posse not already claimed and reserve it; without it
+  // (normal single-team recommendations) the full ranked list stands.
+  let posseRecommendations = recommendPosses(
+    candidate.awakenerIds,
+    awakeners,
+    roster,
+    posses
+  )
+  if (usedPosseIds) {
+    const free = posseRecommendations.filter((p) => !usedPosseIds.has(p.posseId))
+    const taken = posseRecommendations.filter((p) => usedPosseIds.has(p.posseId))
+    posseRecommendations = [...free, ...taken]
+    if (free[0]) usedPosseIds.add(free[0].posseId)
+  }
+
   return {
     rank,
     composition,
-    posseRecommendations: recommendPosses(candidate.awakenerIds, awakeners, roster, posses),
+    posseRecommendations,
     compositionNote: candidate.metaName
       ? `${candidate.metaName} — ${compositionNote(candidate, awakeners)}`
       : compositionNote(candidate, awakeners),
@@ -481,8 +545,11 @@ export function buildDtideRecommendation(
 ): TeamRecommendation[] {
   const usedWheelIds = new Set<string>()
   // D-Tide fields all five teams at once, so every wheel must be unique across
-  // the lineup — no second copy even when Dual-SSR is unlocked.
+  // the lineup — no second copy even when Dual-SSR is unlocked — and likewise
+  // every posse is locked to one team for the season, so no team may reuse a
+  // posse another already runs.
+  const usedPosseIds = new Set<string>()
   return teams.map((team, i) =>
-    buildTeamRecommendation(team, i + 1, roster, awakeners, posses, usedWheelIds, false)
+    buildTeamRecommendation(team, i + 1, roster, awakeners, posses, usedWheelIds, false, usedPosseIds)
   )
 }
