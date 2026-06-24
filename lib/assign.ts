@@ -147,9 +147,10 @@ export function assignWheels(
 
   // Whether a wheel can be taken from the shared pool (not already in use, or
   // Dual-SSR unlocked AND single-team mode only — D-Tide never shares copies).
+  // Dual-SSR sharing only applies to SSR/MYTHIC wheels; SR/R/N are always unique.
   const isAvailable = (id: string): boolean => {
     if (!usedWheelIds.has(id)) return true
-    return allowDualSSR && isDualSSRUnlocked(roster, id)
+    return allowDualSSR && isHighRarity(id) && isDualSSRUnlocked(roster, id)
   }
 
   const out: WheelAssignment[] = []
@@ -211,29 +212,27 @@ export function assignWheels(
   // owned high-rarity wheel rather than dropping straight to a weak filler. A
   // player's idle +12 SSR is worth far more than a generic SR.
   // Rules for substitution candidates:
-  //   • Must be owned and not already in use.
+  //   • Must be owned and not already in use (usedWheelIds handles exclusivity).
   //   • Niche paid/event MYTHICs (School Day, Special Training, etc.) are
   //     excluded — they offer less value than most generic SR wheels and should
   //     only be assigned when they appear explicitly in a unit's BiS list.
-  //   • Signature wheels belonging to a teammate are excluded — they belong to
-  //     that teammate.
-  //   • A signature wheel whose owner is this unit is allowed as a primary
-  //     (owned but unassigned SSR signature).
-  //   • Generic SSRs are preferred over borrowed signatures.
+  //   • Generic SSRs are preferred over signature SSRs.
   //   • Within each group, +12 wheels rank first, then star level.
+  //   • A signature SSR belonging to a teammate is naturally blocked by
+  //     usedWheelIds once that teammate has claimed it in their own Pass 0/1.
+  //     We do NOT pre-emptively exclude unclaimed teammate signatures here —
+  //     if a teammate hasn't taken their own SSR yet, it is fair game.
   if (out.length < 2) {
-    const teammates = new Set(teammateIds)
     const subs = Object.values(wheels)
       .filter((w) => isHighRarity(w.id))
       .filter((w) => !NICHE_MYTHIC_WHEEL_IDS.has(w.id))
       .filter((w) => getWheelEntry(roster, w.id).owned)
       .filter((w) => !usedWheelIds.has(w.id) && !out.some((a) => a.wheelId === w.id))
-      .filter((w) => !w.ownerAwakenerId || !teammates.has(w.ownerAwakenerId))
       .filter((w) => !breaksOverlimit(w.id))
       .sort((a, b) => {
         const ga = a.ownerAwakenerId ? 1 : 0
         const gb = b.ownerAwakenerId ? 1 : 0
-        if (ga !== gb) return ga - gb // generic before borrowed signature
+        if (ga !== gb) return ga - gb // generic before signature
         const ra = a.realm === awakener.realm ? 0 : 1
         const rb = b.realm === awakener.realm ? 0 : 1
         if (ra !== rb) return ra - rb // prefer the unit's realm

@@ -179,8 +179,11 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
     }
 
     if (picked.length) {
+      // Thread a single usedWheelIds set across all teams so no wheel is
+      // assigned to two different characters in the same output.
+      const usedWheelIds = new Set<string>()
       teams = picked.map((candidate, i) =>
-        buildTeamRecommendation(candidate, i + 1, req.roster, awakeners, posses)
+        buildTeamRecommendation(candidate, i + 1, req.roster, awakeners, posses, usedWheelIds)
       )
     } else {
       warnings.push(
