@@ -9,6 +9,7 @@ import type {
   SkillSlot,
 } from './types'
 import { getWheelEntry } from './roster'
+import { effectiveGnosticLevel } from './stats'
 import { getArcViabilityModifier, getArcViabilityNote } from './arc-rules'
 
 const ENLIGHTEN_ORDER: EnlightenSlot[] = ['E0', 'E1', 'E2', 'E3', 'OE', 'AA']
@@ -95,7 +96,10 @@ function talentScore(
   arcRuleset: 'FADED_LEGACY' | 'ASTRAL_REIGN'
 ): number {
   const keyTalents = awakener.annotation?.keyTalents ?? []
-  const { madnessOmen, soulforgeAptitude, gnosticPotential } = entry.talentLevels
+  const { madnessOmen, soulforgeAptitude } = entry.talentLevels
+  // Permanent/limited units have Gnostic Potential maxed on acquisition; only
+  // welfare units level it manually. Score the effective level, not the stored.
+  const gnosticPotential = effectiveGnosticLevel(awakener, entry.talentLevels.gnosticPotential)
 
   // Weight soulforge higher in Arc 2 (it is inert in Faded Legacy / Arc 1)
   const soulforgeWeight = arcRuleset === 'ASTRAL_REIGN' ? 1.5 : 0.5
