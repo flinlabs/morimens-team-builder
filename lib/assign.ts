@@ -117,8 +117,7 @@ export function assignWheels(
   roster: UserRoster,
   usedWheelIds: Set<string> = new Set(),
   role?: string,
-  allowDualSSR = true,
-  teammateIds: string[] = []
+  allowDualSSR = true
 ): WheelAssignment[] {
   const ranked = [...recommendedWheelsFor(awakener, role)].sort(
     (a, b) => WHEEL_TIER_ORDER.indexOf(a.tier) - WHEEL_TIER_ORDER.indexOf(b.tier)
@@ -154,27 +153,6 @@ export function assignWheels(
   }
 
   const out: WheelAssignment[] = []
-
-  // Pass 0 — a limited character's signature SSR wheel is their canonical primary.
-  // Signature SR wheels are skipped here; they compete in Pass 1b against generic
-  // SR fillers so that a maxed generic SSR (e.g. Blade of the Titan at +12) can
-  // claim the second slot instead of a weaker SR signature.
-  for (const w of Object.values(wheels)) {
-    if (out.length >= 1) break // only claim primary slot in Pass 0
-    if (w.ownerAwakenerId !== awakener.id) continue
-    if (w.rarity !== 'SSR' && w.rarity !== 'MYTHIC') continue // SSR signatures only
-    const id = w.id
-    if (out.some(a => a.wheelId === id)) continue
-    if (!getWheelEntry(roster, id).owned) continue
-    if (!isAvailable(id)) continue
-    if (breaksOverlimit(id)) continue
-    const assignment: WheelAssignment = { slot: 1, wheelId: id, tier: 'BIS_SSR' }
-    if (usedWheelIds.has(id) && allowDualSSR) {
-      assignment.dualSSRNote = 'Second copy fielded via unlocked Dual-SSR (+12)'
-    }
-    out.push(assignment)
-    usedWheelIds.add(id)
-  }
 
   // Assign from a set of BiS recommendations (owned only), honouring the
   // physical-item + Overlimit constraints.
@@ -539,7 +517,7 @@ export function buildTeamRecommendation(
     if (!awakener) continue
     const ann = awakener.annotation
     const role = ann?.teamRoles?.[0] ?? 'flex'
-    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR, candidate.awakenerIds)
+    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR)
     const covenantRecommendation = recommendCovenant(awakener, roster, role, usedCovenantIds)
 
     if (wheelAssignments.some(w => w.tier === 'FALLBACK')) {
