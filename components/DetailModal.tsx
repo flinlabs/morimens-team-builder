@@ -871,6 +871,21 @@ export default function DetailModal({
                   )}
 
                   <Section title="Ascension">
+                    <div className="mb-2.5 flex items-center justify-between rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2">
+                      <span className="text-[12px] uppercase tracking-wider text-[var(--text-dim)]">
+                        Current
+                      </span>
+                      <span className="flex items-center gap-1.5 font-display text-base font-semibold text-[var(--gold-bright)]">
+                        <span className="tabular-nums">{star}★</span>
+                        <span className="text-[var(--text-dim)]">·</span>
+                        <span className="tabular-nums">+{stack}</span>
+                        {stack >= 12 && (
+                          <span className="ml-1 rounded bg-[var(--realm-aequor)]/15 px-1.5 py-0.5 text-[11px] font-bold text-[var(--realm-aequor)]">
+                            MAX
+                          </span>
+                        )}
+                      </span>
+                    </div>
                     <Stepper
                       label="Star level (sub-properties)"
                       value={star}
@@ -880,12 +895,17 @@ export default function DetailModal({
                       onChange={(v) => setWheelStarLevel(target.id, v)}
                     />
                     <Stepper
-                      label="Stack level (main stat)"
+                      label="Stack level (main stat, +1 to +12)"
                       value={stack}
                       min={0}
                       max={12}
                       onChange={(v) => setWheelStackLevel(target.id, v)}
                     />
+                    <p className="text-[12.5px] text-[var(--text-dim)]">
+                      Two separate tracks: ★ is raised with duplicate wheels (sub-stats),
+                      +X is raised with Sediment (main stat). A wheel can be 3★ without
+                      being +12, or +12 without being 3★.
+                    </p>
                     {stack >= 12 && (
                       <p className="text-[12.5px] text-[var(--realm-aequor)]">
                         Stack +12 unlocks the dual-SSR exception — a second SSR/Mythic wheel may be
