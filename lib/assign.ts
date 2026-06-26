@@ -140,7 +140,9 @@ export function assignWheels(
     if (out.length !== 1) return false
     if (!isHighRarity(candidate)) return false
     if (!isHighRarity(out[0].wheelId)) return false
-    // The first wheel must be +12 to allow a second SSR/MYTHIC.
+    // The first wheel must be an OWNED +12 to allow a second SSR/MYTHIC. A
+    // FALLBACK acquisition target in slot 1 is not owned, so it can never unlock
+    // the second high-rarity slot. isDualSSRUnlocked already requires owned.
     return !isDualSSRUnlocked(roster, out[0].wheelId)
   }
 
