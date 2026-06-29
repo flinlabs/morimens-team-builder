@@ -131,19 +131,22 @@ export function assignWheels(
     return r === 'SSR' || r === 'MYTHIC'
   }
 
-  // Overlimit Causality: a character may field two SSR/MYTHIC wheels only if
-  // the FIRST equipped SSR/MYTHIC wheel is at +12 (stackLevel 12). The rule
-  // gates on the first slot being maxed — it does not matter whether the second
-  // candidate is maxed. If both slots would be high-rarity but the first isn't
-  // at +12, the second slot must be filled with SR/R/N instead.
+  // Overlimit Causality: a character may field two SSR/MYTHIC wheels only if at
+  // least ONE of the two is an owned +12 (stackLevel 12). Either the already-
+  // equipped first wheel OR the incoming candidate satisfies it — whichever is
+  // +12 unlocks the pair. If both slots would be high-rarity but neither is +12,
+  // the second slot must be filled with SR/R/N instead.
+  // (MYTHIC counts as SSR for this rule.)
   const breaksOverlimit = (candidate: string): boolean => {
     if (out.length !== 1) return false
     if (!isHighRarity(candidate)) return false
     if (!isHighRarity(out[0].wheelId)) return false
-    // The first wheel must be an OWNED +12 to allow a second SSR/MYTHIC. A
-    // FALLBACK acquisition target in slot 1 is not owned, so it can never unlock
-    // the second high-rarity slot. isDualSSRUnlocked already requires owned.
-    return !isDualSSRUnlocked(roster, out[0].wheelId)
+    // Legal only if either wheel is an owned +12. isDualSSRUnlocked requires
+    // owned, so an unowned FALLBACK target in slot 1 can never unlock the pair.
+    return (
+      !isDualSSRUnlocked(roster, out[0].wheelId) &&
+      !isDualSSRUnlocked(roster, candidate)
+    )
   }
 
   // Whether a wheel can be taken from the shared pool (not already in use, or
@@ -224,6 +227,10 @@ export function assignWheels(
       })
     for (const w of subs) {
       if (out.length >= 2) break
+      // Re-check overlimit per iteration: the .filter() above was evaluated
+      // against the pre-loop state, so once the first SSR lands in slot 1 the
+      // second iteration must re-validate the Overlimit rule against it.
+      if (breaksOverlimit(w.id)) continue
       out.push({ slot: (out.length + 1) as 1 | 2, wheelId: w.id, tier: 'GOOD' })
       usedWheelIds.add(w.id)
     }
