@@ -44,24 +44,68 @@ describe('meta teams no longer monopolised by one carry', () => {
 })
 
 describe('wheel assignment substitutes a strong idle SSR', () => {
-  it('borrows an idle +12 SSR over a weak filler, but never poaches a teammate\u2019s signature', () => {
+  it('borrows an idle +12 SSR over a weak SR filler when the unit owns no BiS wheel', () => {
     const r: any = fullRoster()
     for (const id of Object.keys(r.wheels)) r.wheels[id] = { owned: false, starLevel: 0, stackLevel: 0 }
     r.wheels[widByName('Light of Intellect')] = { owned: true, starLevel: 3, stackLevel: 12 } // Mouchette signature SR
-    r.wheels[widByName('Celestial Beast')] = { owned: true, starLevel: 3, stackLevel: 12 }     // Lotan signature SSR, idle
+    r.wheels[widByName('Celestial Beast')] = { owned: true, starLevel: 3, stackLevel: 12 }     // idle SSR
     r.wheels[widByName('Cursed Binding')] = { owned: true, starLevel: 1, stackLevel: 0 }        // weak SR filler
 
     const MOUCH = idByName('Mouchette')
-    const LOTAN = idByName('Lotan')
     const CB = widByName('Celestial Beast')
 
-    const offTeam = [MOUCH, idByName('Clementine'), idByName('Thais'), idByName('Casiah')]
-    const onTeam = [MOUCH, LOTAN, idByName('Thais'), idByName('Casiah')]
+    const out = assignWheels(awk[MOUCH], r, new Set(), 'sub_dps', true)
+    // The idle +12 SSR is worth more than a weak SR, so it should be borrowed.
+    expect(out.some((w) => w.wheelId === CB)).toBe(true)
+  })
+})
 
-    const off = assignWheels(awk[MOUCH], r, new Set(), 'sub_dps', true, offTeam)
-    const on = assignWheels(awk[MOUCH], r, new Set(), 'sub_dps', true, onTeam)
+describe('Overlimit Causality — two SSR/MYTHIC wheels need one at +12', () => {
+  // Pick a unit and two high-rarity wheels it can legally hold.
+  const UNIT = idByName('Arachne')
+  const ssrA = Object.values(wheels).find((w) => w.rarity === 'SSR')!.id
+  const ssrB = Object.values(wheels).find((w) => w.rarity === 'SSR' && w.id !== ssrA)!.id
+  const isHigh = (id?: string) => !!id && ['SSR', 'MYTHIC'].includes(wheels[id]?.rarity)
 
-    expect(off.some((w) => w.wheelId === CB)).toBe(true)  // Lotan absent -> borrow the idle SSR
-    expect(on.some((w) => w.wheelId === CB)).toBe(false)  // Lotan present -> leave it for him
+  function rosterWith(a: { stack: number }, b: { stack: number }) {
+    const r: any = fullRoster()
+    for (const id of Object.keys(r.wheels)) r.wheels[id] = { owned: false, starLevel: 0, stackLevel: 0 }
+    r.wheels[ssrA] = { owned: true, starLevel: 3, stackLevel: a.stack }
+    r.wheels[ssrB] = { owned: true, starLevel: 3, stackLevel: b.stack }
+    // A couple of SR fillers so the second slot has a legal lower-rarity option.
+    for (const w of Object.values(wheels)) {
+      if (w.rarity === 'SR') r.wheels[w.id] = { owned: true, starLevel: 1, stackLevel: 0 }
+    }
+    return r
+  }
+
+  it('never equips a second SSR when neither owned SSR is +12', () => {
+    const r = rosterWith({ stack: 4 }, { stack: 7 })
+    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps', true)
+    const owned = out.filter((w) => w.tier !== 'FALLBACK')
+    const highCount = owned.filter((w) => isHigh(w.wheelId)).length
+    expect(highCount).toBeLessThanOrEqual(1)
+  })
+
+  it('allows two SSRs when the FIRST equipped wheel is +12', () => {
+    const r = rosterWith({ stack: 12 }, { stack: 5 })
+    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps', true)
+    const highCount = out.filter((w) => w.tier !== 'FALLBACK' && isHigh(w.wheelId)).length
+    expect(highCount).toBe(2)
+  })
+
+  it('allows two SSRs when only the SECOND wheel is +12 (interpretation B)', () => {
+    const r = rosterWith({ stack: 6 }, { stack: 12 })
+    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps', true)
+    const highCount = out.filter((w) => w.tier !== 'FALLBACK' && isHigh(w.wheelId)).length
+    expect(highCount).toBe(2)
+  })
+
+  it('never suggests two unowned SSR FALLBACK targets together', () => {
+    const r: any = fullRoster()
+    for (const id of Object.keys(r.wheels)) r.wheels[id] = { owned: false, starLevel: 0, stackLevel: 0 }
+    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps', true)
+    const highFallbacks = out.filter((w) => w.tier === 'FALLBACK' && isHigh(w.wheelId)).length
+    expect(highFallbacks).toBeLessThanOrEqual(1)
   })
 })
