@@ -132,7 +132,12 @@ const ROLE_WANTS: Partial<Record<TeamRole, WheelPurpose[]>> = {
 }
 
 const DPS_ROLES = new Set<TeamRole>(['main_dps', 'sub_dps'])
-const DAMAGE_PURPOSES = new Set<WheelPurpose>(['offense', 'crit'])
+// 'str' counts as damage-side here: a Base-DMG/STR stat stick feeds the
+// wielder's own output, so on a non-DPS it is as wasted as a crit wheel —
+// this is how Blade of the Titan kept landing on keyflare bots. Roles that
+// genuinely want STR (str_support, tentacle_enabler) still reach it through
+// their wanted-purposes list, so this only tightens the anti-fit gate.
+const DAMAGE_PURPOSES = new Set<WheelPurpose>(['offense', 'crit', 'str'])
 const SUPPORT_ONLY_PURPOSES = new Set<WheelPurpose>([
   'heal',
   'shield',
