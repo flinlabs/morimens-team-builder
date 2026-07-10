@@ -132,7 +132,12 @@ const ROLE_WANTS: Partial<Record<TeamRole, WheelPurpose[]>> = {
 }
 
 const DPS_ROLES = new Set<TeamRole>(['main_dps', 'sub_dps'])
-const DAMAGE_PURPOSES = new Set<WheelPurpose>(['offense', 'crit'])
+// 'str' counts as damage-side here: a Base-DMG/STR stat stick feeds the
+// wielder's own output, so on a non-DPS it is as wasted as a crit wheel —
+// this is how Blade of the Titan kept landing on keyflare bots. Roles that
+// genuinely want STR (str_support, tentacle_enabler) still reach it through
+// their wanted-purposes list, so this only tightens the anti-fit gate.
+const DAMAGE_PURPOSES = new Set<WheelPurpose>(['offense', 'crit', 'str'])
 const SUPPORT_ONLY_PURPOSES = new Set<WheelPurpose>([
   'heal',
   'shield',
@@ -146,6 +151,13 @@ const SUPPORT_ONLY_PURPOSES = new Set<WheelPurpose>([
  * way (a pure damage wheel on a keyflare bot, a pure sigil-economy wheel on
  * the carry). Anti-fit wheels are skipped whenever any alternative exists.
  */
+const SUPPORT_MAINSTATS = new Set([
+  'KEYFLARE_REGEN',
+  'ALIEMUS_REGEN',
+  'SIGIL_YIELD',
+  'DEATH_RESISTANCE',
+])
+
 export function wheelFitScore(
   wheel: Pick<EnrichedWheel, 'id' | 'mainstatKey' | 'descriptionTemplate'> & {
     searchTags?: string[]
@@ -157,12 +169,21 @@ export function wheelFitScore(
   if (!wants) return 1
   const purposes = deriveWheelPurposes(wheel, overrides)
   if (purposes.size === 0) return 1
-  if ([...purposes].some((p) => wants.includes(p))) return 2
 
   const isDps = DPS_ROLES.has(role as TeamRole)
+  // The mainstat is the wheel's identity; effect riders are seasoning. A
+  // keyflare-regen wheel with an STR-after-posse rider (Heart of Silver) is
+  // still a support wheel — the rider must not promote it to a strong fit on
+  // a carry, or every keyflare stick with a damage garnish outranks real
+  // damage wheels.
+  const supportIdentity = !!wheel.mainstatKey && SUPPORT_MAINSTATS.has(wheel.mainstatKey)
+  const maxFit = isDps && supportIdentity ? 1 : 2
+
+  if ([...purposes].some((p) => wants.includes(p))) return maxFit
+
   if (isDps) {
     // A wheel offering ONLY support-side value does nothing for a carry.
-    return [...purposes].every((p) => SUPPORT_ONLY_PURPOSES.has(p)) ? 0 : 1
+    return [...purposes].every((p) => SUPPORT_ONLY_PURPOSES.has(p)) || supportIdentity ? 0 : 1
   }
   // A wheel offering ONLY the wielder's own damage does nothing for a support.
   return [...purposes].every((p) => DAMAGE_PURPOSES.has(p)) ? 0 : 1
