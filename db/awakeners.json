@@ -436,7 +436,7 @@
         },
         "ownerAwakenerId": "awakener-0001",
         "slot": "Skill1",
-        "descriptionTemplate": "Deal [Damage:Arg1] DMG to all enemies. \"24\" obtains [Energy:Arg2] Aliemus.\nDepressed Persona: Also grant other Awakeners [DescArg1]× Aliemus. Manic Persona: Gain another [DescArg2]× Aliemus",
+        "descriptionTemplate": "Deal [Damage:Arg1] DMG to all enemies. \"24\" obtains [Energy:Arg2] Aliemus.\nDepressed Persona: Also grant other Awakeners [DescArg1]\u00d7 Aliemus. Manic Persona: Gain another [DescArg2]\u00d7 Aliemus",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -476,7 +476,7 @@
             "ownerAwakenerId": "awakener-0001",
             "ownerAwakenerName": "\"24\"",
             "patch": {
-              "descriptionTemplate": "Deal [Damage:Arg1] DMG to all enemies. \"24\" obtains [Energy:Arg2] Aliemus.\nDepressed Persona: Also grant other Awakeners [DescArg1]× Aliemus, inflict {Weakness} on all enemies for [DescArg3] {plural:[DescArg3]|turn|turns}. Manic Persona: Gain another [DescArg2]× Aliemus, inflict {Vulnerable} on all enemies for [DescArg3] turn",
+              "descriptionTemplate": "Deal [Damage:Arg1] DMG to all enemies. \"24\" obtains [Energy:Arg2] Aliemus.\nDepressed Persona: Also grant other Awakeners [DescArg1]\u00d7 Aliemus, inflict {Weakness} on all enemies for [DescArg3] {plural:[DescArg3]|turn|turns}. Manic Persona: Gain another [DescArg2]\u00d7 Aliemus, inflict {Vulnerable} on all enemies for [DescArg3] turn",
               "descriptionArgs": {
                 "Arg1": {
                   "kind": "scaling",
@@ -638,7 +638,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -1503,7 +1503,7 @@
         "ownerAwakenerId": "awakener-0002",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -1683,7 +1683,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Alert-stalling poison tank. Exalt permanently stacks Alert (boosts teamwide shields over time) — the ideal support for Castor stall teams. Also generates embryo and triggers poison; at high investment Colorless Spiral makes her a poison DPS.",
+      "notes": "Alert-stalling poison tank. Exalt permanently stacks Alert (boosts teamwide shields over time) \u2014 the ideal support for Castor stall teams. Also generates embryo and triggers poison; at high investment Colorless Spiral makes her a poison DPS.",
       "keyPairings": [
         {
           "partnerId": "awakener-0008",
@@ -2278,7 +2278,7 @@
         "ownerAwakenerId": "awakener-0003",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -3013,7 +3013,7 @@
         "ownerAwakenerId": "awakener-0004",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -3188,7 +3188,7 @@
       ],
       "isDivineRealm": false,
       "tier": "C",
-      "notes": "Anti-'bullshit' utility support — dispels Seals and discards enemy-inflicted symptom/status cards, while providing shields and vulnerable. At E3 a Precision-Slash/Combat-Stance burst DPS that wants a team making shields and copying/replaying her cards.",
+      "notes": "Anti-'bullshit' utility support \u2014 dispels Seals and discards enemy-inflicted symptom/status cards, while providing shields and vulnerable. At E3 a Precision-Slash/Combat-Stance burst DPS that wants a team making shields and copying/replaying her cards.",
       "combatTheme": "strike"
     },
     "annotationPending": false,
@@ -3817,7 +3817,7 @@
         "ownerAwakenerId": "awakener-0005",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -3956,7 +3956,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Multihit tentacle driver — triggers 25+ tentacle attacks in one Raging Waves turn, converting stacked STR and Tentacle DMG into burst. Her own damage is low, so she needs a team stacking STR/Tentacle DMG or a tentacle-hit payoff like Faros's Deep Currents.",
+      "notes": "Multihit tentacle driver \u2014 triggers 25+ tentacle attacks in one Raging Waves turn, converting stacked STR and Tentacle DMG into burst. Her own damage is low, so she needs a team stacking STR/Tentacle DMG or a tentacle-hit payoff like Faros's Deep Currents.",
       "keyPairings": [
         {
           "partnerId": "awakener-0017",
@@ -4697,7 +4697,7 @@
         "ownerAwakenerId": "awakener-0006",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -4866,7 +4866,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Offensive healer and counter driver — strong healing-over-time and consistent Vulnerable from his Exalt, and he can multiply Counter triggers for a turn. One of the rare endgame-viable Counter stackers (scales with STR and crits) given enough team buffs.",
+      "notes": "Offensive healer and counter driver \u2014 strong healing-over-time and consistent Vulnerable from his Exalt, and he can multiply Counter triggers for a turn. One of the rare endgame-viable Counter stackers (scales with STR and crits) given enough team buffs.",
       "combatTheme": "counter"
     },
     "annotationPending": false,
@@ -4989,7 +4989,7 @@
         },
         "ownerAwakenerId": "awakener-0007",
         "slot": "OverExalt",
-        "descriptionTemplate": "This Exalt's DMG instance ×3. The following 5 Casiah Command Cards grant {STR} equal to 10% of Casiah's ATK.",
+        "descriptionTemplate": "This Exalt's DMG instance \u00d73. The following 5 Casiah Command Cards grant {STR} equal to 10% of Casiah's ATK.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Casiah"
       },
@@ -5373,7 +5373,7 @@
         },
         "ownerAwakenerId": "awakener-0007",
         "slot": "OverExalt",
-        "descriptionTemplate": "This Exalt's DMG instance ×3. The following 5 Casiah Command Cards grant {STR} equal to 10% of Casiah's ATK.",
+        "descriptionTemplate": "This Exalt's DMG instance \u00d73. The following 5 Casiah Command Cards grant {STR} equal to 10% of Casiah's ATK.",
         "descriptionArgs": {},
         "cardKeywords": [],
         "ownerAwakenerName": "Casiah"
@@ -5471,7 +5471,7 @@
         "ownerAwakenerId": "awakener-0007",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -5593,7 +5593,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Deck-cycling card-trick support — fills your hand, replays cards from Ultra Space and sets up multi-card combo turns; staple of Aftershock teams. Her Astral Reign image relic makes her Exalt inflict permanent STR-down for stall strategies.",
+      "notes": "Deck-cycling card-trick support \u2014 fills your hand, replays cards from Ultra Space and sets up multi-card combo turns; staple of Aftershock teams. Her Astral Reign image relic makes her Exalt inflict permanent STR-down for stall strategies.",
       "combatTheme": "discard"
     },
     "annotationPending": false,
@@ -5729,7 +5729,7 @@
         },
         "ownerAwakenerId": "awakener-0008",
         "slot": "AbsoluteAxiom",
-        "descriptionTemplate": "{Rouse} {Skybound Oath} is enhanced: Castor's first {Onyx Plume} each turn inflicts {Cleansing Feathers} {Corrosion} on the front-row enemy. {Corrosion} removal DMG: 300% → 500%.",
+        "descriptionTemplate": "{Rouse} {Skybound Oath} is enhanced: Castor's first {Onyx Plume} each turn inflicts {Cleansing Feathers} {Corrosion} on the front-row enemy. {Corrosion} removal DMG: 300% \u2192 500%.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Castor"
       }
@@ -6241,7 +6241,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -6468,7 +6468,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Corrosive shield-stall tank — hoards Onyx Plumes to accumulate end-of-turn shields; alone a great defensive support, with shield-buffers (Agrippa/Erica) he stalls the hardest bosses forever. Tosses Plumes for Corrosion, but needs another damage source to trigger it.",
+      "notes": "Corrosive shield-stall tank \u2014 hoards Onyx Plumes to accumulate end-of-turn shields; alone a great defensive support, with shield-buffers (Agrippa/Erica) he stalls the hardest bosses forever. Tosses Plumes for Corrosion, but needs another damage source to trigger it.",
       "anchorPosse": "posse-0036",
       "keyPairings": [
         {
@@ -6481,11 +6481,11 @@
         },
         {
           "partnerId": "awakener-0041",
-          "reason": "Castor's Onyx Plumes feed Pollux's bleed/sin scaling while supplying shields and card draw — they enable each other."
+          "reason": "Castor's Onyx Plumes feed Pollux's bleed/sin scaling while supplying shields and card draw \u2014 they enable each other."
         }
       ],
       "leapPriority": "mid",
-      "leapNote": "His wheel triggers on Annihilation rather than on the Ultra Turn — relevant when building his Ultra Space play.",
+      "leapNote": "His wheel triggers on Annihilation rather than on the Ultra Turn \u2014 relevant when building his Ultra Space play.",
       "combatTheme": "neutral"
     },
     "annotationPending": false,
@@ -7273,7 +7273,7 @@
         "ownerAwakenerId": "awakener-0009",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -7383,7 +7383,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Extra-life and arithmetica support — her Exalt revives the team from death once per fight (every 6 turns at E3), letting a glass-cannon DPS be carried through mob fights to the boss. Also makes a little arithmetica and Tentacle DMG; retainable defensive skills keep the deck clean.",
+      "notes": "Extra-life and arithmetica support \u2014 her Exalt revives the team from death once per fight (every 6 turns at E3), letting a glass-cannon DPS be carried through mob fights to the boss. Also makes a little arithmetica and Tentacle DMG; retainable defensive skills keep the deck clean.",
       "keyPairings": [
         {
           "partnerId": "awakener-0055",
@@ -7910,7 +7910,7 @@
         },
         "ownerAwakenerId": "awakener-0010",
         "slot": "Skill2",
-        "descriptionTemplate": "Restore [Heal:Arg1] HP, temporarily remove {Madness} from all enemies and temporarily reduce their {STR⯆} by [Exhaustion:Arg3]. {Quasar}: Gain [Power:Arg4] {STR}.",
+        "descriptionTemplate": "Restore [Heal:Arg1] HP, temporarily remove {Madness} from all enemies and temporarily reduce their {STR\u2bc6} by [Exhaustion:Arg3]. {Quasar}: Gain [Power:Arg4] {STR}.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -8151,7 +8151,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -9039,7 +9039,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -9221,7 +9221,7 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Discard-abusing story-mode champion and core of discard teams — repeatedly discards to cut Lightning Retribution's cost, generating Pilots that rapidly stack STR and Tentacle DMG and shield the burst turn. Weakness+Vulnerable at E3; her 2-cost feels bad before E2/E3.",
+      "notes": "Discard-abusing story-mode champion and core of discard teams \u2014 repeatedly discards to cut Lightning Retribution's cost, generating Pilots that rapidly stack STR and Tentacle DMG and shield the burst turn. Weakness+Vulnerable at E3; her 2-cost feels bad before E2/E3.",
       "anchorPosse": "posse-0035",
       "contentNotes": {
         "arc2": "Soulforge makes her deal high damage to Aequor-tagged enemies (incl. chapter bosses)"
@@ -9818,7 +9818,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -9912,10 +9912,11 @@
         "main_dps",
         "sub_dps",
         "vuln_applier",
-        "poison_stacker"
+        "aliemus_battery",
+        "card_cycler"
       ],
       "synergyTags": [
-        "counter_scaling"
+        "kill_scaling"
       ],
       "requires": [],
       "synergizesWith": [
@@ -9925,9 +9926,7 @@
         "awakener-0036",
         "awakener-0057"
       ],
-      "conflictsWith": [
-        "awakener-0025"
-      ],
+      "conflictsWith": [],
       "viabilityFloor": "E0",
       "enlightenBreakpoints": [
         "E2",
@@ -9940,7 +9939,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Counter & poison combo witch — Skull Reaver scales with last hits early; at endgame her Thousand Mirages make tons of temp Counter/Poison for high-damage combo turns with Arachne/Nautila. OE puts 3 Mirages in hand for big burst.",
+      "notes": "Kill-scaling crit burst DPS \u2014 Skull Reaver ramps off last hits, E2 grants permanent Crit Rate per kill on the stage, and Treasured Rarity stacks permanent Crit DMG per kill. Her Thousand Mirages generate temporary Counter/Poison for teammates like Arachne and Nautila to consume \u2014 she does not ramp off those stacks herself. Exalt effect levels hand out Insights, aliemus, Vulnerable/Weakness, and draws. OE puts extra Mirages in hand for big burst; values steady STR increment and Insight generation (pairs naturally with Pontos).",
       "keyPairings": [
         {
           "partnerId": "awakener-0056",
@@ -9950,8 +9949,7 @@
           "partnerId": "awakener-0036",
           "reason": "Converts her counter into AOE"
         }
-      ],
-      "combatTheme": "counter"
+      ]
     },
     "annotationPending": false,
     "statScaling": {
@@ -10707,7 +10705,7 @@
         "ownerAwakenerId": "awakener-0013",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -11464,7 +11462,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -11596,7 +11594,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Burst DPS that snowballs with kills and excels at executing low-HP enemies; also stacks STR, applies vulnerable, and heals. Strong early but falls off against full-HP bosses with no minions — wants a partner that sets up kills.",
+      "notes": "Burst DPS that snowballs with kills and excels at executing low-HP enemies; also stacks STR, applies vulnerable, and heals. Strong early but falls off against full-HP bosses with no minions \u2014 wants a partner that sets up kills.",
       "keyPairings": [
         {
           "partnerId": "awakener-0040",
@@ -12258,7 +12256,7 @@
         "ownerAwakenerId": "awakener-0015",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -12383,7 +12381,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Alert-stalling keyflare bot — free keyflare support whose Exalt inflicts Weakness and Vulnerable; on Rouse she makes temp Alert each time she shields, and Function Overload gives a huge shield + one-turn shielding buff. Core of Castor stall teams.",
+      "notes": "Alert-stalling keyflare bot \u2014 free keyflare support whose Exalt inflicts Weakness and Vulnerable; on Rouse she makes temp Alert each time she shields, and Function Overload gives a huge shield + one-turn shielding buff. Core of Castor stall teams.",
       "keyPairings": [
         {
           "partnerId": "awakener-0008",
@@ -12516,7 +12514,7 @@
         },
         "ownerAwakenerId": "awakener-0016",
         "slot": "OverExalt",
-        "descriptionTemplate": "Temporarily reduces all enemies' {STR⯆} by [Arg1]% of their DEF (scales with {Cradle of Stars} level up).",
+        "descriptionTemplate": "Temporarily reduces all enemies' {STR\u2bc6} by [Arg1]% of their DEF (scales with {Cradle of Stars} level up).",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -12562,7 +12560,7 @@
         },
         "ownerAwakenerId": "awakener-0016",
         "slot": "OverExalt",
-        "descriptionTemplate": "Temporarily reduces all enemies' {STR⯆} by [Arg1]% of their DEF (scales with {Cradle of Stars} level up).",
+        "descriptionTemplate": "Temporarily reduces all enemies' {STR\u2bc6} by [Arg1]% of their DEF (scales with {Cradle of Stars} level up).",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -12883,7 +12881,7 @@
         },
         "ownerAwakenerId": "awakener-0016",
         "slot": "Skill1",
-        "descriptionTemplate": "Gain [Power:Arg1] {STR}. Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg2].",
+        "descriptionTemplate": "Gain [Power:Arg1] {STR}. Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg2].",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -13158,7 +13156,7 @@
         "ownerAwakenerId": "awakener-0016",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -13271,7 +13269,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Top-tier endgame Death-Resistance tank — her Exalt stacks DR to survive multiple lethal hits; the harder the fight, the better she is versus other defensive options. Fits any team that needs to live longer. (Tier-list support rank is B, but her endgame value is higher.)",
+      "notes": "Top-tier endgame Death-Resistance tank \u2014 her Exalt stacks DR to survive multiple lethal hits; the harder the fight, the better she is versus other defensive options. Fits any team that needs to live longer. (Tier-list support rank is B, but her endgame value is higher.)",
       "keyPairings": [
         {
           "partnerId": "awakener-0018",
@@ -13906,7 +13904,7 @@
         "ownerAwakenerId": "awakener-0017",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -14039,7 +14037,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Lemurian defensive card-draw support and AOE poison applier — her Exalt is a powerful card-selection tool plus a shield (set up a perfect opening hand). As a DPS she spams Deep Currents for AOE poison, best in full poison teams or with heavy tentacle-attack triggers.",
+      "notes": "Lemurian defensive card-draw support and AOE poison applier \u2014 her Exalt is a powerful card-selection tool plus a shield (set up a perfect opening hand). As a DPS she spams Deep Currents for AOE poison, best in full poison teams or with heavy tentacle-attack triggers.",
       "combatTheme": "poison"
     },
     "annotationPending": false,
@@ -14754,7 +14752,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -14888,7 +14886,7 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Genesis Doll — boss-destroying Aliemus battery with big DMG-Amp buffs and Weakness+Vulnerable at E1. Deletes 25-30% of a boss's HP bar and boosts the team in Finale Form; shines in poison teams and solo-carries boss fights at OE.",
+      "notes": "Genesis Doll \u2014 boss-destroying Aliemus battery with big DMG-Amp buffs and Weakness+Vulnerable at E1. Deletes 25-30% of a boss's HP bar and boosts the team in Finale Form; shines in poison teams and solo-carries boss fights at OE.",
       "keyPairings": [
         {
           "partnerId": "awakener-0016",
@@ -15538,7 +15536,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -15678,7 +15676,7 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Genesis Helot — devastating bleed/Strike combo DPS. Stacking Crimson Shackles yields Bloodthirsty Flail (prepare+retain); copy it via The Lone Seed + Thais for one-shot Exalt turns. Needs E3 and The Lone Seed for consistency.",
+      "notes": "Genesis Helot \u2014 devastating bleed/Strike combo DPS. Stacking Crimson Shackles yields Bloodthirsty Flail (prepare+retain); copy it via The Lone Seed + Thais for one-shot Exalt turns. Needs E3 and The Lone Seed for consistency.",
       "keyPairings": [
         {
           "partnerId": "awakener-0048",
@@ -15848,7 +15846,7 @@
         },
         "ownerAwakenerId": "awakener-0020",
         "slot": "Defense",
-        "descriptionTemplate": "Gain [Block:Arg1] Shield. Ramona: Timeworn obtains [Energy:Arg2] Aliemus. {Loop}: Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg3], draw 1 card, and Ramona: Timeworn further obtains [Energy:Arg5] Aliemus.",
+        "descriptionTemplate": "Gain [Block:Arg1] Shield. Ramona: Timeworn obtains [Energy:Arg2] Aliemus. {Loop}: Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg3], draw 1 card, and Ramona: Timeworn further obtains [Energy:Arg5] Aliemus.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -16014,7 +16012,7 @@
         },
         "ownerAwakenerId": "awakener-0020",
         "slot": "Skill1",
-        "descriptionTemplate": "Deal [Damage:Arg1] DMG, {STR} is [Arg2]× more effective on {Predetermined Strike}. Each time a Posse is used, the {STR} multiplier +1 for this battle. {Loop}: Choose {Rebirth Tribunal} or {Ode to Tomorrow}.",
+        "descriptionTemplate": "Deal [Damage:Arg1] DMG, {STR} is [Arg2]\u00d7 more effective on {Predetermined Strike}. Each time a Posse is used, the {STR} multiplier +1 for this battle. {Loop}: Choose {Rebirth Tribunal} or {Ode to Tomorrow}.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -16257,7 +16255,7 @@
         "ownerAwakenerId": "awakener-0020",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -16417,7 +16415,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Genesis Ramona — time-looping toolbox. Exalt returns the last 3 cards you played for perfect setups; at E3 she can swap your posse to anything (e.g. Voices In Your Head for on-demand weak/vuln). Complex; her dual-posse DPS build is slow and not newbie-friendly.",
+      "notes": "Genesis Ramona \u2014 time-looping toolbox. Exalt returns the last 3 cards you played for perfect setups; at E3 she can swap your posse to anything (e.g. Voices In Your Head for on-demand weak/vuln). Complex; her dual-posse DPS build is slow and not newbie-friendly.",
       "combatTheme": "neutral"
     },
     "annotationPending": false,
@@ -17001,7 +16999,7 @@
         "ownerAwakenerId": "awakener-0021",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -17126,7 +17124,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Lemurian STR support and AOE mob clearer — with lots of Tentacle DMG his Usurp Exalt makes tons of temporary STR, the best offensive support for Astral Reign Lemurian teams with Tulu. STR steal has niche uses; his STR-scaling exalt cleans up low-HP enemies even at endgame.",
+      "notes": "Lemurian STR support and AOE mob clearer \u2014 with lots of Tentacle DMG his Usurp Exalt makes tons of temporary STR, the best offensive support for Astral Reign Lemurian teams with Tulu. STR steal has niche uses; his STR-scaling exalt cleans up low-HP enemies even at endgame.",
       "combatTheme": "neutral"
     },
     "annotationPending": false,
@@ -17468,7 +17466,7 @@
         },
         "ownerAwakenerId": "awakener-0022",
         "slot": "Exalt",
-        "descriptionTemplate": "Randomly deal [Damage:Arg1] {Pierce DMG} 3 times, {Stealing} [Arg2] {STR⯆} each time. Choose 1 non-Derived Command Card in hand that does not have {Exhaust}, {Rondino}, or {Crescendo}, and add {Rondino} to it. If there are no cards in your hand which qualify, deal DMG 3 more times.",
+        "descriptionTemplate": "Randomly deal [Damage:Arg1] {Pierce DMG} 3 times, {Stealing} [Arg2] {STR\u2bc6} each time. Choose 1 non-Derived Command Card in hand that does not have {Exhaust}, {Rondino}, or {Crescendo}, and add {Rondino} to it. If there are no cards in your hand which qualify, deal DMG 3 more times.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -17509,7 +17507,7 @@
             "ownerAwakenerId": "awakener-0022",
             "ownerAwakenerName": "Hameln",
             "patch": {
-              "descriptionTemplate": "Randomly deal [Damage:Arg1] {Pierce DMG} 3 times, {Stealing} [Arg2] {STR⯆} each time. Choose 1 non-Derived Command Card in hand that does not have {Exhaust}, {Rondino}, or {Crescendo}, and add {Rondino} to it. If there are no cards in your hand which qualify, deal DMG 3 more times."
+              "descriptionTemplate": "Randomly deal [Damage:Arg1] {Pierce DMG} 3 times, {Stealing} [Arg2] {STR\u2bc6} each time. Choose 1 non-Derived Command Card in hand that does not have {Exhaust}, {Rondino}, or {Crescendo}, and add {Rondino} to it. If there are no cards in your hand which qualify, deal DMG 3 more times."
             }
           },
           {
@@ -17753,7 +17751,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -17866,7 +17864,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Arithmetica printer and card copyist — draws cards, copies card effects, and banks +2 Arithmetica per turn on Rouse. Enables near-infinite combo turns; wants teammates that play many cards.",
+      "notes": "Arithmetica printer and card copyist \u2014 draws cards, copies card effects, and banks +2 Arithmetica per turn on Rouse. Enables near-infinite combo turns; wants teammates that play many cards.",
       "contentNotes": {
         "arc1": "Sets up near-infinite combo turns",
         "arc2": "Falls off due to the per-turn card soft cap"
@@ -18428,7 +18426,7 @@
         "ownerAwakenerId": "awakener-0023",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -18599,11 +18597,11 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Strike-DMG multiplier support: Exalt draws two Strikes and multiplies all Strike damage for the turn — fantastic for Strike DPS (Mouchette, GHelot). Can DPS via Shattering Strikes but needs heavy setup.",
+      "notes": "Strike-DMG multiplier support: Exalt draws two Strikes and multiplies all Strike damage for the turn \u2014 fantastic for Strike DPS (Mouchette, GHelot). Can DPS via Shattering Strikes but needs heavy setup.",
       "keyPairings": [
         {
           "partnerId": "awakener-0033",
-          "reason": "Exalt draws Strikes and multiplies all Strike damage — fuels Mouchette's Strike combos"
+          "reason": "Exalt draws Strikes and multiplies all Strike damage \u2014 fuels Mouchette's Strike combos"
         },
         {
           "partnerId": "awakener-0019",
@@ -18749,7 +18747,7 @@
         },
         "ownerAwakenerId": "awakener-0024",
         "slot": "AbsoluteAxiom",
-        "descriptionTemplate": "{Rouse} {Prelude Verse} is enhanced: After triggering {Annihilation}, Horla's next Command Card played this turn will {Leap}. Whenever Horla consumes ≥ 3 stacks of {Metaphor}, current {Emotion}'s effect +35% temporarily (cannot stack).",
+        "descriptionTemplate": "{Rouse} {Prelude Verse} is enhanced: After triggering {Annihilation}, Horla's next Command Card played this turn will {Leap}. Whenever Horla consumes \u2265 3 stacks of {Metaphor}, current {Emotion}'s effect +35% temporarily (cannot stack).",
         "descriptionArgs": {},
         "ownerAwakenerName": "Horla"
       }
@@ -18833,7 +18831,7 @@
         },
         "ownerAwakenerId": "awakener-0024",
         "slot": "Skill2",
-        "descriptionTemplate": "Gain [Power:Arg1] {STR}. Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg2]. {Leap}: Switch {Emotion} state to {Fear}. For each stack of {Fear} {Metaphor} consumed, gain an additional [Power:Arg3] {STR}.",
+        "descriptionTemplate": "Gain [Power:Arg1] {STR}. Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg2]. {Leap}: Switch {Emotion} state to {Fear}. For each stack of {Fear} {Metaphor} consumed, gain an additional [Power:Arg3] {STR}.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -19412,7 +19410,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -19535,7 +19533,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "S",
-      "notes": "Universal multiplier aura support — a single card play gives a teamwide buff for the whole exploration (scales with her Death Resistance). Carol Psalm is strong Aliemus and lets you retain Arithmetica across turns; at E1 one of the most consistent Weakness/Vulnerable appliers in the game.",
+      "notes": "Universal multiplier aura support \u2014 a single card play gives a teamwide buff for the whole exploration (scales with her Death Resistance). Carol Psalm is strong Aliemus and lets you retain Arithmetica across turns; at E1 one of the most consistent Weakness/Vulnerable appliers in the game.",
       "keyPairings": [
         {
           "partnerId": "awakener-0012",
@@ -19689,7 +19687,7 @@
         },
         "ownerAwakenerId": "awakener-0025",
         "slot": "AbsoluteAxiom",
-        "descriptionTemplate": "{Rouse} {Spatial Fold} is enhanced: Jenkin enjoys 2× the Crit. DMG effect of {Spatial Fold} and {Mistborn Street Urchin}.",
+        "descriptionTemplate": "{Rouse} {Spatial Fold} is enhanced: Jenkin enjoys 2\u00d7 the Crit. DMG effect of {Spatial Fold} and {Mistborn Street Urchin}.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Jenkin"
       }
@@ -20185,7 +20183,7 @@
         "ownerAwakenerId": "awakener-0025",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -20374,7 +20372,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Multihit crit-buff support — her Exalt and Rouse generate buckets of Crit DMG and Crit Rate for any crit DPS, and her AOE hits pop barriers / tank Chains of Resentment. Can main-DPS but needs high levels or STR buffs versus endgame bosses.",
+      "notes": "Multihit crit-buff support \u2014 her Exalt and Rouse generate buckets of Crit DMG and Crit Rate for any crit DPS, and her AOE hits pop barriers / tank Chains of Resentment. Can main-DPS but needs high levels or STR buffs versus endgame bosses.",
       "combatTheme": "neutral"
     },
     "annotationPending": false,
@@ -21038,7 +21036,7 @@
         "ownerAwakenerId": "awakener-0026",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -21169,7 +21167,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Arithmetica delivery service — Exalt banks 3 Arithmetica to spend any time (random buffs at E3) for characters that need lots of mana; applies decent poison in Astral Reign. OE makes her a top-tier Arithmetica support.",
+      "notes": "Arithmetica delivery service \u2014 Exalt banks 3 Arithmetica to spend any time (random buffs at E3) for characters that need lots of mana; applies decent poison in Astral Reign. OE makes her a top-tier Arithmetica support.",
       "combatTheme": "poison"
     },
     "annotationPending": false,
@@ -21979,7 +21977,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -22159,7 +22157,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Tanky ramping juggernaut — generates big shields off her defense card and ramps Base DMG/STR via Fiamma cards and 0-cost Hyperflare resets until Hyperflare one-shots bosses. Needs E3 and her posse; wants STR/crit buffs and Arithmetica to fuel Combust cycles.",
+      "notes": "Tanky ramping juggernaut \u2014 generates big shields off her defense card and ramps Base DMG/STR via Fiamma cards and 0-cost Hyperflare resets until Hyperflare one-shots bosses. Needs E3 and her posse; wants STR/crit buffs and Arithmetica to fuel Combust cycles.",
       "anchorPosse": "posse-0038",
       "combatTheme": "neutral"
     },
@@ -22820,7 +22818,7 @@
         "ownerAwakenerId": "awakener-0028",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -22945,7 +22943,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Dedicated healer that heals most when the team is low — ideal for low-HP-threshold carries (Uvhash, Sorel). Makes lots of embryo on Rouse and STR on OE; unlike Faint she has no long-exploration diminishing returns.",
+      "notes": "Dedicated healer that heals most when the team is low \u2014 ideal for low-HP-threshold carries (Uvhash, Sorel). Makes lots of embryo on Rouse and STR on OE; unlike Faint she has no long-exploration diminishing returns.",
       "keyPairings": [
         {
           "partnerId": "awakener-0051",
@@ -23685,7 +23683,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -23820,7 +23818,7 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Immortal poison tank — at E3 with Death Resistance stats she out-heals all incoming damage and can carry the team; also a surprising secondary DPS. The main shielder/healer for poison teams, but fits any team needing survivability.",
+      "notes": "Immortal poison tank \u2014 at E3 with Death Resistance stats she out-heals all incoming damage and can carry the team; also a surprising secondary DPS. The main shielder/healer for poison teams, but fits any team needing survivability.",
       "combatTheme": "poison"
     },
     "annotationPending": false,
@@ -24420,7 +24418,7 @@
         "ownerAwakenerId": "awakener-0030",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -24556,7 +24554,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "High-maintenance poison DPS — once set up, Deadly Flames applies massive poison and she becomes the best sustained damage dealer on the standard banner. Finicky early; wants defense, Aliemus and STR from teammates, her posse, E1+, and a hand-size wheel on a support.",
+      "notes": "High-maintenance poison DPS \u2014 once set up, Deadly Flames applies massive poison and she becomes the best sustained damage dealer on the standard banner. Finicky early; wants defense, Aliemus and STR from teammates, her posse, E1+, and a hand-size wheel on a support.",
       "anchorPosse": "posse-0032",
       "keyPairings": [
         {
@@ -25176,7 +25174,7 @@
         "ownerAwakenerId": "awakener-0031",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -25475,7 +25473,7 @@
         },
         "ownerAwakenerId": "awakener-0032",
         "slot": "Defense",
-        "descriptionTemplate": "Gain [Block:Arg1] Shield. Miryam obtains [Energy:Arg2] Aliemus. {Ritual}: Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg3]/[Exhaustion:Arg4]/[Exhaustion:Arg5].",
+        "descriptionTemplate": "Gain [Block:Arg1] Shield. Miryam obtains [Energy:Arg2] Aliemus. {Ritual}: Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg3]/[Exhaustion:Arg4]/[Exhaustion:Arg5].",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -26374,7 +26372,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -26496,7 +26494,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "The premier do-everything Aequor support — makes Aliemus, applies premium Weakness/Vulnerable debuffs, boosts team damage, heals at low HP and triggers poison. One of only two units (with Vortice) who can stack Realm Mastery in combat. Reliant on her Rouse; staple of GMurphy Lemurian teams but fits any team 'with blue in it'.",
+      "notes": "The premier do-everything Aequor support \u2014 makes Aliemus, applies premium Weakness/Vulnerable debuffs, boosts team damage, heals at low HP and triggers poison. One of only two units (with Vortice) who can stack Realm Mastery in combat. Reliant on her Rouse; staple of GMurphy Lemurian teams but fits any team 'with blue in it'.",
       "combatTheme": "poison"
     },
     "annotationPending": false,
@@ -26603,7 +26601,7 @@
         },
         "ownerAwakenerId": "awakener-0033",
         "slot": "E3",
-        "descriptionTemplate": "{Shining☆Tornado} grants Mouchette +1 hits count this turn.",
+        "descriptionTemplate": "{Shining\u2606Tornado} grants Mouchette +1 hits count this turn.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Mouchette"
       },
@@ -26611,14 +26609,14 @@
         "schemaVersion": 3,
         "kind": "enlighten",
         "id": "enlighten.mouchette.tornado-of-annihilation",
-        "name": "Tornado of Annihilation☆!",
+        "name": "Tornado of Annihilation\u2606!",
         "route": {
           "slug": "tornado-of-annihilation",
           "canonicalPath": "/database/awakeners/mouchette/enlightens/tornado-of-annihilation"
         },
         "ownerAwakenerId": "awakener-0033",
         "slot": "OverExalt",
-        "descriptionTemplate": "{Over-Exalt}: Hits count +1; for each {Death Resistance} triggered this battle, +1 additional hit.\nSet the Arithmetica Cost of the next {Shining☆Crush} to 0. First release each battle additionally inflicts {Fainted} on all enemies.",
+        "descriptionTemplate": "{Over-Exalt}: Hits count +1; for each {Death Resistance} triggered this battle, +1 additional hit.\nSet the Arithmetica Cost of the next {Shining\u2606Crush} to 0. First release each battle additionally inflicts {Fainted} on all enemies.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Mouchette"
       },
@@ -26785,7 +26783,7 @@
         "schemaVersion": 3,
         "kind": "skill",
         "id": "skill.mouchette.shining-crush",
-        "name": "Shining☆Crush",
+        "name": "Shining\u2606Crush",
         "route": {
           "slug": "shiningcrush",
           "canonicalPath": "/database/awakeners/mouchette/skills/shiningcrush"
@@ -26831,7 +26829,7 @@
         "schemaVersion": 3,
         "kind": "skill",
         "id": "skill.mouchette.shining-tornado",
-        "name": "Shining☆Tornado",
+        "name": "Shining\u2606Tornado",
         "route": {
           "slug": "shiningtornado",
           "canonicalPath": "/database/awakeners/mouchette/skills/shiningtornado"
@@ -26931,14 +26929,14 @@
         "schemaVersion": 3,
         "kind": "skill",
         "id": "skill.mouchette.tornado-of-annihilation",
-        "name": "Tornado of Annihilation☆!",
+        "name": "Tornado of Annihilation\u2606!",
         "route": {
           "slug": "tornado-of-annihilation",
           "canonicalPath": "/database/awakeners/mouchette/skills/tornado-of-annihilation"
         },
         "ownerAwakenerId": "awakener-0033",
         "slot": "OverExalt",
-        "descriptionTemplate": "{Over-Exalt}: Hits count +1; for each {Death Resistance} triggered this battle, +1 additional hit.\nSet the Arithmetica Cost of the next {Shining☆Crush} to 0. First release each battle additionally inflicts {Fainted} on all enemies.",
+        "descriptionTemplate": "{Over-Exalt}: Hits count +1; for each {Death Resistance} triggered this battle, +1 additional hit.\nSet the Arithmetica Cost of the next {Shining\u2606Crush} to 0. First release each battle additionally inflicts {Fainted} on all enemies.",
         "descriptionArgs": {},
         "cardKeywords": [],
         "ownerAwakenerName": "Mouchette"
@@ -27067,7 +27065,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -27208,7 +27206,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "S",
-      "notes": "Death-defying glass-cannon carry — one of the highest-damage units in the game; melts story with Exalt + Mortal Blast combos. Needs E3 for full damage and loves a Death-Resistance team (her E1 stacks buffs each time DR triggers).",
+      "notes": "Death-defying glass-cannon carry \u2014 one of the highest-damage units in the game; melts story with Exalt + Mortal Blast combos. Needs E3 for full damage and loves a Death-Resistance team (her E1 stacks buffs each time DR triggers).",
       "anchorPosse": "posse-0046",
       "keyPairings": [
         {
@@ -27388,7 +27386,7 @@
         },
         "ownerAwakenerId": "awakener-0034",
         "slot": "AbsoluteAxiom",
-        "descriptionTemplate": "{Rouse} {Made Into Being} is enhanced: Murphy's first {Vortex Reversed} played each turn deals ×2 hits; her first {Divine Maiden's Birth} played each turn generates ×2 Arithmetica.",
+        "descriptionTemplate": "{Rouse} {Made Into Being} is enhanced: Murphy's first {Vortex Reversed} played each turn deals \u00d72 hits; her first {Divine Maiden's Birth} played each turn generates \u00d72 Arithmetica.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Murphy"
       }
@@ -27898,7 +27896,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -28019,7 +28017,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Damage-delaying keyflare tank — her Exalt converts incoming damage into damage-over-time, letting an Aequor team survive massive hits, then self-cleanses with Vortex Reversal. Strong defensive keyflare bot with Weakness/Vulnerable and arithmetica.",
+      "notes": "Damage-delaying keyflare tank \u2014 her Exalt converts incoming damage into damage-over-time, letting an Aequor team survive massive hits, then self-cleanses with Vortex Reversal. Strong defensive keyflare bot with Weakness/Vulnerable and arithmetica.",
       "keyPairings": [
         {
           "partnerId": "awakener-0035",
@@ -28666,7 +28664,7 @@
         },
         "ownerAwakenerId": "awakener-0035",
         "family": "passive",
-        "descriptionTemplate": "When Murphy: Fauxborn is in the team, the {Aequor Realm} ascends to {Divine Realm: Aequor}.\n{Tentacle DMG} is changed to 5% of the team's Max HP.\nTeam DMG Amplification +50% after exploration begins (Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners, though no additional starting Tentacles will be obtained).\nTentacle Gathering effect is removed.\n{Divine Realm: Tentacle Stance} features the following new effects:\n{Divine Realm: Tranquil Sea}: Immediately generate Shield equal to 25% Max HP, and Tentacles will no longer attack at turn end; 3 turns cooldown.\n{Divine Realm: Raging Waves}: {Tentacle DMG} × 125% for the turn; after dealing Active DMG, 1 Tentacle attacks; lose 1 Tentacle at turn end; 3 turns cooldown.\nRealm Mastery is counted as {Divine Realm: Aequor Mastery}:\nEach point provides: {Tranquil Sea} Stance's Shield Generation +0.025% Max HP. {Raging Waves} Stance's {Tentacle DMG} +0.025%. Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners.",
+        "descriptionTemplate": "When Murphy: Fauxborn is in the team, the {Aequor Realm} ascends to {Divine Realm: Aequor}.\n{Tentacle DMG} is changed to 5% of the team's Max HP.\nTeam DMG Amplification +50% after exploration begins (Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners, though no additional starting Tentacles will be obtained).\nTentacle Gathering effect is removed.\n{Divine Realm: Tentacle Stance} features the following new effects:\n{Divine Realm: Tranquil Sea}: Immediately generate Shield equal to 25% Max HP, and Tentacles will no longer attack at turn end; 3 turns cooldown.\n{Divine Realm: Raging Waves}: {Tentacle DMG} \u00d7 125% for the turn; after dealing Active DMG, 1 Tentacle attacks; lose 1 Tentacle at turn end; 3 turns cooldown.\nRealm Mastery is counted as {Divine Realm: Aequor Mastery}:\nEach point provides: {Tranquil Sea} Stance's Shield Generation +0.025% Max HP. {Raging Waves} Stance's {Tentacle DMG} +0.025%. Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Murphy: Fauxborn"
       },
@@ -28747,7 +28745,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -28934,7 +28932,7 @@
       ],
       "isDivineRealm": true,
       "tier": "A",
-      "notes": "Genesis Murphy — stance-switching keyflare support-carry with powered-up tentacle stances at the cost of cooldowns and self-inflicted damage. Viable endgame DPS at OE/high investment. Her Soulforge scales with the number of OTHER Lemurians (Faros/Goliath/Miryam/Tulu): 1/2/3 → +6%/15%/30% Max HP and Shield.",
+      "notes": "Genesis Murphy \u2014 stance-switching keyflare support-carry with powered-up tentacle stances at the cost of cooldowns and self-inflicted damage. Viable endgame DPS at OE/high investment. Her Soulforge scales with the number of OTHER Lemurians (Faros/Goliath/Miryam/Tulu): 1/2/3 \u2192 +6%/15%/30% Max HP and Shield.",
       "anchorPosse": "posse-0044",
       "keyPairings": [
         {
@@ -28946,10 +28944,10 @@
           "reason": "Lemurian teammate for Soulforge scaling"
         }
       ],
-      "divineRealmNote": "Triggers Divine Realm: Aequor — Tentacle DMG becomes 5% of team Max HP, Tentacle Gathering is removed, +50% team DMG Amp at exploration start (doubled for pure Aequor/Chaos), and Tranquil Sea / Raging Waves gain 3-turn cooldowns.",
+      "divineRealmNote": "Triggers Divine Realm: Aequor \u2014 Tentacle DMG becomes 5% of team Max HP, Tentacle Gathering is removed, +50% team DMG Amp at exploration start (doubled for pure Aequor/Chaos), and Tranquil Sea / Raging Waves gain 3-turn cooldowns.",
       "requiresCondition": "lemurian_team_arc2",
       "contentNotes": {
-        "arc2": "Lemurian Soulforge scaling only works in Astral Reign — her signature team is Arc-2 only"
+        "arc2": "Lemurian Soulforge scaling only works in Astral Reign \u2014 her signature team is Arc-2 only"
       },
       "combatTheme": "tentacle"
     },
@@ -29711,7 +29709,7 @@
         "ownerAwakenerId": "awakener-0036",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -29836,11 +29834,11 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Shield-stall and counter support — her Exalt multiplies the team's existing shield (great for Sanga/Alva), converts Counter into AOE damage, and at E3 blocks incoming debuffs.",
+      "notes": "Shield-stall and counter support \u2014 her Exalt multiplies the team's existing shield (great for Sanga/Alva), converts Counter into AOE damage, and at E3 blocks incoming debuffs.",
       "keyPairings": [
         {
           "partnerId": "awakener-0045",
-          "reason": "Exalt multiplies existing shields — huge for shield-scaling teammates"
+          "reason": "Exalt multiplies existing shields \u2014 huge for shield-scaling teammates"
         },
         {
           "partnerId": "awakener-0004",
@@ -30004,7 +30002,7 @@
         "schemaVersion": 3,
         "kind": "enlighten",
         "id": "enlighten.nymphaea.sentiment-oc-anique",
-        "name": "Sentiment Océanique",
+        "name": "Sentiment Oc\u00e9anique",
         "route": {
           "slug": "sentiment-oceanique",
           "canonicalPath": "/database/awakeners/nymphaea/enlightens/sentiment-oceanique"
@@ -30606,7 +30604,7 @@
         "ownerAwakenerId": "awakener-0037",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -30729,7 +30727,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Poison-trigger keyflare support — Exalt instantly triggers poison (speeding up poison teams) and boosts teamwide poison in Astral Reign; high base Keyflare Regen makes her a solid keyflare bot. Best in full poison teams.",
+      "notes": "Poison-trigger keyflare support \u2014 Exalt instantly triggers poison (speeding up poison teams) and boosts teamwide poison in Astral Reign; high base Keyflare Regen makes her a solid keyflare bot. Best in full poison teams.",
       "combatTheme": "poison"
     },
     "annotationPending": false,
@@ -31471,7 +31469,7 @@
         "ownerAwakenerId": "awakener-0038",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -31591,7 +31589,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "C",
-      "notes": "Defensive STR buffer — Exalt gives a burst of temporary STR (good for STR-reliant DPS) plus shields. Scales hard with investment and is excellent at +12 / level 90, but outclassed before that.",
+      "notes": "Defensive STR buffer \u2014 Exalt gives a burst of temporary STR (good for STR-reliant DPS) plus shields. Scales hard with investment and is excellent at +12 / level 90, but outclassed before that.",
       "combatTheme": "neutral"
     },
     "annotationPending": false,
@@ -32516,7 +32514,7 @@
         "ownerAwakenerId": "awakener-0039",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -32635,7 +32633,7 @@
       ],
       "isDivineRealm": false,
       "tier": "C",
-      "notes": "Counter-removal bot — strips enemy Counter with Wax-Hot Desire and can be an early-game Counter DPS (converts counter to damage in Faded Legacy). Caught in the Astral Reign Ultra-24 nerf, so unusable as a DPS for most endgame now.",
+      "notes": "Counter-removal bot \u2014 strips enemy Counter with Wax-Hot Desire and can be an early-game Counter DPS (converts counter to damage in Faded Legacy). Caught in the Astral Reign Ultra-24 nerf, so unusable as a DPS for most endgame now.",
       "combatTheme": "counter"
     },
     "annotationPending": false,
@@ -33180,7 +33178,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -33349,7 +33347,7 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Buff-stacking sub-DPS — Discovers relics and spams Chromaphage for AOE damage and a big one-turn temp-STR boost to the main DPS. Wants an Exalt-reliant carry that doesn't need arithmetica. Voracious Resolve posse highly recommended.",
+      "notes": "Buff-stacking sub-DPS \u2014 Discovers relics and spams Chromaphage for AOE damage and a big one-turn temp-STR boost to the main DPS. Wants an Exalt-reliant carry that doesn't need arithmetica. Voracious Resolve posse highly recommended.",
       "keyPairings": [
         {
           "partnerId": "awakener-0046",
@@ -33858,7 +33856,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -33977,7 +33975,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Scaling glass-cannon combo DPS — Atonement by Pain boosts his first card each turn and grows after every fight, making him incredible in long explorations. Needs setup and teammates that buy time; E1 for consistency, E3 for high damage, OE makes him a top DPS.",
+      "notes": "Scaling glass-cannon combo DPS \u2014 Atonement by Pain boosts his first card each turn and grows after every fight, making him incredible in long explorations. Needs setup and teammates that buy time; E1 for consistency, E3 for high damage, OE makes him a top DPS.",
       "anchorPosse": "posse-0039",
       "keyPairings": [
         {
@@ -34156,7 +34154,7 @@
         },
         "ownerAwakenerId": "awakener-0042",
         "slot": "Skill2",
-        "descriptionTemplate": "Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg1]. Draw 1 card.",
+        "descriptionTemplate": "Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg1]. Draw 1 card.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -34184,7 +34182,7 @@
             "ownerAwakenerId": "awakener-0042",
             "ownerAwakenerName": "Ramona",
             "patch": {
-              "descriptionTemplate": "Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg1]. Draw 1 card. For each point of Arithmetica the drawn card costs, obtain [Arg2] Keyflare.",
+              "descriptionTemplate": "Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg1]. Draw 1 card. For each point of Arithmetica the drawn card costs, obtain [Arg2] Keyflare.",
               "descriptionArgs": {
                 "Arg1": {
                   "kind": "scaling",
@@ -34690,7 +34688,7 @@
         "ownerAwakenerId": "awakener-0042",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -34804,7 +34802,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Card-searching keyflare support — solid keyflare bot whose Exalt searches any card and reduces its cost to 0, very flexible. Best with teammates that have high-cost or specific must-have cards.",
+      "notes": "Card-searching keyflare support \u2014 solid keyflare bot whose Exalt searches any card and reduces its cost to 0, very flexible. Best with teammates that have high-cost or specific must-have cards.",
       "anchorPosse": "posse-0045",
       "combatTheme": "neutral"
     },
@@ -35434,7 +35432,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -35552,7 +35550,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "High-rolling damage-buff dispenser — hands out money and permanent upgrades through the exploration that snowball into a big boss-fight damage boost, plus excellent card draw/search for DPS that need specific cards.",
+      "notes": "High-rolling damage-buff dispenser \u2014 hands out money and permanent upgrades through the exploration that snowball into a big boss-fight damage boost, plus excellent card draw/search for DPS that need specific cards.",
       "combatTheme": "neutral"
     },
     "annotationPending": false,
@@ -35704,7 +35702,7 @@
         },
         "ownerAwakenerId": "awakener-0044",
         "slot": "OverExalt",
-        "descriptionTemplate": "DMG Taken → {Crimson Furnace} conversion effect +250%. \"Basic Strike\" and {End of Suffering} enjoy an additional 100% {STR} bonus. Within this exploration, {Crimson Furnace} Limit +2% of Max HP, up to 10%.",
+        "descriptionTemplate": "DMG Taken \u2192 {Crimson Furnace} conversion effect +250%. \"Basic Strike\" and {End of Suffering} enjoy an additional 100% {STR} bonus. Within this exploration, {Crimson Furnace} Limit +2% of Max HP, up to 10%.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Salvador"
       },
@@ -36296,7 +36294,7 @@
         },
         "ownerAwakenerId": "awakener-0044",
         "slot": "OverExalt",
-        "descriptionTemplate": "DMG Taken → {Crimson Furnace} conversion effect +250%. \"Basic Strike\" and {End of Suffering} enjoy an additional 100% {STR} bonus. Within this exploration, {Crimson Furnace} Limit +2% of Max HP, up to 10%.",
+        "descriptionTemplate": "DMG Taken \u2192 {Crimson Furnace} conversion effect +250%. \"Basic Strike\" and {End of Suffering} enjoy an additional 100% {STR} bonus. Within this exploration, {Crimson Furnace} Limit +2% of Max HP, up to 10%.",
         "descriptionArgs": {},
         "cardKeywords": [],
         "ownerAwakenerName": "Salvador"
@@ -36538,7 +36536,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -36677,9 +36675,9 @@
       "id": "awakener-0044",
       "teamRoles": [
         "shielder",
+        "embryo_gen",
         "weak_applier",
-        "vuln_applier",
-        "main_dps"
+        "vuln_applier"
       ],
       "synergyTags": [],
       "requires": [],
@@ -36702,14 +36700,13 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Crimson Furnace tank — huge shields via End of Suffering, plus weakness and vulnerable. With Lone Seed + Thais copies he becomes a slow unkillable carry. Crimson Furnace scales with Max HP, so wants high-CON teammates.",
+      "notes": "Crimson Furnace tank, not a DPS \u2014 End of Suffering converts the whole furnace into a huge shield, Blessed Bones is a secondary Embryo Fusion source that also inflicts Weakness and refills the furnace, and his Rouse grants Barrier plus Embryo Fusion. Massive CON raises team HP and the furnace scales with Max HP, so he wants high-CON teammates. The Lone Seed + Thais copy loop can turn him into a slow grind carry, but that's a niche build, not his default role.",
       "keyPairings": [
         {
           "partnerId": "awakener-0048",
           "reason": "Copy End of Suffering repeatedly for an unkillable grind carry"
         }
-      ],
-      "combatTheme": "neutral"
+      ]
     },
     "annotationPending": false,
     "statScaling": {
@@ -37512,7 +37509,7 @@
         "ownerAwakenerId": "awakener-0045",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -37641,7 +37638,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Mob-clearing shield support — converts a big one-turn shield into significant AOE damage, useful in stall teams that struggle to kill mobs. Can solo-DPS at low levels but needs OE or a damage multiplier (Saya) to scale on high-HP enemies.",
+      "notes": "Mob-clearing shield support \u2014 converts a big one-turn shield into significant AOE damage, useful in stall teams that struggle to kill mobs. Can solo-DPS at low levels but needs OE or a damage multiplier (Saya) to scale on high-HP enemies.",
       "keyPairings": [
         {
           "partnerId": "awakener-0036",
@@ -37795,7 +37792,7 @@
         "schemaVersion": 3,
         "kind": "enlighten",
         "id": "enlighten.sorel.carlate-profond",
-        "name": "Écarlate Profond",
+        "name": "\u00c9carlate Profond",
         "route": {
           "slug": "ecarlate-profond",
           "canonicalPath": "/database/awakeners/sorel/enlightens/ecarlate-profond"
@@ -38436,7 +38433,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -38558,7 +38555,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Greedy multihit Exalt DPS, fully reliant on supports for embryos/STR/buffs — weak at low investment, serious damage when enabled, Infinite Devour at OE. Also triggers many tentacle hits in Raging Waves (Aequor/Caro).",
+      "notes": "Greedy multihit Exalt DPS, fully reliant on supports for embryos/STR/buffs \u2014 weak at low investment, serious damage when enabled, Infinite Devour at OE. Also triggers many tentacle hits in Raging Waves (Aequor/Caro).",
       "keyPairings": [
         {
           "partnerId": "awakener-0040",
@@ -39191,7 +39188,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -39314,7 +39311,7 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Ridiculously versatile utility toolbox — can play cards from any teammate or realm and his Wings do a bit of everything. Cosplays as a DPS by spamming Four/Six Wings for temp STR ('Monowil' pure-Chaos carry). Needs E2 and lots of Arithmetica; complex to pilot.",
+      "notes": "Ridiculously versatile utility toolbox \u2014 can play cards from any teammate or realm and his Wings do a bit of everything. Cosplays as a DPS by spamming Four/Six Wings for temp STR ('Monowil' pure-Chaos carry). Needs E2 and lots of Arithmetica; complex to pilot.",
       "combatTheme": "neutral"
     },
     "annotationPending": false,
@@ -40153,7 +40150,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -40273,7 +40270,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "S",
-      "notes": "The best embryo maker and an elite keyflare/aliemus generator, card-copier and weak/vuln/STR support — does everything a Caro DPS wants. Scions of Purity can trigger Devour twice. At E2 arguably the best support in the game; a 'premium support' to ration carefully in D-Tide.",
+      "notes": "The best embryo maker and an elite keyflare/aliemus generator, card-copier and weak/vuln/STR support \u2014 does everything a Caro DPS wants. Scions of Purity can trigger Devour twice. At E2 arguably the best support in the game; a 'premium support' to ration carefully in D-Tide.",
       "keyPairings": [
         {
           "partnerId": "awakener-0046",
@@ -40281,7 +40278,7 @@
         }
       ],
       "contentNotes": {
-        "dtide": "Premium non-repeatable support — assign deliberately across waves"
+        "dtide": "Premium non-repeatable support \u2014 assign deliberately across waves"
       },
       "combatTheme": "universal"
     },
@@ -40894,7 +40891,7 @@
         "ownerAwakenerId": "awakener-0049",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -41025,7 +41022,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Arithmetica and crit-buff support — big crit buffs plus up to 5 Arithmetica discounted per Exalt, perfect for DPS that retain full hands for combo turns. Dispels many debuffs and can pull Weakness/Vulnerable from Rouse (inconsistently); at E2 a usable Ultra shielder.",
+      "notes": "Arithmetica and crit-buff support \u2014 big crit buffs plus up to 5 Arithmetica discounted per Exalt, perfect for DPS that retain full hands for combo turns. Dispels many debuffs and can pull Weakness/Vulnerable from Rouse (inconsistently); at E2 a usable Ultra shielder.",
       "combatTheme": "neutral"
     },
     "annotationPending": false,
@@ -41613,7 +41610,7 @@
         },
         "ownerAwakenerId": "awakener-0050",
         "slot": "Skill2",
-        "descriptionTemplate": "Dispel self {Weakness} state. Obtain [TentaclePower:Arg1] Temporary {Tentacle DMG} and [Power:Arg1] Temporary {STR}. If the current Stance is {Tranquil Sea}, additionally reduce all enemies' {STR⯆} by [Exhaustion:Arg3] this turn. {Aftershock}: Command 1 Tentacle to attack.",
+        "descriptionTemplate": "Dispel self {Weakness} state. Obtain [TentaclePower:Arg1] Temporary {Tentacle DMG} and [Power:Arg1] Temporary {STR}. If the current Stance is {Tranquil Sea}, additionally reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg3] this turn. {Aftershock}: Command 1 Tentacle to attack.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -41654,7 +41651,7 @@
             "ownerAwakenerId": "awakener-0050",
             "ownerAwakenerName": "Tulu",
             "patch": {
-              "descriptionTemplate": "Dispel self {Weakness} state. Obtain [TentaclePower:Arg1] Temporary {Tentacle DMG} and [Power:Arg1] Temporary {STR}. Gain [Arg2]% Temporary Crit. Rate. If the current Stance is {Tranquil Sea}, additionally reduce all enemies' {STR⯆} by [Exhaustion:Arg3] this turn. {Aftershock}: Command 1 Tentacle to attack.",
+              "descriptionTemplate": "Dispel self {Weakness} state. Obtain [TentaclePower:Arg1] Temporary {Tentacle DMG} and [Power:Arg1] Temporary {STR}. Gain [Arg2]% Temporary Crit. Rate. If the current Stance is {Tranquil Sea}, additionally reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg3] this turn. {Aftershock}: Command 1 Tentacle to attack.",
               "descriptionArgs": {
                 "Arg1": {
                   "kind": "scaling",
@@ -41838,7 +41835,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -41968,7 +41965,7 @@
       ],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "The King of Tentacle DMG — his Exalt's Tentacle DMG and Crit Rate let multihit attackers hit like trucks in Raging Waves. Usable as a solo DPS early; at endgame he's the damage buffer in Corposant or GMurphy tentacle teams.",
+      "notes": "The King of Tentacle DMG \u2014 his Exalt's Tentacle DMG and Crit Rate let multihit attackers hit like trucks in Raging Waves. Usable as a solo DPS early; at endgame he's the damage buffer in Corposant or GMurphy tentacle teams.",
       "combatTheme": "tentacle"
     },
     "annotationPending": false,
@@ -42644,7 +42641,7 @@
         "ownerAwakenerId": "awakener-0051",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -42972,7 +42969,7 @@
         },
         "ownerAwakenerId": "awakener-0052",
         "slot": "Skill1",
-        "descriptionTemplate": "Gain [Counterattack:Arg1] stacks of {Counter}. Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg2]; if there is only one enemy, the {STR} Reduction effect +50%. {Leap}: Consumes 5 stacks of {Dreamlure}; if successful, gain an additional [Arg3] {plural:[Arg3]|stack|stacks} of {Counter}, otherwise gain 2 stacks of {Dreamlure}.",
+        "descriptionTemplate": "Gain [Counterattack:Arg1] stacks of {Counter}. Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg2]; if there is only one enemy, the {STR} Reduction effect +50%. {Leap}: Consumes 5 stacks of {Dreamlure}; if successful, gain an additional [Arg3] {plural:[Arg3]|stack|stacks} of {Counter}, otherwise gain 2 stacks of {Dreamlure}.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -43269,7 +43266,7 @@
         },
         "ownerAwakenerId": "awakener-0052",
         "slot": "Skill2",
-        "descriptionTemplate": "Randomly deal [Damage:Arg1] DMG [Arg2] {plural:[Arg2]|time|times}; this damage enjoys [Arg4]% {Counter} bonus. Each attack temporarily reduces the target's {STR⯆} by [Exhaustion:Arg3]. {Leap}: Spend 5 {Dreamlure}. If successful, refund the Arithmetica consumed and deal damage 2 more times; otherwise, gain 2 {Dreamlure}.",
+        "descriptionTemplate": "Randomly deal [Damage:Arg1] DMG [Arg2] {plural:[Arg2]|time|times}; this damage enjoys [Arg4]% {Counter} bonus. Each attack temporarily reduces the target's {STR\u2bc6} by [Exhaustion:Arg3]. {Leap}: Spend 5 {Dreamlure}. If successful, refund the Arithmetica consumed and deal damage 2 more times; otherwise, gain 2 {Dreamlure}.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -43326,7 +43323,7 @@
             "ownerAwakenerId": "awakener-0052",
             "ownerAwakenerName": "Wanda",
             "patch": {
-              "descriptionTemplate": "Randomly deal [Damage:Arg1] DMG [Arg2] {plural:[Arg2]|time|times}; this damage enjoys [Arg4]% {Counter} bonus. Each attack temporarily reduces the target's {STR⯆} by [Exhaustion:Arg3]. This card gains +25% Crit. Rate. {Leap}: Spend 5 {Dreamlure}. If successful, refund the Arithmetica consumed and deal damage 2 more times; otherwise, gain 2 {Dreamlure}."
+              "descriptionTemplate": "Randomly deal [Damage:Arg1] DMG [Arg2] {plural:[Arg2]|time|times}; this damage enjoys [Arg4]% {Counter} bonus. Each attack temporarily reduces the target's {STR\u2bc6} by [Exhaustion:Arg3]. This card gains +25% Crit. Rate. {Leap}: Spend 5 {Dreamlure}. If successful, refund the Arithmetica consumed and deal damage 2 more times; otherwise, gain 2 {Dreamlure}."
             }
           },
           {
@@ -43338,7 +43335,7 @@
             "ownerAwakenerId": "awakener-0052",
             "ownerAwakenerName": "Wanda",
             "patch": {
-              "descriptionTemplate": "Randomly deal [Damage:Arg1] DMG [Arg2] {plural:[Arg2]|time|times}; this damage enjoys [Arg4]% {Counter} bonus. Each attack temporarily reduces the target's {STR⯆} by [Exhaustion:Arg3]. This card gains +25% Crit. Rate. {Leap}: Spend 5 {Dreamlure}. If successful, refund the Arithmetica consumed and deal damage 2 more times; otherwise, gain 2 {Dreamlure}.",
+              "descriptionTemplate": "Randomly deal [Damage:Arg1] DMG [Arg2] {plural:[Arg2]|time|times}; this damage enjoys [Arg4]% {Counter} bonus. Each attack temporarily reduces the target's {STR\u2bc6} by [Exhaustion:Arg3]. This card gains +25% Crit. Rate. {Leap}: Spend 5 {Dreamlure}. If successful, refund the Arithmetica consumed and deal damage 2 more times; otherwise, gain 2 {Dreamlure}.",
               "descriptionArgs": {
                 "Arg1": {
                   "kind": "scaling",
@@ -43524,7 +43521,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -43651,7 +43648,7 @@
       ],
       "isDivineRealm": false,
       "tier": "C",
-      "notes": "STR-draining counter support — inflicts heavy STR-down and forces enemies into many small hits instead of one big one. Strong at low levels but needs high investment to keep up later; mainly an endgame pick for specific stages or counter teams.",
+      "notes": "STR-draining counter support \u2014 inflicts heavy STR-down and forces enemies into many small hits instead of one big one. Strong at low levels but needs high investment to keep up later; mainly an endgame pick for specific stages or counter teams.",
       "combatTheme": "counter",
       "keyPairings": [
         {
@@ -44406,7 +44403,7 @@
         "ownerAwakenerId": "awakener-0053",
         "family": "gnostic_potential",
         "maxLevel": 5,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -44540,7 +44537,7 @@
       "recommendedPosses": [],
       "isDivineRealm": false,
       "tier": "B",
-      "notes": "Aliemus & defensive utility support — a low-cost, well-rounded filler aliemus battery for Ultra teams. The only character who can let a teammate Exalt twice in one turn (E3 Exalt removes their Exalt cooldown); Energy Beam can remove enemy Barrier (useful in Ch 8/9).",
+      "notes": "Aliemus & defensive utility support \u2014 a low-cost, well-rounded filler aliemus battery for Ultra teams. The only character who can let a teammate Exalt twice in one turn (E3 Exalt removes their Exalt cooldown); Energy Beam can remove enemy Barrier (useful in Ch 8/9).",
       "contentNotes": {
         "arc1": "Core member of Ultra Retaliate teams"
       },
@@ -44875,7 +44872,7 @@
         },
         "ownerAwakenerId": "awakener-0054",
         "slot": "Skill2",
-        "descriptionTemplate": "Inflict [{Poison}:Arg1] {Poison} on all enemies, temporarily reducing their {STR⯆} by [Exhaustion:Arg2]. {Resonance 3}: Inflict 1 stack of {Spellbound} on all enemies.",
+        "descriptionTemplate": "Inflict [{Poison}:Arg1] {Poison} on all enemies, temporarily reducing their {STR\u2bc6} by [Exhaustion:Arg2]. {Resonance 3}: Inflict 1 stack of {Spellbound} on all enemies.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -44916,7 +44913,7 @@
             "ownerAwakenerId": "awakener-0054",
             "ownerAwakenerName": "Xu",
             "patch": {
-              "descriptionTemplate": "Inflict [{Poison}:Arg1] {Poison} on all enemies, temporarily reducing their {STR⯆} by [Exhaustion:Arg2]. {Resonance 3}: Inflict 1 stack of {Spellbound} on all enemies."
+              "descriptionTemplate": "Inflict [{Poison}:Arg1] {Poison} on all enemies, temporarily reducing their {STR\u2bc6} by [Exhaustion:Arg2]. {Resonance 3}: Inflict 1 stack of {Spellbound} on all enemies."
             }
           }
         ],
@@ -44996,7 +44993,7 @@
         },
         "ownerAwakenerId": "awakener-0054",
         "slot": "Exalt",
-        "descriptionTemplate": "[{Devour}: Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg1].] Gain [Arg2] Arithmetica and inflict [{Poison}:Arg3] {plural:[{Poison}:Arg3]|stack|stacks} of {Poison} on all enemies. Choose: {Betroth} or {Enthrall}.",
+        "descriptionTemplate": "[{Devour}: Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg1].] Gain [Arg2] Arithmetica and inflict [{Poison}:Arg3] {plural:[{Poison}:Arg3]|stack|stacks} of {Poison} on all enemies. Choose: {Betroth} or {Enthrall}.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "scaling",
@@ -45041,7 +45038,7 @@
             "ownerAwakenerId": "awakener-0054",
             "ownerAwakenerName": "Xu",
             "patch": {
-              "descriptionTemplate": "[{Devour}: Temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg1].] Gain [Arg2] Arithmetica and inflict [{Poison}:Arg3] {plural:[{Poison}:Arg3]|stack|stacks} of {Poison} on all enemies. The next {Resonance} effect triggered is doubled. Choose: {Betroth} or {Enthrall}."
+              "descriptionTemplate": "[{Devour}: Temporarily reduce all enemies' {STR\u2bc6} by [Exhaustion:Arg1].] Gain [Arg2] Arithmetica and inflict [{Poison}:Arg3] {plural:[{Poison}:Arg3]|stack|stacks} of {Poison} on all enemies. The next {Resonance} effect triggered is doubled. Choose: {Betroth} or {Enthrall}."
             }
           }
         ],
@@ -45228,7 +45225,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -45373,7 +45370,7 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Defensive support and poison-trigger queen — Bonesick Longing and her Exalt are the biggest poison triggers in the game; high CON raises the team poison cap in Astral Reign, making her a top secondary DPS in poison teams. Also brings unique debuffs, STR-down, arithmetica, AOE and HP%-damage.",
+      "notes": "Defensive support and poison-trigger queen \u2014 Bonesick Longing and her Exalt are the biggest poison triggers in the game; high CON raises the team poison cap in Astral Reign, making her a top secondary DPS in poison teams. Also brings unique debuffs, STR-down, arithmetica, AOE and HP%-damage.",
       "keyPairings": [
         {
           "partnerId": "awakener-0030",
@@ -45999,7 +45996,7 @@
         },
         "ownerAwakenerId": "awakener-0055",
         "family": "passive",
-        "descriptionTemplate": "When \"Vortice\" is in the team, the {Aequor Realm} transforms into {Divine Realm: Aequor}.\n{Tentacle DMG} is changed to 5% of the team's Max HP.\nTeam DMG Amplification +50% after exploration begins (Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners, though no additional starting Tentacles will be obtained).\nTentacle Gathering effect is removed.\n{Divine Realm: Tentacle Stance} features the following new effects:\n{Divine Realm: Tranquil Sea}: Immediately generate Shield equal to 25% Max HP, and Tentacles will no longer attack at turn end; 3 turns cooldown.\n{Divine Realm: Raging Waves}: {Tentacle DMG} × 125% for the turn; after dealing Active DMG, 1 Tentacle attacks; lose 1 Tentacle at turn end; 3 turns cooldown.\nRealm Mastery is counted as {Divine Realm: Aequor Mastery}:\nEach point provides: {Tranquil Sea} Stance's Shield Generation +0.025% Max HP. {Raging Waves} Stance's {Tentacle DMG} +0.025%. Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners.",
+        "descriptionTemplate": "When \"Vortice\" is in the team, the {Aequor Realm} transforms into {Divine Realm: Aequor}.\n{Tentacle DMG} is changed to 5% of the team's Max HP.\nTeam DMG Amplification +50% after exploration begins (Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners, though no additional starting Tentacles will be obtained).\nTentacle Gathering effect is removed.\n{Divine Realm: Tentacle Stance} features the following new effects:\n{Divine Realm: Tranquil Sea}: Immediately generate Shield equal to 25% Max HP, and Tentacles will no longer attack at turn end; 3 turns cooldown.\n{Divine Realm: Raging Waves}: {Tentacle DMG} \u00d7 125% for the turn; after dealing Active DMG, 1 Tentacle attacks; lose 1 Tentacle at turn end; 3 turns cooldown.\nRealm Mastery is counted as {Divine Realm: Aequor Mastery}:\nEach point provides: {Tranquil Sea} Stance's Shield Generation +0.025% Max HP. {Raging Waves} Stance's {Tentacle DMG} +0.025%. Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Vortice"
       },
@@ -46095,7 +46092,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -46231,7 +46228,7 @@
       ],
       "isDivineRealm": true,
       "tier": "S",
-      "notes": "Ramping artillery cannon — builds Vortex Reload (via Reload! and her posse) then unloads a huge AOE Exalt that, at E3 with her wheel, one-shots endgame bosses; also boosts Tentacle DMG and Tranquil Sea shields. Requires her posse Drowned Innocence, Reload! skill levels and Soulforge; likes defensive teammates who stall while she sets up.",
+      "notes": "Ramping artillery cannon \u2014 builds Vortex Reload (via Reload! and her posse) then unloads a huge AOE Exalt that, at E3 with her wheel, one-shots endgame bosses; also boosts Tentacle DMG and Tranquil Sea shields. Requires her posse Drowned Innocence, Reload! skill levels and Soulforge; likes defensive teammates who stall while she sets up.",
       "anchorPosse": "posse-0049",
       "keyPairings": [
         {
@@ -46806,7 +46803,7 @@
         },
         "ownerAwakenerId": "awakener-0056",
         "family": "passive",
-        "descriptionTemplate": "When Arachne is in the team, the {Ultra} Realm reweaves into {Singularity: Ultra}.\n{Dimension Shuttle}: After playing the first Command Card each turn, move a Temporary Base Copy of it to {Ultra Space}. Grant the original and the copy 25 stacks of {Singularity Beacon}. This cannot trigger during {Ultra Rounds}.\n{Singularity Beacon}: Each stack increases Final DMG, {STR}/{Tentacle DMG} Generation, and Fixed {Poison}/{Counter} effects by 2%. Increases Final Shield, HP Recovery, and {STR⯆} effects by 1%. Removed after play. Cards with this effect cannot trigger {Dimension Shuttle}.\n{Ultra Space}: When full, ending the turn activates {Ultra Space} immediately instead of initiating an {Ultra Round}: Discard all non-{Retain} cards, trigger their {Fleeting} effects, draw all {Ultra Space} cards, and set Arithmetica to 5. This current turn is treated as an {Ultra Round}.\n{Singularity Annihilation}: Draw the leftmost card from {Ultra Space}. 3 turns cooldown.\nUpon starting exploration, the team gains +50% DMG Amplification and 15 stacks of {Singularity Prism}.\n{Singularity Prism}: All Command Cards gain {Singularity Beacon} bonuses equal to these stacks.\n{Ultra Mastery}: For each 1 point of Realm Mastery, {Singularity Beacon} stacks from {Singularity Prism} and {Dimension Shuttle} increase by 0.05%.\n{Pure Ultra}: If the team consists only of {Ultra} or {Chaos} Awakeners, the {Ultra Mastery} effect and Realm DMG Amplification are doubled.",
+        "descriptionTemplate": "When Arachne is in the team, the {Ultra} Realm reweaves into {Singularity: Ultra}.\n{Dimension Shuttle}: After playing the first Command Card each turn, move a Temporary Base Copy of it to {Ultra Space}. Grant the original and the copy 25 stacks of {Singularity Beacon}. This cannot trigger during {Ultra Rounds}.\n{Singularity Beacon}: Each stack increases Final DMG, {STR}/{Tentacle DMG} Generation, and Fixed {Poison}/{Counter} effects by 2%. Increases Final Shield, HP Recovery, and {STR\u2bc6} effects by 1%. Removed after play. Cards with this effect cannot trigger {Dimension Shuttle}.\n{Ultra Space}: When full, ending the turn activates {Ultra Space} immediately instead of initiating an {Ultra Round}: Discard all non-{Retain} cards, trigger their {Fleeting} effects, draw all {Ultra Space} cards, and set Arithmetica to 5. This current turn is treated as an {Ultra Round}.\n{Singularity Annihilation}: Draw the leftmost card from {Ultra Space}. 3 turns cooldown.\nUpon starting exploration, the team gains +50% DMG Amplification and 15 stacks of {Singularity Prism}.\n{Singularity Prism}: All Command Cards gain {Singularity Beacon} bonuses equal to these stacks.\n{Ultra Mastery}: For each 1 point of Realm Mastery, {Singularity Beacon} stacks from {Singularity Prism} and {Dimension Shuttle} increase by 0.05%.\n{Pure Ultra}: If the team consists only of {Ultra} or {Chaos} Awakeners, the {Ultra Mastery} effect and Realm DMG Amplification are doubled.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Arachne"
       },
@@ -46887,7 +46884,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -47016,10 +47013,10 @@
       ],
       "isDivineRealm": true,
       "tier": "S",
-      "notes": "Damage amplifier and harbinger of doom — her Rouse and Pursuit multiply the team's command cards, with big DMG-Amp buffs and shields. Final Verdict out-damages many DPS while ignoring shields and invulnerability, trivializing many boss mechanics; best supporting a card-rich DPS but can solo many fights.",
+      "notes": "Damage amplifier and harbinger of doom \u2014 her Rouse and Pursuit multiply the team's command cards, with big DMG-Amp buffs and shields. Final Verdict out-damages many DPS while ignoring shields and invulnerability, trivializing many boss mechanics; best supporting a card-rich DPS but can solo many fights.",
       "anchorPosse": "posse-0050",
       "leapPriority": "high",
-      "leapNote": "Triggers Singularity: Ultra — command cards are buffed, Ultra Round extends the current turn instead of starting a new one, and Annihilation puts the leftmost Ultra-Space card into hand on a 3-turn cooldown.",
+      "leapNote": "Triggers Singularity: Ultra \u2014 command cards are buffed, Ultra Round extends the current turn instead of starting a new one, and Annihilation puts the leftmost Ultra-Space card into hand on a 3-turn cooldown.",
       "divineRealmNote": "Singularity: Ultra. Exalt 'Moira, As I Decree' costs 150 Aliemus; Weaver stacks (cap 3, expanded at E3), Singularity Beacon/Prism, and Final Verdict damage that ignores shields and invulnerability.",
       "combatTheme": "neutral"
     },
@@ -47646,7 +47643,7 @@
         },
         "ownerAwakenerId": "awakener-0057",
         "family": "passive",
-        "descriptionTemplate": "When Saya is in the team, the {Caro} Realm mutates into {Propagation: Caro}.\n{Embryo Fusion}: The {Embryo Fusion} gained per turn increases to 50~100, scaling with HP lost. The {Embryo Fusion} cap increases from 100 to 200. Upon reaching the cap, add 1 {Propagule Embryo} into hand.\n{Propagule Embryo}: Playing this card no longer grants Crit. Rate. {Devour} no longer grants Shield or Temporary {STR}. The first time each Awakener consumes a {Propagule Embryo} each turn, they gain 40 stacks of {Propagation Fiesta}: Each stack enhances the following Final effects of that Awakener's next Exalt this turn by 1%: Final DMG, Fixed Shield, Fixed HP Recovery, Fixed {STR}/{STR⯆}, {Tentacle DMG} Bonus, Fixed {Poison}, and Fixed {Counter}.\n{Crimson Furnace}: The auto-accumulation at the start of each turn changes to 10% of HP lost, up to 50% of Max HP. No longer accumulates at the end of battle. 3 turns cooldown.\nCrimson Corrosion: After using {Crimson Furnace}, inflict {Corrosion} on all enemies equal to 1% of their Max HP. The more {Crimson Furnace} consumed, the stronger the {Corrosion} effect, up to +100%. Deals 5× {Corrosion} effect against \"Empty Shell\" enemies.\nAt the start of exploration, Max HP +10%, team DMG Amplification +50%, and all Awakeners gain 20 stacks of {Propagation Fiesta} at the start of each turn. If the team consists only of {Caro} or {Chaos} Awakeners, the DMG Amplification granted by this effect is doubled.\nRealm Mastery becomes {Propagation: Caro Mastery}: Each point of Realm Mastery increases the {Propagation Fiesta} stacks gained from {Propagation: Caro} by 0.05%.\nIf the team consists only of {Caro} or {Chaos} Awakeners, the {Propagation: Caro Mastery} effect is doubled.",
+        "descriptionTemplate": "When Saya is in the team, the {Caro} Realm mutates into {Propagation: Caro}.\n{Embryo Fusion}: The {Embryo Fusion} gained per turn increases to 50~100, scaling with HP lost. The {Embryo Fusion} cap increases from 100 to 200. Upon reaching the cap, add 1 {Propagule Embryo} into hand.\n{Propagule Embryo}: Playing this card no longer grants Crit. Rate. {Devour} no longer grants Shield or Temporary {STR}. The first time each Awakener consumes a {Propagule Embryo} each turn, they gain 40 stacks of {Propagation Fiesta}: Each stack enhances the following Final effects of that Awakener's next Exalt this turn by 1%: Final DMG, Fixed Shield, Fixed HP Recovery, Fixed {STR}/{STR\u2bc6}, {Tentacle DMG} Bonus, Fixed {Poison}, and Fixed {Counter}.\n{Crimson Furnace}: The auto-accumulation at the start of each turn changes to 10% of HP lost, up to 50% of Max HP. No longer accumulates at the end of battle. 3 turns cooldown.\nCrimson Corrosion: After using {Crimson Furnace}, inflict {Corrosion} on all enemies equal to 1% of their Max HP. The more {Crimson Furnace} consumed, the stronger the {Corrosion} effect, up to +100%. Deals 5\u00d7 {Corrosion} effect against \"Empty Shell\" enemies.\nAt the start of exploration, Max HP +10%, team DMG Amplification +50%, and all Awakeners gain 20 stacks of {Propagation Fiesta} at the start of each turn. If the team consists only of {Caro} or {Chaos} Awakeners, the DMG Amplification granted by this effect is doubled.\nRealm Mastery becomes {Propagation: Caro Mastery}: Each point of Realm Mastery increases the {Propagation Fiesta} stacks gained from {Propagation: Caro} by 0.05%.\nIf the team consists only of {Caro} or {Chaos} Awakeners, the {Propagation: Caro Mastery} effect is doubled.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Saya"
       },
@@ -47742,7 +47739,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -47812,11 +47809,8 @@
         "awakener-0022",
         "awakener-0033",
         "awakener-0044",
-        "awakener-0005",
-        "awakener-0018",
-        "awakener-0030",
-        "awakener-0037",
-        "awakener-0054"
+        "awakener-0058",
+        "awakener-0005"
       ],
       "conflictsWith": [
         "awakener-0019",
@@ -47835,19 +47829,18 @@
       ],
       "isDivineRealm": true,
       "tier": "S",
-      "notes": "Divine Caro corrosion nuker and combo setup artist. Viscera Blossoms applies massive Corrosion (≈4x damage multiplier) enabling even weak DPS to clear; she funnels Aliemus and seeds 0-cost card copies, so she pairs best with carries that don't rely on specific cards. Exalt costs 200 Aliemus — wants Madness Omen and Aliemus batteries.",
+      "notes": "Divine Caro corrosion nuker and discard-centric setup artist. Viscera Blossoms applies massive Corrosion (\u22484x damage multiplier) enabling even weak DPS to clear; she funnels Aliemus and seeds 0-cost card copies whose goo cleans up on discard, making her a natural fit for discard comps. Pairs best with carries that don't rely on specific cards. Exalt costs 200 Aliemus \u2014 wants Madness Omen and Aliemus batteries.",
       "keyPairings": [
         {
           "partnerId": "awakener-0046",
           "reason": "Seeds 0-cost copies and funnels Aliemus into an Exalt carry that doesn't need specific cards"
         }
       ],
-      "divineRealmNote": "Mutates Caro into Propagation: Caro — Embryos become Propagule Embryos that grant Propagation Fiesta (Exalt buffs) instead of shield/STR; Crimson Furnace becomes stronger but gains a 3-turn cooldown and inflicts Corrosion.",
+      "divineRealmNote": "Mutates Caro into Propagation: Caro \u2014 Embryos become Propagule Embryos that grant Propagation Fiesta (Exalt buffs) instead of shield/STR; Crimson Furnace becomes stronger but gains a 3-turn cooldown and inflicts Corrosion.",
       "contentNotes": {
         "arc2": "Soulforge and Realm Mastery further amplify Propagation Fiesta"
       },
-      "anchorPosse": "posse-0051",
-      "combatTheme": "universal"
+      "anchorPosse": "posse-0051"
     },
     "annotationPending": false,
     "statScaling": {
@@ -47918,7 +47911,7 @@
         },
         "ownerAwakenerId": "awakener-0058",
         "slot": "E1",
-        "descriptionTemplate": "{Slay-Gaunt} {Fixed DMG} +10%, {Relentless Hunt} Base {STR▼} effect +5%. For every 1% Crit. DMG provided by Pontos and his equipped WoD & Covenant, the {Fixed DMG} of {Slay-Gaunt} additionally +0.2%, and the Base {STR▼} effect of {Relentless Hunt} additionally +0.1%.",
+        "descriptionTemplate": "{Slay-Gaunt} {Fixed DMG} +10%, {Relentless Hunt} Base {STR\u25bc} effect +5%. For every 1% Crit. DMG provided by Pontos and his equipped WoD & Covenant, the {Fixed DMG} of {Slay-Gaunt} additionally +0.2%, and the Base {STR\u25bc} effect of {Relentless Hunt} additionally +0.1%.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Pontos"
       },
@@ -48188,7 +48181,7 @@
         },
         "ownerAwakenerId": "awakener-0058",
         "slot": "Exalt",
-        "descriptionTemplate": "Remove own {STR▼} state. All enemies' {STR▼} -[Exhaustion:Arg8] temporarily. Deal {Fixed DMG} equal to [Arg2]% {Tentacle DMG} to the lowest-HP enemy. If this kills the target, generate 1 Permanent {Gaunt} into hand. Max 3 Permanent {Gaunts} generated per battle.",
+        "descriptionTemplate": "Remove own {STR\u25bc} state. All enemies' {STR\u25bc} -[Exhaustion:Arg8] temporarily. Deal {Fixed DMG} equal to [Arg2]% {Tentacle DMG} to the lowest-HP enemy. If this kills the target, generate 1 Permanent {Gaunt} into hand. Max 3 Permanent {Gaunts} generated per battle.",
         "descriptionArgs": {
           "Arg2": {
             "kind": "scaling",
@@ -48332,7 +48325,7 @@
         },
         "ownerAwakenerId": "awakener-0058",
         "slot": "Rouse",
-        "descriptionTemplate": "Pontos gains [Arg2]% Base Aliemus. {Rouse}: For every 3 {Gaunts} in the deck, {Relentless Hunt} gains 1 stack of {Pack Hunt}. For every 1 Pontos Card played, the Temporary {STR▼} effect of the next {Relentless Hunt} +[Arg3]%, which triggers up to 3 times per turn.",
+        "descriptionTemplate": "Pontos gains [Arg2]% Base Aliemus. {Rouse}: For every 3 {Gaunts} in the deck, {Relentless Hunt} gains 1 stack of {Pack Hunt}. For every 1 Pontos Card played, the Temporary {STR\u25bc} effect of the next {Relentless Hunt} +[Arg3]%, which triggers up to 3 times per turn.",
         "descriptionArgs": {
           "Arg2": {
             "kind": "scaling",
@@ -48368,7 +48361,7 @@
             "ownerAwakenerId": "awakener-0058",
             "ownerAwakenerName": "Pontos",
             "patch": {
-              "descriptionTemplate": "Pontos gains [Arg2]% Base Aliemus. {Rouse}: For every 2 {Gaunts} in the deck, {Relentless Hunt} gains 1 stack of {Pack Hunt}. For every 1 Pontos Card played, the Temporary {STR▼} effect of the next {Relentless Hunt} +[Arg3]%, which triggers up to 3 times per turn. Gain +[Energy:Arg4] Aliemus at the {ordinal:1st} play of \"Strike\" and \"Defense\" each turn.",
+              "descriptionTemplate": "Pontos gains [Arg2]% Base Aliemus. {Rouse}: For every 2 {Gaunts} in the deck, {Relentless Hunt} gains 1 stack of {Pack Hunt}. For every 1 Pontos Card played, the Temporary {STR\u25bc} effect of the next {Relentless Hunt} +[Arg3]%, which triggers up to 3 times per turn. Gain +[Energy:Arg4] Aliemus at the {ordinal:1st} play of \"Strike\" and \"Defense\" each turn.",
               "descriptionArgs": {
                 "Arg2": {
                   "kind": "scaling",
@@ -48410,7 +48403,7 @@
         },
         "ownerAwakenerId": "awakener-0058",
         "family": "passive",
-        "descriptionTemplate": "When this character is in the team, the {Aequor Realm} transforms into {Benthos: Aequor} Realm.\nBase {Tentacle DMG} is changed to 5% of the team's Max HP.\nTeam DMG Amplification +50% after exploration begins (Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners, though no additional starting Tentacles will be obtained).\nTentacle Gathering effect is removed.\nTentacle Stance changes to {Benthos: Tentacle Stance}.\n{Benthos: Tranquil Sea}: Immediately generate Shield equal to 25% Max HP, and Tentacles will no longer attack at turn end; 3 turns cooldown.\n{Benthos: Raging Waves}: {Tentacle DMG} × 125% for the turn; after dealing Active DMG, 1 Tentacle attacks; lose 1 Tentacle at turn end; 3 turns cooldown.\nRealm Mastery is counted as {Benthos: Aequor Mastery}. Each point provides: {Tranquil Sea} Stance's Shield Generation +0.025% Max HP. {Raging Waves} Stance's {Tentacle DMG} +0.025%.\n\"Benthos: Realm Mastery\" effect doubles if the team is entirely {Aequor} and {Chaos} Awakeners.",
+        "descriptionTemplate": "When this character is in the team, the {Aequor Realm} transforms into {Benthos: Aequor} Realm.\nBase {Tentacle DMG} is changed to 5% of the team's Max HP.\nTeam DMG Amplification +50% after exploration begins (Effect doubled if the team is entirely {Aequor} and {Chaos} Awakeners, though no additional starting Tentacles will be obtained).\nTentacle Gathering effect is removed.\nTentacle Stance changes to {Benthos: Tentacle Stance}.\n{Benthos: Tranquil Sea}: Immediately generate Shield equal to 25% Max HP, and Tentacles will no longer attack at turn end; 3 turns cooldown.\n{Benthos: Raging Waves}: {Tentacle DMG} \u00d7 125% for the turn; after dealing Active DMG, 1 Tentacle attacks; lose 1 Tentacle at turn end; 3 turns cooldown.\nRealm Mastery is counted as {Benthos: Aequor Mastery}. Each point provides: {Tranquil Sea} Stance's Shield Generation +0.025% Max HP. {Raging Waves} Stance's {Tentacle DMG} +0.025%.\n\"Benthos: Realm Mastery\" effect doubles if the team is entirely {Aequor} and {Chaos} Awakeners.",
         "descriptionArgs": {},
         "ownerAwakenerName": "Pontos"
       },
@@ -48448,7 +48441,7 @@
         "ownerAwakenerId": "awakener-0058",
         "family": "soulforge_aptitude",
         "maxLevel": 10,
-        "descriptionTemplate": "This talent is only effective in the {Astral Reign} stages.\nThis Awakener's CON, ATK, and DEF +[Arg1]%, and they gain [Arg2] Keyflare upon their first {Rouse}.\nPontos deals +[Arg3]% {Fixed DMG} to \"Kindreds of Rapture.\"\n{Relentless Hunt} gains {Tentacle DMG} equal to [Arg4]% of ATK for every 10 Aliemus consumed. When {Gaunt Ravage} deals DMG, it also temporarily reduces the target's {STR▼} by an amount equal to [Arg5]% of DEF.",
+        "descriptionTemplate": "This talent is only effective in the {Astral Reign} stages.\nThis Awakener's CON, ATK, and DEF +[Arg1]%, and they gain [Arg2] Keyflare upon their first {Rouse}.\nPontos deals +[Arg3]% {Fixed DMG} to \"Kindreds of Rapture.\"\n{Relentless Hunt} gains {Tentacle DMG} equal to [Arg4]% of ATK for every 10 Aliemus consumed. When {Gaunt Ravage} deals DMG, it also temporarily reduces the target's {STR\u25bc} by an amount equal to [Arg5]% of DEF.",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -48521,7 +48514,7 @@
         "family": "gnostic_potential",
         "maxLevel": 5,
         "defaultMaxed": true,
-        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n·CON +[Talent_Attr_Lv_physique]\n·ATK +[Talent_Attr_Lv_atk]\n·DEF +[Talent_Attr_Lv_def]",
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
         "descriptionArgs": {
           "Arg1": {
             "kind": "linear",
@@ -48587,9 +48580,9 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Protective Aequor support built around Gaunt cards: Skill 2 shields and summons Gaunts (Insights/aliemus, enemy STR down + tentacle power, or a lowest-HP hit with a team crit DMG buff); the ult applies AOE STR down and executes the lowest-HP enemy, minting a permanent Gaunt on a kill (max 3 per battle, must be his own damage — corrosion or Arachne mercy kills don't count). Skill 1 is a guaranteed-crit AOE that eats all Arithmetica and batteries aliemus. Fixed damage (ult/Gaunt hit) scales off Tentacle DMG and STR and never crits; his crit DMG stat feeds Skill 1 and the team buff. Best in Aequor but exports STR down, crit DMG, and vermin clearing anywhere. E2+E3 needed for comfortable play; OE triples damage.",
+      "notes": "Protective Aequor support built around Gaunt cards: Skill 2 shields and summons Gaunts (Insights/aliemus, enemy STR down + tentacle power, or a lowest-HP hit with a team crit DMG buff); the ult applies AOE STR down and executes the lowest-HP enemy, minting a permanent Gaunt on a kill (max 3 per battle, must be his own damage \u2014 corrosion or Arachne mercy kills don't count). Skill 1 is a guaranteed-crit AOE that eats all Arithmetica and batteries aliemus. Fixed damage (ult/Gaunt hit) scales off Tentacle DMG and STR and never crits; his crit DMG stat feeds Skill 1 and the team buff. Best in Aequor but exports STR down, crit DMG, and vermin clearing anywhere. E2+E3 needed for comfortable play; OE triples damage.",
       "contentNotes": {
-        "arc2": "Astral Reign limited unit — plays as protective support; his damage only ramps against bosses as team STR/tentacles scale."
+        "arc2": "Astral Reign limited unit \u2014 plays as protective support; his damage only ramps against bosses as team STR/tentacles scale."
       }
     },
     "annotationPending": false
