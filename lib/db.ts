@@ -76,6 +76,28 @@ export function getBisData(): Record<string, BisEntry> {
   return _bisCache
 }
 
+let _wheelPurposeCache: Record<string, string[]> | null = null
+/** Hand-set purpose-tag overrides from annotations/wheels.json (see wheel-fit.ts). */
+export function getWheelPurposeOverrides(): Record<string, string[]> {
+  if (_wheelPurposeCache) return _wheelPurposeCache
+  try {
+    const raw = fs.readFileSync(
+      path.join(process.cwd(), 'annotations', 'wheels.json'),
+      'utf-8'
+    )
+    const parsed = JSON.parse(raw) as Record<string, unknown>
+    const out: Record<string, string[]> = {}
+    for (const [k, v] of Object.entries(parsed)) {
+      if (k.startsWith('_')) continue
+      if (Array.isArray(v)) out[k] = v as string[]
+    }
+    _wheelPurposeCache = out
+  } catch {
+    _wheelPurposeCache = {}
+  }
+  return _wheelPurposeCache
+}
+
 // ---------------------------------------------------------------------------
 // Convenience helpers
 // ---------------------------------------------------------------------------
