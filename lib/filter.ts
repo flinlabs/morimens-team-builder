@@ -293,18 +293,39 @@ function synergScore(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>
 ): number {
+  // Synergy is a property of the PAIR, not the direction of the annotation.
+  // Guides describe teammates from their subject's side, so a well-documented
+  // character (Vortice, whose guide names a dozen partners) would earn nothing
+  // until every partner's annotation was edited to name her back. Mutual
+  // listings score highest; a one-directional edge still counts.
   let bonus = 0
-  for (const id of awakenerIds) {
-    const annotation = awakeners[id]?.annotation
-    const synergizesWith = annotation?.synergizesWith ?? []
-    const conflictsWith = annotation?.conflictsWith ?? []
-    for (const otherId of awakenerIds) {
-      if (otherId === id) continue
-      if (synergizesWith.includes(otherId)) bonus += 0.1
+  const ann = (id: string) => awakeners[id]?.annotation
+  for (let i = 0; i < awakenerIds.length; i++) {
+    for (let j = i + 1; j < awakenerIds.length; j++) {
+      const a = awakenerIds[i]
+      const b = awakenerIds[j]
+      const aLists = ann(a)?.synergizesWith?.includes(b) ?? false
+      const bLists = ann(b)?.synergizesWith?.includes(a) ?? false
+      if (aLists && bLists) bonus += 0.2
+      else if (aLists || bLists) bonus += 0.12
+      // Key pairings are iconic duos (Pollux+Castor, say) — extra credit so a
+      // known-good pair a player owns surfaces instead of drowning under
+      // denser generic clusters.
+      if (
+        ann(a)?.keyPairings?.some((p) => p.partnerId === b) ||
+        ann(b)?.keyPairings?.some((p) => p.partnerId === a)
+      ) {
+        bonus += 0.15
+      }
       // Anti-synergy: a flagged conflict (e.g. Saya kicking away Helot:Catena's
-      // hoarded cards) costs slightly more than a synergy is worth, so a team
-      // pairing the two is actively demoted rather than merely unrewarded.
-      if (conflictsWith.includes(otherId)) bonus -= 0.15
+      // hoarded cards) costs more than a synergy is worth, so a team pairing
+      // the two is actively demoted rather than merely unrewarded.
+      if (
+        ann(a)?.conflictsWith?.includes(b) ||
+        ann(b)?.conflictsWith?.includes(a)
+      ) {
+        bonus -= 0.25
+      }
     }
   }
   return Math.min(bonus, 0.7) // cap upside; conflicts can push below zero
@@ -571,7 +592,29 @@ export function generateCandidateTeams(
   // Sort by score descending
   candidates.sort((a, b) => b.score - a.score)
 
-  return candidates.slice(0, maxResults)
+  // Diversify the slice. Score-sorting alone lets permutations of one dense
+  // cluster occupy every returned slot (thirty near-identical Ultra shuffles),
+  // pushing distinct carries just past the cut even when they'd qualify for
+  // the downstream novelty band. Cap how often any single unit appears in the
+  // returned slice; pinned units are exempt since every candidate contains
+  // them by construction.
+  const PER_UNIT_SLICE_CAP = 8
+  const pinnedSet = new Set(pinnedIds)
+  const occurrences = new Map<string, number>()
+  const sliced: CandidateTeam[] = []
+  for (const c of candidates) {
+    if (sliced.length >= maxResults) break
+    if (
+      c.awakenerIds.some(
+        (id) => !pinnedSet.has(id) && (occurrences.get(id) ?? 0) >= PER_UNIT_SLICE_CAP
+      )
+    ) {
+      continue
+    }
+    c.awakenerIds.forEach((id) => occurrences.set(id, (occurrences.get(id) ?? 0) + 1))
+    sliced.push(c)
+  }
+  return sliced
 }
 
 export interface DtideSolution {
