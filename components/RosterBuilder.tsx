@@ -646,6 +646,21 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   const [dtidePosses, setDtidePosses] = useState<(string | undefined)[]>(() =>
     Array(5).fill(undefined)
   );
+  // Per-board pins, mirroring single mode: a slot the player fills by hand is
+  // kept when Generate runs — the engine builds each team around its pins.
+  const [dtidePinned, setDtidePinned] = useState<boolean[][]>(() =>
+    Array.from({ length: 5 }, () => [false, false, false, false])
+  );
+
+  // Skip curated meta comps so regenerating surfaces engine-built variety.
+  const [offMeta, setOffMeta] = useState(false);
+  // Compositions already shown this session; Generate rotates past them so
+  // pressing the button again yields fresh teams instead of the same set.
+  const [seenTeamKeys, setSeenTeamKeys] = useState<string[]>([]);
+  useEffect(() => {
+    setSeenTeamKeys([]);
+  }, [roster, mode, offMeta]);
+  const compositionKey = (ids: string[]) => [...ids].sort().join("|");
 
   const maps: NameMaps = useMemo(() => {
     const awk: NameMaps["awk"] = {};
@@ -789,6 +804,9 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     setError(null);
     try {
       const pinnedIds = slots.filter((id, i): id is string => !!id && pinned[i]);
+      const dtidePins = dtideSlots.map((s, ti) =>
+        s.filter((id, si): id is string => !!id && dtidePinned[ti][si])
+      );
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -797,8 +815,17 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
           mode,
           options:
             mode === "single"
-              ? { maxResults: 4, pinnedIds: pinnedIds.length ? pinnedIds : undefined }
-              : undefined,
+              ? {
+                  maxResults: 4,
+                  pinnedIds: pinnedIds.length ? pinnedIds : undefined,
+                  offMeta: offMeta || undefined,
+                  excludeTeamKeys: seenTeamKeys.length ? seenTeamKeys : undefined,
+                }
+              : {
+                  offMeta: offMeta || undefined,
+                  excludeTeamKeys: seenTeamKeys.length ? seenTeamKeys : undefined,
+                  dtidePins: dtidePins.some((p) => p.length) ? dtidePins : undefined,
+                },
         }),
       });
       const json = await res.json();
@@ -810,6 +837,14 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         setResult(gen);
         setGenId((g) => g + 1);
         setError(null);
+        // Remember what was shown so the next press rotates to fresh teams.
+        // The engine signals a wrap-around with a "starting the rotation over"
+        // warning — reset the memory then so the cycle can repeat cleanly.
+        const shownKeys = gen.teams.map((t) =>
+          compositionKey(t.composition.map((c) => c.awakenerId))
+        );
+        const wrapped = gen.meta.warnings.some((w) => w.includes("rotation over"));
+        setSeenTeamKeys((prev) => (wrapped ? shownKeys : [...prev, ...shownKeys]));
         if (mode === "dtide") applyDtide(gen);
         else applyTeamToFormation(gen);
       }
@@ -915,21 +950,52 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
     setPosseId(top.posseRecommendations?.[0]?.posseId);
   }
 
-  // Fill the five D-Tide boards from a generated lineup.
+  // Fill the five D-Tide boards from a generated lineup. Each team's rank is
+  // its board number (pinned boards keep their position even when another
+  // board couldn't be filled), and pinned slots are kept exactly where the
+  // player put them — only the open slots get filled.
   function applyDtide(gen: GenerateResult) {
-    const next = Array.from({ length: 5 }, () => [null, null, null, null] as (string | null)[]);
-    const nextPlans: Record<string, SlotPlan> = {};
+    const next = dtideSlots.map((s, ti) =>
+      s.map((id, si) => (dtidePinned[ti][si] ? id : null))
+    );
+    const nextPlans: Record<string, SlotPlan> = { ...dtidePlans };
     const posses: (string | undefined)[] = Array(5).fill(undefined);
-    gen.teams.slice(0, 5).forEach((t, ti) => {
-      t.composition.slice(0, 4).forEach((c, si) => {
+    gen.teams.slice(0, 5).forEach((t) => {
+      const ti = Math.min(Math.max((t.rank ?? 1) - 1, 0), 4);
+      const kept = new Set(next[ti].filter((x): x is string => !!x));
+      const queue = t.composition.filter((c) => !kept.has(c.awakenerId));
+      let qi = 0;
+      for (let si = 0; si < 4; si++) {
+        if (next[ti][si]) continue;
+        const c = queue[qi++];
+        if (!c) continue;
         next[ti][si] = c.awakenerId;
         nextPlans[c.awakenerId] = planFromAssignment(c);
-      });
+      }
+      // Refresh plans for pinned members too — the engine geared them as part
+      // of this team, so their wheel/covenant picks stay lineup-consistent.
+      for (const c of t.composition) {
+        if (kept.has(c.awakenerId)) nextPlans[c.awakenerId] = planFromAssignment(c);
+      }
       posses[ti] = t.posseRecommendations?.[0]?.posseId;
     });
     setDtideSlots(next);
     setDtidePlans(nextPlans);
     setDtidePosses(posses);
+  }
+
+  // Manual deploy / clear on a D-Tide board — same pinning contract as the
+  // single-team board: hand-placed characters become pinned, cleared slots
+  // unpin.
+  function handleDtideSlotsChange(ti: number, nextSlots: (string | null)[]) {
+    setDtidePinned((prev) =>
+      prev.map((row, xi) =>
+        xi === ti
+          ? nextSlots.map((id, si) => (id ? (dtideSlots[ti][si] !== id ? true : row[si]) : false))
+          : row
+      )
+    );
+    setDtideSlots((prev) => prev.map((x, xi) => (xi === ti ? nextSlots : x)));
   }
 
   // Drives the Own all / Own none control for whichever tab is active. It acts
@@ -1058,6 +1124,19 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             />
           </label>
 
+          <label
+            className="flex cursor-pointer items-center gap-1.5 text-xs text-[var(--text-muted)]"
+            title="Skip the curated meta compositions — surfaces engine-built teams beyond the usual headliners."
+          >
+            <input
+              type="checkbox"
+              checked={offMeta}
+              onChange={(e) => setOffMeta(e.target.checked)}
+              className="accent-[var(--gold)]"
+            />
+            <span className="uppercase tracking-wider text-[var(--text-dim)]">Off-meta</span>
+          </label>
+
           <div className="ml-auto flex items-center gap-4">
             <span className="text-sm text-[var(--text-muted)]">
               <span className="font-semibold text-[var(--text)]">{ownedCount}</span>
@@ -1068,7 +1147,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               disabled={generating || ownedCount < 4}
               className="btn-key font-title rounded-md px-5 py-2 text-sm font-semibold uppercase tracking-wider"
             >
-              {generating ? "Consulting…" : "Generate Teams"}
+              {generating ? "Consulting…" : seenTeamKeys.length ? "Regenerate" : "Generate Teams"}
             </button>
           </div>
         </div>
@@ -1112,17 +1191,22 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               setPosseId(undefined);
             }}
           />
-          {pinned.some(Boolean) && (
+          {pinned.some(Boolean) ? (
             <p className="mt-1.5 text-[12.5px] text-[var(--text-dim)]">
               Pinned characters are kept when you generate — only the empty slots get filled.
+            </p>
+          ) : (
+            <p className="mt-1.5 text-[12.5px] text-[var(--text-dim)]">
+              Tip: place characters on the board to pin them to the lineup — Generate builds the
+              team around your picks and only fills the empty slots.
             </p>
           )}
         </section>
       ) : (
         <section className="mb-6 space-y-4">
           <p className="text-[12.5px] text-[var(--text-dim)]">
-            D-Tide fields five teams with no unit or wheel shared between them. Generate fills all
-            five; you can edit any board afterward.
+            D-Tide fields five teams with no unit or wheel shared between them. Place characters on
+            any board to pin them to that team — Generate keeps your picks and fills the rest.
           </p>
           {dtideSlots.map((s, i) => (
             <FormationBoard
@@ -1132,9 +1216,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               slots={s}
               plans={dtidePlans}
               posseId={dtidePosses[i]}
-              onChangeSlots={(n) =>
-                setDtideSlots((prev) => prev.map((x, xi) => (xi === i ? n : x)))
-              }
+              onChangeSlots={(n) => handleDtideSlotsChange(i, n)}
               gear={gearOptions}
               onChangeSlotGear={(si, patch) => {
                 const id = dtideSlots[i][si];
@@ -1150,6 +1232,9 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               onClearAll={() => {
                 setDtideSlots((prev) =>
                   prev.map((x, xi) => (xi === i ? [null, null, null, null] : x))
+                );
+                setDtidePinned((prev) =>
+                  prev.map((x, xi) => (xi === i ? [false, false, false, false] : x))
                 );
                 setDtidePosses((prev) => prev.map((x, xi) => (xi === i ? undefined : x)));
               }}
