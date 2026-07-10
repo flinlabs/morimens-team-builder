@@ -191,3 +191,80 @@ describe('D-Tide relaxation for shallow rosters', () => {
     ).toBe(true)
   })
 })
+
+describe('rationale accuracy — flagged Discord cases', () => {
+  const analyze = async () => (await import('@/lib/team-analysis')).analyzeTeam
+
+  it('Salvador is never labelled the carry; Doresain alone heads the kill team', async () => {
+    const analyzeTeam = await analyze()
+    const ids = ['Doresain', 'Salvador', 'Saya', 'Thais'].map(idByName)
+    const out = analyzeTeam(ids, awk)
+    const salvador = out.contributions.find((c) => c.name === 'Salvador')!
+    expect(salvador.roleLabel).not.toBe('Carry')
+    expect(salvador.text).not.toMatch(/primary damage/)
+    expect(out.summary).toContain('Doresain')
+    expect(out.summary).not.toContain('Salvador')
+  })
+
+  it('Saya reads as Corrosion, never as Poison stacking', async () => {
+    const analyzeTeam = await analyze()
+    const ids = ['Doresain', 'Salvador', 'Saya', 'Thais'].map(idByName)
+    const out = analyzeTeam(ids, awk)
+    const sayaLines = out.chain.filter((l) => l.includes('Saya'))
+    expect(sayaLines.some((l) => l.includes('Corrosion'))).toBe(true)
+    for (const l of sayaLines) expect(l).not.toMatch(/stacks? Poison/)
+  })
+
+  it('Daffodil neither scales off Counters nor stacks Poison; she scales off kills', async () => {
+    const analyzeTeam = await analyze()
+    const ids = ['Daffodil', 'Alva', 'Nautila', 'Wanda'].map(idByName)
+    const out = analyzeTeam(ids, awk)
+    const daff = out.contributions.find((c) => c.name === 'Daffodil')!
+    expect(daff.text).toContain('kills')
+    expect(daff.text).not.toContain('Counters')
+    for (const l of out.chain) {
+      expect(l).not.toMatch(/Daffodil[^.]*scales with Counters/)
+      expect(l).not.toMatch(/Daffodil[^.]*stacks Poison/)
+    }
+    // Alva's main_dps is a tertiary option, not his identity on this team.
+    const alva = out.contributions.find((c) => c.name === 'Alva')!
+    expect(alva.roleLabel).not.toBe('Carry')
+  })
+
+  it('engine-built teams never field two primary carries', () => {
+    const r = fullRoster()
+    for (const mode of ['single', 'dtide'] as const) {
+      const res = generateTeams({ roster: r, mode })
+      for (const t of res.teams as any[]) {
+        if (t.metaName) continue // curated comps may field a DPS-as-enabler
+        const primaries = teamIds(t).filter(
+          (id) => awk[id]?.annotation?.teamRoles?.[0] === 'main_dps'
+        )
+        expect(primaries.length).toBeLessThanOrEqual(1)
+      }
+    }
+  })
+
+  it("Pontos' curated discard comp (Aurita, Corposant, Saya) leads once built", () => {
+    // Aurita's comfort floor is E1 and Corposant's is E2, so on a flat-E0
+    // roster the engine rightly prefers other partners. Invest the discard
+    // core and the curated comp should take the top spot.
+    const r: any = fullRoster()
+    for (const n of ['Pontos', 'Aurita', 'Corposant', 'Saya']) {
+      const e = r.awakeners[idByName(n)]
+      e.enlightenSlot = 'E3'
+      e.characterLevel = 80
+      e.skillLevels = { Strike: 6, Defense: 6, Skill1: 6, Skill2: 6, Rouse: 6, Exalt: 6, OverExalt: 0 }
+    }
+    const res = generateTeams({
+      roster: r,
+      mode: 'single',
+      options: { pinnedIds: [idByName('Pontos')], maxResults: 4 },
+    })
+    const target = compKey(
+      ['Pontos', 'Aurita', 'Corposant', 'Saya'].map(idByName)
+    )
+    expect(compKey(teamIds(res.teams[0]))).toBe(target)
+    expect((res.teams[0] as any).metaName).toContain('Pontos')
+  })
+})
