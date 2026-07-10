@@ -35,16 +35,23 @@ function enlightenScore(
   const floor = awakener.annotation?.viabilityFloor ?? 'E0'
   const breakpoints = awakener.annotation?.enlightenBreakpoints ?? []
 
-  if (!meetsFloor(entry.enlightenSlot, floor)) return 0
+  // Below the comfort floor the unit is playable but far from its kit's
+  // intent — small partial credit that grows as the floor approaches, so a
+  // one-off-the-floor unit ranks above a fresh E0 copy.
+  if (!meetsFloor(entry.enlightenSlot, floor)) {
+    const progress = (enlightenRank(entry.enlightenSlot) + 1) / (enlightenRank(floor) + 1)
+    return 0.25 * progress
+  }
 
-  const floorRank = enlightenRank(floor)
   const currentRank = enlightenRank(entry.enlightenSlot)
   const maxRank = enlightenRank('AA')
 
-  // Base score from how far above floor we are
-  const baseScore = floorRank === maxRank
-    ? 1.0
-    : 0.5 + 0.5 * ((currentRank - floorRank) / (maxRank - floorRank))
+  // At or above the floor, credit ABSOLUTE dupes: two units at E3 hold the
+  // same investment whatever their floors. Scoring relative to the floor made
+  // a floor-E3 carry (Helot: Catena) permanently rank below a floor-E0 one
+  // (Sorel) at identical enlighten, when the high-floor unit is the one whose
+  // kit just came fully online — kit quality is the annotation tier's job.
+  const baseScore = 0.5 + 0.5 * (currentRank / maxRank)
 
   // Bonus for hitting annotated breakpoints
   const breakpointBonus = breakpoints.length > 0
@@ -183,16 +190,15 @@ export function scoreViability(
   const flags: string[] = []
   const annotation = awakener.annotation
 
-  // Hard exclusion: below viability floor
+  // Below the comfort floor a unit is deprioritized, not banned. Hard-zeroing
+  // erased every starter (Ogier's floor is OE, Lotan's E3) and units like
+  // Aurita (E1) from thin rosters entirely, when they are perfectly serviceable
+  // filler — the tier cap below keeps them labelled Underinvested and ranked
+  // behind properly-built units, while still fieldable.
   const floor = annotation?.viabilityFloor ?? 'E0'
-  if (!meetsFloor(entry.enlightenSlot, floor)) {
-    return {
-      tier: 1,
-      label: 'Not Ready',
-      score: 0,
-      subscores: { enlighten: 0, skill: 0, talent: 0, wheel: 0 },
-      flags: [`Below viability floor (needs ${floor})`],
-    }
+  const belowFloor = !meetsFloor(entry.enlightenSlot, floor)
+  if (belowFloor) {
+    flags.push(`Below comfort floor (wants ${floor}) — usable, but deprioritized`)
   }
 
   // Character not owned
@@ -245,7 +251,12 @@ export function scoreViability(
     wScore * 0.15
 
   const arcMod = getArcViabilityModifier(awakenerId, arcRuleset)
-  const totalScore = Math.max(0, Math.min(1, baseScore + arcMod))
+  // Character strength matters, not just investment: an equally-invested
+  // tier-A unit (GHelot) should outrank a tier-B one (Sorel). Small additive
+  // term so investment still dominates and ties break toward the meta.
+  const TIER_BONUS: Record<string, number> = { S: 0.08, A: 0.05, B: 0.02, C: 0 }
+  const tierBonus = TIER_BONUS[annotation?.tier ?? ''] ?? 0
+  const totalScore = Math.max(0, Math.min(1, baseScore + arcMod + tierBonus))
   if (arcMod !== 0) {
     const note = getArcViabilityNote(awakenerId, arcRuleset)
     flags.push(
@@ -263,12 +274,19 @@ export function scoreViability(
   } else if (totalScore >= 0.5) {
     tier = 3
     label = 'Functional'
-  } else if (totalScore >= 0.25 && meetsFloor(entry.enlightenSlot, floor)) {
+  } else if (totalScore >= 0.25) {
     tier = 2
     label = 'Underinvested'
   } else {
     tier = 1
     label = 'Not Ready'
+  }
+
+  // A below-floor unit is never better than Underinvested, whatever the math
+  // says — a level-90 E1 Lotan (floor E3) is filler, not a raid piece.
+  if (belowFloor && tier > 2) {
+    tier = 2
+    label = 'Underinvested'
   }
 
   return {
