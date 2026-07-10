@@ -150,8 +150,16 @@ export function analyzeTeam(
   const inRole = (r: TeamRole): EnrichedAwakener[] => members.filter((a) => has(a, r));
   const namesInRole = (r: TeamRole): string[] => inRole(r).map((a) => a.name);
 
-  // Carries and what they scale off.
-  let carries = inRole("main_dps");
+  // Carries. Annotation role order is deliberate — the FIRST role is the
+  // unit's primary identity. A unit that merely lists main_dps as a tertiary
+  // option (Alva's E3 burst, say) is not this team's carry; treating any
+  // main_dps mention as "the carry" is how Salvador-style tanks ended up
+  // labelled primary damage. Fall back down the ladder only when no member
+  // is a primary carry.
+  const primaryRole = (a: EnrichedAwakener): TeamRole | undefined => rolesOf(a)[0];
+  let carries = members.filter((a) => primaryRole(a) === "main_dps");
+  if (carries.length === 0) carries = inRole("main_dps");
+  if (carries.length === 0) carries = members.filter((a) => primaryRole(a) === "sub_dps");
   if (carries.length === 0) carries = inRole("sub_dps");
   const carryNames = carries.map((a) => a.name);
   const carryTags = new Set<SynergyTag>(carries.flatMap(tagsOf));
@@ -183,12 +191,22 @@ export function analyzeTeam(
     const v = embryoGens.length >= 2 ? "build" : "builds";
     push("Embryo Fusion (Caro)", `${src} ${v} Embryo Fusion for ${carryName} to consume.`);
   }
-  const poisonAppliers = [...new Set([...namesInRole("poison_stacker"), ...namesInRole("corrosion_applier")])];
+  const poisonAppliers = namesInRole("poison_stacker");
   if (poisonAppliers.length || carryTags.has("poison_stacker") || carryTags.has("bleed_stacker")) {
     const dot = carryTags.has("bleed_stacker") && !carryTags.has("poison_stacker") ? "Bleed" : "Poison";
     const src = poisonAppliers.length ? nameList(poisonAppliers) : "the team";
     const v = poisonAppliers.length >= 2 ? "stack" : "stacks";
     push(`${dot} stacking`, `${src} ${v} ${dot} and the team's damage ramps as those stacks build.`);
+  }
+  // Corrosion is its own mechanic (a damage-taken multiplier), not Poison —
+  // Saya applying Corrosion must never read as "stacks Poison".
+  const corrosionAppliers = namesInRole("corrosion_applier");
+  if (corrosionAppliers.length) {
+    const v = corrosionAppliers.length >= 2 ? "apply" : "applies";
+    push(
+      "Corrosion",
+      `${nameList(corrosionAppliers)} ${v} Corrosion, multiplying the damage enemies take from every source.`
+    );
   }
   if (namesInRole("sacrifice_engine").length || carryTags.has("sacrifice_synergy")) {
     push("Sacrifice", `${nameList(namesInRole("sacrifice_engine")) || carryName} drives a sacrifice loop the team converts into payoff.`);
@@ -226,7 +244,7 @@ export function analyzeTeam(
   } else if (keyflare.length) {
     push("Keyflare support");
   }
-  const strSup = namesInRole("str_support");
+  const strSup = namesInRole("str_support").filter((n) => !carryNames.includes(n));
   if (strSup.length) {
     push("STR stacking", `${nameList(strSup)} feed${strSup.length === 1 ? "s" : ""} Temporary STR into ${carryName}.`);
   }
@@ -243,8 +261,9 @@ export function analyzeTeam(
   // --- Per-character contributions -------------------------------------------
   const contributions: TeamContribution[] = members.map((a) => {
     const roles = rolesOf(a);
-    const headline =
-      ROLE_PRIORITY.find((r) => roles.includes(r)) ?? roles[0];
+    // The first annotated role is the unit's primary identity; only fall back
+    // to the global priority ladder when the annotation gives no ordering.
+    const headline = roles[0] ?? ROLE_PRIORITY.find((r) => roles.includes(r));
     let text = (headline && ROLE_PHRASE[headline as TeamRole]) || "flex support";
     // For carries, append what they scale off so the "why" is explicit.
     if (headline === "main_dps" || headline === "sub_dps") {
@@ -264,8 +283,9 @@ export function analyzeTeam(
   // --- Summary ---------------------------------------------------------------
   const realm = realmLabel(awakenerIds, awakeners);
   const identity = archetypes[0];
+  const article = identity && /^[aeiou]/i.test(identity) ? "an" : "a";
   const summary = carryNames.length
-    ? `${realm} team built around ${nameList(carryNames)}${identity ? ` — a ${identity.toLowerCase()} composition` : ""}.`
+    ? `${realm} team built around ${nameList(carryNames)}${identity ? ` — ${article} ${identity.toLowerCase()} composition` : ""}.`
     : `${realm} support-oriented team.`;
 
   return { archetypes, summary, chain, contributions };
