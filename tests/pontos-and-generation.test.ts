@@ -412,6 +412,7 @@ describe('wheel theft and pairing fixes — second screenshot round', () => {
     expect(paired).toBe(true)
   })
 })
+<<<<<<< HEAD
 
 describe('wheel identity and posse fallback — third screenshot round', () => {
   it('a support-mainstat wheel with a damage rider never strong-fits a carry', async () => {
@@ -438,3 +439,5 @@ describe('wheel identity and posse fallback — third screenshot round', () => {
     expect(recs[0].reason).toContain('not marked unlocked')
   })
 })
+=======
+>>>>>>> 3fec214de798554015e8a699d8f1ee35da19e652
