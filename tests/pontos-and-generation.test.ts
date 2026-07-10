@@ -268,3 +268,92 @@ describe('rationale accuracy — flagged Discord cases', () => {
     expect((res.teams[0] as any).metaName).toContain('Pontos')
   })
 })
+
+describe('wheel role fit — flagged screenshot cases', () => {
+  it('a keyflare bot never borrows a pure damage SSR; the carry claims it first', async () => {
+    const { buildTeamRecommendation } = await import('@/lib/assign')
+    const { buildCandidateTeam } = await import('@/lib/filter')
+    const { wheelFitScore } = await import('@/lib/wheel-fit')
+    const widByName = (n: string) =>
+      Object.values(wheels).find((w) => w.name === n)!.id
+
+    const r: any = fullRoster()
+    // Own only: Blade of the Titan (pure DPS SSR), Elevated Focus (aliemus
+    // support SR), and a couple of neutral SR fillers. No one's BiS.
+    for (const id of Object.keys(r.wheels)) r.wheels[id] = { owned: false, starLevel: 0, stackLevel: 0 }
+    for (const n of ['Blade of the Titan', 'Elevated Focus', 'Duty gravitas', 'Whisper', 'Vitality']) {
+      const w = Object.values(wheels).find((x) => x.name === n)
+      if (w) r.wheels[w.id] = { owned: true, starLevel: 3, stackLevel: 12 }
+    }
+
+    const team = ['Vortice', 'Murphy', 'Sanga', 'Celeste'].map(idByName)
+    const cand = buildCandidateTeam(team, awk, r)
+    const rec = buildTeamRecommendation(cand, 1, r, awk, undefined, new Set())
+
+    const byName = (n: string) =>
+      rec.composition.find((c) => c.awakenerId === idByName(n))!
+    const titan = widByName('Blade of the Titan')
+
+    // Murphy (keyflare support) must not hold the damage wheel…
+    const murphyWheels = byName('Murphy').wheelAssignments.map((w) => w.wheelId)
+    expect(murphyWheels).not.toContain(titan)
+    // …and every owned wheel she holds must at least not be anti-fit.
+    for (const wid of murphyWheels) {
+      if (!r.wheels[wid]?.owned) continue // FALLBACK acquisition targets exempt
+      expect(wheelFitScore(wheels[wid], 'keyflare_support')).toBeGreaterThan(0)
+    }
+    // The carry gets it instead — she is geared first.
+    expect(byName('Vortice').wheelAssignments.map((w) => w.wheelId)).toContain(titan)
+  })
+})
+
+describe('ranking — floors, tiers, meta gate', () => {
+  it('an E0 Aurita is Underinvested filler, not banned', async () => {
+    const { scoreViability } = await import('@/lib/viability')
+    const r: any = fullRoster()
+    const id = idByName('Aurita') // comfort floor E1
+    const v = scoreViability(id, r.awakeners[id], awk[id], r)
+    expect(v.tier).toBe(2)
+    expect(v.score).toBeGreaterThan(0)
+    expect(v.flags.some((f) => f.includes('Below comfort floor'))).toBe(true)
+  })
+
+  it('a heavily invested below-floor unit still caps at Underinvested', async () => {
+    const { scoreViability } = await import('@/lib/viability')
+    const r: any = fullRoster()
+    const id = idByName('Lotan') // comfort floor E3
+    const e = r.awakeners[id]
+    e.enlightenSlot = 'E1'
+    e.characterLevel = 90
+    e.skillLevels = { Strike: 6, Defense: 6, Skill1: 6, Skill2: 6, Rouse: 6, Exalt: 6, OverExalt: 0 }
+    const v = scoreViability(id, e, awk[id], r)
+    expect(v.tier).toBeLessThanOrEqual(2)
+  })
+
+  it('character tier breaks ties — GHelot outscores Sorel at equal investment', async () => {
+    const { scoreViability } = await import('@/lib/viability')
+    const r: any = fullRoster()
+    const setup = (n: string) => {
+      const id = idByName(n)
+      const e = r.awakeners[id]
+      e.enlightenSlot = 'E3'
+      e.characterLevel = 80
+      e.skillLevels = { Strike: 5, Defense: 5, Skill1: 5, Skill2: 5, Rouse: 5, Exalt: 5, OverExalt: 0 }
+      return scoreViability(id, e, awk[id], r).score
+    }
+    expect(setup('Helot: Catena')).toBeGreaterThan(setup('Sorel'))
+  })
+
+  it("curated comps with a below-floor member don't surface as meta teams", () => {
+    // Everyone at E0: Tawil (floor E2) is below floor, so his curated comps
+    // must not appear with a metaName — this was the "promoting E0 Tawil" bug.
+    const res = generateTeams({ roster: fullRoster(), mode: 'single' })
+    for (const t of res.teams as any[]) {
+      if (!t.metaName) continue
+      for (const c of t.composition) {
+        const ann = awk[c.awakenerId]?.annotation
+        expect(ann?.viabilityFloor ?? 'E0').toBe('E0')
+      }
+    }
+  })
+})
