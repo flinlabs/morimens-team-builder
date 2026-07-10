@@ -1,0 +1,8 @@
+{
+  "_note": "Optional purpose-tag overrides for wheels whose auto-derived purposes are wrong or misleading. Keys are wheel ids; values replace the derived set entirely. Vocabulary: offense, crit, str, shield, heal, death_resist, keyflare, aliemus, card_economy, tentacle, poison, counter, embryo, economy. Derivation lives in lib/wheel-fit.ts and reads SKeyDB searchTags + effect text + mainstat, so most wheels need no entry here.",
+  "wheel-0166": ["economy", "heal"],
+  "wheel-0123": ["keyflare", "card_economy", "death_resist"],
+  "wheel-0124": ["str", "shield", "aliemus"],
+  "wheel-0078": ["aliemus", "keyflare"],
+  "wheel-0055": ["offense", "crit", "card_economy"]
+}
