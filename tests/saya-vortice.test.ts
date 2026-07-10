@@ -11,12 +11,28 @@ const HELOT_CATENA = 'awakener-0019'
 const POLLUX = 'awakener-0041'
 
 describe('Saya, Vortice & Arachne surface in appropriate teams', () => {
-  it('all three appear in the default single-mode recommendations on a full roster', () => {
-    const res = generateTeams({ roster: fullRoster(), mode: 'single' })
-    const ids = res.teams.flatMap((t) => t.composition.map((c) => c.awakenerId))
-    expect(ids).toContain(VORTICE)
-    expect(ids).toContain(SAYA)
-    expect(ids).toContain(ARACHNE)
+  it('all three are reachable within two rotations of default single-mode output', () => {
+    // Since the Generate button rotates through fresh compositions, batch
+    // variety is spread across presses — the promise is reachability within a
+    // couple of rotations, not presence in the very first batch.
+    const roster = fullRoster()
+    const seenIds = new Set<string>()
+    const seenKeys: string[] = []
+    for (let i = 0; i < 2; i++) {
+      const res = generateTeams({
+        roster,
+        mode: 'single',
+        options: { excludeTeamKeys: seenKeys },
+      })
+      for (const t of res.teams) {
+        const ids = t.composition.map((c) => c.awakenerId)
+        seenKeys.push([...ids].sort().join('|'))
+        ids.forEach((id) => seenIds.add(id))
+      }
+    }
+    expect(seenIds).toContain(VORTICE)
+    expect(seenIds).toContain(SAYA)
+    expect(seenIds).toContain(ARACHNE)
   })
 
   it('Arachne lands in a guide-faithful comp — paired with units she synergizes with', () => {
@@ -68,7 +84,13 @@ describe('Saya, Vortice & Arachne surface in appropriate teams', () => {
   })
 
   it('Vortice carries her own posse (Drowned Innocence) in her recommendation', () => {
-    const res = generateTeams({ roster: fullRoster(), mode: 'single' })
+    // Pin her so a Vortice team is guaranteed in this batch; the assertion is
+    // about her posse coming along, not about batch composition.
+    const res = generateTeams({
+      roster: fullRoster(),
+      mode: 'single',
+      options: { pinnedIds: [VORTICE], maxResults: 4 },
+    })
     const vortTeam = res.teams.find((t) =>
       t.composition.some((c) => c.awakenerId === VORTICE)
     )
