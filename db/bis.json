@@ -3013,8 +3013,8 @@
           },
           {
             "tier": "ALT_SSR",
-            "wheelId": "wheel-0031",
-            "wheelName": "Treasured Rarity"
+            "wheelId": "wheel-0020",
+            "wheelName": "Aberrant Devour"
           },
           {
             "tier": "ALT_SSR",
@@ -3051,7 +3051,7 @@
           "Crit DMG",
           "DMG AMP"
         ],
-        "notes": "Signature WoD is unmatched for ult uptime; energy-recharge WoDs lose too much crit DMG. Uvhash's and Lotan's work only as +12 additions for the crit DMG stat, never as the functional slot. Covenants: Dream of Medicine (his cards matter) first; aliemus recharge or a crit set (April Tribute / Crimson Pulse / Cocoon of the Maiden) if the bottle went elsewhere; a Twisted Twin at E3 since Strike/Defense pull Gaunts."
+        "notes": "Signature WoD is unmatched (E0+ per Lyra: five stars, everything he wants). Functional alternates: Power of the Pious and Aberrant Devour (aliemus regen + crit DMG). Lyra rates Treasured Rarity's kill-stacking as impractical for him despite the crit DMG mainstat. Uvhash's and Lotan's work only as +12 stat additions, never the functional slot. Covenants: Dream of Medicine (his cards matter) first; aliemus recharge or a crit set (April Tribute / Crimson Pulse / Cocoon of the Maiden) if the bottle went elsewhere; a Twisted Twin at E3 since Strike/Defense pull Gaunts."
       }
     ]
   }
