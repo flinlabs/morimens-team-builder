@@ -89,6 +89,21 @@ export function withinClassLimits(
   return assault <= MAX_ASSAULT_PER_TEAM
 }
 
+// At most one unit whose PRIMARY role (first annotated role) is main_dps.
+// Two dedicated carries starve each other of Arithmetica, buffs, and posse
+// priority — a second damage source should be a primary sub-DPS, not another
+// carry. Curated meta comps bypass this along with the other heuristics: when
+// a guide fields two "DPS" units, one of them is playing enabler.
+export function withinCarryLimit(
+  awakenerIds: string[],
+  awakeners: Record<string, EnrichedAwakener>
+): boolean {
+  const carries = awakenerIds.filter(
+    (id) => awakeners[id]?.annotation?.teamRoles?.[0] === 'main_dps'
+  ).length
+  return carries <= 1
+}
+
 // Realm gates for units that only function in a specific mono-realm shell.
 // Murphy: Fauxborn (the lone `lemurian_team_arc2` unit) only belongs on a team
 // whose every non-Chaos member is Aequor.
@@ -504,6 +519,10 @@ export function generateCandidateTeams(
     // last-resort pass waives it so a roster of leftover carries can still
     // fill a board instead of leaving it empty.
     if (!relaxCoverage && !withinClassLimits(teamIds, awakeners)) continue
+
+    // One primary carry per team (see withinCarryLimit). Also waived only by
+    // the D-Tide last-resort pass.
+    if (!relaxCoverage && !withinCarryLimit(teamIds, awakeners)) continue
 
     // Realm gates (e.g. Murphy: Fauxborn only on mono-Aequor teams)
     if (!withinRealmGates(teamIds, awakeners)) continue
