@@ -6450,11 +6450,13 @@
       "synergizesWith": [
         "awakener-0041",
         "awakener-0056",
-        "awakener-0002"
+        "awakener-0002",
+        "awakener-0010",
+        "awakener-0022",
+        "awakener-0024",
+        "awakener-0053"
       ],
-      "conflictsWith": [
-        "awakener-0025"
-      ],
+      "conflictsWith": [],
       "viabilityFloor": "E0",
       "enlightenBreakpoints": [
         "E3",
@@ -6478,15 +6480,10 @@
         {
           "partnerId": "awakener-0015",
           "reason": "Temp Alert per shield amplifies his stacking"
-        },
-        {
-          "partnerId": "awakener-0041",
-          "reason": "Castor's Onyx Plumes feed Pollux's bleed/sin scaling while supplying shields and card draw \u2014 they enable each other."
         }
       ],
       "leapPriority": "mid",
-      "leapNote": "His wheel triggers on Annihilation rather than on the Ultra Turn \u2014 relevant when building his Ultra Space play.",
-      "combatTheme": "neutral"
+      "leapNote": "His wheel triggers on Annihilation rather than on the Ultra Turn \u2014 relevant when building his Ultra Space play."
     },
     "annotationPending": false,
     "statScaling": {
@@ -17852,7 +17849,12 @@
         "awakener-0033",
         "awakener-0031",
         "awakener-0007",
-        "awakener-0057"
+        "awakener-0057",
+        "awakener-0058",
+        "awakener-0011",
+        "awakener-0027",
+        "awakener-0043",
+        "awakener-0050"
       ],
       "conflictsWith": [],
       "viabilityFloor": "E0",
@@ -17868,8 +17870,7 @@
       "contentNotes": {
         "arc1": "Sets up near-infinite combo turns",
         "arc2": "Falls off due to the per-turn card soft cap"
-      },
-      "combatTheme": "neutral"
+      }
     },
     "annotationPending": false,
     "statScaling": {
@@ -27189,7 +27190,9 @@
         "awakener-0023",
         "awakener-0056",
         "awakener-0020",
-        "awakener-0057"
+        "awakener-0057",
+        "awakener-0031",
+        "awakener-0022"
       ],
       "conflictsWith": [],
       "viabilityFloor": "E2",
@@ -27217,8 +27220,7 @@
           "partnerId": "awakener-0003",
           "reason": "Vulnerable + petrify set up her burst turn"
         }
-      ],
-      "combatTheme": "strike"
+      ]
     },
     "annotationPending": false,
     "statScaling": {
@@ -33959,7 +33961,10 @@
         "awakener-0003",
         "awakener-0024",
         "awakener-0053",
-        "awakener-0056"
+        "awakener-0056",
+        "awakener-0022",
+        "awakener-0048",
+        "awakener-0015"
       ],
       "conflictsWith": [],
       "viabilityFloor": "E1",
@@ -33982,8 +33987,7 @@
           "partnerId": "awakener-0008",
           "reason": "Buys time while his Atonement by Pain ramps"
         }
-      ],
-      "combatTheme": "bleed"
+      ]
     },
     "annotationPending": false,
     "statScaling": {
@@ -46210,7 +46214,15 @@
         "awakener-0034",
         "awakener-0045",
         "awakener-0009",
-        "awakener-0040"
+        "awakener-0040",
+        "awakener-0058",
+        "awakener-0011",
+        "awakener-0047",
+        "awakener-0050",
+        "awakener-0006",
+        "awakener-0032",
+        "awakener-0018",
+        "awakener-0035"
       ],
       "conflictsWith": [],
       "viabilityFloor": "E0",
@@ -46236,8 +46248,7 @@
           "reason": "Defensive teammate that stalls while she ramps"
         }
       ],
-      "divineRealmNote": "Provides Divine Realm: Aequor (25% Max HP Tranquil Sea shield every 3 turns); also the first DPS with Realm Mastery scaling built into her kit, which she stacks in combat.",
-      "combatTheme": "tentacle"
+      "divineRealmNote": "Provides Divine Realm: Aequor (25% Max HP Tranquil Sea shield every 3 turns); also the first DPS with Realm Mastery scaling built into her kit, which she stacks in combat."
     },
     "annotationPending": false,
     "statScaling": {
@@ -46996,7 +47007,10 @@
         "awakener-0041",
         "awakener-0042",
         "awakener-0048",
-        "awakener-0053"
+        "awakener-0053",
+        "awakener-0022",
+        "awakener-0027",
+        "awakener-0007"
       ],
       "conflictsWith": [],
       "viabilityFloor": "E0",
@@ -47017,8 +47031,7 @@
       "anchorPosse": "posse-0050",
       "leapPriority": "high",
       "leapNote": "Triggers Singularity: Ultra \u2014 command cards are buffed, Ultra Round extends the current turn instead of starting a new one, and Annihilation puts the leftmost Ultra-Space card into hand on a 3-turn cooldown.",
-      "divineRealmNote": "Singularity: Ultra. Exalt 'Moira, As I Decree' costs 150 Aliemus; Weaver stacks (cap 3, expanded at E3), Singularity Beacon/Prism, and Final Verdict damage that ignores shields and invulnerability.",
-      "combatTheme": "neutral"
+      "divineRealmNote": "Singularity: Ultra. Exalt 'Moira, As I Decree' costs 150 Aliemus; Weaver stacks (cap 3, expanded at E3), Singularity Beacon/Prism, and Final Verdict damage that ignores shields and invulnerability."
     },
     "annotationPending": false,
     "statScaling": {
@@ -48559,12 +48572,19 @@
         "awakener-0014",
         "awakener-0057",
         "awakener-0040",
-        "awakener-0012"
+        "awakener-0012",
+        "awakener-0035",
+        "awakener-0050",
+        "awakener-0047",
+        "awakener-0009",
+        "awakener-0055",
+        "awakener-0032",
+        "awakener-0022"
       ],
       "conflictsWith": [],
       "viabilityFloor": "E0",
       "enlightenBreakpoints": [
-        "E2",
+        "E1",
         "E3"
       ],
       "keySkillSlots": [
@@ -48580,7 +48600,7 @@
       ],
       "isDivineRealm": false,
       "tier": "A",
-      "notes": "Protective Aequor support built around Gaunt cards: Skill 2 shields and summons Gaunts (Insights/aliemus, enemy STR down + tentacle power, or a lowest-HP hit with a team crit DMG buff); the ult applies AOE STR down and executes the lowest-HP enemy, minting a permanent Gaunt on a kill (max 3 per battle, must be his own damage \u2014 corrosion or Arachne mercy kills don't count). Skill 1 is a guaranteed-crit AOE that eats all Arithmetica and batteries aliemus. Fixed damage (ult/Gaunt hit) scales off Tentacle DMG and STR and never crits; his crit DMG stat feeds Skill 1 and the team buff. Best in Aequor but exports STR down, crit DMG, and vermin clearing anywhere. E2+E3 needed for comfortable play; OE triples damage.",
+      "notes": "Protective Aequor support built around Gaunt cards: Skill 2 shields and summons Gaunts (Insights/aliemus, enemy STR down + tentacle power, or a lowest-HP hit with a team crit DMG buff); the ult applies AOE STR down and executes the lowest-HP enemy, minting a permanent Gaunt on a kill (max 3 per battle, must be his own damage \u2014 corrosion or Arachne mercy kills don't count). Skill 1 is a guaranteed-crit AOE that eats all Arithmetica and batteries aliemus. Fixed damage (ult/Gaunt hit) scales off Tentacle DMG and STR and never crits; his crit DMG stat feeds Skill 1 and the team buff. Best in Aequor but exports STR down, crit DMG, and vermin clearing anywhere. Enlighten priority per Lyra: E1 first (Gaunt damage and STR down scale off his crit DMG), then signature WoD, then E3, then OE; E2 is decent but largely alleviated at E3. (The Experimental log instead calls E2+E3 the comfort point.) At home in the discard core, where constant cycling reaches his cards and E3 Aftershock cheapens Gaunts.",
       "contentNotes": {
         "arc2": "Astral Reign limited unit \u2014 plays as protective support; his damage only ramps against bosses as team STR/tentacles scale."
       }
