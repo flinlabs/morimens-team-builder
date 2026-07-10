@@ -29,8 +29,9 @@ import {
   getCovenantEntry,
   getPosseEntry,
 } from './roster'
-import { getBisData, getWheels, type BisVariant } from './db'
+import { getBisData, getWheels, getWheelPurposeOverrides, type BisVariant } from './db'
 import { analyzeTeam } from './team-analysis'
+import { wheelFitScore, type WheelPurposeOverrides } from './wheel-fit'
 
 // Best-to-worst wheel tier order.
 const WHEEL_TIER_ORDER: WheelTier[] = ['BIS_SSR', 'ALT_SSR', 'BIS_SR', 'GOOD']
@@ -196,6 +197,10 @@ export function assignWheels(
   // player's idle +12 SSR is worth far more than a generic SR.
   // Rules for substitution candidates:
   //   • Must be owned and not already in use (usedWheelIds handles exclusivity).
+  //   • Must FIT the unit's role (wheel-fit.ts): a pure damage wheel never
+  //     substitutes onto a keyflare bot, and a pure economy/heal wheel never
+  //     substitutes onto the carry. Within legal fits, better fits rank first —
+  //     this is what routes Blade of the Titan to the DPS instead of Murphy.
   //   • Niche paid/event MYTHICs (School Day, Special Training, etc.) are
   //     excluded — they offer less value than most generic SR wheels and should
   //     only be assigned when they appear explicitly in a unit's BiS list.
@@ -206,13 +211,19 @@ export function assignWheels(
   //     We do NOT pre-emptively exclude unclaimed teammate signatures here —
   //     if a teammate hasn't taken their own SSR yet, it is fair game.
   if (out.length < 2) {
+    const overrides = getWheelPurposeOverrides() as WheelPurposeOverrides
+    const fitOf = (id: string) => wheelFitScore(wheels[id], role, overrides)
     const subs = Object.values(wheels)
       .filter((w) => isHighRarity(w.id))
       .filter((w) => !NICHE_MYTHIC_WHEEL_IDS.has(w.id))
       .filter((w) => getWheelEntry(roster, w.id).owned)
       .filter((w) => !usedWheelIds.has(w.id) && !out.some((a) => a.wheelId === w.id))
       .filter((w) => !breaksOverlimit(w.id))
+      .filter((w) => fitOf(w.id) > 0) // never borrow an anti-fit wheel
       .sort((a, b) => {
+        const fa = fitOf(a.id)
+        const fb = fitOf(b.id)
+        if (fa !== fb) return fb - fa // best role fit first
         const ga = a.ownerAwakenerId ? 1 : 0
         const gb = b.ownerAwakenerId ? 1 : 0
         if (ga !== gb) return ga - gb // generic before signature
@@ -260,22 +271,31 @@ export function assignWheels(
 
   // Pass 2 — fill any remaining slot from an owned SR/R/N wheel. These are
   // strong, plentiful fillers and never trip the Overlimit rule. Honours the
-  // shared used-pool so D-Tide stays unique; prefers the awakener's realm.
+  // shared used-pool so D-Tide stays unique; prefers role fit first (a healer
+  // gets a heal/shield SR, not Elevated Focus's aliemus battery), then the
+  // awakener's realm. If every fitting filler is taken, anti-fit wheels are
+  // allowed as a last resort — a wrong wheel still beats an empty slot.
   if (out.length < 2) {
-    const fillers = Object.values(wheels)
+    const overrides = getWheelPurposeOverrides() as WheelPurposeOverrides
+    const fitOf = (id: string) => wheelFitScore(wheels[id], role, overrides)
+    const pool = Object.values(wheels)
       .filter((w) => {
         const r = w.rarity
         return r === 'SR' || r === 'R' || r === 'N'
       })
       .filter((w) => getWheelEntry(roster, w.id).owned)
       .filter((w) => !usedWheelIds.has(w.id) && !out.some((a) => a.wheelId === w.id))
-      .sort((a, b) => {
-        const ra = a.realm === awakener.realm ? 0 : 1
-        const rb = b.realm === awakener.realm ? 0 : 1
-        if (ra !== rb) return ra - rb
-        const rank: Record<string, number> = { SR: 0, R: 1, N: 2 }
-        return (rank[a.rarity] ?? 3) - (rank[b.rarity] ?? 3)
-      })
+    const fitting = pool.filter((w) => fitOf(w.id) > 0)
+    const fillers = (fitting.length ? fitting : pool).sort((a, b) => {
+      const fa = fitOf(a.id)
+      const fb = fitOf(b.id)
+      if (fa !== fb) return fb - fa
+      const ra = a.realm === awakener.realm ? 0 : 1
+      const rb = b.realm === awakener.realm ? 0 : 1
+      if (ra !== rb) return ra - rb
+      const rank: Record<string, number> = { SR: 0, R: 1, N: 2 }
+      return (rank[a.rarity] ?? 3) - (rank[b.rarity] ?? 3)
+    })
     for (const w of fillers) {
       if (out.length >= 2) break
       out.push({ slot: (out.length + 1) as 1 | 2, wheelId: w.id, tier: 'GOOD' })
@@ -484,8 +504,10 @@ function compositionNote(
   awakeners: Record<string, EnrichedAwakener>
 ): string {
   const realmLabel = candidate.realmComposition.join(' + ') || 'mixed'
-  const dps = candidate.awakenerIds.filter(id =>
-    awakeners[id]?.annotation?.teamRoles?.includes('main_dps')
+  // A unit's FIRST annotated role is its identity — a tank with a niche
+  // main_dps build (Salvador) must not headline as a carry.
+  const dps = candidate.awakenerIds.filter(
+    (id) => awakeners[id]?.annotation?.teamRoles?.[0] === 'main_dps'
   )
   const dpsNames = dps.map(id => awakeners[id].name)
   const supportNames = candidate.awakenerIds
@@ -521,7 +543,20 @@ export function buildTeamRecommendation(
   // Covenants are per-team unique — a set can't be worn by two characters.
   const usedCovenantIds = new Set<string>()
 
-  for (const id of candidate.awakenerIds) {
+  // Gear the carry FIRST. Wheels are claimed from a shared pool, so whoever is
+  // geared earlier gets first pick of idle SSRs — gearing in raw slot order let
+  // a keyflare bot walk off with the team's best damage wheel before the DPS
+  // was even considered. Output order still follows the candidate's slot order.
+  const GEAR_ORDER = ['main_dps', 'sub_dps'] as const
+  const gearRank = (id: string): number => {
+    const primary = awakeners[id]?.annotation?.teamRoles?.[0]
+    const i = GEAR_ORDER.indexOf(primary as (typeof GEAR_ORDER)[number])
+    return i === -1 ? GEAR_ORDER.length : i
+  }
+  const gearOrder = [...candidate.awakenerIds].sort((a, b) => gearRank(a) - gearRank(b))
+
+  const assignmentById: Record<string, CharacterAssignment> = {}
+  for (const id of gearOrder) {
     const awakener = awakeners[id]
     if (!awakener) continue
     const ann = awakener.annotation
@@ -536,14 +571,17 @@ export function buildTeamRecommendation(
       investmentWarnings.push(`${awakener.name} is not owned.`)
     }
 
-    composition.push({
+    assignmentById[id] = {
       awakenerId: id,
       roleInThisTeam: ann?.teamRoles?.[0] ?? 'flex',
       wheelAssignments,
       covenantRecommendation,
       skillNote: skillNoteFor(awakener, roster),
       talentNote: talentNoteFor(awakener, roster, arc),
-    })
+    }
+  }
+  for (const id of candidate.awakenerIds) {
+    if (assignmentById[id]) composition.push(assignmentById[id])
   }
 
   // Pick this team's posse. In D-Tide every posse is locked to a single team
