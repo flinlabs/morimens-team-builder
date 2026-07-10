@@ -387,6 +387,13 @@ export function buildCandidateTeam(
   const synergyBonus = synergScore(awakenerIds, awakeners)
   const penaltyDeduction = hasPenalty ? 0.1 : 0
 
+  // Chaos is the designed splash realm: a Chaos member brings team-wide
+  // Keyflare/Aliemus generation, +100% Death Resistance, Chaos Memory (double
+  // posse), and pair bonuses with every realm — real value the synergy graph
+  // (mostly intra-realm edges) never credits, which skewed the ranking against
+  // multi-realm comps. Small flat bonus so a good Chaos splash competes.
+  const chaosSplashBonus = hasChaos && nonChaosRealms.length > 0 ? 0.05 : 0
+
   // Conditional-unit fit: a Lemurian-gated unit (Murphy: Fauxborn) only performs
   // with a full Lemurian core — she scales off 3 *other* Lemurians. Discount
   // teams that field her short of that so she isn't forced onto comps she can't
@@ -402,7 +409,11 @@ export function buildCandidateTeam(
   }
 
   const score =
-    viabilitySum / awakenerIds.length + synergyBonus - penaltyDeduction - conditionPenalty
+    viabilitySum / awakenerIds.length +
+    synergyBonus +
+    chaosSplashBonus -
+    penaltyDeduction -
+    conditionPenalty
 
   const allGaps = [
     ...gaps,
@@ -483,6 +494,19 @@ export function generateCandidateTeams(
     .filter(id => getAwakenerEntry(roster, id).owned)
     .filter(id => !excludeIds.includes(id))
 
+  // Soft comfort floors made nearly every owned unit viable, and the
+  // combination search is O(n^4) — cap the fill pool at the best-scored units
+  // so a 58-unit roster stays fast. On a thin roster nothing is trimmed, so
+  // starters and below-floor filler remain reachable exactly when needed.
+  const POOL_CAP = 40
+  let cappedIds = viableIds
+  if (viableIds.length > POOL_CAP) {
+    const arc = roster.settings.arcRuleset
+    const scoreOf = (id: string) =>
+      scoreViability(id, getAwakenerEntry(roster, id), awakeners[id], roster, arc).score
+    cappedIds = [...viableIds].sort((a, b) => scoreOf(b) - scoreOf(a)).slice(0, POOL_CAP)
+  }
+
   // Validate pinned characters
   for (const id of pinnedIds) {
     if (!awakeners[id]) continue
@@ -495,7 +519,7 @@ export function generateCandidateTeams(
   if (slotsToFill < 0) return []
 
   // Fill candidates — exclude pinned
-  const fillPool = viableIds.filter(id => !pinnedIds.includes(id))
+  const fillPool = cappedIds.filter(id => !pinnedIds.includes(id))
 
   // Generate combinations for fill slots
   const fillCombinations = slotsToFill > 0
