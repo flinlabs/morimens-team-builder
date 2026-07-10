@@ -18,7 +18,7 @@ import {
 } from './filter'
 import { buildTeamRecommendation, buildDtideRecommendation } from './assign'
 import { getRosterSummary, getAwakenerEntry } from './roster'
-import { scoreViability } from './viability'
+import { scoreViability, meetsFloor } from './viability'
 
 export type GenerateMode = 'single' | 'dtide'
 
@@ -64,6 +64,18 @@ function metaCandidates(
     const ids = t.awakenerIds ?? []
     if (ids.length !== 4) continue
     if (!ids.every((id) => awakeners[id] && getAwakenerEntry(roster, id).owned)) continue
+    // A curated comp only counts as "known good" when the player has actually
+    // built it: every member must meet their comfort floor and score at least
+    // Underinvested. Without this gate an owned-but-E0 Tawil (floor E2) rode
+    // his meta comps to the top of the list ahead of properly built teams.
+    const arc = roster.settings.arcRuleset
+    const allReady = ids.every((id) => {
+      const entry = getAwakenerEntry(roster, id)
+      const floor = awakeners[id].annotation?.viabilityFloor ?? 'E0'
+      if (!meetsFloor(entry.enlightenSlot, floor)) return false
+      return scoreViability(id, entry, awakeners[id], roster, arc).tier >= 2
+    })
+    if (!allReady) continue
     if (pins.length && !pins.every((p) => ids.includes(p))) continue
     if (options.preferredRealm) {
       const realms = getRealmsInTeam(ids, awakeners)
@@ -76,7 +88,6 @@ function metaCandidates(
     // team actually is. We scale the bonus by the team's average viability, so a
     // fully-invested meta comp still leads while an owned-but-unleveled one (a
     // barely-built Tawil, say) no longer leapfrogs a well-invested engine team.
-    const arc = roster.settings.arcRuleset
     const avgViab =
       ids.reduce((s, id) => {
         const v = scoreViability(id, getAwakenerEntry(roster, id), awakeners[id], roster, arc)
@@ -217,6 +228,56 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
         filledThisStep = true
       }
       if (filledThisStep && step.note) warnings.push(step.note)
+    }
+
+    // Repair pass — greedy can strand the last board by consuming units a
+    // better partition needed (e.g. two Chaos splashes on one team, leaving
+    // four leftovers spanning three realms). If a board is still empty, un-pick
+    // the most recently filled unpinned board and search that small combined
+    // pool for TWO disjoint valid teams. Bounded: one level of backtracking,
+    // pool is at most 8-12 units, and the result is deterministic.
+    if (picked.some((p) => p === null)) {
+      const emptyIdx = picked.findIndex((p) => p === null)
+      // Last unpinned board, searched from the back.
+      let donorIdx = -1
+      for (let bi = 4; bi >= 0; bi--) {
+        if (picked[bi] && pinnedByBoard[bi].length === 0) {
+          donorIdx = bi
+          break
+        }
+      }
+      if (emptyIdx !== -1 && donorIdx !== -1) {
+        const donor = picked[donorIdx]!
+        donor.awakenerIds.forEach((id) => usedIds.delete(id))
+        const pairPool = generateCandidateTeams(req.roster, awakeners, {
+          ...poolOptions,
+          minViabilityTier: 1,
+          relaxCoverage: true,
+          excludeIds: [...(poolOptions.excludeIds ?? []), ...usedIds],
+          maxResults: 40,
+        })
+        let repaired = false
+        outer: for (const c1 of pairPool) {
+          if (seen.has(teamKey(c1.awakenerIds)) && teamKey(c1.awakenerIds) !== teamKey(donor.awakenerIds)) continue
+          const c1Set = new Set(c1.awakenerIds)
+          for (const c2 of pairPool) {
+            if (c2 === c1) continue
+            if (c2.awakenerIds.some((id) => c1Set.has(id))) continue
+            picked[donorIdx] = c1
+            picked[emptyIdx] = c2
+            seen.add(teamKey(c1.awakenerIds))
+            seen.add(teamKey(c2.awakenerIds))
+            c1.awakenerIds.forEach((id) => usedIds.add(id))
+            c2.awakenerIds.forEach((id) => usedIds.add(id))
+            repaired = true
+            break outer
+          }
+        }
+        if (!repaired) {
+          // Put the donor back — the greedy result stands.
+          donor.awakenerIds.forEach((id) => usedIds.add(id))
+        }
+      }
     }
 
     const finalTeams = picked.filter((p): p is CandidateTeam => !!p)
