@@ -251,7 +251,11 @@
     "synergizesWith": [
       "awakener-0041",
       "awakener-0056",
-      "awakener-0002"
+      "awakener-0002",
+      "awakener-0010",
+      "awakener-0022",
+      "awakener-0024",
+      "awakener-0053"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -776,7 +780,12 @@
       "awakener-0033",
       "awakener-0031",
       "awakener-0007",
-      "awakener-0057"
+      "awakener-0057",
+      "awakener-0058",
+      "awakener-0011",
+      "awakener-0027",
+      "awakener-0043",
+      "awakener-0050"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -1160,7 +1169,9 @@
       "awakener-0023",
       "awakener-0056",
       "awakener-0020",
-      "awakener-0057"
+      "awakener-0057",
+      "awakener-0031",
+      "awakener-0022"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E2",
@@ -1473,7 +1484,10 @@
       "awakener-0003",
       "awakener-0024",
       "awakener-0053",
-      "awakener-0056"
+      "awakener-0056",
+      "awakener-0022",
+      "awakener-0048",
+      "awakener-0015"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E1",
@@ -1991,7 +2005,15 @@
       "awakener-0034",
       "awakener-0045",
       "awakener-0009",
-      "awakener-0040"
+      "awakener-0040",
+      "awakener-0058",
+      "awakener-0011",
+      "awakener-0047",
+      "awakener-0050",
+      "awakener-0006",
+      "awakener-0032",
+      "awakener-0018",
+      "awakener-0035"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -2042,7 +2064,10 @@
       "awakener-0041",
       "awakener-0042",
       "awakener-0048",
-      "awakener-0053"
+      "awakener-0053",
+      "awakener-0022",
+      "awakener-0027",
+      "awakener-0007"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -2149,12 +2174,19 @@
       "awakener-0014",
       "awakener-0057",
       "awakener-0040",
-      "awakener-0012"
+      "awakener-0012",
+      "awakener-0035",
+      "awakener-0050",
+      "awakener-0047",
+      "awakener-0009",
+      "awakener-0055",
+      "awakener-0032",
+      "awakener-0022"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
     "enlightenBreakpoints": [
-      "E2",
+      "E1",
       "E3"
     ],
     "keySkillSlots": [
@@ -2170,7 +2202,7 @@
     ],
     "isDivineRealm": false,
     "tier": "A",
-    "notes": "Protective Aequor support built around Gaunt cards: Skill 2 shields and summons Gaunts (Insights/aliemus, enemy STR down + tentacle power, or a lowest-HP hit with a team crit DMG buff); the ult applies AOE STR down and executes the lowest-HP enemy, minting a permanent Gaunt on a kill (max 3 per battle, must be his own damage \u2014 corrosion or Arachne mercy kills don't count). Skill 1 is a guaranteed-crit AOE that eats all Arithmetica and batteries aliemus. Fixed damage (ult/Gaunt hit) scales off Tentacle DMG and STR and never crits; his crit DMG stat feeds Skill 1 and the team buff. Best in Aequor but exports STR down, crit DMG, and vermin clearing anywhere. E2+E3 needed for comfortable play; OE triples damage.",
+    "notes": "Protective Aequor support built around Gaunt cards: Skill 2 shields and summons Gaunts (Insights/aliemus, enemy STR down + tentacle power, or a lowest-HP hit with a team crit DMG buff); the ult applies AOE STR down and executes the lowest-HP enemy, minting a permanent Gaunt on a kill (max 3 per battle, must be his own damage \u2014 corrosion or Arachne mercy kills don't count). Skill 1 is a guaranteed-crit AOE that eats all Arithmetica and batteries aliemus. Fixed damage (ult/Gaunt hit) scales off Tentacle DMG and STR and never crits; his crit DMG stat feeds Skill 1 and the team buff. Best in Aequor but exports STR down, crit DMG, and vermin clearing anywhere. Enlighten priority per Lyra: E1 first (Gaunt damage and STR down scale off his crit DMG), then signature WoD, then E3, then OE; E2 is decent but largely alleviated at E3. (The Experimental log instead calls E2+E3 the comfort point.) At home in the discard core, where constant cycling reaches his cards and E3 Aftershock cheapens Gaunts.",
     "contentNotes": {
       "arc2": "Astral Reign limited unit \u2014 plays as protective support; his damage only ramps against bosses as team STR/tentacles scale."
     }
