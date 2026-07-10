@@ -389,10 +389,11 @@
       "main_dps",
       "sub_dps",
       "vuln_applier",
-      "poison_stacker"
+      "aliemus_battery",
+      "card_cycler"
     ],
     "synergyTags": [
-      "counter_scaling"
+      "kill_scaling"
     ],
     "requires": [],
     "synergizesWith": [
@@ -415,7 +416,7 @@
     ],
     "isDivineRealm": false,
     "tier": "B",
-    "notes": "Counter & poison combo witch \u2014 Skull Reaver scales with last hits early; at endgame her Thousand Mirages make tons of temp Counter/Poison for high-damage combo turns with Arachne/Nautila. OE puts 3 Mirages in hand for big burst.",
+    "notes": "Kill-scaling crit burst DPS \u2014 Skull Reaver ramps off last hits, E2 grants permanent Crit Rate per kill on the stage, and Treasured Rarity stacks permanent Crit DMG per kill. Her Thousand Mirages generate temporary Counter/Poison for teammates like Arachne and Nautila to consume \u2014 she does not ramp off those stacks herself. Exalt effect levels hand out Insights, aliemus, Vulnerable/Weakness, and draws. OE puts extra Mirages in hand for big burst; values steady STR increment and Insight generation (pairs naturally with Pontos).",
     "keyPairings": [
       {
         "partnerId": "awakener-0056",
@@ -1554,9 +1555,9 @@
     "id": "awakener-0044",
     "teamRoles": [
       "shielder",
+      "embryo_gen",
       "weak_applier",
-      "vuln_applier",
-      "main_dps"
+      "vuln_applier"
     ],
     "synergyTags": [],
     "requires": [],
@@ -1579,7 +1580,7 @@
     ],
     "isDivineRealm": false,
     "tier": "A",
-    "notes": "Crimson Furnace tank \u2014 huge shields via End of Suffering, plus weakness and vulnerable. With Lone Seed + Thais copies he becomes a slow unkillable carry. Crimson Furnace scales with Max HP, so wants high-CON teammates.",
+    "notes": "Crimson Furnace tank, not a DPS \u2014 End of Suffering converts the whole furnace into a huge shield, Blessed Bones is a secondary Embryo Fusion source that also inflicts Weakness and refills the furnace, and his Rouse grants Barrier plus Embryo Fusion. Massive CON raises team HP and the furnace scales with Max HP, so he wants high-CON teammates. The Lone Seed + Thais copy loop can turn him into a slow grind carry, but that's a niche build, not his default role.",
     "keyPairings": [
       {
         "partnerId": "awakener-0048",
@@ -2096,7 +2097,9 @@
       "awakener-0050",
       "awakener-0022",
       "awakener-0033",
-      "awakener-0044"
+      "awakener-0044",
+      "awakener-0058",
+      "awakener-0005"
     ],
     "conflictsWith": [
       "awakener-0019",
@@ -2115,7 +2118,7 @@
     ],
     "isDivineRealm": true,
     "tier": "S",
-    "notes": "Divine Caro corrosion nuker and combo setup artist. Viscera Blossoms applies massive Corrosion (\u22484x damage multiplier) enabling even weak DPS to clear; she funnels Aliemus and seeds 0-cost card copies, so she pairs best with carries that don't rely on specific cards. Exalt costs 200 Aliemus \u2014 wants Madness Omen and Aliemus batteries.",
+    "notes": "Divine Caro corrosion nuker and discard-centric setup artist. Viscera Blossoms applies massive Corrosion (\u22484x damage multiplier) enabling even weak DPS to clear; she funnels Aliemus and seeds 0-cost card copies whose goo cleans up on discard, making her a natural fit for discard comps. Pairs best with carries that don't rely on specific cards. Exalt costs 200 Aliemus \u2014 wants Madness Omen and Aliemus batteries.",
     "keyPairings": [
       {
         "partnerId": "awakener-0046",
