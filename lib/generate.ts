@@ -350,23 +350,55 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
     const pickFrom = (skipKeys: Set<string>): CandidateTeam[] => {
       const seen = new Set<string>(skipKeys)
       const usedUnits = new Set<string>()
+      const appearances = new Map<string, number>()
+      // No unit may headline more than 2 of the returned teams (pins exempt).
+      // Curated bonuses can push near-duplicate comps into separate novelty
+      // bands — without this cap one well-connected character (Castor, say)
+      // occupied half the batch while distinct carries never surfaced.
+      const MAX_APPEARANCES = 2
+      const pinnedSet = new Set(options.pinnedIds ?? [])
+      const overexposed = (c: CandidateTeam): boolean =>
+        c.awakenerIds.some(
+          (id) => !pinnedSet.has(id) && (appearances.get(id) ?? 0) >= MAX_APPEARANCES
+        )
       const out: CandidateTeam[] = []
       while (out.length < maxResults) {
-        const remaining = ranked.filter((c) => !seen.has(teamKey(c.awakenerIds)))
+        let remaining = ranked.filter(
+          (c) => !seen.has(teamKey(c.awakenerIds)) && !overexposed(c)
+        )
+        if (!remaining.length) {
+          // Every candidate is either shown or overexposed — allow repeats
+          // rather than returning fewer teams than asked.
+          remaining = ranked.filter((c) => !seen.has(teamKey(c.awakenerIds)))
+        }
         if (!remaining.length) break
         const topScore = remaining[0].score
+        // Within the band, prefer the comp introducing the strongest not-yet-
+        // shown character, then the most fresh faces. Counting faces alone let
+        // batches of fresh B-tier units perpetually outbid a single unseen
+        // S-tier carry — Vortice could stay invisible for many rotations while
+        // weaker units cycled through.
+        const TIER_W: Record<string, number> = { S: 2, A: 1.5, B: 1, C: 0.75 }
+        const tierW = (id: string) =>
+          TIER_W[awakeners[id]?.annotation?.tier ?? ''] ?? 1
         let best = remaining[0]
+        let bestTop = -1
         let bestNovel = -1
         for (const c of remaining) {
           if (c.score < topScore - NOVELTY_BAND) break // ranked desc — past the band
-          const novel = c.awakenerIds.filter((id) => !usedUnits.has(id)).length
-          if (novel > bestNovel) {
+          const unseen = c.awakenerIds.filter((id) => !usedUnits.has(id))
+          const top = unseen.length ? Math.max(...unseen.map(tierW)) : 0
+          if (top > bestTop || (top === bestTop && unseen.length > bestNovel)) {
             best = c
-            bestNovel = novel
+            bestTop = top
+            bestNovel = unseen.length
           }
         }
         seen.add(teamKey(best.awakenerIds))
-        best.awakenerIds.forEach((id) => usedUnits.add(id))
+        best.awakenerIds.forEach((id) => {
+          usedUnits.add(id)
+          appearances.set(id, (appearances.get(id) ?? 0) + 1)
+        })
         out.push(best)
       }
       return out

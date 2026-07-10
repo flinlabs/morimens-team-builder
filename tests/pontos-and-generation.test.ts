@@ -357,3 +357,58 @@ describe('ranking — floors, tiers, meta gate', () => {
     }
   })
 })
+
+describe('wheel theft and pairing fixes — second screenshot round', () => {
+  it('a STR/crit stat stick is anti-fit for supports, so Titan never substitutes onto Murphy', async () => {
+    const { wheelFitScore } = await import('@/lib/wheel-fit')
+    const { getWheelPurposeOverrides } = await import('@/lib/db')
+    const overrides = getWheelPurposeOverrides() as any
+    const titan = Object.values(wheels).find((w) => w.name === 'Blade of the Titan')!
+    expect(wheelFitScore(titan, 'keyflare_support', overrides)).toBe(0)
+    expect(wheelFitScore(titan, 'healer', overrides)).toBe(0)
+    expect(wheelFitScore(titan, 'main_dps', overrides)).toBe(2)
+  })
+
+  it("D-Tide: an earlier team's support cannot take a later carry's owned BiS wheel", async () => {
+    const { buildDtideRecommendation } = await import('@/lib/assign')
+    const { buildCandidateTeam } = await import('@/lib/filter')
+    const widByName = (n: string) => Object.values(wheels).find((w) => w.name === n)!.id
+    const r: any = fullRoster()
+    for (const id of Object.keys(r.wheels)) r.wheels[id] = { owned: false, starLevel: 0, stackLevel: 0 }
+    // Own exactly Mouchette's BiS ALT plus enough support fillers.
+    for (const n of ['Blade of the Titan', 'Shrouded Birth', 'Elevated Focus', 'Memory Syndrome', 'Whisper', 'Vitality', 'Duty gravitas']) {
+      const w = Object.values(wheels).find((x) => x.name === n)
+      if (w) r.wheels[w.id] = { owned: true, starLevel: 3, stackLevel: 12 }
+    }
+    // Team 1 has Murphy (keyflare support); team 2 has Mouchette (Titan is her ALT_SSR).
+    const t1 = buildCandidateTeam(['Vortice', 'Murphy', 'Sanga', 'Celeste'].map(idByName), awk, r)
+    const t2 = buildCandidateTeam(['Mouchette', 'Ramona', 'Aigis', 'Helot'].map(idByName), awk, r)
+    const recs = buildDtideRecommendation([t1, t2], r, awk)
+    const titan = widByName('Blade of the Titan')
+    const holder = recs
+      .flatMap((t) => t.composition)
+      .find((c) => c.wheelAssignments.some((w) => w.wheelId === titan))
+    expect(holder?.awakenerId).toBe(idByName('Mouchette'))
+  })
+
+  it('keyPairings pull iconic duos together — Castor+Pollux surfaces when both are built', () => {
+    const r: any = fullRoster()
+    for (const n of ['Pollux', 'Castor']) {
+      const e = r.awakeners[idByName(n)]
+      e.enlightenSlot = 'E2'
+      e.characterLevel = 70
+      e.skillLevels = { Strike: 5, Defense: 5, Skill1: 5, Skill2: 5, Rouse: 5, Exalt: 5, OverExalt: 0 }
+    }
+    const seen: string[] = []
+    let paired = false
+    for (let i = 0; i < 3 && !paired; i++) {
+      const res = generateTeams({ roster: r, mode: 'single', options: { maxResults: 4, excludeTeamKeys: seen } })
+      for (const t of res.teams) {
+        const ids = teamIds(t)
+        seen.push(compKey(ids))
+        if (ids.includes(idByName('Pollux')) && ids.includes(idByName('Castor'))) paired = true
+      }
+    }
+    expect(paired).toBe(true)
+  })
+})

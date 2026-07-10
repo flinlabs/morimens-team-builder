@@ -118,8 +118,16 @@ export function assignWheels(
   roster: UserRoster,
   usedWheelIds: Set<string> = new Set(),
   role?: string,
-  allowDualSSR = true
+  allowDualSSR = true,
+  // wheelId → awakenerId that has first claim on it. A wheel reserved for
+  // someone else is off-limits to substitution/filler passes, so a support
+  // geared early can never steal a later carry's owned BiS wheel.
+  reservedWheels?: Map<string, string>
 ): WheelAssignment[] {
+  const reservedForOther = (wheelId: string): boolean => {
+    const owner = reservedWheels?.get(wheelId)
+    return !!owner && owner !== awakener.id
+  }
   const ranked = [...recommendedWheelsFor(awakener, role)].sort(
     (a, b) => WHEEL_TIER_ORDER.indexOf(a.tier) - WHEEL_TIER_ORDER.indexOf(b.tier)
   )
@@ -218,6 +226,7 @@ export function assignWheels(
       .filter((w) => !NICHE_MYTHIC_WHEEL_IDS.has(w.id))
       .filter((w) => getWheelEntry(roster, w.id).owned)
       .filter((w) => !usedWheelIds.has(w.id) && !out.some((a) => a.wheelId === w.id))
+      .filter((w) => !reservedForOther(w.id)) // a teammate's owned BiS is spoken for
       .filter((w) => !breaksOverlimit(w.id))
       .filter((w) => fitOf(w.id) > 0) // never borrow an anti-fit wheel
       .sort((a, b) => {
@@ -285,6 +294,7 @@ export function assignWheels(
       })
       .filter((w) => getWheelEntry(roster, w.id).owned)
       .filter((w) => !usedWheelIds.has(w.id) && !out.some((a) => a.wheelId === w.id))
+      .filter((w) => !reservedForOther(w.id))
     const fitting = pool.filter((w) => fitOf(w.id) > 0)
     const fillers = (fitting.length ? fitting : pool).sort((a, b) => {
       const fa = fitOf(a.id)
@@ -527,6 +537,36 @@ function compositionNote(
 
 // Turn one CandidateTeam into a fully-geared TeamRecommendation. `usedWheelIds`
 // can be shared across calls (D-Tide) so wheels are not double-assigned.
+/**
+ * First-claim map of owned BiS wheels. Before any wheel is handed out, every
+ * unit (across the whole lineup for D-Tide) claims the owned wheels from its
+ * own role-matched BiS variant. Substitution and filler passes then refuse
+ * wheels claimed by someone else — without this, a support geared on an
+ * earlier team could walk off with a later carry's own BiS wheel (Murphy
+ * taking Mouchette's Blade of the Titan two boards ahead of her).
+ */
+export function reserveBisWheels(
+  teams: CandidateTeam[],
+  roster: UserRoster,
+  awakeners: Record<string, EnrichedAwakener>
+): Map<string, string> {
+  const reserved = new Map<string, string>()
+  for (const team of teams) {
+    for (const id of team.awakenerIds) {
+      const awakener = awakeners[id]
+      if (!awakener) continue
+      const role = awakener.annotation?.teamRoles?.[0] ?? 'flex'
+      for (const rec of recommendedWheelsFor(awakener, role)) {
+        for (const wheelId of rec.wheelIds) {
+          if (!getWheelEntry(roster, wheelId).owned) continue
+          if (!reserved.has(wheelId)) reserved.set(wheelId, id)
+        }
+      }
+    }
+  }
+  return reserved
+}
+
 export function buildTeamRecommendation(
   candidate: CandidateTeam,
   rank: number,
@@ -535,7 +575,8 @@ export function buildTeamRecommendation(
   posses?: Record<string, EnrichedPosse>,
   usedWheelIds: Set<string> = new Set(),
   allowDualSSR = true,
-  usedPosseIds?: Set<string>
+  usedPosseIds?: Set<string>,
+  reservedWheels?: Map<string, string>
 ): TeamRecommendation {
   const arc = roster.settings.arcRuleset
   const composition: CharacterAssignment[] = []
@@ -555,13 +596,17 @@ export function buildTeamRecommendation(
   }
   const gearOrder = [...candidate.awakenerIds].sort((a, b) => gearRank(a) - gearRank(b))
 
+  // Within a single team the same first-claim rule applies between teammates.
+  const reserved =
+    reservedWheels ?? reserveBisWheels([candidate], roster, awakeners)
+
   const assignmentById: Record<string, CharacterAssignment> = {}
   for (const id of gearOrder) {
     const awakener = awakeners[id]
     if (!awakener) continue
     const ann = awakener.annotation
     const role = ann?.teamRoles?.[0] ?? 'flex'
-    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR)
+    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR, reserved)
     const covenantRecommendation = recommendCovenant(awakener, roster, role, usedCovenantIds)
 
     if (wheelAssignments.some(w => w.tier === 'FALLBACK')) {
@@ -631,7 +676,13 @@ export function buildDtideRecommendation(
   // every posse is locked to one team for the season, so no team may reuse a
   // posse another already runs.
   const usedPosseIds = new Set<string>()
+  // Lineup-wide first claim: every unit's owned BiS wheels are reserved
+  // before board 1 is geared, so board order can no longer decide who gets
+  // their own wheels.
+  const reserved = reserveBisWheels(teams, roster, awakeners)
   return teams.map((team, i) =>
-    buildTeamRecommendation(team, i + 1, roster, awakeners, posses, usedWheelIds, false, usedPosseIds)
+    buildTeamRecommendation(
+      team, i + 1, roster, awakeners, posses, usedWheelIds, false, usedPosseIds, reserved
+    )
   )
 }
