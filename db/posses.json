@@ -1,0 +1,1790 @@
+{
+  "posse-0001": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0001",
+    "name": "Encounter in Pure White",
+    "route": {
+      "slug": "encounter-in-pure-white",
+      "canonicalPath": "/database/posses/encounter-in-pure-white"
+    },
+    "assets": {
+      "icon": "asset-posse-0001-icon",
+      "crystal": "asset-posse-0001-crystal",
+      "badge": "asset-posse-0001-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 3 - Beware of Hounds",
+    "realm": "FADED_LEGACY",
+    "lineupToken": "d",
+    "descriptionTemplate": "Discard your hand, then draw that many cards plus 2.",
+    "descriptionArgs": {},
+    "lore": "I hope Lily's medical record is blank, just like the snowy field where we first met.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0002": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0002",
+    "name": "Voices in Your Head",
+    "route": {
+      "slug": "voices-in-your-head",
+      "canonicalPath": "/database/posses/voices-in-your-head"
+    },
+    "assets": {
+      "icon": "asset-posse-0002-icon",
+      "crystal": "asset-posse-0002-crystal",
+      "badge": "asset-posse-0002-badge"
+    },
+    "acquisitionSource": "Automatically Unlocked",
+    "realm": "FADED_LEGACY",
+    "lineupToken": "h",
+    "descriptionTemplate": "Inflict 1 turn of {Weakness} and {Vulnerable} on each enemy, and {Steal} [Arg1] {STR} from them.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.01,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "The moment your hands clasped, you saw confusion and bewilderment in each other's eyes.\nFragmented melodies converge here, for you have long forgotten the past.\nA silent symphony is about to be composed, for you are determined to step into the future.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0003": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0003",
+    "name": "Warded Injection",
+    "route": {
+      "slug": "warded-injection",
+      "canonicalPath": "/database/posses/warded-injection"
+    },
+    "assets": {
+      "icon": "asset-posse-0003-icon",
+      "crystal": "asset-posse-0003-crystal",
+      "badge": "asset-posse-0003-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 4 - Where Silence Reigns",
+    "realm": "FADED_LEGACY",
+    "lineupToken": "b",
+    "descriptionTemplate": "Gain [Block:Arg1] Shield. If current HP is below 25%, recover [Heal:Arg2] HP.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.1,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.1,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "She said \"it doesn't hurt\"... but that must be a lie; she is clearly the child most afraid of pain.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0004": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0004",
+    "name": "A Mouse's Wisdom",
+    "route": {
+      "slug": "a-mouses-wisdom",
+      "canonicalPath": "/database/posses/a-mouses-wisdom"
+    },
+    "assets": {
+      "icon": "asset-posse-0004-icon",
+      "crystal": "asset-posse-0004-crystal",
+      "badge": "asset-posse-0004-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 2 - Waxen Legacy",
+    "realm": "FADED_LEGACY",
+    "lineupToken": "c",
+    "descriptionTemplate": "Recover 3 Arithmetica.",
+    "descriptionArgs": {},
+    "lore": "The little mouse and its owner share many traits:\nCunning, bravery, and speed...\nThey freely roam the gaps between the scattered houses in the Eastern District, using the sky as their blanket and rooftops as their bed.\nThey thrive in the corners of the city.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0005": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0005",
+    "name": "Tiny Wish",
+    "route": {
+      "slug": "tiny-wish",
+      "canonicalPath": "/database/posses/tiny-wish"
+    },
+    "assets": {
+      "icon": "asset-posse-0005-icon",
+      "crystal": "asset-posse-0005-crystal",
+      "badge": "asset-posse-0005-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 1 - East District's Enigma",
+    "realm": "FADED_LEGACY",
+    "lineupToken": "i",
+    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg1].",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "35"
+      }
+    },
+    "lore": "On the day of her sixth birthday, the girl made a wish:\nTo have a toy bear named \"Bobo,\" and for love—not too much, just a little.\nThe girl has never been good at fantasizing, nor is she a greedy person.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0006": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0006",
+    "name": "Obsession Eternal",
+    "route": {
+      "slug": "obsession-eternal",
+      "canonicalPath": "/database/posses/obsession-eternal"
+    },
+    "assets": {
+      "icon": "asset-posse-0006-icon",
+      "crystal": "asset-posse-0006-crystal",
+      "badge": "asset-posse-0006-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 5 - Eye of the Storm",
+    "realm": "FADED_LEGACY",
+    "lineupToken": "g",
+    "descriptionTemplate": "Gain [Arg1] {STR}, then gain Temporary {STR} equal to 25% of your permanent {STR}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.03,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "Given her obsession, I have a vague feeling that this millennia-spanning ritual has yet to reach its end...",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0007": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0007",
+    "name": "Unequal Exchange",
+    "route": {
+      "slug": "unequal-exchange",
+      "canonicalPath": "/database/posses/unequal-exchange"
+    },
+    "assets": {
+      "icon": "asset-posse-0007-icon",
+      "crystal": "asset-posse-0007-crystal",
+      "badge": "asset-posse-0007-badge"
+    },
+    "acquisitionSource": "Sediment Exchange",
+    "realm": "OTHER",
+    "lineupToken": "e",
+    "descriptionTemplate": "Draw 4 cards.",
+    "descriptionArgs": {},
+    "lore": "Mythag usually discourages me from contacting that merchant, but if it's to save everyone from this mire...",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0008": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0008",
+    "name": "Funus Aeternum",
+    "route": {
+      "slug": "funus-aeternum",
+      "canonicalPath": "/database/posses/funus-aeternum"
+    },
+    "assets": {
+      "icon": "asset-posse-0008-icon",
+      "crystal": "asset-posse-0008-crystal",
+      "badge": "asset-posse-0008-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 6 - Twisted Stars",
+    "realm": "FADED_LEGACY",
+    "lineupToken": "f",
+    "descriptionTemplate": "Increase all Awakeners' Aliemus by 15. Suffer a Delayed {Sacrifice} equal to 5% of your Max HP.",
+    "descriptionArgs": {},
+    "lore": "I couldn't help her much; she single-handedly stopped the false god's descent.\nHer soul will not fade; she will forever shine as a star of freedom.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0009": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0009",
+    "name": "The Final Vow",
+    "route": {
+      "slug": "the-final-vow",
+      "canonicalPath": "/database/posses/the-final-vow"
+    },
+    "assets": {
+      "icon": "asset-posse-0009-icon",
+      "crystal": "asset-posse-0009-crystal",
+      "badge": "asset-posse-0009-badge"
+    },
+    "ownerAwakenerId": "awakener-0038",
+    "ownerAwakenerName": "Ogier",
+    "acquisitionSource": "Clear Psyche Deepdive: The Knight's Wish",
+    "realm": "CHAOS",
+    "lineupToken": "l",
+    "descriptionTemplate": "Gain +[Arg1]% Temporary Crit. Rate and [Arg2] Temporary {STR}. If you're in a Boss Battle and have played no cards this turn, attempt to trigger {Death Resistance} [Arg3] {plural:[Arg3]|time|times}. If successful, gain [Block:Arg4] Shield. This effect can only trigger [Arg5] {plural:[Arg5]|time|times} per battle.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "25",
+        "suffix": "%"
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.02,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg3": {
+        "kind": "fixed",
+        "value": "1"
+      },
+      "Arg4": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.4,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg5": {
+        "kind": "fixed",
+        "value": "1"
+      }
+    },
+    "lore": "The knight had sworn to guard those dear to him with this lance. Now it pierces his chest, yet only to keep danger at bay—his final vow fulfilled.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0010": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0010",
+    "name": "Aurita's Treasure",
+    "route": {
+      "slug": "auritas-treasure",
+      "canonicalPath": "/database/posses/auritas-treasure"
+    },
+    "assets": {
+      "icon": "asset-posse-0010-icon",
+      "crystal": "asset-posse-0010-crystal",
+      "badge": "asset-posse-0010-badge"
+    },
+    "ownerAwakenerId": "awakener-0005",
+    "ownerAwakenerName": "Aurita",
+    "acquisitionSource": "Clear Psyche Deepdive: Eadem Omnia",
+    "realm": "AEQUOR",
+    "lineupToken": "j",
+    "descriptionTemplate": "Draw [Arg1] {plural:[Arg1]|card|cards} with the lowest Arithmetica Cost from the Draw Pile. If the Realm includes {Aequor}, increase {Tentacle DMG} by [Arg2].",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "3"
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.01,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "Glass tank. Fish tank. Palace.\n\nCall it whatever you like. It is a small paradise where Aurita's friends reside, free from Dissolution and suffering.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0011": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0011",
+    "name": "Roaring Blood and Sand",
+    "route": {
+      "slug": "roaring-blood-and-sand",
+      "canonicalPath": "/database/posses/roaring-blood-and-sand"
+    },
+    "assets": {
+      "icon": "asset-posse-0011-icon",
+      "crystal": "asset-posse-0011-crystal",
+      "badge": "asset-posse-0011-badge"
+    },
+    "ownerAwakenerId": "awakener-0051",
+    "ownerAwakenerName": "Uvhash",
+    "acquisitionSource": "Clear Psyche Deepdive: Blood and Sand",
+    "realm": "CARO",
+    "lineupToken": "k",
+    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg2]. Gain [Arg3] {STR}. If the Realm includes {Caro}, consume 10% of your HP to increase {Embryo Fusion} by +[Arg4].",
+    "descriptionArgs": {
+      "Arg2": {
+        "kind": "fixed",
+        "value": "20"
+      },
+      "Arg3": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.02,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg4": {
+        "kind": "fixed",
+        "value": "20"
+      }
+    },
+    "lore": "Crimson twilight, swirling sand.\n\nUpon the boundless dunes, a warrior born without hesitation bites into his wrist, returning his blood to the sky and earth.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0012": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0012",
+    "name": "Ephemeral Eternity",
+    "route": {
+      "slug": "ephemeral-eternity",
+      "canonicalPath": "/database/posses/ephemeral-eternity"
+    },
+    "assets": {
+      "icon": "asset-posse-0012-icon",
+      "crystal": "asset-posse-0012-crystal",
+      "badge": "asset-posse-0012-badge"
+    },
+    "ownerAwakenerId": "awakener-0015",
+    "ownerAwakenerName": "Erica",
+    "acquisitionSource": "Clear Psyche Deepdive: Twisted Core",
+    "realm": "ULTRA",
+    "lineupToken": "m",
+    "descriptionTemplate": "Gain [Arg4] Arithmetica. Choose an Awakener; place their [Arg1] {plural:[Arg1]|copy|copies} of \"Strike\" and [Arg1] {plural:[Arg1]|copy|copies} of \"Defense\" into your hand, and grant them {Exhaust} and {Fleeting}. If the current Realm is {Ultra}, gain [Arg2] Temp. {STR} and [Arg3] Temp. {Alert}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "1"
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.02,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg3": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.005,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg4": {
+        "kind": "fixed",
+        "value": "1"
+      }
+    },
+    "lore": "The mechanical doll rejected the newborn spirit's promise of eternity, as the core's current scorched her soul. Before her body could no longer hold, she had one last task to complete—",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0013": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0013",
+    "name": "Feast of Decay",
+    "route": {
+      "slug": "feast-of-decay",
+      "canonicalPath": "/database/posses/feast-of-decay"
+    },
+    "assets": {
+      "icon": "asset-posse-0013-icon",
+      "crystal": "asset-posse-0013-crystal",
+      "badge": "asset-posse-0013-badge"
+    },
+    "ownerAwakenerId": "awakener-0052",
+    "ownerAwakenerName": "Wanda",
+    "acquisitionSource": "Clear Psyche Deepdive: Feast of Flames",
+    "realm": "ULTRA",
+    "lineupToken": "q",
+    "descriptionTemplate": "Gain [Arg1] {Counter} and inflict [Arg2] Temp. {STR⯆} on all enemies. If in an {Ultra Round}, deal DMG equal to your {Counter} to all enemies instead of inflicting {STR⯆}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "occultResearchDepth",
+        "multiplier": 0.06,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.03,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "The feast has reached its peak. The queen of Cambrian laughed heartily, raising her glass to you amidst the revelry and D-Slime.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0014": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0014",
+    "name": "Bone-Chilling Embrace",
+    "route": {
+      "slug": "bone-chilling-embrace",
+      "canonicalPath": "/database/posses/bone-chilling-embrace"
+    },
+    "assets": {
+      "icon": "asset-posse-0014-icon",
+      "crystal": "asset-posse-0014-crystal",
+      "badge": "asset-posse-0014-badge"
+    },
+    "ownerAwakenerId": "awakener-0045",
+    "ownerAwakenerName": "Sanga",
+    "acquisitionSource": "Clear Psyche Deepdive: Sculpted Like a Song",
+    "realm": "AEQUOR",
+    "lineupToken": "n",
+    "descriptionTemplate": "Recover [Arg1] Arithmetica and gain [Block:Arg2] Delayed Shield. If your Tentacle Stance is {Surging Tides}, instead summon [Arg3] Tentacles.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "1"
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.1,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg3": {
+        "kind": "fixed",
+        "value": "1"
+      }
+    },
+    "lore": "Flesh dissolves into the sea, bones harden into coral. Her gaze burns; she embraces you and sculpts you.\n\nShe promises to take you home.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0015": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0015",
+    "name": "Lakeside Glimpse",
+    "route": {
+      "slug": "lakeside-glimpse",
+      "canonicalPath": "/database/posses/lakeside-glimpse"
+    },
+    "assets": {
+      "icon": "asset-posse-0015-icon",
+      "crystal": "asset-posse-0015-crystal",
+      "badge": "asset-posse-0015-badge"
+    },
+    "ownerAwakenerId": "awakener-0002",
+    "ownerAwakenerName": "Agrippa",
+    "acquisitionSource": "Clear Psyche Deepdive: Pale Descendant",
+    "realm": "CARO",
+    "lineupToken": "o",
+    "descriptionTemplate": "Inflict [Arg2] {Poison} on the highest HP enemy, and gain [Block:Arg1] Shield. If {Devour} has been triggered this turn, trigger half of that enemy's {Poison} instead of gaining Shield.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.06,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "occultResearchDepth",
+        "multiplier": 0.14,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "The lake in Cambrian Valley shimmers with crystal-clear waters.\n\nThe clamor of the maze gradually fades away, leaving only you and the newly freed girl to savor this tranquil moment.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0016": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0016",
+    "name": "Gateway of Retrospection",
+    "route": {
+      "slug": "gateway-of-retrospection",
+      "canonicalPath": "/database/posses/gateway-of-retrospection"
+    },
+    "assets": {
+      "icon": "asset-posse-0016-icon",
+      "crystal": "asset-posse-0016-crystal",
+      "badge": "asset-posse-0016-badge"
+    },
+    "ownerAwakenerId": "awakener-0020",
+    "ownerAwakenerName": "Ramona: Timeworn",
+    "acquisitionSource": "Clear Psyche Deepdive: One Step Away",
+    "realm": "CHAOS",
+    "lineupToken": "p",
+    "descriptionTemplate": "Search your Draw Pile for [Arg1] {plural:[Arg1]|card|cards} to put into your hand, and reduce their Arithmetica Cost by [Arg2].",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "1"
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "1"
+      }
+    },
+    "lore": "The girl has lost count of her cycles and can no longer recall the histories she altered.\n\nThis is the last chance, the final rewind. Her sword pierced Tawil's core, but she only had time to grasp that person's hand before sinking together into the Black Pool.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0017": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0017",
+    "name": "Truth Behind Grey Mist",
+    "route": {
+      "slug": "truth-behind-grey-mist",
+      "canonicalPath": "/database/posses/truth-behind-grey-mist"
+    },
+    "assets": {
+      "icon": "asset-posse-0017-icon",
+      "crystal": "asset-posse-0017-crystal",
+      "badge": "asset-posse-0017-badge"
+    },
+    "ownerAwakenerId": "awakener-0012",
+    "ownerAwakenerName": "Daffodil",
+    "acquisitionSource": "Clear Special Ops: Phantom of the Rainy Town",
+    "realm": "ULTRA",
+    "lineupToken": "v",
+    "descriptionTemplate": "Gain [Arg1] {STR} and create [Arg2] {Insight}. If in an {Ultra Round}, instead create [Arg3] {Insight}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.015,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "1"
+      },
+      "Arg3": {
+        "kind": "fixed",
+        "value": "2"
+      }
+    },
+    "lore": "A breeze lifts her long hair, and the reflection of the grey sea of fog briefly appears before vanishing into thin air. Before you stands the same elegant and composed her. But you know, it is not an illusion.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0018": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0018",
+    "name": "Midsummer Vision",
+    "route": {
+      "slug": "midsummer-vision",
+      "canonicalPath": "/database/posses/midsummer-vision"
+    },
+    "assets": {
+      "icon": "asset-posse-0018-icon",
+      "crystal": "asset-posse-0018-crystal",
+      "badge": "asset-posse-0018-badge"
+    },
+    "ownerAwakenerId": "awakener-0029",
+    "ownerAwakenerName": "Lily",
+    "acquisitionSource": "Clear Special Ops: The Magic of Storytelling",
+    "realm": "CHAOS",
+    "lineupToken": "w",
+    "descriptionTemplate": "Draw a card; if the drawn card is a Command or {Rouse} card, reduce its Arithmetica Cost to 0 and increase its owner's Aliemus by [Arg1]. Otherwise, discard that card and repeat this process.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "20"
+      }
+    },
+    "lore": "It was a fleeting, ethereal dream of a night, light and soft, not captured on film but flowing through the memory of every photographer.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0019": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0019",
+    "name": "Victory of Roses",
+    "route": {
+      "slug": "victory-of-roses",
+      "canonicalPath": "/database/posses/victory-of-roses"
+    },
+    "assets": {
+      "icon": "asset-posse-0019-icon",
+      "crystal": "asset-posse-0019-crystal",
+      "badge": "asset-posse-0019-badge"
+    },
+    "ownerAwakenerId": "awakener-0046",
+    "ownerAwakenerName": "Sorel",
+    "acquisitionSource": "Clear Special Ops: Tribute to the Rose",
+    "realm": "CARO",
+    "lineupToken": "u",
+    "descriptionTemplate": "Draw 2 cards and gain [Arg1] Temp. {STR}. If the Realm includes {Caro}, consume 10% of your HP to gain another [Arg2] Temp. {STR}, and another [Arg2] Temp. {STR} for each {Embryo} in your hand.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.045,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.015,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "The graceful rose has achieved her complete victory.\n\nShe has returned to the noble rose surrounded by the crowd like stars around the moon, with only the gaze directed at you proclaiming the secret adventure experienced with you at the opera house.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0020": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0020",
+    "name": "Miracle's Dawn",
+    "route": {
+      "slug": "miracles-dawn",
+      "canonicalPath": "/database/posses/miracles-dawn"
+    },
+    "assets": {
+      "icon": "asset-posse-0020-icon",
+      "crystal": "asset-posse-0020-crystal",
+      "badge": "asset-posse-0020-badge"
+    },
+    "ownerAwakenerId": "awakener-0044",
+    "ownerAwakenerName": "Salvador",
+    "acquisitionSource": "Clear Special Ops: The Color of Blood",
+    "realm": "CARO",
+    "lineupToken": "r",
+    "descriptionTemplate": "Gain [Arg1] {STR}. Until your next turn, whenever you take Active DMG, gain Delayed Shield equal to [Arg2]% of that DMG. If the Realms includes {Caro}, instead accumulate {Crimson Furnace} equal to 10% of that DMG.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.02,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "10",
+        "suffix": "%"
+      }
+    },
+    "lore": "Miracle's Dawn descends upon the Church tainted by Madness, at the cost of the blood of the willing sacrifice and the immaculate lover.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0021": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0021",
+    "name": "Giant's Reign",
+    "route": {
+      "slug": "giants-reign",
+      "canonicalPath": "/database/posses/giants-reign"
+    },
+    "assets": {
+      "icon": "asset-posse-0021-icon",
+      "crystal": "asset-posse-0021-crystal",
+      "badge": "asset-posse-0021-badge"
+    },
+    "ownerAwakenerId": "awakener-0021",
+    "ownerAwakenerName": "Goliath",
+    "acquisitionSource": "Clear Psyche Deepdive: The Fall of Giant",
+    "realm": "AEQUOR",
+    "lineupToken": "s",
+    "descriptionTemplate": "Recover 1 Arithmetica and gain [Arg1] {STR}. Increase a chosen Awakener's Aliemus by [Arg2]. If your Tentacle Stance is {Raging Waves}, instead gain +15% Temporary Crit. Rate & Crit. DMG.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.015,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "15"
+      }
+    },
+    "lore": "The way of the conqueror is to never give up, to never admit defeat.\n\nEven if the horizon has devoured the light, he will still lift the unquenchable sun with brawn.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0022": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0022",
+    "name": "All of Her",
+    "route": {
+      "slug": "all-of-her",
+      "canonicalPath": "/database/posses/all-of-her"
+    },
+    "assets": {
+      "icon": "asset-posse-0022-icon",
+      "crystal": "asset-posse-0022-crystal",
+      "badge": "asset-posse-0022-badge"
+    },
+    "ownerAwakenerId": "awakener-0001",
+    "ownerAwakenerName": "24",
+    "acquisitionSource": "Clear Special Ops: Serene Fission",
+    "realm": "CHAOS",
+    "lineupToken": "t",
+    "descriptionTemplate": "Increase Realm Mastery by [Arg1]. Increase a chosen Awakener's Aliemus by [Energy:Arg2].",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "24"
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "24"
+      }
+    },
+    "lore": "All 24 merge into one, dissolving into starlight.\n\nHer personality becomes whole through division, and her body endures through fission.\n\nThere is only one 24 in this world, and she embodies them all.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0023": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0023",
+    "name": "The Lone Seed",
+    "route": {
+      "slug": "the-lone-seed",
+      "canonicalPath": "/database/posses/the-lone-seed"
+    },
+    "assets": {
+      "icon": "asset-posse-0023-icon",
+      "crystal": "asset-posse-0023-crystal",
+      "badge": "asset-posse-0023-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 7 - Desire's Flow",
+    "realm": "CARO",
+    "lineupToken": "G",
+    "descriptionTemplate": "Choose a Non-Derived Command Card in hand and create a Base Copy of it. The copy has {Exhaust}. Increase its owner's Aliemus by [Arg1].",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "15"
+      }
+    },
+    "lore": "She will pass the Lone Seed to your tongue.\nThe strength of blood, the faith of inheritance, the courage to transcend, and deep affection... she entrusts everything to you.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0024": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0024",
+    "name": "The Mountains' Resolve",
+    "route": {
+      "slug": "the-mountains-resolve",
+      "canonicalPath": "/database/posses/the-mountains-resolve"
+    },
+    "assets": {
+      "icon": "asset-posse-0024-icon",
+      "crystal": "asset-posse-0024-crystal",
+      "badge": "asset-posse-0024-badge"
+    },
+    "ownerAwakenerId": "awakener-0019",
+    "ownerAwakenerName": "Helot: Catena",
+    "acquisitionSource": "Clear Special Ops: Elworth's Returnee",
+    "realm": "CARO",
+    "lineupToken": "E",
+    "descriptionTemplate": "Choose an Awakener; draw 2 of their Command Cards.",
+    "descriptionArgs": {},
+    "lore": "The towering mountains of the frigid glacier devour the valiant warriors and mad beasts, covering the remnants of stories with pure white snow.\nBut when spring comes next year, faint signs of life will finally traverse the blizzard. The mountains have long prepared for this awakening.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0025": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0025",
+    "name": "Festival of Tides",
+    "route": {
+      "slug": "festival-of-tides",
+      "canonicalPath": "/database/posses/festival-of-tides"
+    },
+    "assets": {
+      "icon": "asset-posse-0025-icon",
+      "crystal": "asset-posse-0025-crystal",
+      "badge": "asset-posse-0025-badge"
+    },
+    "ownerAwakenerId": "awakener-0032",
+    "ownerAwakenerName": "Miryam",
+    "acquisitionSource": "Clear Dreamscape: Desecrate",
+    "realm": "AEQUOR",
+    "lineupToken": "C",
+    "descriptionTemplate": "Draw 2 cards. Recover 2 Arithmetica. All Awakeners lose 5 Aliemus. If your Tentacle Stance is {Tranquil Sea}, inflict [Arg1] {Poison} on all enemies. Inflict 3× that much {Poison} instead in Boss Battle.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "occultResearchDepth",
+        "multiplier": 0.08,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "The High Priestess of Lemuria never expects a response from the ocean.\n\nShe offers everything to the ocean, which has nothing to do with the ocean.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0026": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0026",
+    "name": "Spring's Verse",
+    "route": {
+      "slug": "springs-verse",
+      "canonicalPath": "/database/posses/springs-verse"
+    },
+    "assets": {
+      "icon": "asset-posse-0026-icon",
+      "crystal": "asset-posse-0026-crystal",
+      "badge": "asset-posse-0026-badge"
+    },
+    "ownerAwakenerId": "awakener-0024",
+    "ownerAwakenerName": "Horla",
+    "acquisitionSource": "Clear Special Ops: Rose's Abode",
+    "realm": "ULTRA",
+    "lineupToken": "A",
+    "descriptionTemplate": "Choose one of four {Poetry Pages} that haven't been chosen; reset after all {Poems} have been chosen.",
+    "descriptionArgs": {},
+    "lore": "Pray, accept my poem, this offering of spring to the garden.\nIn our desolate lives, the roses dwell in deep red.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0027": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0027",
+    "name": "A Gun's Cry",
+    "route": {
+      "slug": "a-guns-cry",
+      "canonicalPath": "/database/posses/a-guns-cry"
+    },
+    "assets": {
+      "icon": "asset-posse-0027-icon",
+      "crystal": "asset-posse-0027-crystal",
+      "badge": "asset-posse-0027-badge"
+    },
+    "ownerAwakenerId": "awakener-0043",
+    "ownerAwakenerName": "Ryker",
+    "acquisitionSource": "Clear Special Ops: Happy Hunting!",
+    "realm": "CHAOS",
+    "lineupToken": "D",
+    "descriptionTemplate": "Create 1 {Shining Octahedron Dice} and gain [Arg1]% Temporary Crit. Rate.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "15",
+        "suffix": "%"
+      }
+    },
+    "lore": "Bang—\nA gunshot that splits the sky pierces the heart of the mastermind behind the conspiracy.\n\nDeath is not the end of life, but merely the peak of the puzzle's twist.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0028": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0028",
+    "name": "Symphony Fourth",
+    "route": {
+      "slug": "symphony-fourth",
+      "canonicalPath": "/database/posses/symphony-fourth"
+    },
+    "assets": {
+      "icon": "asset-posse-0028-icon",
+      "crystal": "asset-posse-0028-crystal",
+      "badge": "asset-posse-0028-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 8 - Last Symphony",
+    "realm": "CHAOS",
+    "lineupToken": "I",
+    "descriptionTemplate": "If the Arithmetica Cost of the next card you play this turn is 3 or more, recover 2 Arithmetica. Otherwise, draw 2 cards. If this is the {ordinal:4th} time this Posse was unleashed this battle, instead create 4 {Insight}.",
+    "descriptionArgs": {},
+    "lore": "Notes gather into a surging sea of stars, the theme dances in the grand deep space.\nClose your eyes and listen. Listen to the end of the universe, listen to the climax of the universe.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0029": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0029",
+    "name": "Answer of the Gate",
+    "route": {
+      "slug": "answer-of-the-gate",
+      "canonicalPath": "/database/posses/answer-of-the-gate"
+    },
+    "assets": {
+      "icon": "asset-posse-0029-icon",
+      "crystal": "asset-posse-0029-crystal",
+      "badge": "asset-posse-0029-badge"
+    },
+    "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 9 - A Long Dream's End",
+    "realm": "CHAOS",
+    "lineupToken": "H",
+    "descriptionTemplate": "{Discover} 3 random Posses; unleash 1 and gain [Arg1] Keyflare.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "200"
+      }
+    },
+    "lore": "The Truth of all things lies beyond the Gate.\nShe remains silent here, bearing all the inquiries, responding with silence.\nThe one she awaits will eventually write their own answer.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0030": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0030",
+    "name": "Plague of Illusions",
+    "route": {
+      "slug": "plague-of-illusions",
+      "canonicalPath": "/database/posses/plague-of-illusions"
+    },
+    "assets": {
+      "icon": "asset-posse-0030-icon",
+      "crystal": "asset-posse-0030-crystal",
+      "badge": "asset-posse-0030-badge"
+    },
+    "acquisitionSource": "Clear Operation: Astral Reign - Ch. 1 - Return to the Big Smoke",
+    "realm": "CHAOS",
+    "lineupToken": "J",
+    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg1], and inflict [Arg2] {Poison} on all enemies. For each 1% of HP the target is missing, trigger 1% of their {Poison}, up to 50%.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "20"
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "occultResearchDepth",
+        "multiplier": 0.045,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "The Void is a plague brought by the Hidden Truth, erasing all colors and painting everything gray.\nDo not look directly into those mad Eyes; be careful, she may have already infected you.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0031": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0031",
+    "name": "Blessing of the Stars",
+    "route": {
+      "slug": "blessing-of-the-stars",
+      "canonicalPath": "/database/posses/blessing-of-the-stars"
+    },
+    "assets": {
+      "icon": "asset-posse-0031-icon",
+      "crystal": "asset-posse-0031-crystal",
+      "badge": "asset-posse-0031-badge"
+    },
+    "ownerAwakenerId": "awakener-0050",
+    "ownerAwakenerName": "Tulu",
+    "acquisitionSource": "Clear Psyche Deepdive: Coronation Day",
+    "realm": "AEQUOR",
+    "lineupToken": "K",
+    "descriptionTemplate": "Choose either {Slumber} or {Arouse}.",
+    "descriptionArgs": {},
+    "lore": "He chose that Crown, and that Crown also chose him.\nThe soul of the new king resonated with the ancient god in an instant. An overwhelming shadow appeared behind him, bringing eternal peace to the nation.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0032": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0032",
+    "name": "Black Swan's Dance",
+    "route": {
+      "slug": "black-swans-dance",
+      "canonicalPath": "/database/posses/black-swans-dance"
+    },
+    "assets": {
+      "icon": "asset-posse-0032-icon",
+      "crystal": "asset-posse-0032-crystal",
+      "badge": "asset-posse-0032-badge"
+    },
+    "ownerAwakenerId": "awakener-0030",
+    "ownerAwakenerName": "Liz",
+    "acquisitionSource": "Clear Psyche Deepdive: Passion to Dust",
+    "realm": "ULTRA",
+    "lineupToken": "B",
+    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg2], and the Temp. Crit. Rate & Crit. DMG of their Command Cards by [Arg1]%. If Liz is in your team, create 1 {Corrupted Flames} with {Exhaust}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "15",
+        "suffix": "%"
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "15"
+      }
+    },
+    "lore": "Light steps. A sharp turn. A spin. At the crescendo of the music, she dives headlong into flames. Burn. Burning is the only answer her dance can give.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Liz"
+  },
+  "posse-0033": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0033",
+    "name": "Tavern's Opening",
+    "route": {
+      "slug": "taverns-opening",
+      "canonicalPath": "/database/posses/taverns-opening"
+    },
+    "assets": {
+      "icon": "asset-posse-0033-icon",
+      "crystal": "asset-posse-0033-crystal",
+      "badge": "asset-posse-0033-badge"
+    },
+    "acquisitionSource": "Clear Multiverse Link: My Turn!",
+    "realm": "OTHER",
+    "lineupToken": "L",
+    "descriptionTemplate": "Generate 1 {Leah's Coin} and shuffle it into the Discard Pile.",
+    "descriptionArgs": {},
+    "lore": "When one world comes to an end, the prologue of another world begins. Stories will be passed down by people alongside fine wine, but time will write answers for all things.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0034": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0034",
+    "name": "Sacred Mending",
+    "route": {
+      "slug": "sacred-mending",
+      "canonicalPath": "/database/posses/sacred-mending"
+    },
+    "assets": {
+      "icon": "asset-posse-0034-icon",
+      "crystal": "asset-posse-0034-crystal",
+      "badge": "asset-posse-0034-badge"
+    },
+    "acquisitionSource": "Clear Operation: Astral Reign - Ch. 2 - Metamorphosis",
+    "realm": "ULTRA",
+    "lineupToken": "M",
+    "descriptionTemplate": "Recover [Heal:Arg1] HP and gain [Arg2] {STR}. If Clementine is in your team, add 1 extra instance of the following effects to her next Command Card you play: DMG, Shield, HP Recovery, Aliemus, and Keyflare.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.07,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.02,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "She has healed countless patients, guiding them toward rebirth, and everything now is just a psychological therapy.\nThe only special thing is that the patient is herself.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Clementine"
+  },
+  "posse-0035": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0035",
+    "name": "Undying Thunder",
+    "route": {
+      "slug": "undying-thunder",
+      "canonicalPath": "/database/posses/undying-thunder"
+    },
+    "assets": {
+      "icon": "asset-posse-0035-icon",
+      "crystal": "asset-posse-0035-crystal",
+      "badge": "asset-posse-0035-badge"
+    },
+    "ownerAwakenerId": "awakener-0011",
+    "ownerAwakenerName": "Corposant",
+    "acquisitionSource": "Clear Psyche Deepdive: Final Steersmanship",
+    "realm": "AEQUOR",
+    "lineupToken": "N",
+    "descriptionTemplate": "Draw [Arg2] {plural:[Arg2]|card|cards}. Gain [Arg1] Shield. If Corposant is in your team, create 1 {Pilot}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.06,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "2"
+      }
+    },
+    "lore": "Burn, burn, burn.\nEven if my bones and blood are boiling, even if my flesh is charred, I will squeeze out the last drop of blood in my body to shine bright.\nBecause in this darkness, I am the only guide.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Corposant"
+  },
+  "posse-0036": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0036",
+    "name": "Derision of Destiny",
+    "route": {
+      "slug": "derision-of-destiny",
+      "canonicalPath": "/database/posses/derision-of-destiny"
+    },
+    "assets": {
+      "icon": "asset-posse-0036-icon",
+      "crystal": "asset-posse-0036-crystal",
+      "badge": "asset-posse-0036-badge"
+    },
+    "ownerAwakenerId": "awakener-0008",
+    "ownerAwakenerName": "Castor",
+    "acquisitionSource": "Clear Dreamscape: Beyond the Skies: Part I",
+    "realm": "ULTRA",
+    "lineupToken": "O",
+    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Energy:Arg3]. Draw [Arg2] {plural:[Arg2]|card|cards} with the lowest Arithmetica Cost from the Draw Pile. If Castor is in your team, increase his Temp. DMG Amplification by [Arg1]%.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "30",
+        "suffix": "%"
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "2"
+      },
+      "Arg3": {
+        "kind": "fixed",
+        "value": "15"
+      }
+    },
+    "lore": "They always brush past fleeting hopes at the wrong time.\nOnce, that tender hand guided him towards the light of freedom.\nAs he desperately flapped his wings and broke free from the prison of fate once more, why did that familiar hand pierce through his chest at this moment?",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Castor"
+  },
+  "posse-0037": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0037",
+    "name": "Cruel Homage",
+    "route": {
+      "slug": "cruel-homage",
+      "canonicalPath": "/database/posses/cruel-homage"
+    },
+    "assets": {
+      "icon": "asset-posse-0037-icon",
+      "crystal": "asset-posse-0037-crystal",
+      "badge": "asset-posse-0037-badge"
+    },
+    "acquisitionSource": "Clear Operation: Astral Reign - Ch. 3 - Ossuary Gala",
+    "realm": "CARO",
+    "lineupToken": "S",
+    "descriptionTemplate": "{Steal} [Arg1] {STR} from all enemies. If Doresain is in your team, he gains 1 {Corpse}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.04,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "The full moon has risen to the zenith, and the King of the Ghouls salutes you.\nTonight, we drink in hatred from the skulls of our enemies.\nTonight, we measure eternity with the ribs of our lovers.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Doresain"
+  },
+  "posse-0038": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0038",
+    "name": "Undying Sun",
+    "route": {
+      "slug": "undying-sun",
+      "canonicalPath": "/database/posses/undying-sun"
+    },
+    "assets": {
+      "icon": "asset-posse-0038-icon",
+      "crystal": "asset-posse-0038-crystal",
+      "badge": "asset-posse-0038-badge"
+    },
+    "ownerAwakenerId": "awakener-0027",
+    "ownerAwakenerName": "Kathigu-Ra",
+    "acquisitionSource": "Clear Psyche Deepdive: Everburning Vex",
+    "realm": "CHAOS",
+    "lineupToken": "R",
+    "descriptionTemplate": "Recover 1 Arithmetica and gain [Arg1]% Temp. DMG Amplification. If Kathigu-Ra is in your team, draw 1 of her cards and apply 1 stack of {Fiamma} to it",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "30",
+        "suffix": "%"
+      }
+    },
+    "lore": "Even if the false black sun has obscured the sky, the true sun will never extinguish.\nThe brief sunset at this moment is meant to burst forth a more blazing sun.\nNow, the sun burning with amber flames rises again, never to set again.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Kathigu-Ra"
+  },
+  "posse-0039": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0039",
+    "name": "Sacred Bleeding Heart",
+    "route": {
+      "slug": "sacred-bleeding-heart",
+      "canonicalPath": "/database/posses/sacred-bleeding-heart"
+    },
+    "assets": {
+      "icon": "asset-posse-0039-icon",
+      "crystal": "asset-posse-0039-crystal",
+      "badge": "asset-posse-0039-badge"
+    },
+    "ownerAwakenerId": "awakener-0041",
+    "ownerAwakenerName": "Pollux",
+    "acquisitionSource": "Clear Dreamscape: Beyond the Skies: Part II",
+    "realm": "ULTRA",
+    "lineupToken": "V",
+    "descriptionTemplate": "Draw 1 card and reduce its Arithmetica Cost by 1. If a Command Card is drawn, its owner gains [Arg1]% Temporary Crit. DMG. If Pollux is in the team, gain [Arg2] {plural:[Arg2]|stack|stacks} of {Sin Mark}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "25",
+        "suffix": "%"
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "5"
+      }
+    },
+    "lore": "He finally recovered all his memories and strength, but at the cost of everything he wanted to protect.\nHe has come too late.\nOnly tears of blood filled with hatred and remorse burned in his trembling heart.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Pollux"
+  },
+  "posse-0040": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0040",
+    "name": "Voracious Resolve",
+    "route": {
+      "slug": "voracious-resolve",
+      "canonicalPath": "/database/posses/voracious-resolve"
+    },
+    "assets": {
+      "icon": "asset-posse-0040-icon",
+      "crystal": "asset-posse-0040-crystal",
+      "badge": "asset-posse-0040-badge"
+    },
+    "acquisitionSource": "Clear Dreamscape: Culinary Dominion",
+    "realm": "CARO",
+    "lineupToken": "Q",
+    "descriptionTemplate": "{Discover} 1 of 3 basic Skill Commands from the Awakeners in your team; it has {Exhaust}, and its Arithmetica Cost -1. If the Realm includes {Caro}, you may choose \"Gobble Up!\"",
+    "descriptionArgs": {},
+    "lore": "This is the Promised Land sworn by Mythag to her warriors—where jars overflow with honey and cabinets groan with meat.\nNo force may bar the brave; what is theirs by right, they shall claim.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0041": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0041",
+    "name": "Beachside Memento",
+    "route": {
+      "slug": "beachside-memento",
+      "canonicalPath": "/database/posses/beachside-memento"
+    },
+    "assets": {
+      "icon": "asset-posse-0041-icon",
+      "crystal": "asset-posse-0041-crystal",
+      "badge": "asset-posse-0041-badge"
+    },
+    "acquisitionSource": "Clear Dreamscape: See You in Neverland",
+    "realm": "OTHER",
+    "lineupToken": "T",
+    "descriptionTemplate": "Choose an Awakener; create 1 of their basic Strike Commands. It has {Exhaust}. Every {ordinal:3rd} time this is unleashed, instead create 1 {Fleeting Beauty} and gain +[Arg1]% Temp. Crit. Rate.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "20",
+        "suffix": "%"
+      }
+    },
+    "lore": "Every party has its end, but the memories etched in the soul never cease. No matter how many times, when recalling this frozen moment, longing will surge like a tide.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0042": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0042",
+    "name": "Void Hues",
+    "route": {
+      "slug": "void-hues",
+      "canonicalPath": "/database/posses/void-hues"
+    },
+    "assets": {
+      "icon": "asset-posse-0042-icon",
+      "crystal": "asset-posse-0042-crystal",
+      "badge": "asset-posse-0042-badge"
+    },
+    "ownerAwakenerId": "awakener-0040",
+    "ownerAwakenerName": "Pickman",
+    "acquisitionSource": "Clear Psyche Deepdive: Ghastly Canvas",
+    "realm": "CARO",
+    "lineupToken": "U",
+    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg1], and shuffle 1 {Insight} into the Draw Pile. If Pickman is in your team, he gains 1 stack of {Creativity}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "20"
+      }
+    },
+    "lore": "The rotting phantasm gives birth to a distorted neon on the retina—\nthus the concept of \"color\" transcends the virtual world, leaving only the delirious hues flowing on the corpse of reality.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Pickman"
+  },
+  "posse-0043": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0043",
+    "name": "A Fleeting Dream",
+    "route": {
+      "slug": "a-fleeting-dream",
+      "canonicalPath": "/database/posses/a-fleeting-dream"
+    },
+    "assets": {
+      "icon": "asset-posse-0043-icon",
+      "crystal": "asset-posse-0043-crystal",
+      "badge": "asset-posse-0043-badge"
+    },
+    "acquisitionSource": "Clear Dreamscape: See You, Neverland",
+    "realm": "OTHER",
+    "lineupToken": "W",
+    "descriptionTemplate": "Gain [Block:Arg1] Shield and Temporary {STR} equal to 10% of the current Shield.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.15,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "Everything beautiful, complete, and soft leads to one's downfall, and you choose to become your own executioner, personally severing your soul from the warm bed of dreams.\nAfter piercing through the false veil, you look back, and those smiling faces are frozen within pale lines, waiting for your true return.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0044": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0044",
+    "name": "Wayward Ship",
+    "route": {
+      "slug": "wayward-ship",
+      "canonicalPath": "/database/posses/wayward-ship"
+    },
+    "assets": {
+      "icon": "asset-posse-0044-icon",
+      "crystal": "asset-posse-0044-crystal",
+      "badge": "asset-posse-0044-badge"
+    },
+    "acquisitionSource": "Clear Operation: Astral Reign - Ch. 4 - Paradise",
+    "realm": "AEQUOR",
+    "lineupToken": "X",
+    "descriptionTemplate": "Gain 1 Arithmetica, and apply 5 stacks of {Birth Ritual} to all enemies. If \"Murphy: Fauxborn\" is in the team, draw 1 {Waltz of Lemuria}.",
+    "descriptionArgs": {},
+    "lore": "The Apostle of the Sea kneels devoutly at the Maiden's feet, offering a kiss of fidelity—she has traveled too far on the wrong course.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Murphy: Fauxborn"
+  },
+  "posse-0045": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0045",
+    "name": "Reunion Wish",
+    "route": {
+      "slug": "reunion-wish",
+      "canonicalPath": "/database/posses/reunion-wish"
+    },
+    "assets": {
+      "icon": "asset-posse-0045-icon",
+      "crystal": "asset-posse-0045-crystal",
+      "badge": "asset-posse-0045-badge"
+    },
+    "ownerAwakenerId": "awakener-0042",
+    "ownerAwakenerName": "Ramona",
+    "acquisitionSource": "Clear Special Ops: Celestial Aria",
+    "realm": "OTHER",
+    "lineupToken": "Y",
+    "descriptionTemplate": "Return 1 Command Card from the Discard Pile to your hand. If Ramona is in the team, the next Command Card she plays this turn takes effect [Arg1] {plural:[Arg1]|time|times}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "2"
+      }
+    },
+    "lore": "Countless longings transform into shooting stars, rushing to your reunion once again.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Ramona"
+  },
+  "posse-0046": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0046",
+    "name": "From the Mist Realm",
+    "route": {
+      "slug": "from-the-mist-realm",
+      "canonicalPath": "/database/posses/from-the-mist-realm"
+    },
+    "assets": {
+      "icon": "asset-posse-0046-icon",
+      "crystal": "asset-posse-0046-crystal",
+      "badge": "asset-posse-0046-badge"
+    },
+    "ownerAwakenerId": "awakener-0033",
+    "ownerAwakenerName": "Mouchette",
+    "acquisitionSource": "Clear Multiverse Link: Baptism of Silver and Blood",
+    "realm": "CHAOS",
+    "lineupToken": "Z",
+    "descriptionTemplate": "Draw 2 \"Strike\" cards. If \"Mouchette\" is in the team, reduce their Arithmetica Cost by 1.",
+    "descriptionArgs": {},
+    "lore": "She is Mouchette, the vanguard of the A.U.G.E. from a distant realm. Having endured a baptism of silver and blood within this world, she has been forged anew. This badge, imbued with the essence of \"home,\" stands as the eternal witness to her journey across the dimensions.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Mouchette"
+  },
+  "posse-0047": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0047",
+    "name": "Manor Echoes",
+    "route": {
+      "slug": "manor-echoes",
+      "canonicalPath": "/database/posses/manor-echoes"
+    },
+    "assets": {
+      "icon": "asset-posse-0047-icon",
+      "crystal": "asset-posse-0047-crystal",
+      "badge": "asset-posse-0047-badge"
+    },
+    "ownerAwakenerId": "awakener-0054",
+    "ownerAwakenerName": "Xu",
+    "acquisitionSource": "Clear Psyche Deepdive: Whispers Behind the Fan",
+    "realm": "CARO",
+    "lineupToken": "2",
+    "descriptionTemplate": "Gain 1 Arithmetica and temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg1] for 1 turn. If \"Xu\" is in the team, inflict 1 stack of {Spellbound} on all enemies.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.041,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "The secluded manor holds too many secrets—of power, of obsession, of desire.\nOf the glimpse the evil deity casts upon the mortal world, brimming with love both \"delighted\" and \"twisted.\"",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Xu"
+  },
+  "posse-0048": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0048",
+    "name": "Year-End Sparks",
+    "route": {
+      "slug": "year-end-sparks",
+      "canonicalPath": "/database/posses/year-end-sparks"
+    },
+    "assets": {
+      "icon": "asset-posse-0048-icon",
+      "crystal": "asset-posse-0048-crystal",
+      "badge": "asset-posse-0048-badge"
+    },
+    "acquisitionSource": "Clear Special Ops: Spring Festival Express",
+    "realm": "OTHER",
+    "lineupToken": "3",
+    "descriptionTemplate": "Temporary Crit. Rate +15%, gain 1 Arithmetica. The first time unleashed in this battle, deal [Arg3] {Ancient Embers} to all enemies.",
+    "descriptionArgs": {
+      "Arg3": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "occultResearchDepth",
+        "multiplier": 0.3,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "Year after year, the blossoms return unchanged;\nSeason after season, I long for our reunion.\n\nThis Spring Festival is so brief, so sweet, like a beautiful dream. My dear, when you stand beside your beloved, hand in hand,\ngazing upon the countless fireworks lighting the sky... pray, do not forget the devotion of this humble heart.",
+    "hasCharacterBonus": false,
+    "characterBonusFor": null
+  },
+  "posse-0049": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0049",
+    "name": "Drowned Innocence",
+    "route": {
+      "slug": "drowned-innocence",
+      "canonicalPath": "/database/posses/drowned-innocence"
+    },
+    "assets": {
+      "icon": "asset-posse-0049-icon",
+      "crystal": "asset-posse-0049-crystal",
+      "badge": "asset-posse-0049-badge"
+    },
+    "ownerAwakenerId": "awakener-0055",
+    "ownerAwakenerName": "Vortice",
+    "acquisitionSource": "Clear Psyche Deepdive: No More the Shore",
+    "realm": "AEQUOR",
+    "lineupToken": "5",
+    "descriptionTemplate": "Choose an Awakener to gain [Arg1] Aliemus, while other Awakeners gain [Arg2] Aliemus. Vortice: Immediately unleash {Vortex! Shell!} as a {Pursuit}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "15"
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "5"
+      }
+    },
+    "lore": "She plunged into the icy sea without hesitation, fully aware that the vortex would claim her life.\nBecause in her pure, innocent mind, this was the only way to save her friends.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Vortice"
+  },
+  "posse-0050": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0050",
+    "name": "Orbis Fatum",
+    "route": {
+      "slug": "orbis-fatum",
+      "canonicalPath": "/database/posses/orbis-fatum"
+    },
+    "assets": {
+      "icon": "asset-posse-0050-icon",
+      "crystal": "asset-posse-0050-crystal",
+      "badge": "asset-posse-0050-badge"
+    },
+    "acquisitionSource": "Clear Operation: Astral Reign - Ch. 5 - Fated Theater",
+    "realm": "ULTRA",
+    "lineupToken": "1",
+    "descriptionTemplate": "Gain [Arg1] Shield and [Arg2]% Temporary DMG Amplification. If \"Arachne\" is in the party, draw 1 {Eternal Loom} and reduce its Arithmetica Cost by 1.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.08,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "fixed",
+        "value": "50",
+        "suffix": "%"
+      }
+    },
+    "lore": "Spin, measure, sever.\nThe goddess of destiny knows neither joy nor sorrow; the wheel of fate turns for all eternity.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Arachne"
+  },
+  "posse-0051": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0051",
+    "name": "For the New World",
+    "route": {
+      "slug": "for-the-new-world",
+      "canonicalPath": "/database/posses/for-the-new-world"
+    },
+    "assets": {
+      "icon": "asset-posse-0051-icon",
+      "crystal": "asset-posse-0051-crystal",
+      "badge": "asset-posse-0051-badge"
+    },
+    "ownerAwakenerId": "awakener-0057",
+    "ownerAwakenerName": "Saya",
+    "acquisitionSource": "Clear Multiverse Link: Forgotten Seed of Love",
+    "realm": "CARO",
+    "lineupToken": "4",
+    "descriptionTemplate": "Gain [Arg1] Shield. Draw 2 \"Skill\" cards and grant them {Perception Warp}. Saya: gains 1 stack of {Gynoecium}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.06,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "Bloom, bloom, dyeing the entire world in colors of joy.\nThat is an ancient healing, an eternal bliss—Saya's final gift to the new world about to be unveiled.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Saya"
+  },
+  "posse-0052": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0052",
+    "name": "The Hollow One",
+    "route": {
+      "slug": "the-hollow-one",
+      "canonicalPath": "/database/posses/the-hollow-one"
+    },
+    "assets": {
+      "icon": "asset-posse-0052-icon",
+      "crystal": "asset-posse-0052-crystal",
+      "badge": "asset-posse-0052-badge"
+    },
+    "ownerAwakenerId": "awakener-0058",
+    "ownerAwakenerName": "Pontos",
+    "acquisitionSource": "Clear Psyche Deepdive: Ebwynnos Evermore",
+    "realm": "AEQUOR",
+    "lineupToken": "6",
+    "descriptionTemplate": "Temporary Crit. DMG +[Arg1]%, temporarily reduce all enemies' {STR▼} by [Arg2]. If Pontos is in the party, gain 1 stack of {Pack Hunt}.",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "fixed",
+        "value": "30",
+        "suffix": "%"
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.045,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      }
+    },
+    "lore": "Let us recount the tale of your life—a story that shall echo no more.\nLike the sea surging into the abyss, to slumber there for all eternity.",
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Pontos"
+  }
+}
