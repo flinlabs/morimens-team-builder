@@ -51,6 +51,33 @@ export function isValidRealmComposition(
   return getRealmsInTeam(awakenerIds, awakeners).length <= 2
 }
 
+/**
+ * Base character behind a variant. "Ramona: Timeworn" and "Ramona" are the
+ * same character in-game and can never share a team; likewise Doll / Doll:
+ * Inferno, Helot / Helot: Catena, Murphy / Murphy: Fauxborn. SKeyDB encodes
+ * variants as "<Base>: <Epithet>", so the name prefix is the identity.
+ */
+export function baseCharacterName(awakener: EnrichedAwakener | undefined): string {
+  const name = awakener?.name ?? ''
+  const idx = name.indexOf(':')
+  return (idx === -1 ? name : name.slice(0, idx)).trim()
+}
+
+/** True when two team members are variants of the same base character. */
+export function hasVariantConflict(
+  awakenerIds: string[],
+  awakeners: Record<string, EnrichedAwakener>
+): boolean {
+  const seen = new Set<string>()
+  for (const id of awakenerIds) {
+    const base = baseCharacterName(awakeners[id])
+    if (!base) continue
+    if (seen.has(base)) return true
+    seen.add(base)
+  }
+  return false
+}
+
 // At most one ASSAULT-class unit per team. Each carry is so resource-hungry
 // (hand size, Arithmetica, Keyflare) that two of them clash badly.
 const MAX_ASSAULT_PER_TEAM = 1
@@ -403,6 +430,21 @@ export interface FilterOptions {
   minViabilityTier?: ViabilityTier
   maxResults?: number
   excludeIds?: string[]
+  // Skip curated meta comps and their exact compositions — surfaces engine-
+  // built variety for players tired of seeing the same headline teams.
+  offMeta?: boolean
+  // Exact compositions (sorted ids joined by '|') to skip — lets "Generate"
+  // rotate through fresh teams instead of returning the same set every press.
+  excludeTeamKeys?: string[]
+  // Last-resort D-Tide padding: drop the engine heuristics (DPS+sustain
+  // requirement, one-ASSAULT cap) so a shallow roster can still field five
+  // teams. Real game rules (realm mixing, variant exclusivity) always hold;
+  // any gaps still show on the team card.
+  relaxCoverage?: boolean
+  // D-Tide only: per-board pins, index-aligned with the five teams. Each
+  // team's pinned units are locked to that board and the engine fills around
+  // them. Overrides pinnedIds in dtide mode.
+  dtidePins?: string[][]
 }
 
 export function generateCandidateTeams(
@@ -416,10 +458,14 @@ export function generateCandidateTeams(
     minViabilityTier = 2,
     maxResults = 3,
     excludeIds = [],
+    relaxCoverage = false,
   } = options
 
-  // Get viable pool
+  // Get viable pool. Ownership is enforced explicitly: at minViabilityTier 1
+  // (the D-Tide relaxation pass) unowned units also score tier 1 and would
+  // otherwise leak into the pool.
   const viableIds = getViableAwakenerIds(roster, awakeners, minViabilityTier)
+    .filter(id => getAwakenerEntry(roster, id).owned)
     .filter(id => !excludeIds.includes(id))
 
   // Validate pinned characters
@@ -450,8 +496,14 @@ export function generateCandidateTeams(
     // Realm validity
     if (!isValidRealmComposition(teamIds, awakeners)) continue
 
-    // Class limits (no more than one ASSAULT unit)
-    if (!withinClassLimits(teamIds, awakeners)) continue
+    // Same base character twice (e.g. Ramona + Ramona: Timeworn) is illegal.
+    if (hasVariantConflict(teamIds, awakeners)) continue
+
+    // Class limits (no more than one ASSAULT unit). Like minimum coverage,
+    // this is an engine heuristic rather than a game rule — the D-Tide
+    // last-resort pass waives it so a roster of leftover carries can still
+    // fill a board instead of leaving it empty.
+    if (!relaxCoverage && !withinClassLimits(teamIds, awakeners)) continue
 
     // Realm gates (e.g. Murphy: Fauxborn only on mono-Aequor teams)
     if (!withinRealmGates(teamIds, awakeners)) continue
@@ -466,8 +518,9 @@ export function generateCandidateTeams(
       if (!matchesPreferred) continue
     }
 
-    // Minimum role coverage
-    if (!hasMinimumCoverage(teamIds, awakeners)) continue
+    // Minimum role coverage (skipped only by the D-Tide last-resort pass;
+    // any gaps still surface in the team card's coverageGaps).
+    if (!relaxCoverage && !hasMinimumCoverage(teamIds, awakeners)) continue
 
     candidates.push(buildCandidateTeam(teamIds, awakeners, roster))
   }
