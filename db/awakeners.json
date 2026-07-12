@@ -22159,8 +22159,7 @@
       "isDivineRealm": false,
       "tier": "A",
       "notes": "Tanky ramping juggernaut \u2014 generates big shields off her defense card and ramps Base DMG/STR via Fiamma cards and 0-cost Hyperflare resets until Hyperflare one-shots bosses. Needs E3 and her posse; wants STR/crit buffs and Arithmetica to fuel Combust cycles.",
-      "anchorPosse": "posse-0038",
-      "combatTheme": "neutral"
+      "anchorPosse": "posse-0038"
     },
     "annotationPending": false,
     "statScaling": {
