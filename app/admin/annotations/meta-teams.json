@@ -567,19 +567,19 @@
       "name": "Saya \u2014 Propagation Caro",
       "awakenerIds": [
         "awakener-0057",
-        "awakener-0046",
+        "awakener-0014",
         "awakener-0048",
         "awakener-0016"
       ],
       "awakenerNames": [
         "Saya",
-        "Sorel",
+        "Doresain",
         "Thais",
         "Faint"
       ],
       "realm": "CARO",
       "source": "Beginner Guide to Caro + Character Guide",
-      "notes": "Mono-Caro Propagation team. Saya stacks Corrosion, funnels Aliemus and seeds 0-cost card copies that supercharge Sorel's Exalt; Thais embryo support, Faint sustain. Realm: CARO. Source: Beginner Guide to Caro + Character Guide.",
+      "notes": "Saya's divine realm is Propagation: Caro, which raises the Embryo Fusion threshold to 200% \u2014 embryo-scaling carries (Sorel's Infinite Devour) are handicapped under it, so the carry slot goes to Doresain, whose kill-scaling Exalt doesn't care and whose damage the Lyra guide rates as her best pairing. Thais batteries Aliemus/Embryo for the payoffs; Faint sustains. Source: Lyra Saya guide + MRMS correction on Propagation embryo cost.",
       "tier": "S"
     },
     {
