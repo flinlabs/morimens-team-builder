@@ -217,10 +217,56 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
           ...poolOptions,
           ...step.opts,
           excludeIds,
-          maxResults: 12,
+          // Deep enough that the tier-aware band can reach comps built around
+          // less-invested notables — at 12 an owned Castor+Pollux pair never
+          // even entered the per-board pool.
+          maxResults: 24,
         })
         const ranked = [...metaCands, ...searchCands].sort((a, b) => b.score - a.score)
-        const best = ranked.find((c) => !seen.has(teamKey(c.awakenerIds)))
+        const eligible = ranked.filter((c) => !seen.has(teamKey(c.awakenerIds)))
+        // Same band logic as single mode: among near-equal candidates, prefer
+        // the team fielding the strongest character not yet on any board. Pure
+        // greedy was benching an owned A-tier pair (Castor+Pollux) for the
+        // whole lineup while a stretch comp took the last board.
+        const TIER_W: Record<string, number> = { S: 2, A: 1.5, B: 1, C: 0.75 }
+        const tierW = (id: string) =>
+          TIER_W[awakeners[id]?.annotation?.tier ?? ''] ?? 1
+        // A comp that fields BOTH halves of a keyPairing beats a near-equal
+        // comp that consumes one half and strands the other on the bench —
+        // splitting Castor away from Pollux on board 1 left Pollux unfieldable
+        // for the whole lineup. Pairs are weighted by the investment of their
+        // weaker half, so an E2+E2 duo outranks the same anchor's E0 pairing.
+        const ENL_RANK: Record<string, number> = {
+          E0: 0, E1: 1, E2: 2, E3: 3, OE: 4, OverExalt: 4, AA: 5, AbsoluteAxiom: 5,
+        }
+        const intactPairs = (c: CandidateTeam): number => {
+          let weight = 0
+          for (const id of c.awakenerIds) {
+            for (const p of awakeners[id]?.annotation?.keyPairings ?? []) {
+              if (!c.awakenerIds.includes(p.partnerId)) continue
+              const ra = ENL_RANK[getAwakenerEntry(req.roster, id).enlightenSlot] ?? 0
+              const rb = ENL_RANK[getAwakenerEntry(req.roster, p.partnerId).enlightenSlot] ?? 0
+              weight += 1 + Math.min(ra, rb)
+            }
+          }
+          return weight
+        }
+        let best: CandidateTeam | undefined
+        if (eligible.length) {
+          const topScore = eligible[0].score
+          let bestPairs = -1
+          let bestTop = -1
+          for (const c of eligible) {
+            if (c.score < topScore - 0.15) break // ranked desc — past the band
+            const pairs = intactPairs(c)
+            const top = Math.max(...c.awakenerIds.map(tierW))
+            if (pairs > bestPairs || (pairs === bestPairs && top > bestTop)) {
+              best = c
+              bestPairs = pairs
+              bestTop = top
+            }
+          }
+        }
         if (!best) break
         seen.add(teamKey(best.awakenerIds))
         best.awakenerIds.forEach((id) => usedIds.add(id))
@@ -281,6 +327,26 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
     }
 
     const finalTeams = picked.filter((p): p is CandidateTeam => !!p)
+    // Warn on CONTENT, not code path: tier bonuses can admit below-floor
+    // units through the strict pass, so keying the warning off the
+    // relaxation steps alone stopped firing even when stretch units were
+    // fielded.
+    const stretchNames = [
+      ...new Set(
+        finalTeams
+          .flatMap((t) => t.awakenerIds)
+          .filter((id) => {
+            const floor = awakeners[id]?.annotation?.viabilityFloor ?? 'E0'
+            return !meetsFloor(getAwakenerEntry(req.roster, id).enlightenSlot, floor)
+          })
+          .map((id) => awakeners[id].name)
+      ),
+    ]
+    if (stretchNames.length) {
+      warnings.push(
+        `Below comfort floor — stretch picks: ${stretchNames.join(', ')}.`
+      )
+    }
     if (finalTeams.length) {
       if (finalTeams.length < 5) {
         warnings.push(

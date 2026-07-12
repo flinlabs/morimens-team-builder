@@ -429,16 +429,40 @@ export function buildCandidateTeam(
     }
   }
 
+  // Isolated carry: realm payoffs need same-realm enablers. An Ultra carry
+  // with three Caro supports gets Embryo/Corrosion machinery that feeds no
+  // one — the D-Tide leftovers pass was assembling exactly these. A primary
+  // carry with zero same-realm teammates is discounted; Chaos carries are
+  // exempt since Chaos units are designed to operate inside foreign realms.
+  let isolatedCarryPenalty = 0
+  const isolationNotes: string[] = []
+  for (const id of awakenerIds) {
+    const a = awakeners[id]
+    if (a?.annotation?.teamRoles?.[0] !== 'main_dps') continue
+    if (a.realm === 'CHAOS') continue
+    const sameRealmAllies = awakenerIds.filter(
+      (x) => x !== id && awakeners[x]?.realm === a.realm
+    ).length
+    if (sameRealmAllies === 0) {
+      isolatedCarryPenalty += 0.1
+      isolationNotes.push(
+        `${a.name} is the only ${a.realm} member — no same-realm support feeds their realm mechanics`
+      )
+    }
+  }
+
   const score =
     viabilitySum / awakenerIds.length +
     synergyBonus +
     chaosSplashBonus -
     penaltyDeduction -
-    conditionPenalty
+    conditionPenalty -
+    isolatedCarryPenalty
 
   const allGaps = [
     ...gaps,
     ...conditionWarnings,
+    ...isolationNotes,
   ]
 
   return {

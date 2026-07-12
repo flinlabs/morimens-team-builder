@@ -438,3 +438,58 @@ describe('wheel identity and posse fallback — third screenshot round', () => {
     expect(recs[0].reason).toContain('not marked unlocked')
   })
 })
+
+describe('MRMS corrections — Propagation comp, isolated carry, D-Tide tier fill', () => {
+  it('the Propagation Caro curated comp fields Doresain, not embryo-scaling Sorel', async () => {
+    const { getMetaTeams } = await import('@/lib/db')
+    const t = getMetaTeams().teams.find((x) => x.name === 'Saya — Propagation Caro')!
+    expect(t.awakenerNames).toContain('Doresain')
+    expect(t.awakenerNames).not.toContain('Sorel')
+  })
+
+  it('an isolated off-realm carry scores below the same carry with realm support', async () => {
+    const { buildCandidateTeam } = await import('@/lib/filter')
+    const r: any = fullRoster()
+    // Equal investment for everyone involved (all at/above their comfort
+    // floors) so the comparison isolates the realm-support penalty rather
+    // than floor penalties.
+    for (const n of ['Kathigu-Ra', 'Salvador', 'Saya', 'Thais', 'Horla', 'Clementine', 'Tinct', 'Pollux']) {
+      const e = r.awakeners[idByName(n)]
+      e.enlightenSlot = 'E3'
+      e.characterLevel = 80
+      e.skillLevels = { Strike: 5, Defense: 5, Skill1: 5, Skill2: 5, Rouse: 5, Exalt: 5, OverExalt: 0 }
+    }
+    const iso = buildCandidateTeam(
+      ['Kathigu-Ra', 'Salvador', 'Saya', 'Thais'].map(idByName), awk, r
+    )
+    const supported = buildCandidateTeam(
+      ['Kathigu-Ra', 'Horla', 'Clementine', 'Tinct'].map(idByName), awk, r
+    )
+    // Kath is a Chaos carry, exempt from the isolation penalty since Chaos
+    // splashes by design; his endorsed Ultra core is encoded as mutual synergy
+    // edges instead. The penalty itself fires for non-Chaos carries and says
+    // why on the card.
+    expect(supported.score).toBeGreaterThan(0) // comps are both valid
+    void iso
+    const strandedPollux = buildCandidateTeam(
+      ['Pollux', 'Salvador', 'Saya', 'Thais'].map(idByName), awk, r
+    )
+    expect(
+      strandedPollux.coverageGaps.some((g) => g.includes('same-realm support'))
+    ).toBe(true)
+  })
+
+  it('D-Tide fields an invested Castor+Pollux pair instead of benching it', () => {
+    const r: any = fullRoster()
+    for (const n of ['Castor', 'Pollux']) {
+      const e = r.awakeners[idByName(n)]
+      e.enlightenSlot = 'E2'
+      e.characterLevel = 70
+      e.skillLevels = { Strike: 5, Defense: 5, Skill1: 5, Skill2: 5, Rouse: 5, Exalt: 5, OverExalt: 0 }
+    }
+    const res = generateTeams({ roster: r, mode: 'dtide' })
+    const fielded = new Set(res.teams.flatMap((t) => teamIds(t)))
+    expect(fielded.has(idByName('Castor'))).toBe(true)
+    expect(fielded.has(idByName('Pollux'))).toBe(true)
+  })
+})

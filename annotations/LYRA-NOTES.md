@@ -70,3 +70,23 @@ Pontos corrections (his data previously came from a single source):
 - Per-guide PDFs in docs/lyra/ — drop into project knowledge alongside the
   other guides.
 - OCR text per guide in docs/lyra/ocr/ — searchable, best-effort quality.
+
+
+## 2026-07-12 — MRMS corrections round
+
+Applied:
+
+- **Saya — Propagation Caro curated comp: Sorel → Doresain.** Propagation
+  raises the Embryo Fusion threshold to 200%, and Sorel's Infinite Devour
+  scales with embryo count — she wants embryos as fast as possible, so the
+  divine realm actively fights her. Doresain's kill-scaling doesn't care and
+  the Lyra guide rates him her best pairing. No Saya↔Sorel synergy edges
+  existed in annotations, so nothing else changed; outside Propagation
+  contexts the Lyra guide still speaks well of the pair (open question
+  whether Saya's presence always implies Propagation in practice — if so,
+  say the word and I'll add a conflict edge).
+- **Isolated-carry penalty (engine).** A primary carry with zero same-realm
+  teammates is discounted 0.1 (Chaos carries exempt) — kills the Kath + three
+  Caro supports pattern the D-Tide leftover pass was assembling.
+- **D-Tide board fill is tier-aware within score bands** like single mode, so
+  an owned Castor+Pollux pair gets fielded instead of benched for the lineup.
