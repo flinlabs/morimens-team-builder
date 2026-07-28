@@ -10,6 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "sync": "node scripts/sync-skeydb.mjs",
+    "sync:tokens": "node scripts/sync-lineup-tokens.mjs",
+    "sync:tokens:check": "node scripts/sync-lineup-tokens.mjs --check",
     "assets": "node scripts/fetch-assets.mjs",
     "prebuild": "node scripts/fetch-assets.mjs"
   },
