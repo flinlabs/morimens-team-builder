@@ -90,3 +90,115 @@ Applied:
   Caro supports pattern the D-Tide leftover pass was assembling.
 - **D-Tide board fill is tier-aware within score bands** like single mode, so
   an owned Castor+Pollux pair gets fielded instead of benched for the lineup.
+
+
+## 2026-07-28 — Cetarchon drop, token drift, arc + posse fixes
+
+### Applied
+
+- **Lineup-token drift (export codes).** `db/*.json` had fallen out of step
+  with SKeyDB's share-code dictionary. Saya was on `xl` while the live game
+  had moved her to `xk` — Xu's old token — so the two silently swapped on
+  every round-trip. Xu (`xk`→`xj`) and Vortice (`xo`→`xm`) had shifted too,
+  along with eleven wheels, three of which (`y8`, `y9`, `y0`) had collided
+  into duplicate tokens and were unresolvable on import.
+
+  Cause is the isolation pattern itself: the one-off syncs correctly protect
+  the gnostic `defaultMaxed` fix, but they never pick up upstream token
+  reassignments for records they aren't touching. `scripts/sync-lineup-tokens.mjs`
+  closes that hole — token-only, idempotent, `--check` mode for CI. Run it
+  after every content drop. `tests/lineup-tokens.test.ts` fails loudly if it
+  drifts again.
+
+- **Lotan: Cetarchon (awakener-0059), rarity `Genesis`.** Synced via
+  `scripts/oneoff-sync-cetarchon.mjs` with wheels 0172/0173/0174 and posses
+  0053–0061.
+
+  Two things the standard pipeline got wrong and now handles:
+
+  1. *Divine derivation misses her.* Primordial Breath reforges Chaos into
+     Primordia: Chaos, structurally identical to Divine Aequor / Propagation:
+     Caro / Singularity: Ultra. Her upstream `searchTags` are still just
+     `["STR Up"]`, so the tag-based derivation returns false. `isDivineRealm`
+     is set by hand in her annotation (which is what `filter.ts` actually
+     reads) and the sync regex now also matches `Primordia` for when SKeyDB
+     catches up.
+  2. *The Primordial Memory posses are not posses.* posse-0054 through 0061
+     are the pool her Memory Fragments talent discovers from. SKeyDB marks
+     them `equippable: false` with no `lineupToken`, so reaching the picker or
+     the encoder would have thrown on export. `getPosses()` now filters them;
+     `getAllPosses()` exists for reference views.
+
+- **Sigil Yield is a combat stat on her.** Rotting Remains converts each 1%
+  of Sigil Yield from her, her Wheels, and her Covenant into Strike crit rate
+  and base damage, and both signature Wheels carry a Sigil Yield mainstat by
+  design. `wheel-fit.ts` treats `SIGIL_YIELD` as a support identity and caps
+  it at neutral fit on a carry, so wheels 0172/0173/0174 have purpose
+  overrides in `annotations/wheels.json`.
+
+- **Arc 1 R wheels ("Costco").** `arc-rules.ts` has always carried
+  `rWheelsFullPower: true` and the correct prose, but the flag never reached
+  `assignWheels` — Pass 2 ranked SR above R unconditionally and Pass 1.5
+  handed out idle SSRs first, so the wheels the Compendium and Cheri both call
+  mandatory for Arc 1 exploration were the last thing the engine would equip.
+
+  The R pass had to go *before* the BiS passes, not after: `db/bis.json` is
+  parsed from Compendium tables written for Astral Reign, so on a full roster
+  BiS claimed both slots with Arc-2 stat sticks and an R wheel was never
+  considered. Cheri splits the same advice into separate "Early Game" and
+  "Astral Reign" columns for exactly this reason.
+
+- **Posse realm gate removed.** The situational tier only offered a posse
+  whose realm matched a realm on the board. FADED_LEGACY and OTHER are not
+  realms any team can field, so thirteen posses were unreachable regardless of
+  fit. Encounter in Pure White — the best draw engine available to a discard
+  team — could only surface when Corposant or Saya were present, since theirs
+  are the only two annotations naming it. Realm is now a tiebreak; the primary
+  sort is mechanical overlap with the lineup (`lib/posse-fit.ts`).
+
+### Needs your call
+
+1. **Cetarchon tier and breakpoints are provisional.** Set `S`, floor `E0`,
+   breakpoints E1/E3/OE — my read, one day after release, from the pre-release
+   infographic, which itself says internal test server at Lv. 60 with all
+   skills at Lv. 6 and warns numbers may shift. Tier feeds the generation
+   tiebreak, so override once the Discord has a consensus.
+
+2. **Her BiS is hand-authored.** SKeyDB carries no build for her, so
+   `db/bis.json` has an entry I wrote from her scaling rather than from the
+   Compendium: Cetus Occasus, then Celestial Beast (Perish and Devour both
+   count as Strikes, so its Exalt-and-Strike base damage reads almost as a
+   second signature), Amber-Tinted Death for the STR line, Undying Hungerbone
+   as the SR floor. Replace wholesale when the Compendium publishes.
+
+3. **Does the equipped Posse still function with her on the team?** Primordial
+   Echo says the currently equipped Posse is automatically unleashed the first
+   time Rouse Cards are played each turn. Memory Fragments says the carried
+   Posse can no longer be unleashed. Read together these look contradictory —
+   my assumption is that the Posse *button* becomes Primordia: Dual Recurrence
+   / Triad Revelation while the equipped Posse still fires passively off
+   Rouses, which is why she keeps a normal `anchorPosse`. If that's wrong,
+   posse recommendation should be suppressed entirely on her teams. Needs
+   in-game verification.
+
+4. **Falling Upward (wheel-0174) — Saya BiS candidate?** Ownerless SSR, so the
+   Mythic retag applies. Team Unique, adds a 0-cost card dealing AOE
+   Corrosion and applying Perception Warp to other Awakeners' Command Cards.
+   I left it *out* of `NICHE_MYTHIC_WHEEL_IDS`, so it is available as generic
+   filler — it reads as broadly useful rather than event-locked like School
+   Day. But Corrosion plus Warp points straight at Saya, whose Rouse already
+   grants Warp. If it's a real Saya BiS row rather than filler, say so and
+   I'll move it.
+
+5. **One R wheel per support, or two?** Pass 0.5 takes a single slot and lets
+   the second fall through to the normal BiS cascade, so supports that need a
+   specific stat or effect keep it (Faint's death resistance, Tawil's Gateway
+   of Truth). Cheri's phrasing — "put R wheels on all your supports" — could
+   justify taking both. Two would strip those functional wheels, so I chose
+   the conservative read. Easy to flip if the community builds harder.
+
+6. **Cetarchon's Aliemus theft vs teammates.** Deadly Duel steals up to 10
+   Aliemus from every other Awakener each play, and she plays it a lot. "24"
+   is Chaos, tagged `aliemus_hungry`, and therefore both a natural teammate
+   and a direct competitor for the same pool. Left out of `conflictsWith`
+   pending testing rather than encoded on inference.
