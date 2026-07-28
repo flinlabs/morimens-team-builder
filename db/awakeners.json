@@ -44592,7 +44592,7 @@
     ],
     "ingameId": "B14",
     "numericId": 54,
-    "lineupToken": "xk",
+    "lineupToken": "xj",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 48,
@@ -45434,7 +45434,7 @@
     ],
     "ingameId": "O11",
     "numericId": 55,
-    "lineupToken": "xo",
+    "lineupToken": "xm",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 35,
@@ -47077,7 +47077,7 @@
     ],
     "ingameId": "B15",
     "numericId": 57,
-    "lineupToken": "xl",
+    "lineupToken": "xk",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 25,
@@ -48602,6 +48602,680 @@
       "notes": "Protective Aequor support built around Gaunt cards: Skill 2 shields and summons Gaunts (Insights/aliemus, enemy STR down + tentacle power, or a lowest-HP hit with a team crit DMG buff); the ult applies AOE STR down and executes the lowest-HP enemy, minting a permanent Gaunt on a kill (max 3 per battle, must be his own damage \u2014 corrosion or Arachne mercy kills don't count). Skill 1 is a guaranteed-crit AOE that eats all Arithmetica and batteries aliemus. Fixed damage (ult/Gaunt hit) scales off Tentacle DMG and STR and never crits; his crit DMG stat feeds Skill 1 and the team buff. Best in Aequor but exports STR down, crit DMG, and vermin clearing anywhere. Enlighten priority per Lyra: E1 first (Gaunt damage and STR down scale off his crit DMG), then signature WoD, then E3, then OE; E2 is decent but largely alleviated at E3. (The Experimental log instead calls E2+E3 the comfort point.) At home in the discard core, where constant cycling reaches his cards and E3 Aftershock cheapens Gaunts.",
       "contentNotes": {
         "arc2": "Astral Reign limited unit \u2014 plays as protective support; his damage only ramps against bosses as team STR/tentacles scale."
+      }
+    },
+    "annotationPending": false
+  },
+  "awakener-0059": {
+    "id": "awakener-0059",
+    "name": "Lotan: Cetarchon",
+    "realm": "CHAOS",
+    "type": "ASSAULT",
+    "faction": "TBD",
+    "rarity": "Genesis",
+    "searchTags": [
+      "STR Up"
+    ],
+    "route": {
+      "slug": "lotan-cetarchon",
+      "canonicalPath": "/database/awakeners/lotan-cetarchon"
+    },
+    "assets": {
+      "icon": "asset-awakener-0059-icon"
+    },
+    "isDivineRealm": false,
+    "isLemurian": false,
+    "availabilityType": "LIMITED_ASTRAL_REIGN",
+    "aliases": [
+      "lotan cetarchon",
+      "cetarchon",
+      "glotan",
+      "rotan"
+    ],
+    "ingameId": "C04EX",
+    "numericId": 59,
+    "lineupToken": "xt",
+    "primaryScalingBase": 20,
+    "baseStatsLv1": {
+      "CON": 28,
+      "ATK": 48,
+      "DEF": 29
+    },
+    "substatsLv1": {
+      "CritRate": 5,
+      "CritDamage": 50,
+      "AliemusRegen": 0,
+      "KeyflareRegen": 15,
+      "RealmMastery": 0,
+      "SigilYield": 1.2,
+      "DamageAmplification": 0,
+      "DeathResistance": 2.8
+    },
+    "enlightens": [
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.lotan-cetarchon.rotting-remains",
+        "name": "Rotting Remains",
+        "route": {
+          "slug": "rotting-remains",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/enlightens/rotting-remains"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "E1",
+        "descriptionTemplate": "Lotan: Cetarchon's \"Strike\" Crit. Rate +10%, Base DMG +20%.\nFor every 1% Sigil Yield provided by Lotan: Cetarchon and her equipped WoD & Covenant, the Crit. Rate of \"Strike\" additionally +0.5%, and the Base DMG of \"Strike\" additionally +1%.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.lotan-cetarchon.ceaseless-warlust",
+        "name": "Ceaseless Warlust",
+        "route": {
+          "slug": "ceaseless-warlust",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/enlightens/ceaseless-warlust"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "E2",
+        "descriptionTemplate": "When Basic \"Strike\" is played, draw 1 {Short Blade: Devour}. When Basic \"Defense\" is played, draw 1 {Long Blade: Perish}. Each takes effect up to once per turn.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.lotan-cetarchon.uncrowned-storm",
+        "name": "Uncrowned Storm",
+        "route": {
+          "slug": "uncrowned-storm",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/enlightens/uncrowned-storm"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "E3",
+        "descriptionTemplate": "Doubles the DMG Bonus {Great Blade: Whalefall} provides for {Mundus Severance}. The first {Deadly Duel} played each turn no longer consumes Arithmetica.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.lotan-cetarchon.night-of-whalefall",
+        "name": "Night of Whalefall",
+        "route": {
+          "slug": "night-of-whalefall",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/enlightens/night-of-whalefall"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "OverExalt",
+        "descriptionTemplate": "Before dealing DMG, gain {STR} equal to the amount of extra DMG {Great Blade: Whalefall} is causing the target to deal to you. This Exalt enjoys \u00d72 {STR} Bonus.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.lotan-cetarchon.the-unrivaled",
+        "name": "The Unrivaled",
+        "route": {
+          "slug": "the-unrivaled",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/enlightens/the-unrivaled"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "AbsoluteAxiom",
+        "descriptionTemplate": "{Rouse} {Primeval Return} is enhanced. {Deadly Duel} now grants Lotan: Cetarchon +50% additional Aliemus, and the per-Aliemus Final DMG Bonus from {Deadly Duel} and its maximum cap are both increased by 50%.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      }
+    ],
+    "skills": [
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.lotan-cetarchon.defense",
+        "name": "Defense",
+        "route": {
+          "slug": "defense",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/skills/defense"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "Defense",
+        "descriptionTemplate": "Gain [Block:Arg1] Shield. Lotan: Cetarchon gains [Energy:Arg2] Aliemus.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "10",
+              "12",
+              "14",
+              "16",
+              "18",
+              "20"
+            ],
+            "stat": "DEF",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10"
+            ]
+          }
+        },
+        "cardKeywords": [],
+        "cost": "1",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.lotan-cetarchon.ceaseless-warlust.skill.lotan-cetarchon.defense",
+            "operation": "replace_description",
+            "upgraderId": "enlighten.lotan-cetarchon.ceaseless-warlust",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E2",
+            "ownerAwakenerId": "awakener-0059",
+            "ownerAwakenerName": "Lotan: Cetarchon",
+            "patch": {
+              "descriptionTemplate": "Gain [Block:Arg1] Shield. Lotan: Cetarchon gains [Energy:Arg2] Aliemus. Draw 1 {Long Blade: Perish} the first time this is played each turn."
+            }
+          }
+        ],
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.lotan-cetarchon.long-blade-perish",
+        "name": "Long Blade: Perish",
+        "route": {
+          "slug": "long-blade-perish",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/skills/long-blade-perish"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "Skill1",
+        "descriptionTemplate": "Counts as a \"Strike\". Deal [Damage:Arg1] DMG to all enemies [Arg3] times, which enjoys a [Arg2]% {STR} Bonus. For each \"Strike\" played this turn, the next {Long Blade: Perish} costs 1 less Arithmetica.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "150",
+              "180",
+              "210",
+              "240",
+              "270",
+              "300"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "fixed",
+            "value": "500",
+            "suffix": "%"
+          },
+          "Arg3": {
+            "kind": "fixed",
+            "value": "1"
+          }
+        },
+        "cardKeywords": [
+          {
+            "id": "mechanic.retain"
+          }
+        ],
+        "cost": "4",
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.lotan-cetarchon.mundus-severance",
+        "name": "Mundus Severance",
+        "route": {
+          "slug": "mundus-severance",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/skills/mundus-severance"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "Exalt",
+        "descriptionTemplate": "Consumes {Great Blade: Whalefall} to unleash. Deal [Damage:Arg1] guaranteed Critical Hit DMG to the enemy with the highest DMG, which enjoys a [Arg2]% {STR} Bonus. For each +1 DMG {Great Blade: Whalefall} is causing the target to deal to you, {Mundus Severance} deals +75 DMG.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "400",
+              "480",
+              "560",
+              "640",
+              "720",
+              "800"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "1000",
+              "1100",
+              "1200",
+              "1300",
+              "1400",
+              "1500"
+            ],
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "200",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.lotan-cetarchon.uncrowned-storm.skill.lotan-cetarchon.mundus-severance",
+            "operation": "replace_description",
+            "upgraderId": "enlighten.lotan-cetarchon.uncrowned-storm",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E3",
+            "ownerAwakenerId": "awakener-0059",
+            "ownerAwakenerName": "Lotan: Cetarchon",
+            "patch": {
+              "descriptionTemplate": "Consumes {Great Blade: Whalefall} to unleash. Deal [Damage:Arg1] guaranteed Critical Hit DMG to the enemy with the highest DMG, which enjoys a [Arg2]% {STR} Bonus. For each +1 DMG {Great Blade: Whalefall} is causing the target to deal to you, {Mundus Severance} deals +150 DMG."
+            }
+          }
+        ],
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.lotan-cetarchon.night-of-whalefall",
+        "name": "Night of Whalefall",
+        "route": {
+          "slug": "night-of-whalefall",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/skills/night-of-whalefall"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "OverExalt",
+        "descriptionTemplate": "Before dealing DMG, gain {STR} equal to the amount of extra DMG {Great Blade: Whalefall} is causing the target to deal to you. This Exalt enjoys \u00d72 {STR} Bonus.",
+        "descriptionArgs": {},
+        "cardKeywords": [],
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.lotan-cetarchon.primeval-return",
+        "name": "Primeval Return",
+        "route": {
+          "slug": "primeval-return",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/skills/primeval-return"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "Rouse",
+        "descriptionTemplate": "Lotan: Cetarchon gains [Arg2]% Base Aliemus. {Rouse}: Lotan: Cetarchon's Command Cards deal +1 instance of DMG.\nAt turn start, if {Great Blade: Whalefall} is in hand:\nThe first {Deadly Duel} played that turn empowers your next {Mundus Severance}\u2014for each 1 Aliemus it steals, {Mundus Severance} deals +1% Final DMG (max 90%).",
+        "descriptionArgs": {
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "25",
+              "30",
+              "35",
+              "40",
+              "45",
+              "50"
+            ],
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [
+          {
+            "id": "mechanic.retain"
+          }
+        ],
+        "cost": "3",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.lotan-cetarchon.the-unrivaled.skill.lotan-cetarchon.primeval-return",
+            "operation": "replace_description",
+            "upgraderId": "enlighten.lotan-cetarchon.the-unrivaled",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "AbsoluteAxiom",
+            "ownerAwakenerId": "awakener-0059",
+            "ownerAwakenerName": "Lotan: Cetarchon",
+            "patch": {
+              "descriptionTemplate": "Lotan: Cetarchon gains [Arg2]% Base Aliemus. {Rouse}: Lotan: Cetarchon's Command Cards deal +1 instance of DMG.\nLotan: Cetarchon receives +50% Aliemus through {Deadly Duel}. At turn start, if {Great Blade: Whalefall} is in hand:\nThe first {Deadly Duel} played that turn empowers your next {Mundus Severance}\u2014for each 1 Aliemus it steals, {Mundus Severance} deals +1.5% Final DMG (max 135%)."
+            }
+          }
+        ],
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.lotan-cetarchon.short-blade-devour",
+        "name": "Short Blade: Devour",
+        "route": {
+          "slug": "short-blade-devour",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/skills/short-blade-devour"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "Skill2",
+        "descriptionTemplate": "Counts as a \"Strike\". Deal [Damage:Arg1] DMG to a random enemy [Arg3] times. Gain [Power:Arg2] {STR}. After being played, shuffle this card back into your Draw Pile. Every {ordinal:3rd} time this card is played, it triggers 1 additional time. Then, the next {Long Blade: Perish} played this turn will fuse with this card to forge a {Great Blade: Whalefall}.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "25",
+              "30",
+              "35",
+              "40",
+              "45",
+              "50"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "6",
+              "7.2",
+              "8.4",
+              "9.6",
+              "10.8",
+              "12"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg3": {
+            "kind": "fixed",
+            "value": "3"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "2",
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.lotan-cetarchon.strike",
+        "name": "Strike",
+        "route": {
+          "slug": "strike",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/skills/strike"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "slot": "Strike",
+        "descriptionTemplate": "Deal [Damage:Arg1] DMG [Arg3] times. Lotan: Cetarchon gains [Energy:Arg2] Aliemus.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "10",
+              "12",
+              "14",
+              "16",
+              "18",
+              "20"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10"
+            ]
+          },
+          "Arg3": {
+            "kind": "fixed",
+            "value": "1"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "1",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.lotan-cetarchon.ceaseless-warlust.skill.lotan-cetarchon.strike",
+            "operation": "replace_description",
+            "upgraderId": "enlighten.lotan-cetarchon.ceaseless-warlust",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E2",
+            "ownerAwakenerId": "awakener-0059",
+            "ownerAwakenerName": "Lotan: Cetarchon",
+            "patch": {
+              "descriptionTemplate": "Deal [Damage:Arg1] DMG [Arg3] times. Lotan: Cetarchon gains [Energy:Arg2] Aliemus. Draw 1 {Short Blade: Devour} the first time this card is played each turn."
+            }
+          }
+        ],
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      }
+    ],
+    "talents": [
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.lotan-cetarchon.primordial-breath",
+        "name": "Primordial Breath",
+        "route": {
+          "slug": "primordial-breath",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/talents/primordial-breath"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "family": "passive",
+        "descriptionTemplate": "When Lotan: Cetarchon is on the team, the {Chaos} Realm reforges into Primordia: {Chaos}.\n\nPrimordial Influx: Base Keyflare is increased to 2000, Team DMG Amplification is increased by 50%, and all Awakeners' ATK and DEF are increased by 10%. If the team consists solely of {Chaos} Awakeners, the DMG Amplification bonus from this effect is doubled. At the start of battle, gain 2000 Keyflare.\n\nConfluent Keys: All Awakeners' Keyflare Regen Levels are set to the team average and no longer decay. Awakeners no longer gain Keyflare from Arithmetica consumed; instead, the first Command Card played by each Awakener per turn grants Keyflare equal to (team's Keyflare Regen \u00d7 3) + 100.\n\nIndivisible Realm: No longer triggers other Realms' Pure Realm, Double Realm Mastery, or Double DMG Amplification effects.\n\nPrimordial {Echo}: {Rouse} Cards gain {Prepare 1}; the currently equipped Posse is automatically unleashed the first time they are played each turn.\n\nMemory Fragments: Posse is replaced with Primordia: Dual Recurrence and Primordia: Triad {Revelation}, and the carried Posse itself can no longer be unleashed.\n\n-Primordia: Dual Recurrence: {Discover} 3 Posses from those in hand, then choose 1 to unleash twice.\n-Primordia: Triad {Revelation}: {Discover} 3 sets of Posses from those in hand, each set containing 3 different Posses. Choose one set to unleash each Posse within it once, in sequence.\nThe Posses featured in Primordia: Dual Recurrence and Primordia: Triad {Revelation} are drawn from the eight types of {Primordial Memory}.\nPrimordia: Dual Recurrence and Primordia: Triad {Revelation} each count as unleashing only 1 Posse. When their effects would trigger multiple times, only the first Posse to take effect is valid.\n\nPrimordia: {Chaos} Mastery: Realm Mastery becomes Primordia: {Chaos} Mastery. Each point of Primordia: {Chaos} Mastery increases the Posse Potency by 0.05%. Each point of Posse Potency increases Fixed {Poison}, Fixed {Counter}, Fixed {STR}, Fixed {Ancient Embers} by 2%, and Fixed Shield, Fixed HP Recovery, {STR\u25bc}, Crit. Rate, Crit. DMG, DMG Amplification, Realm Mastery, Aliemus Generation, {Embryo Fusion}, and Keyflare Generation by 1%.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.lotan-cetarchon.madness-omen",
+        "name": "Madness Omen",
+        "route": {
+          "slug": "madness-omen",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/talents/madness-omen"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "family": "madness_omen",
+        "maxLevel": 12,
+        "descriptionTemplate": "Obtain [Arg1] Aliemus after the start of exploration.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "5",
+            "gainPerLevel": "5"
+          }
+        },
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.lotan-cetarchon.soulforge-aptitude",
+        "name": "Soulforge Aptitude",
+        "route": {
+          "slug": "soulforge-aptitude",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/talents/soulforge-aptitude"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "family": "soulforge_aptitude",
+        "maxLevel": 10,
+        "descriptionTemplate": "This Talent only takes effect in {Astral Reign} Stages.\nThis Awakener's CON, Attack, and DEF are increased by [Arg1]%, and after this Awakener plays {Rouse} for the first time, they gain [Arg2] Keyflare.\n{Mundus Severance} enjoys an additional [Arg3]% {STR} Bonus. After killing an enemy, gain [Arg4] Black Sigils, which enjoys Lotan: Cetarchon's Sigil Yield Bonus. Takes effect up to once per battle.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "3",
+            "gainPerLevel": "3"
+          },
+          "Arg2": {
+            "kind": "linear",
+            "base": "50",
+            "gainPerLevel": "50"
+          },
+          "Arg3": {
+            "kind": "scaling",
+            "values": [
+              "500",
+              "550",
+              "600",
+              "650",
+              "700",
+              "750",
+              "800",
+              "850",
+              "900",
+              "1000"
+            ]
+          },
+          "Arg4": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "13",
+              "15"
+            ]
+          }
+        },
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.lotan-cetarchon.gnostic-potential",
+        "name": "Gnostic Potential",
+        "route": {
+          "slug": "gnostic-potential",
+          "canonicalPath": "/database/awakeners/lotan-cetarchon/talents/gnostic-potential"
+        },
+        "ownerAwakenerId": "awakener-0059",
+        "family": "gnostic_potential",
+        "maxLevel": 5,
+        "defaultMaxed": true,
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "2",
+            "gainPerLevel": "2"
+          },
+          "Talent_Attr_Lv_physique": {
+            "kind": "scaling",
+            "values": [
+              "3",
+              "6",
+              "8",
+              "11",
+              "13"
+            ]
+          },
+          "Talent_Attr_Lv_atk": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "9",
+              "14",
+              "18",
+              "23"
+            ]
+          },
+          "Talent_Attr_Lv_def": {
+            "kind": "scaling",
+            "values": [
+              "3",
+              "6",
+              "9",
+              "11",
+              "14"
+            ]
+          }
+        },
+        "ownerAwakenerName": "Lotan: Cetarchon"
+      }
+    ],
+    "build": null,
+    "annotation": {
+      "id": "awakener-0059",
+      "teamRoles": [
+        "main_dps"
+      ],
+      "synergyTags": [
+        "strike_synergy",
+        "aliemus_hungry",
+        "divine_realm"
+      ],
+      "requires": [],
+      "requiresCondition": "Wants an all-Chaos lineup. Primordial Influx doubles its DMG Amplification bonus and Primordia: Chaos Mastery doubles its Posse Potency scaling only when every Awakener on the team is Chaos, while Indivisible Realm switches off other realms' Pure Realm, Double Realm Mastery, and Double DMG Amplification effects \u2014 so a splash unit costs more than it gives.",
+      "synergizesWith": [
+        "awakener-0038",
+        "awakener-0029",
+        "awakener-0004",
+        "awakener-0018",
+        "awakener-0036",
+        "awakener-0043",
+        "awakener-0022"
+      ],
+      "conflictsWith": [],
+      "viabilityFloor": "E0",
+      "enlightenBreakpoints": [
+        "E1",
+        "E3",
+        "OE"
+      ],
+      "keySkillSlots": [
+        "Strike",
+        "Skill1",
+        "Skill2",
+        "Exalt"
+      ],
+      "keyTalents": [
+        "soulforge_aptitude",
+        "madness_omen"
+      ],
+      "anchorPosse": "posse-0053",
+      "recommendedPosses": [
+        "posse-0053"
+      ],
+      "keyPairings": [
+        {
+          "partnerId": "awakener-0038",
+          "reason": "Mundus Severance carries a 1500% STR bonus that the Night of Whalefall Over-Exalt doubles again, so flat STR is her steepest scaling lever and Ogier is the Chaos unit that supplies it."
+        },
+        {
+          "partnerId": "awakener-0029",
+          "reason": "Great Blade: Whalefall makes every enemy deal 25% more damage to the team for as long as it sits in hand, so Lily's death resistance and healing pay the upkeep on her own damage buff."
+        },
+        {
+          "partnerId": "awakener-0004",
+          "reason": "Long Blade: Perish and Short Blade: Devour both count as Strikes, so Alva feeds the Strike loop while her shields offset the Whalefall damage taken."
+        },
+        {
+          "partnerId": "awakener-0018",
+          "reason": "Deadly Duel steals up to 10 Aliemus from every other Awakener each time it is played; a battery that keeps refilling the team turns that theft into a renewable resource instead of a one-off tax."
+        }
+      ],
+      "isDivineRealm": true,
+      "divineRealmNote": "Primordial Breath reforges Chaos into Primordia: Chaos \u2014 the same realm-rewriting pattern as Divine Aequor, Propagation: Caro, and Singularity: Ultra. SKeyDB's searchTags for her are still just [\"STR Up\"], so the automatic Divine derivation in the sync misses her; this flag is set by hand until upstream tags catch up.",
+      "tier": "S",
+      "notes": "Chaos Strike hypercarry who rewrites the realm around herself. Primordial Breath sets Base Keyflare to 2000, grants 2000 Keyflare at battle start, gives the team +50% DMG Amplification (doubled on an all-Chaos lineup) and +10% ATK/DEF, and flattens every Awakener's Keyflare Regen Level to the team average with no decay \u2014 which removes the usual need for a dedicated keyflare bot but rewards raising the whole team's regen rather than spiking one unit. Her damage loop is Short Blade: Devour into Long Blade: Perish to forge Great Blade: Whalefall, an unplayable Forced Retain buff card that turns all her Command Cards into Deadly Duel and lets Mundus Severance fire as a guaranteed crit with a 1500% STR bonus. Whalefall's cost is real: while it is in hand every enemy deals 25% more damage to your team, so shields, healing, and death resistance are not optional. Deadly Duel steals up to 10 Aliemus from each other Awakener, so teammates who need their own Exalt online \u2014 \"24\" most obviously \u2014 are competing with her for the same pool. Sigil Yield is a live combat stat for her, not economy: Rotting Remains converts each 1% of Sigil Yield from her, her Wheels, and her Covenant into Strike crit rate and base damage, and both signature Wheels carry a Sigil Yield mainstat to match. Soulforge adds a 500~1000% STR bonus to Mundus Severance and is her top leveling priority. Numbers here come from the pre-release infographic (internal test server, Lv. 60, all skills Lv. 6) and may shift; tier and breakpoints are provisional pending community testing \u2014 see annotations/LYRA-NOTES.md.",
+      "contentNotes": {
+        "arc1": "Soulforge is inert in Faded Legacy, which removes the 500~1000% STR bonus on Mundus Severance \u2014 a large share of her ceiling. She still functions, but her Arc 1 case is much weaker than her Arc 2 one.",
+        "arc2": "Astral Reign limited unit and her intended home. Realm Mastery becomes Primordia: Chaos Mastery, so Realm Mastery substats convert into Posse Potency at 0.05% per point (doubled on an all-Chaos team), which in turn scales Fixed Poison/Counter/STR/Ancient Embers by 2% per point and Fixed Shield, Fixed HP Recovery, STR down, Crit Rate, Crit DMG, DMG Amplification, Realm Mastery, Aliemus Generation, Embryo Fusion, and Keyflare Generation by 1% per point."
       }
     },
     "annotationPending": false
