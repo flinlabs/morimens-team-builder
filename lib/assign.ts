@@ -32,6 +32,12 @@ import {
 import { getBisData, getWheels, getWheelPurposeOverrides, type BisVariant } from './db'
 import { analyzeTeam } from './team-analysis'
 import { wheelFitScore, type WheelPurposeOverrides } from './wheel-fit'
+import { teamWants, posseFitScore, posseFitReason } from './posse-fit'
+import {
+  ARC1_PRIORITY_R_WHEEL_IDS,
+  COSTCO_WHEEL_IDS,
+  rWheelsPreferredOnSupports,
+} from './arc-rules'
 
 // Best-to-worst wheel tier order.
 const WHEEL_TIER_ORDER: WheelTier[] = ['BIS_SSR', 'ALT_SSR', 'BIS_SR', 'GOOD']
@@ -94,6 +100,12 @@ function primaryVariant(awakener: EnrichedAwakener): SkeyBuildVariant | null {
 // Wheel assignment
 // ---------------------------------------------------------------------------
 
+// Roles whose value comes from their own numbers. Cheri's handbook draws the
+// line exactly here: the raw stats on SR/SSR wheels matter on the main damage
+// dealer and the shielder, and everyone else is more useful holding an R wheel
+// while Faded Legacy rules are active.
+const STAT_HUNGRY_ROLES = new Set<string>(['main_dps', 'sub_dps', 'shielder'])
+
 // MYTHIC wheels that are paid/event exclusives with niche team-specific effects.
 // They should never be auto-assigned as generic filler — only equip them when
 // they explicitly appear in a unit's BiS list.
@@ -128,6 +140,12 @@ export function assignWheels(
     const owner = reservedWheels?.get(wheelId)
     return !!owner && owner !== awakener.id
   }
+  // The arc changes what a good wheel IS, not just how good it is, so it has to
+  // reach the assigner rather than only the viability scorer. Read from the
+  // roster the caller already passed instead of widening the signature.
+  const arc = roster.settings.arcRuleset
+  const preferRWheels =
+    rWheelsPreferredOnSupports(arc) && !STAT_HUNGRY_ROLES.has(role ?? '')
   const ranked = [...recommendedWheelsFor(awakener, role)].sort(
     (a, b) => WHEEL_TIER_ORDER.indexOf(a.tier) - WHEEL_TIER_ORDER.indexOf(b.tier)
   )
@@ -196,6 +214,44 @@ export function assignWheels(
   }
 
   const isSsrTier = (t: WheelTier): boolean => t === 'BIS_SSR' || t === 'ALT_SSR'
+
+  // Pass 0.5 — Faded Legacy only: one ability-bearing R wheel on each support.
+  //
+  // In Arc 1 an R wheel keeps its full ability, and those abilities are run-
+  // defining: Gluttony's multiplicative Max HP, the Costco trio's Black Sigil
+  // flood and Cursed Relic access, Aged and Epiphany opening fights at full
+  // Keyflare. In Arc 2 every one of them collapses to the same Dimension Image
+  // Relic line, which is exactly why they were nerfed that way.
+  //
+  // This has to run BEFORE the BiS passes, not after. db/bis.json is parsed
+  // from the Mythag Compendium's tables, which are written for Astral Reign —
+  // on a full roster the BiS pass claims both slots with Arc-2 stat sticks and
+  // an R wheel never gets considered at all. Cheri's handbook splits the same
+  // advice into separate "Early Game" and "Astral Reign" columns for exactly
+  // this reason.
+  //
+  // Capped at ONE slot deliberately. Taking both would strip supports that do
+  // need a specific stat or effect to function (Faint's death resistance,
+  // Tawil's Gateway of Truth), so the second slot still falls through to the
+  // normal BiS cascade. All of these are Team Unique, and the shared used-wheel
+  // pool spreads them across the lineup rather than stacking dead copies.
+  if (preferRWheels) {
+    for (const wheelId of ARC1_PRIORITY_R_WHEEL_IDS) {
+      if (out.length >= 1) break
+      if (!getWheelEntry(roster, wheelId).owned) continue
+      if (!isAvailable(wheelId)) continue
+      if (reservedForOther(wheelId)) continue
+      out.push({
+        slot: 1,
+        wheelId,
+        tier: 'GOOD',
+        arcNote: COSTCO_WHEEL_IDS.has(wheelId)
+          ? 'Faded Legacy: "Costco" R wheel — Black Sigils and Cursed Relic access outweigh raw stats on a support here.'
+          : 'Faded Legacy: R wheels keep their abilities in this arc and beat stat sticks on supports.',
+      })
+      usedWheelIds.add(wheelId)
+    }
+  }
 
   // Pass 1 — owned BiS wheels of SSR/Mythic tier first.
   assignFromRecs(ranked.filter((r) => isSsrTier(r.tier)))
@@ -303,7 +359,11 @@ export function assignWheels(
       const ra = a.realm === awakener.realm ? 0 : 1
       const rb = b.realm === awakener.realm ? 0 : 1
       if (ra !== rb) return ra - rb
-      const rank: Record<string, number> = { SR: 0, R: 1, N: 2 }
+      // Faded Legacy flips the usual rarity order on a support: an R wheel's
+      // ability is worth more than the extra stats on an SR.
+      const rank: Record<string, number> = preferRWheels
+        ? { R: 0, SR: 1, N: 2 }
+        : { SR: 0, R: 1, N: 2 }
       return (rank[a.rarity] ?? 3) - (rank[b.rarity] ?? 3)
     })
     for (const w of fillers) {
@@ -469,18 +529,51 @@ export function recommendPosses(
     }
   }
 
-  // Situational — any unlocked posse matching a realm present on the team.
+  // Situational — everything else the player has unlocked, ranked by what the
+  // team can actually use.
+  //
+  // This used to gate on realm: a posse only appeared if its realm matched a
+  // realm on the board. That quietly hid thirteen posses for good, because
+  // FADED_LEGACY and OTHER are not realms any team can field — Encounter in
+  // Pure White among them, which is the strongest draw engine in the game for a
+  // discard team and could previously only surface when Corposant or Saya were
+  // present, since theirs are the only two annotations naming it.
+  //
+  // Realm now acts as a tiebreak rather than a filter, and the primary sort is
+  // mechanical overlap with the lineup (posse-fit.ts), so a discard team is
+  // offered draw before shields instead of whatever came first in db key order.
   if (posses) {
     const teamRealms = new Set<string>()
     for (const id of teamIds) {
       const realm = awakeners[id]?.realm
       if (realm) teamRealms.add(realm)
     }
-    for (const posse of Object.values(posses)) {
-      if (seen.has(posse.id)) continue
-      if (teamRealms.has(posse.realm)) {
-        addIfUnlocked(posse.id, 'situational', `Realm-appropriate (${posse.realm})`)
-      }
+    const wants = teamWants(teamIds, awakeners)
+
+    const candidates = Object.values(posses)
+      .filter((posse) => !seen.has(posse.id))
+      .map((posse) => ({
+        posse,
+        fit: posseFitScore(posse, wants),
+        realmMatch: teamRealms.has(posse.realm) ? 1 : 0,
+      }))
+      .sort((a, b) => {
+        if (a.fit !== b.fit) return b.fit - a.fit
+        if (a.realmMatch !== b.realmMatch) return b.realmMatch - a.realmMatch
+        return a.posse.id.localeCompare(b.posse.id)
+      })
+
+    for (const { posse, fit, realmMatch } of candidates) {
+      const reason = fit > 0 ? posseFitReason(posse, wants) : null
+      addIfUnlocked(
+        posse.id,
+        'situational',
+        reason
+          ? `Fits this team's ${reason}`
+          : realmMatch
+            ? `Realm-appropriate (${posse.realm})`
+            : 'Generic option'
+      )
     }
   }
 
