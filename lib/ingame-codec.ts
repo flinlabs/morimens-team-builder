@@ -72,6 +72,25 @@ function dictFrom(records: { id: string; lineupToken?: string }[]): CategoryDict
   return { byIdToken, byTokenIds }
 }
 
+/**
+ * Records that share a token within a category. Two records on one token make
+ * both unresolvable on import and make an export ambiguous, so this is always
+ * a data bug — it means db/*.json has drifted from SKeyDB's dictionary and
+ * `npm run sync:tokens` needs a run. Surfaced as a function rather than a
+ * throw so the regression suite can assert on it without breaking the app for
+ * every unrelated lineup.
+ */
+export function findTokenCollisions(): { section: string; token: string; ids: string[] }[] {
+  const dict = buildDictionaries()
+  const out: { section: string; token: string; ids: string[] }[] = []
+  for (const [section, cat] of Object.entries(dict)) {
+    for (const [token, ids] of cat.byTokenIds) {
+      if (ids.length > 1) out.push({ section, token, ids })
+    }
+  }
+  return out
+}
+
 let cachedDictionaries: Dictionaries | null = null
 
 function buildDictionaries(): Dictionaries {
@@ -89,12 +108,21 @@ function buildDictionaries(): Dictionaries {
 // Encode (app lineup -> in-game @@...@@ code)
 // ---------------------------------------------------------------------------
 
+// A record with no token cannot appear in a share code at all. That is expected
+// for the non-equippable Primordial Memory posses and for anything SKeyDB has
+// not tokenised yet, so the message says which record and why rather than
+// leaving the player staring at a bare id.
+function noTokenError(kind: string, id: string, where: string): Error {
+  return new Error(
+    `${where} ${kind} "${id}" has no in-game token, so it cannot be shared as a code. ` +
+      `If this is a newly released record, run \`npm run sync:tokens\`.`
+  )
+}
+
 function encodeAwakenerToken(awakenerId: string | null | undefined, dict: CategoryDict, slotIndex: number): string {
   if (!awakenerId) return EMPTY_TOKEN
   const token = dict.byIdToken.get(awakenerId)
-  if (!token) {
-    throw new Error(`Slot ${slotIndex + 1} awakener "${awakenerId}" has no in-game token.`)
-  }
+  if (!token) throw noTokenError('awakener', awakenerId, `Slot ${slotIndex + 1}`)
   return token
 }
 
@@ -106,9 +134,7 @@ function encodeWheelToken(
 ): string {
   if (!wheelId) return EMPTY_TOKEN
   const token = dict.byIdToken.get(wheelId)
-  if (!token) {
-    throw new Error(`Slot ${slotIndex + 1} ${field} "${wheelId}" has no in-game token.`)
-  }
+  if (!token) throw noTokenError(field, wheelId, `Slot ${slotIndex + 1}`)
   return token
 }
 
@@ -120,9 +146,7 @@ function encodeCovenantToken(
 ): string {
   if (!awakenerId || !covenantId) return EMPTY_TOKEN
   const token = dict.byIdToken.get(covenantId)
-  if (!token) {
-    throw new Error(`Slot ${slotIndex + 1} covenant "${covenantId}" has no in-game token.`)
-  }
+  if (!token) throw noTokenError('covenant', covenantId, `Slot ${slotIndex + 1}`)
   return token
 }
 
@@ -145,9 +169,7 @@ export function encodeIngameTeamCode(team: IngameTeamInput): string {
   }
 
   const posseToken = team.posseId ? dict.posses.byIdToken.get(team.posseId) : EMPTY_TOKEN
-  if (!posseToken) {
-    throw new Error(`Posse "${team.posseId ?? ''}" has no in-game token.`)
-  }
+  if (!posseToken) throw noTokenError('posse', team.posseId ?? '', 'This team\'s')
   tokens.push(posseToken)
 
   return `${INGAME_WRAPPER}${tokens.join('')}${INGAME_WRAPPER}`
