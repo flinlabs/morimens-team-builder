@@ -1,0 +1,7 @@
+{
+  "_note": "Minimum useful ascension (star) level for specific wheels, keyed by wheel id. Wheel effects scale across four values — E0/E1/E2/E3 in community shorthand, starLevel 0-3 in the roster — and for a few wheels the low end is weak enough that the pull is not worth making until you can push it. Only wheels where a guide or in-game testing states a floor belong here; everything else is left absent, which the advice engine reads as 'no claim'. starFloor is a starLevel (0-3), not a stackLevel.",
+  "wheel-0001": {
+    "starFloor": 2,
+    "note": "Felix's call from in-game use: the Caro guide rates E0 as already excellent, but the practical floor for Thais to do her job is E2-E3. Flagged in LYRA-NOTES."
+  }
+}
