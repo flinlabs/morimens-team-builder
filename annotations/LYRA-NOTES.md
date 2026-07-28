@@ -202,3 +202,50 @@ Applied:
    is Chaos, tagged `aliemus_hungry`, and therefore both a natural teammate
    and a direct competitor for the same pool. Left out of `conflictsWith`
    pending testing rather than encoded on inference.
+
+
+## 2026-07-28 — Meta tab
+
+### Applied
+
+- **`lib/pull-advice.ts` + Meta tab.** Four sections, all deterministic and all
+  reading fields someone wrote down deliberately: Who to Pull, Stopping Points,
+  Wheels to Chase, Meta Lineups. A wrong number in the tab is an annotation fix,
+  not a UI one.
+
+  Reading conventions the tab now depends on, so they need to stay true:
+  `viabilityFloor` is the cheapest point a unit is worth fielding at, and the
+  **last** entry in `enlightenBreakpoints` is the stopping point past which
+  further copies stop changing how they play. Horla's `E1` floor and Thais's
+  `E2` rung already read correctly under that convention.
+
+  Pull ranking weighs a roster hole above raw power — a B-tier Keyflare bot
+  outranks a second S-tier carry when nothing you own generates Keyflare —
+  and discounts units whose floor is E3 or higher, because a new player cannot
+  spend three copies on one character.
+
+- **`annotations/wheel-floors.json`** (new). Minimum useful ascension level per
+  wheel, keyed by wheel id, as a `starFloor` in the roster's 0–3 star scale
+  (community "E0–E3"). Deliberately sparse: absent means no claim, so the tab
+  never invents a floor it has no source for.
+
+### Needs your call
+
+7. **Thais's Merciful Nurturing floor — E2 vs E0.** Seeded `wheel-0001` at
+   `starFloor: 2` from your note that it wants E2–E3 minimum. The Caro guide
+   says the opposite in as many words: "E0 is already excellent, but the
+   bonuses from going to E3 are also fantastic." I encoded your read over the
+   guide's because you verify in-game and the guide may be describing the
+   pull decision rather than the practical build floor, but the two genuinely
+   disagree and it is the only seeded entry in the file. Worth settling before
+   more wheels get floors on the same basis.
+
+8. **Utility ranks are not modelled.** Your framing — Castor and Arachne are
+   "super useful", Pollux is "a really good DPS" — maps to Cheri's separate
+   DPS Rank and Support Rank, which our annotations flatten into one `tier`.
+   Castor sits at `A` and Arachne at `S` today, which does not capture that
+   Castor's value is almost entirely support utility. If you want that split,
+   it wants two new optional annotation fields (`dpsRank`, `supportRank`) and
+   a pass over the roster; the advice engine would pick them up as a better
+   signal than `tier` for the pull ranking. Left alone rather than inferring
+   58 ranks from role lists.
