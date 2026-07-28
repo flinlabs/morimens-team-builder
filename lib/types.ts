@@ -302,6 +302,13 @@ export interface EnrichedPosse {
   lore?: string
   ownerAwakenerId?: string
   lineupToken?: string
+  // Engine-internal posses (the Primordial Memory pool that Lotan: Cetarchon's
+  // talent discovers from) are marked `equippable: false` upstream and carry no
+  // lineupToken. Absent on records that predate the field, which are all
+  // equippable — see getPosses() in lib/db.ts.
+  equippable?: boolean
+  collectible?: boolean
+  classification?: string
   hasCharacterBonus: boolean
   characterBonusFor: string | null
   assets?: Record<string, string>
@@ -424,7 +431,9 @@ export interface WheelAssignment {
   wheelId: string
   tier: WheelTier | 'FALLBACK'
   dualSSRNote?: string
-  arc2Note?: string
+  // Why the arc's ruleset changed this pick — currently set when Faded Legacy
+  // rules route an ability-bearing R wheel onto a support ahead of a stat stick.
+  arcNote?: string
 }
 
 export interface CovenantRecommendation {
