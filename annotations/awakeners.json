@@ -2206,5 +2206,74 @@
     "contentNotes": {
       "arc2": "Astral Reign limited unit \u2014 plays as protective support; his damage only ramps against bosses as team STR/tentacles scale."
     }
+  },
+  "awakener-0059": {
+    "id": "awakener-0059",
+    "teamRoles": [
+      "main_dps"
+    ],
+    "synergyTags": [
+      "strike_synergy",
+      "aliemus_hungry",
+      "divine_realm"
+    ],
+    "requires": [],
+    "requiresCondition": "Wants an all-Chaos lineup. Primordial Influx doubles its DMG Amplification bonus and Primordia: Chaos Mastery doubles its Posse Potency scaling only when every Awakener on the team is Chaos, while Indivisible Realm switches off other realms' Pure Realm, Double Realm Mastery, and Double DMG Amplification effects \u2014 so a splash unit costs more than it gives.",
+    "synergizesWith": [
+      "awakener-0038",
+      "awakener-0029",
+      "awakener-0004",
+      "awakener-0018",
+      "awakener-0036",
+      "awakener-0043",
+      "awakener-0022"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3",
+      "OE"
+    ],
+    "keySkillSlots": [
+      "Strike",
+      "Skill1",
+      "Skill2",
+      "Exalt"
+    ],
+    "keyTalents": [
+      "soulforge_aptitude",
+      "madness_omen"
+    ],
+    "anchorPosse": "posse-0053",
+    "recommendedPosses": [
+      "posse-0053"
+    ],
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0038",
+        "reason": "Mundus Severance carries a 1500% STR bonus that the Night of Whalefall Over-Exalt doubles again, so flat STR is her steepest scaling lever and Ogier is the Chaos unit that supplies it."
+      },
+      {
+        "partnerId": "awakener-0029",
+        "reason": "Great Blade: Whalefall makes every enemy deal 25% more damage to the team for as long as it sits in hand, so Lily's death resistance and healing pay the upkeep on her own damage buff."
+      },
+      {
+        "partnerId": "awakener-0004",
+        "reason": "Long Blade: Perish and Short Blade: Devour both count as Strikes, so Alva feeds the Strike loop while her shields offset the Whalefall damage taken."
+      },
+      {
+        "partnerId": "awakener-0018",
+        "reason": "Deadly Duel steals up to 10 Aliemus from every other Awakener each time it is played; a battery that keeps refilling the team turns that theft into a renewable resource instead of a one-off tax."
+      }
+    ],
+    "isDivineRealm": true,
+    "divineRealmNote": "Primordial Breath reforges Chaos into Primordia: Chaos \u2014 the same realm-rewriting pattern as Divine Aequor, Propagation: Caro, and Singularity: Ultra. SKeyDB's searchTags for her are still just [\"STR Up\"], so the automatic Divine derivation in the sync misses her; this flag is set by hand until upstream tags catch up.",
+    "tier": "S",
+    "notes": "Chaos Strike hypercarry who rewrites the realm around herself. Primordial Breath sets Base Keyflare to 2000, grants 2000 Keyflare at battle start, gives the team +50% DMG Amplification (doubled on an all-Chaos lineup) and +10% ATK/DEF, and flattens every Awakener's Keyflare Regen Level to the team average with no decay \u2014 which removes the usual need for a dedicated keyflare bot but rewards raising the whole team's regen rather than spiking one unit. Her damage loop is Short Blade: Devour into Long Blade: Perish to forge Great Blade: Whalefall, an unplayable Forced Retain buff card that turns all her Command Cards into Deadly Duel and lets Mundus Severance fire as a guaranteed crit with a 1500% STR bonus. Whalefall's cost is real: while it is in hand every enemy deals 25% more damage to your team, so shields, healing, and death resistance are not optional. Deadly Duel steals up to 10 Aliemus from each other Awakener, so teammates who need their own Exalt online \u2014 \"24\" most obviously \u2014 are competing with her for the same pool. Sigil Yield is a live combat stat for her, not economy: Rotting Remains converts each 1% of Sigil Yield from her, her Wheels, and her Covenant into Strike crit rate and base damage, and both signature Wheels carry a Sigil Yield mainstat to match. Soulforge adds a 500~1000% STR bonus to Mundus Severance and is her top leveling priority. Numbers here come from the pre-release infographic (internal test server, Lv. 60, all skills Lv. 6) and may shift; tier and breakpoints are provisional pending community testing \u2014 see annotations/LYRA-NOTES.md.",
+    "contentNotes": {
+      "arc1": "Soulforge is inert in Faded Legacy, which removes the 500~1000% STR bonus on Mundus Severance \u2014 a large share of her ceiling. She still functions, but her Arc 1 case is much weaker than her Arc 2 one.",
+      "arc2": "Astral Reign limited unit and her intended home. Realm Mastery becomes Primordia: Chaos Mastery, so Realm Mastery substats convert into Posse Potency at 0.05% per point (doubled on an all-Chaos team), which in turn scales Fixed Poison/Counter/STR/Ancient Embers by 2% per point and Fixed Shield, Fixed HP Recovery, STR down, Crit Rate, Crit DMG, DMG Amplification, Realm Mastery, Aliemus Generation, Embryo Fusion, and Keyflare Generation by 1% per point."
+    }
   }
 }
