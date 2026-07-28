@@ -22,5 +22,18 @@
     "offense",
     "crit",
     "str"
+  ],
+  "wheel-0172": [
+    "crit",
+    "offense",
+    "aliemus"
+  ],
+  "wheel-0173": [
+    "crit",
+    "offense"
+  ],
+  "wheel-0174": [
+    "offense",
+    "card_economy"
   ]
 }
