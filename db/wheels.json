@@ -721,7 +721,7 @@
     "mainstatKey": "DMG_AMP",
     "ownerAwakenerId": "awakener-0054",
     "ownerAwakenerName": "Xu",
-    "lineupToken": "yX",
+    "lineupToken": "yV",
     "descriptionTemplate": "Team Unique: The Fixed {Poison} & {Poison} Trigger effects caused by the wielder +[StateArg1]%. {Caro} Realm's automatic {Embryo Fusion} +[StateArg2]%. When the wielder first triggers {Resonance} each turn, other Awakeners gain [StateArg3] Aliemus.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2500,7 +2500,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "CRIT_DMG",
-    "lineupToken": "y8",
+    "lineupToken": "y4",
     "descriptionTemplate": "Team Unique: After exploration starts, shuffle 1 {Stakes of Wisdom} into the Draw Pile. {Stakes of Wisdom}: Cost 1 Arithmetica. Shuffle all Command Cards in hand randomly into the Draw Pile. Shuffled Command Cards have a [StateArg1]% chance to take effect 1 additional time when played next, and for each Command Card shuffled in, all Awakeners gain 2 Aliemus. {Retain}. {Exhaust}. {Innate}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2575,7 +2575,7 @@
     "rarity": "N",
     "realm": "NEUTRAL",
     "mainstatKey": "KEYFLARE_REGEN",
-    "lineupToken": "yY",
+    "lineupToken": "yW",
     "descriptionTemplate": "Team Unique: If the wielder is the Awakener \"Ramona: Timeworn,\" the Affinity gained by other Awakeners upon completing the stage +[StateArg1]%, but the wielder does not gain any Affinity.",
     "descriptionArgs": {
       "StateArg1": {
@@ -3192,7 +3192,7 @@
     "mainstatKey": "REALM_MASTERY",
     "ownerAwakenerId": "awakener-0055",
     "ownerAwakenerName": "Vortice",
-    "lineupToken": "y6",
+    "lineupToken": "y2",
     "descriptionTemplate": "At the start of each battle, the wielder gains Aliemus equal to [StateArg1]% of their Base Aliemus.\nThe Final DMG dealt by the wielder's Exalt increases by a percentage equal to [StateArg2]% of their Base Aliemus.\nWhen you switch to the {Raging Waves} stance, gain Temp. Realm Mastery equal to [StateArg3]% of current Realm Mastery. This effect has a 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5536,7 +5536,7 @@
     "mainstatKey": "DMG_AMP",
     "ownerAwakenerId": "awakener-0054",
     "ownerAwakenerName": "Xu",
-    "lineupToken": "yW",
+    "lineupToken": "yU",
     "descriptionTemplate": "Team Unique: The Fixed {Poison} & {Poison} Trigger effects caused by the wielder +[StateArg1]%. The wielder gains [StateArg2] Aliemus the first time they trigger {Resonance} each turn.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5585,7 +5585,7 @@
     "mainstatKey": "REALM_MASTERY",
     "ownerAwakenerId": "awakener-0055",
     "ownerAwakenerName": "Vortice",
-    "lineupToken": "y7",
+    "lineupToken": "y3",
     "descriptionTemplate": "Team Unique: When switching to the {Raging Waves} stance, gain Temporary Realm Mastery equal to [StateArg1]% of your current Realm Mastery. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6030,7 +6030,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "CRIT_DMG",
-    "lineupToken": "y9",
+    "lineupToken": "y5",
     "descriptionTemplate": "Team Unique: After exploration starts, shuffle 1 {Private Afternoon} into the Draw Pile. {Private Afternoon}: Consume 1 Arithmetica. Temporary Crit. DMG +[StateArg1]%. {Retain}. {Exhaust}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6263,7 +6263,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "REALM_MASTERY",
-    "lineupToken": "y0",
+    "lineupToken": "y6",
     "descriptionTemplate": "After the exploration starts, shuffle 1 {Vernal Message} into the deck: Arithmetica Cost 1, gain [StateArg1] Keyflare, permanently transforms into {Sakura Blossoms} after played: Arithmetica Cost 1, gain [StateArg2] Keyflare, after playing it permanently transforms into {Hanafubuki}: Arithmetica Cost 1, gain [StateArg3] Keyflare, permanently transforms into {Ichigo Ichie} after played: Arithmetica Cost 1, choose 1 from 3 random unlocked Posse to immediately unleash and trigger 2 times, permanently transforms into {Vernal Message} after played. All of these Cards have {Retain}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6317,7 +6317,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "SIGIL_YIELD",
-    "lineupToken": "za",
+    "lineupToken": "y7",
     "descriptionTemplate": "Team Unique: For every 1% of Sigil Yield the wielder, their WoDs, and Covenants have, recover [StateArg1]% Max HP at the end of battle. This effect diminishes by 30% at the end of every turn, and is calculated individually for each battle.\nAfter choosing {Perception} at {Ashen Ruins}, refreshes will be free at this {Ashen Ruins}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6358,7 +6358,7 @@
     "mainstatKey": "SIGIL_YIELD",
     "ownerAwakenerId": "awakener-0057",
     "ownerAwakenerName": "Saya",
-    "lineupToken": "y1",
+    "lineupToken": "yY",
     "descriptionTemplate": "Arithmetica Limit +1, Effects of the same type cannot stack.\nFor every 10 Base Aliemus the wielder has, they inflict +[StateArg1]% {Corrosion} stacks and cause +[StateArg2]% {Embryo Fusion}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6408,7 +6408,7 @@
     "mainstatKey": "SIGIL_YIELD",
     "ownerAwakenerId": "awakener-0057",
     "ownerAwakenerName": "Saya",
-    "lineupToken": "yZ",
+    "lineupToken": "yX",
     "descriptionTemplate": "After using {Crimson Furnace}, the wielder gains Aliemus equal to [StateArg1]% of Base Aliemus. 3 turns cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6571,6 +6571,158 @@
       "Crit DMG"
     ],
     "isMythic": false,
+    "isNWheel": false,
+    "hasCombatEffect": true
+  },
+  "wheel-0172": {
+    "schemaVersion": 3,
+    "kind": "wheel",
+    "id": "wheel-0172",
+    "name": "Cetus Occasus",
+    "route": {
+      "slug": "cetus-occasus",
+      "canonicalPath": "/database/wheels/cetus-occasus"
+    },
+    "assets": {
+      "icon": "asset-wheel-0172-icon"
+    },
+    "rarity": "SSR",
+    "realm": "CHAOS",
+    "mainstatKey": "SIGIL_YIELD",
+    "ownerAwakenerId": "awakener-0059",
+    "ownerAwakenerName": "Lotan: Cetarchon",
+    "lineupToken": "ze",
+    "descriptionTemplate": "Team Unique: Wielder's \"Strike\" Crit. DMG increased by [StateArg1]%. At the end of the turn, the wielder's next Exalt Crit. DMG is increased by a percentage equal to [StateArg2]% of their Base Aliemus, stacking up to 5 times.",
+    "descriptionArgs": {
+      "StateArg1": {
+        "kind": "scaling",
+        "values": [
+          "30",
+          "45",
+          "60",
+          "75"
+        ],
+        "suffix": "%"
+      },
+      "StateArg2": {
+        "kind": "scaling",
+        "values": [
+          "11",
+          "14",
+          "17",
+          "20"
+        ],
+        "suffix": "%"
+      }
+    },
+    "lore": "Since the day of its birth, It had been trapped in eternal hunger.\nCarcasses of stars cracked between Its teeth; the wreckage of civilizations rotted in Its belly. Its hunger was a curse older than time itself. Again and again It devoured power, driving Its slaves through endless games of power and desire—yet never once did It understand what Its own existence meant.\nUntil the warrior named Lotan came before It.\n\"Leviathan.\"\nIt could not remember the last time Its name had been spoken. Kneeling kings dared not utter it; mad priests could only veil it in hymns.\nBut she spoke It with ease—as if hailing a long-awaited rival.\n\"Your turn.\"\nIt had existed for twelve thousand years. Through that vast eternity, planets were sustenance, living beings mere ants, and even the mightiest warriors no more than fleeting amusements. Nothing had ever sated it. Nothing had ever made it afraid.\nUntil today.\nThis mortal, this warrior, raised her greatblade and struck like a storm.\nThe blade tore through its scales. In its ears echoed the roar of Its birth from the chaos. Its wrath sundered celestial bodies; Its hunger swallowed nebulae whole.\nThe blade severed its claws. It remembered—the goddess in the white veil, who had come before It and torn Its power from Its will.\nAnd the instant the blade pierced Its heart, Leviathan laughed.\nTwelve millennia. Its lost will had finally returned to It—to shatter, conquer, and devour It. Now she would lead It onward, across every domain and into the farther reaches of the cosmos, to conquer every power that dared stand in their way.\nOn that day, the ancient Beast of Chaos was reborn. In the instant It returned to her, It finally understood: both of them had been born of one thing alone—pure, absolute strength.\nStrength itself was the only meaning there had ever been.",
+    "searchTags": [
+      "Aliemus",
+      "Strike",
+      "Crit DMG"
+    ],
+    "isMythic": false,
+    "isNWheel": false,
+    "hasCombatEffect": true
+  },
+  "wheel-0173": {
+    "schemaVersion": 3,
+    "kind": "wheel",
+    "id": "wheel-0173",
+    "name": "Undying Hungerbone",
+    "route": {
+      "slug": "undying-hungerbone",
+      "canonicalPath": "/database/wheels/undying-hungerbone"
+    },
+    "assets": {
+      "icon": "asset-wheel-0173-icon"
+    },
+    "rarity": "SR",
+    "realm": "NEUTRAL",
+    "mainstatKey": "SIGIL_YIELD",
+    "ownerAwakenerId": "awakener-0059",
+    "ownerAwakenerName": "Lotan: Cetarchon",
+    "lineupToken": "zd",
+    "descriptionTemplate": "Team Unique: Wielder's \"Strike\" Crit. DMG increased by [StateArg1]%.",
+    "descriptionArgs": {
+      "StateArg1": {
+        "kind": "scaling",
+        "values": [
+          "20",
+          "30",
+          "40",
+          "50"
+        ],
+        "suffix": "%"
+      }
+    },
+    "lore": "On the most agonizing yet fulfilling day of her life, Lotan's blades raged like a storm against the god before her. In the storm, her greatblades and Leviathan's planetary bulk shattered together, splinter by splinter.\nShe gifted the blood-drenched Crown to the knightly order's slave. In exchange, she asked for but one thing: a new weapon.\nAwed and terrified, the new king ordered the bones of Leviathan harvested and forged into a pair of peerless bone blades. Wrought and quenched day and night by the Six Kingdoms' finest blacksmiths, the remains of a dead deity were reborn in the hands of its slayer.\nA worthy rival once witnessed these undying blades. His warhammer shattered Lotan's armor and her bone blades. Spiderweb cracks raced across the blade, ivory shards scattering into the crimson air—just as they had on the day she struck down Leviathan. He thought he'd found an opening. Then he watched her rise again before him. The blade that should have been broken drove through his chest, drinking his blood, devouring his flesh. From the fractures, new bone erupted—sharper, denser, splintering outward like wild thorns in the wasteland. He felt, with perfect clarity, his life being chewed and swallowed by the bone-forged blade.\nAs it turned out, the star-devouring beast had never truly died. From the moment their pact was sealed, It had become one with her. Each time Lotan raises her blades, bone spines erupt along the edges, their razor tips shrieking in cruel triumph.\nIt is her weapon. She is its stride. From beginning to end, she and it have shared the same hunger. Bound as one, they are undying and insatiable.\nAnd the eternal battlefield is their only home.",
+    "searchTags": [
+      "Strike",
+      "Crit DMG"
+    ],
+    "isMythic": false,
+    "isNWheel": false,
+    "hasCombatEffect": true
+  },
+  "wheel-0174": {
+    "schemaVersion": 3,
+    "kind": "wheel",
+    "id": "wheel-0174",
+    "name": "Falling Upward",
+    "route": {
+      "slug": "falling-upward",
+      "canonicalPath": "/database/wheels/falling-upward"
+    },
+    "assets": {
+      "icon": "asset-wheel-0174-icon"
+    },
+    "rarity": "MYTHIC",
+    "realm": "NEUTRAL",
+    "mainstatKey": "REALM_MASTERY",
+    "lineupToken": "zc",
+    "descriptionTemplate": "Team Unique: After the exploration begins, add 1 {derived:Mortal Sojourn} to the deck. {Mortal Sojourn}: Costs 0 Arithmetica. Deal fixed {Corrosion} DMG to all enemies equal to [StateArg1]% of the wielder's ATK and [Float:StateArg4]% of their Max HP, apply {Perception Warp} to Command Cards of other Awakeners on the field, and shuffle 1 {derived:Falling Upward} into the Draw Pile. {Retain}. {Exhaust}.",
+    "descriptionArgs": {
+      "StateArg1": {
+        "kind": "scaling",
+        "values": [
+          "1500",
+          "2000",
+          "2500",
+          "3000"
+        ],
+        "suffix": "%"
+      },
+      "StateArg2": {
+        "kind": "scaling",
+        "values": [
+          "70",
+          "80",
+          "90",
+          "100"
+        ]
+      },
+      "StateArg3": {
+        "kind": "scaling",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ]
+      },
+      "StateArg4": {
+        "kind": "scaling",
+        "values": [
+          "0.4",
+          "0.6",
+          "0.8",
+          "1"
+        ]
+      }
+    },
+    "lore": "In the long eons of her vigil, Tawil once set foot upon a mortal realm.\nUnseen, she walked the fringes of the mortal world, quietly observing the deeds of every living thing.\n\nOn an ordinary nightfall, a dense sea of lights in the city's outskirts caught her eye.\nStage settings, songs and dances, vendors hawking pastries, children frolicking, idlers raising cups in hearty toasts. It was the very breath of life, a fleeting moment of respite.\nEnchanted, she could not help but take mortal form.\n\n\"Greetings. One sugar painting, please.\"\n\"Right away, miss. What shall I draw for you?\"\nTawil tilted her head gently. She only remembered to offer the unclaimed coins she had chanced upon, forgetting entirely that she could voice a wish of her own.\n\"If you can't decide, how about I draw one in your likeness? You're as beautiful as a goddess.\"\nTawil smiled and nodded. The vendor called out cheerfully, raised a ladle of melted sugar and began to paint.\n\n<Italic:Drip. Drip.>\nWhat fell upon the stone slab was not honey-colored syrup.\nBut rain—black rain.\nBlack ichor dripped from an unfathomable height, melting open a horrific rift across the sky.\n\nThen, Tawil began to fall upward.\nIt was the world that was sinking. The vendor's smile froze in her memory, then drowned along with all else in the black ocean. All reduced to a mere speck among countless dead stars, fading into a past forever beyond her reach.\nThis was the upheaval she had caused, and the retribution she was meant to bear.\nShe gazed into the distance, silent and still. She simply kept falling upward.\nFor this was the place she was meant to guard—the Silver Gate that \"transcends time and space\".\nHere she would keep watch, for all eternity.",
+    "isMythic": true,
     "isNWheel": false,
     "hasCombatEffect": true
   }
