@@ -3054,5 +3054,56 @@
         "notes": "Signature WoD is unmatched (E0+ per Lyra: five stars, everything he wants). Functional alternates: Power of the Pious and Aberrant Devour (aliemus regen + crit DMG). Lyra rates Treasured Rarity's kill-stacking as impractical for him despite the crit DMG mainstat. Uvhash's and Lotan's work only as +12 stat additions, never the functional slot. Covenants: Dream of Medicine (his cards matter) first; aliemus recharge or a crit set (April Tribute / Crimson Pulse / Cocoon of the Maiden) if the bottle went elsewhere; a Twisted Twin at E3 since Strike/Defense pull Gaunts."
       }
     ]
+  },
+  "awakener-0059": {
+    "awakenerId": "awakener-0059",
+    "variants": [
+      {
+        "variant": "Carry",
+        "wheels": [
+          {
+            "tier": "BIS_SSR",
+            "wheelId": "wheel-0172",
+            "wheelName": "Cetus Occasus"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0018",
+            "wheelName": "Celestial Beast"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0028",
+            "wheelName": "Amber-Tinted Death"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0121",
+            "wheelName": "Sunfall"
+          },
+          {
+            "tier": "BIS_SR",
+            "wheelId": "wheel-0173",
+            "wheelName": "Undying Hungerbone"
+          }
+        ],
+        "covenants": [
+          {
+            "covenantId": "covenant-0020",
+            "covenantName": "Steppenwolf"
+          },
+          {
+            "covenantId": "covenant-0014",
+            "covenantName": "April Tribute"
+          }
+        ],
+        "preferredStats": [
+          "Crit DMG",
+          "Sigil Yield",
+          "Realm Mastery"
+        ],
+        "notes": "Provisional \u2014 hand-authored from the pre-release infographic, not from the Mythag Compendium, because SKeyDB carries no build for her yet. Cetus Occasus is the clear signature: it raises Strike crit DMG and then converts her Base Aliemus (200, the highest in the game) into stacking Exalt crit DMG, and both halves of that match how she actually deals damage. Celestial Beast is the strongest generic alternate because Long Blade: Perish and Short Blade: Devour both count as Strikes, so its Exalt-and-Strike base damage and per-Strike crit stacking read almost as a second signature. Amber-Tinted Death is the STR option, and STR is her steepest multiplier once Night of Whalefall doubles the Exalt's STR bonus. Undying Hungerbone is the SR floor and covers the same Strike crit DMG line. Watch Sigil Yield: Rotting Remains turns each 1% of it into Strike crit rate and base damage, so both signature Wheels carry a Sigil Yield mainstat by design and the Sigil Yield covenant sets (Organic Form, Feast from Afar) may be live rather than economy picks \u2014 Organic Form's Death Resistance reduction is a poor match for Whalefall's +25% incoming damage, so that pairing needs testing before it is recommended. Realm Mastery is not a dead stat on her either: it becomes Primordia: Chaos Mastery and converts into Posse Potency."
+      }
+    ]
   }
 }
