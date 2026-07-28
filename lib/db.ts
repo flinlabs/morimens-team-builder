@@ -97,6 +97,29 @@ export function getBisData(): Record<string, BisEntry> {
   return _bisCache
 }
 
+let _wheelFloorCache: Record<string, { starFloor: number; note?: string }> | null = null
+/** Minimum useful ascension level per wheel, from annotations/wheel-floors.json. */
+export function getWheelStarFloors(): Record<string, { starFloor: number; note?: string }> {
+  if (_wheelFloorCache) return _wheelFloorCache
+  try {
+    const raw = fs.readFileSync(
+      path.join(process.cwd(), 'annotations', 'wheel-floors.json'),
+      'utf-8'
+    )
+    const parsed = JSON.parse(raw) as Record<string, unknown>
+    const out: Record<string, { starFloor: number; note?: string }> = {}
+    for (const [id, value] of Object.entries(parsed)) {
+      if (id.startsWith('_')) continue
+      const v = value as { starFloor?: number; note?: string }
+      if (typeof v?.starFloor === 'number') out[id] = { starFloor: v.starFloor, note: v.note }
+    }
+    _wheelFloorCache = out
+  } catch {
+    _wheelFloorCache = {}
+  }
+  return _wheelFloorCache
+}
+
 let _wheelPurposeCache: Record<string, string[]> | null = null
 /** Hand-set purpose-tag overrides from annotations/wheels.json (see wheel-fit.ts). */
 export function getWheelPurposeOverrides(): Record<string, string[]> {
