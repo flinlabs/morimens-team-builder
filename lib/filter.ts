@@ -283,6 +283,23 @@ export function checkRoleCoverage(
     softGaps.push('Saya present — Propagation: Caro active. First-Devour shield/STR replaced by Propagation Fiesta stacks. Ensure team can survive without standard Devour sustain.')
   }
 
+  // Lotan: Cetarchon note — Primordial Breath reforges Chaos into Primordia:
+  // Chaos, and its two biggest bonuses are conditional on the whole team being
+  // Chaos. A splash unit is not a small loss here: it halves the DMG
+  // Amplification aura and the Posse Potency scaling at once, on top of
+  // Indivisible Realm already switching off the other realm's own payoffs.
+  const cetarchon = awakenerIds.find(id => awakeners[id]?.name === 'Lotan: Cetarchon')
+  if (cetarchon) {
+    const nonChaos = awakenerIds.filter(id => awakeners[id] && awakeners[id].realm !== 'CHAOS')
+    if (nonChaos.length > 0) {
+      const names = nonChaos.map(id => awakeners[id].name).join(', ')
+      softGaps.push(`Lotan: Cetarchon present with non-Chaos teammates (${names}) — Primordia: Chaos halves both the team DMG Amplification bonus and the Primordia: Chaos Mastery scaling off an all-Chaos lineup, and Indivisible Realm disables their realm's Pure Realm / Double Realm Mastery / Double DMG Amplification effects.`)
+    }
+    if (!roles.includes('shielder') && !roles.includes('healer') && !roles.includes('death_resist')) {
+      softGaps.push('Lotan: Cetarchon present with no shielder, healer, or death-resist — Great Blade: Whalefall makes every enemy deal 25% more damage to your team while it sits in hand.')
+    }
+  }
+
   return {
     covered: roles,
     gaps: [...gaps, ...softGaps],
