@@ -39,7 +39,28 @@ export function getCovenants(): Record<string, EnrichedCovenant> {
   return readDB<Record<string, EnrichedCovenant>>('covenants.json')
 }
 
+/**
+ * Player-equippable posses only.
+ *
+ * Lotan: Cetarchon's Primordial Breath replaces the team's Posse slot with
+ * Primordia: Dual Recurrence / Triad Revelation, which discover from a pool of
+ * eight "Primordial Memory" posses. Those are engine-internal: SKeyDB marks
+ * them `equippable: false` and gives them no lineupToken, so they can never be
+ * unlocked, picked, or written into a share code — the encoder would throw on
+ * the missing token. Filtering here rather than at each call site means the
+ * picker, the generator, the unlocked-posse count, and the codec all inherit
+ * the exclusion. Records predating the field have no `equippable` key and stay
+ * included.
+ */
 export function getPosses(): Record<string, EnrichedPosse> {
+  const all = readDB<Record<string, EnrichedPosse>>('posses.json')
+  return Object.fromEntries(
+    Object.entries(all).filter(([, p]) => p.equippable !== false)
+  )
+}
+
+/** Every posse including the engine-internal ones — for detail/reference views. */
+export function getAllPosses(): Record<string, EnrichedPosse> {
   return readDB<Record<string, EnrichedPosse>>('posses.json')
 }
 
