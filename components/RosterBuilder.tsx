@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import MetaPanel from "@/components/MetaPanel";
 import { useRosterStore } from "@/lib/store";
 import type { Realm, EnlightenSlot, CharacterAssignment, TeamRecommendation, UserRoster } from "@/lib/types";
 import type { GenerateResult } from "@/lib/generate";
@@ -586,7 +587,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
   // Bumped every successful generation so the per-team boards remount with fresh state.
   const [genId, setGenId] = useState(0);
   // Top-level view: inventory customization vs team generation.
-  const [view, setView] = useState<"inventory" | "teams">("teams");
+  const [view, setView] = useState<"inventory" | "teams" | "meta">("teams");
 
   // --- Inventory backup (export / import) -----------------------------------
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -1079,7 +1080,8 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
           [
             ["teams", "Teams"],
             ["inventory", "Inventory"],
-          ] as ["inventory" | "teams", string][]
+            ["meta", "Meta"],
+          ] as ["inventory" | "teams" | "meta", string][]
         ).map(([key, label]) => (
           <button
             key={key}
@@ -1618,6 +1620,24 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
         </div>
       )}
         </>
+      )}
+
+      {view === "meta" && (
+        <MetaPanel
+          onOpenDetail={(id) => {
+            const a = catalog.awakeners.find((x) => x.id === id);
+            if (!a) return;
+            setDetail({
+              kind: "awakener",
+              id: a.id,
+              name: a.name,
+              realm: a.realm,
+              rarity: a.rarity,
+              isDivineRealm: a.isDivineRealm,
+              isLemurian: a.isLemurian,
+            });
+          }}
+        />
       )}
 
       {detail && <DetailModal target={detail} onClose={() => setDetail(null)} />}
