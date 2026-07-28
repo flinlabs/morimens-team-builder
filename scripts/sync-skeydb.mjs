@@ -140,10 +140,14 @@ function buildAwakeners(
     if (!annotation) pendingAnnotation.push(a.name)
 
     // Derive realm-identity flags from searchTags (authoritative, not hand-set).
+    // "Primordia" covers Lotan: Cetarchon's Primordial Breath, which reforges
+    // Chaos the same way Divine/Propagation/Singularity reforge their realms.
+    // Her upstream searchTags do not carry the marker yet, so her annotation
+    // sets isDivineRealm by hand — that is what the generator actually reads.
     const tags = a.searchTags || []
     const isLemurian = tags.includes('Lemurian')
     const isDivineRealm = tags.some((t) =>
-      /Divine|Propagation|Singularity/i.test(String(t))
+      /Divine|Propagation|Singularity|Primordia/i.test(String(t))
     )
 
     result[a.id] = {
