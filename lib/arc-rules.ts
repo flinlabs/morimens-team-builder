@@ -198,6 +198,59 @@ export interface ArcUnitShift {
   reason: string
 }
 
+// ---------------------------------------------------------------------------
+// R wheels in Faded Legacy
+// ---------------------------------------------------------------------------
+
+/**
+ * The "Costco" wheels, named as a group by the Mythag Compendium: they flood
+ * the run with Black Sigils and open Cursed Relics in the D-Mark Store, and the
+ * Compendium's advice is to spread them across the supports who do not care
+ * about their own stats. Cheri's handbook is blunter still — in Faded Legacy,
+ * supports should hold R wheels unless there is a specific reason not to.
+ *
+ * Every one of these carries a "Team Unique" clause, so a second copy on the
+ * same team does nothing; the assigner's shared used-wheel pool already
+ * enforces that, which is why spreading rather than stacking is automatic.
+ */
+export const COSTCO_WHEEL_IDS = new Set([
+  'wheel-0064', // Emerge  — store refreshes, cheaper rerolls
+  'wheel-0136', // Greed   — Black Sigils on stage start, Relic Capacity +2
+  'wheel-0062', // Frenzy  — third store slot becomes a Cursed Relic
+])
+
+/**
+ * R wheels the guides call out individually as run-defining in Arc 1, ranked
+ * ahead of generic fillers when Faded Legacy rules are active. Gluttony is the
+ * Caro guide's one "Mandatory!!!" entry (Max HP feeds Crimson Furnace and
+ * Devour shields); Aged and Epiphany open fights at full Keyflare; Whisper is
+ * one of the best Aliemus wheels in the game; Hope turns an Emergency Gnosis
+ * into a teamwide crit window.
+ *
+ * Order is priority order — the assigner reads it as such.
+ */
+export const ARC1_PRIORITY_R_WHEEL_IDS: string[] = [
+  'wheel-0061', // Gluttony  — +44% Max HP, multiplicative
+  'wheel-0064', // Emerge
+  'wheel-0062', // Frenzy
+  'wheel-0136', // Greed
+  'wheel-0074', // Aged      — full Keyflare going into each fight
+  'wheel-0066', // Whisper   — +50 Aliemus after each battle
+  'wheel-0068', // Epiphany  — Keyflare on stage start, Arithmetica on boss
+  'wheel-0067', // Hope      — post-Gnosis crit rate and crit DMG
+]
+
+/**
+ * Whether R wheels should outrank SR/SSR stat sticks on a support in this arc.
+ * In Faded Legacy an R wheel keeps its full ability; in Astral Reign every one
+ * of them degrades to the same "+100% chance for the wielder's Dimension Image
+ * Relic to appear" line, which is why they were nerfed that way in the first
+ * place.
+ */
+export function rWheelsPreferredOnSupports(arc: ArcRuleset): boolean {
+  return ARC_RULES[arc].mechanics.rWheelsFullPower
+}
+
 export const ARC_UNIT_SHIFTS: Record<string, ArcUnitShift> = {
   // "24" — her Ultra build was very strong in Faded Legacy; the Ultra build was
   // nerfed in Astral Reign (Chaos "24" remains fine, so no AR penalty).
