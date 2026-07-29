@@ -534,19 +534,78 @@ export interface MetaLineupStatus {
   complete: boolean
   /**
    * The comp rendered exactly as a generated one — same gear, posse, archetype
-   * chips, and breakdown. Built against the player's own roster, so a comp they
-   * half own comes back with the missing members flagged in
-   * `investmentWarnings` rather than as a separate, thinner display format.
+   * chips, and breakdown. Deliberately built against an IDEAL roster rather
+   * than the player's: this section is a reference for what the composition
+   * looks like when finished, so every wheel, covenant, and posse is present
+   * and no member is ever missing. What the player actually owns is reported
+   * separately in `missing` / `belowFloor`, which is the honest place for it —
+   * repeating it as a warning under every card just buried the teams.
    */
   recommendation: TeamRecommendation
+}
+
+/**
+ * A roster that owns and has built everything, used only to render the curated
+ * comps. Enlighten is pushed to each unit's own stopping point rather than
+ * blanket-maxed, so the gearing shown is the build the guides actually
+ * describe, not a whale's.
+ */
+function idealRoster(
+  awakeners: Record<string, EnrichedAwakener>,
+  base: UserRoster,
+  wheels: Record<string, EnrichedWheel>
+): UserRoster {
+  const awakenerEntries: UserRoster['awakeners'] = {}
+  for (const awakener of Object.values(awakeners)) {
+    const ann = awakener.annotation
+    const breakpoints = [...(ann?.enlightenBreakpoints ?? [])].sort(
+      (a, b) => slotIndex(a) - slotIndex(b)
+    )
+    awakenerEntries[awakener.id] = {
+      owned: true,
+      enlightenSlot: breakpoints[breakpoints.length - 1] ?? ann?.viabilityFloor ?? 'E0',
+      enlightenCopies: 0,
+      characterLevel: 80,
+      skillLevels: { Strike: 6, Defense: 6, Skill1: 6, Skill2: 6, Rouse: 6, Exalt: 6, OverExalt: 1 },
+      talentLevels: { madnessOmen: 5, soulforgeAptitude: 5, gnosticPotential: 5 },
+    }
+  }
+
+  const wheelEntries: UserRoster['wheels'] = {}
+  for (const id of Object.keys(wheels)) {
+    wheelEntries[id] = { owned: true, starLevel: 3, stackLevel: 12 }
+  }
+
+  const covenantEntries: UserRoster['covenants'] = {}
+  for (const id of Object.keys(base.covenants)) {
+    covenantEntries[id] = {
+      owned: true,
+      threePieceComplete: true,
+      sixPieceComplete: true,
+      completionPercent: 100,
+    }
+  }
+
+  const posseEntries: UserRoster['posses'] = {}
+  for (const id of Object.keys(base.posses)) posseEntries[id] = { unlocked: true }
+
+  return {
+    ...base,
+    awakeners: awakenerEntries,
+    wheels: wheelEntries,
+    covenants: covenantEntries,
+    posses: posseEntries,
+  }
 }
 
 export function buildMetaLineupStatus(
   teams: MetaTeam[],
   awakeners: Record<string, EnrichedAwakener>,
   roster: UserRoster,
-  posses?: Record<string, EnrichedPosse>
+  posses?: Record<string, EnrichedPosse>,
+  wheels: Record<string, EnrichedWheel> = {}
 ): MetaLineupStatus[] {
+  const ideal = idealRoster(awakeners, roster, wheels)
   return teams
     .map((team, i) => {
       const missing: { id: string; name: string }[] = []
@@ -566,16 +625,19 @@ export function buildMetaLineupStatus(
         if (slotIndex(current) < slotIndex(floor)) belowFloor.push({ id, name, current, floor })
       })
 
-      const candidate = buildCandidateTeam(team.awakenerIds, awakeners, roster)
+      const candidate = buildCandidateTeam(team.awakenerIds, awakeners, ideal)
       candidate.metaName = team.name
       candidate.metaSource = team.source
       const recommendation = buildTeamRecommendation(
         candidate,
         i + 1,
-        roster,
+        ideal,
         awakeners,
         posses
       )
+      // Nothing is missing on the ideal roster, so anything left here would be
+      // noise rather than signal.
+      recommendation.investmentWarnings = []
 
       return {
         name: team.name,
@@ -622,7 +684,7 @@ export function buildMetaAdvice(
     breakpoints: buildBreakpointAdvice(awakeners, roster),
     pullTargets: buildPullTargets(awakeners, roster),
     wheelTargets: buildWheelTargets(awakeners, wheels, bis, roster, starFloors),
-    metaLineups: buildMetaLineupStatus(metaTeams, awakeners, roster, posses),
+    metaLineups: buildMetaLineupStatus(metaTeams, awakeners, roster, posses, wheels),
     roleGaps: findRoleGaps(awakeners, roster),
   }
 }
