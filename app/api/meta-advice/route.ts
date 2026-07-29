@@ -12,7 +12,14 @@ Response:      MetaAdvice
 Uses the Node runtime because the advice reads db/*.json from disk. **/
 
 import { NextResponse } from 'next/server'
-import { getAwakeners, getWheels, getBisData, getMetaTeams, getWheelStarFloors } from '@/lib/db'
+import {
+  getAwakeners,
+  getWheels,
+  getBisData,
+  getMetaTeams,
+  getWheelStarFloors,
+  getPosses,
+} from '@/lib/db'
 import { buildMetaAdvice } from '@/lib/pull-advice'
 import type { UserRoster } from '@/lib/types'
 
@@ -39,7 +46,8 @@ export async function POST(req: Request) {
       getBisData(),
       getMetaTeams().teams,
       roster,
-      getWheelStarFloors()
+      getWheelStarFloors(),
+      getPosses()
     )
     return NextResponse.json(advice)
   } catch (err) {
