@@ -6,7 +6,14 @@ import {
   buildMetaLineupStatus,
   findRoleGaps,
 } from '@/lib/pull-advice'
-import { getAwakeners, getWheels, getBisData, getMetaTeams, getWheelStarFloors } from '@/lib/db'
+import {
+  getAwakeners,
+  getWheels,
+  getBisData,
+  getMetaTeams,
+  getWheelStarFloors,
+  getPosses,
+} from '@/lib/db'
 import { fullRoster, awakenerIdByName } from './helpers'
 import type { UserRoster } from '@/lib/types'
 
@@ -79,31 +86,46 @@ describe('pull targets', () => {
     expect(buildPullTargets(awakeners, fullRoster())).toHaveLength(0)
   })
 
-  it('ranks a gap-filler above a stronger character who fills no gap', () => {
-    // A roster of four carries and nothing else has no Keyflare bot, no
-    // shielder, no appliers. Whoever tops the list must cover one of those.
-    const roster = rosterOwning(['Pollux', 'Mouchette', 'Kathigu-Ra', 'Lotan'])
-    const gaps = new Set(findRoleGaps(awakeners, roster).map((g) => g.role))
-    expect(gaps.size).toBeGreaterThan(0)
+  it('names the team the pull would slot into, drawn from units already owned', () => {
+    // The point of the rewrite: recommendations are about THIS collection, so
+    // every target has to show which owned characters it would play with.
+    const owned = ['Kathigu-Ra', 'Clementine', 'Tinct', 'Horla', 'Thais']
+    const roster = rosterOwning(owned)
+    // Horla and Thais need to actually be built to count as fieldable.
+    roster.awakeners[awakenerIdByName('Horla')].enlightenSlot = 'E1'
 
-    const top = buildPullTargets(awakeners, roster)[0]
-    const roles = awakeners[top.awakenerId].annotation?.teamRoles ?? []
-    expect(roles.some((r) => gaps.has(r))).toBe(true)
-  })
-
-  it('says what it is asking you to pull to, not just who', () => {
-    const targets = buildPullTargets(awakeners, emptyRoster())
+    const targets = buildPullTargets(awakeners, roster, 5)
+    expect(targets.length).toBeGreaterThan(0)
     for (const t of targets) {
-      expect(t.entryPoint).toBeTruthy()
-      expect(t.reasons.length).toBeGreaterThan(0)
+      expect(t.bestTeam, `${t.name} has no projected team`).toBeDefined()
+      expect(t.bestTeam!.awakenerIds).toContain(t.awakenerId)
+      expect(t.bestTeam!.awakenerIds).toHaveLength(4)
+      // Every teammate must be someone the player owns.
+      for (const id of t.bestTeam!.awakenerIds) {
+        if (id === t.awakenerId) continue
+        expect(roster.awakeners[id].owned, `${awakeners[id].name} is not owned`).toBe(true)
+      }
     }
   })
 
-  it('penalises characters that need heavy investment before they work', () => {
-    const targets = buildPullTargets(awakeners, emptyRoster(), 60)
-    const expensive = targets.filter((t) => t.entryPoint === 'E3')
-    for (const t of expensive) {
-      expect(t.reasons.some((r) => /Needs E3/.test(r))).toBe(true)
+  it('ranks the same character differently for two different collections', () => {
+    // The old scoring was collection-blind — tier plus a role-gap bonus gave
+    // every player the same list. Two rosters with disjoint cores should not
+    // produce the same ordering.
+    const ultra = rosterOwning(['Clementine', 'Tinct', 'Horla', 'Casiah'])
+    ultra.awakeners[awakenerIdByName('Horla')].enlightenSlot = 'E1'
+    const caro = rosterOwning(['Thais', 'Agrippa', 'Aigis', 'Pickman'])
+
+    const a = buildPullTargets(awakeners, ultra, 6).map((t) => t.name)
+    const b = buildPullTargets(awakeners, caro, 6).map((t) => t.name)
+    expect(a).not.toEqual(b)
+  })
+
+  it('says what it is asking you to pull to, not just who', () => {
+    const targets = buildPullTargets(awakeners, rosterOwning(['Kathigu-Ra', 'Clementine', 'Tinct', 'Thais']))
+    for (const t of targets) {
+      expect(t.entryPoint).toBeTruthy()
+      expect(t.reasons.length).toBeGreaterThan(0)
     }
   })
 })
@@ -115,15 +137,23 @@ describe('wheel targets', () => {
     ).toHaveLength(0)
   })
 
-  it('chases a BiS wheel for a character you run but not for one you do not', () => {
-    const roster = rosterOwning(['Horla'])
-    // Horla needs E1; give it to her so she counts as fielded.
+  it('only chases wheels for characters the roster actually fields', () => {
+    const owned = ['Thais', 'Clementine', 'Tinct', 'Horla']
+    const roster = rosterOwning(owned)
+    // Horla's floor is E1; the rest are E0, so all four count as fieldable.
     roster.awakeners[awakenerIdByName('Horla')].enlightenSlot = 'E1'
-    for (const id of Object.keys(roster.wheels)) roster.wheels[id] = { ...roster.wheels[id], owned: false }
+    for (const id of Object.keys(roster.wheels)) {
+      roster.wheels[id] = { ...roster.wheels[id], owned: false }
+    }
 
     const targets = buildWheelTargets(awakeners, wheels, bis, roster, getWheelStarFloors())
-    expect(targets.every((t) => t.forAwakenerName === 'Horla')).toBe(true)
     expect(targets.length).toBeGreaterThan(0)
+    const ownedIds = new Set(owned.map(awakenerIdByName))
+    for (const t of targets) {
+      for (const u of t.wantedBy) {
+        expect(ownedIds.has(u.id), `${u.name} is not in the roster`).toBe(true)
+      }
+    }
   })
 
   it('flags an owned wheel sitting below its recorded ascension floor', () => {
@@ -132,18 +162,45 @@ describe('wheel targets', () => {
     expect(wheelId, 'wheel-floors.json should seed at least one entry').toBeTruthy()
 
     const owner = wheels[wheelId].ownerAwakenerId!
-    const roster = fullRoster()
+    // Own the wheel's character and enough teammates to form a team, so the
+    // owner is genuinely fielded rather than merely present in the collection.
+    const roster = rosterOwning([
+      awakeners[owner].name,
+      'Clementine',
+      'Tinct',
+      'Horla',
+    ])
+    roster.awakeners[awakenerIdByName('Horla')].enlightenSlot = 'E1'
     roster.wheels[wheelId] = { ...roster.wheels[wheelId], owned: true, starLevel: 0 }
 
     const targets = buildWheelTargets(awakeners, wheels, bis, roster, floors)
     const hit = targets.find((t) => t.wheelId === wheelId)
     expect(hit?.owned).toBe(true)
     expect(hit?.recommendedStarFloor).toBe(floors[wheelId].starFloor)
-    expect(awakeners[owner]).toBeDefined()
+    expect(hit?.wantedBy.some((u) => u.id === owner)).toBe(true)
   })
 })
 
 describe('meta lineups', () => {
+  it('renders every curated comp through the generated-team format', () => {
+    // The Meta tab reuses TeamFormation, so a curated comp has to arrive as a
+    // real TeamRecommendation — gear, posse, and analysis included — rather
+    // than as a name list the UI would have to render some other way.
+    const status = buildMetaLineupStatus(metaTeams, awakeners, fullRoster(), getPosses())
+    for (const s of status) {
+      expect(s.recommendation.composition.length).toBeGreaterThan(0)
+      expect(s.recommendation.analysis).toBeDefined()
+      expect(s.recommendation.composition[0].wheelAssignments).toBeDefined()
+    }
+  })
+
+  it('flags missing members inside the recommendation itself', () => {
+    const roster = rosterOwning(['Kathigu-Ra'])
+    const status = buildMetaLineupStatus(metaTeams, awakeners, roster, getPosses())
+    const partial = status.find((s) => s.missing.length > 0)!
+    expect(partial.recommendation.investmentWarnings.some((w) => /not owned/.test(w))).toBe(true)
+  })
+
   it('shows nothing missing on a full roster, but still flags unbuilt members', () => {
     // fullRoster() owns every character at E0, which is not the same as having
     // built them: several curated comps contain units whose floor is E1 or
