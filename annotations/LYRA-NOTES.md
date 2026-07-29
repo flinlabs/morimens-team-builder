@@ -249,3 +249,53 @@ Applied:
    a pass over the roster; the advice engine would pick them up as a better
    signal than `tier` for the pull ranking. Left alone rather than inferring
    58 ranks from role lists.
+
+
+## 2026-07-28 — curated comp list re-picked
+
+### Applied
+
+- **Meta Lineups now render fully built, always.** The section previously built
+  each comp against the player's own roster, so every card carried a block of
+  "X is not owned / X is missing recommended wheels" bullets that buried the
+  team itself. It now builds against an ideal roster — everything owned, wheels
+  at E3/+12, covenants complete, every posse unlocked — with each unit pushed to
+  its own recorded stopping point rather than blanket-maxed, so the gearing
+  shown is the build the guides describe. What the player actually owns is
+  reported once in the header instead.
+
+- **`meta-teams.json` cut from 35 comps to 12**, per Felix's curation. Note this
+  feeds `lib/generate.ts` as well as the Meta tab: curated comps carry a scaled
+  bonus in generation, so shrinking the list narrows what the generator treats
+  as known-good. That is the intended effect, but it is a generator change, not
+  just a display one.
+
+  Ten of the twelve already existed and kept their original notes and sources
+  verbatim. Two are new and are attributed to Felix rather than to a guide:
+  Mouchette / Helot / Aigis / Thais, and Sorel / Thais / Pickman / Faint.
+
+- **Regression rewritten from a name to a rule.** The Saya-Sorel adjudication
+  was pinned to a comp called "Saya — Propagation Caro", which no longer exists.
+  It now asserts the invariant across the whole list — no curated comp pairs
+  Saya with Sorel — which is what actually has to survive a re-pick. Added a
+  companion test that every curated comp is legal: four unique units, at most
+  two realms, no two variants of one character.
+
+  Worth noting the new list already respects the adjudication on its own: Saya
+  appears with Doresain and with Pontos, Sorel appears with Faint, and the two
+  never share a team.
+
+### Needs your call
+
+9. **Helot: Catena / Thais / Aigis / Helot was dropped.** You listed thirteen
+   comps; twelve are encoded. That one fields Helot alongside Helot: Catena,
+   and SKeyDB gives them the same in-game slot (`B05` and `B05EX`), the same
+   relationship as Doll / Doll: Inferno and Lotan / Lotan: Cetarchon. The engine
+   already treats that as impossible in `hasVariantConflict`, and a passing test
+   depends on it, so encoding the comp would have put a team in the list that
+   the generator refuses to build.
+
+   If the fourth slot was meant to be someone else, say who and I will add it.
+   If Morimens does in fact allow both Helot forms on one team, then
+   `hasVariantConflict` is wrong for every EX pair and that is a much larger
+   correction than one comp.
