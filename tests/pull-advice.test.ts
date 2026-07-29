@@ -186,7 +186,7 @@ describe('meta lineups', () => {
     // The Meta tab reuses TeamFormation, so a curated comp has to arrive as a
     // real TeamRecommendation — gear, posse, and analysis included — rather
     // than as a name list the UI would have to render some other way.
-    const status = buildMetaLineupStatus(metaTeams, awakeners, fullRoster(), getPosses())
+    const status = buildMetaLineupStatus(metaTeams, awakeners, fullRoster(), getPosses(), wheels)
     for (const s of status) {
       expect(s.recommendation.composition.length).toBeGreaterThan(0)
       expect(s.recommendation.analysis).toBeDefined()
@@ -194,11 +194,32 @@ describe('meta lineups', () => {
     }
   })
 
-  it('flags missing members inside the recommendation itself', () => {
+  it('always renders a fully geared comp, whatever the player owns', () => {
+    // This section is a reference for the finished composition, so an empty
+    // collection must still show every unit with two wheels and a covenant —
+    // no "X is not owned" / "X is missing recommended wheels" noise under the
+    // card. Ownership is reported in `missing` instead.
+    const status = buildMetaLineupStatus(metaTeams, awakeners, emptyRoster(), getPosses(), wheels)
+    for (const s of status) {
+      expect(s.recommendation.investmentWarnings).toEqual([])
+      expect(s.recommendation.composition).toHaveLength(4)
+      for (const member of s.recommendation.composition) {
+        expect(member.wheelAssignments, `${member.awakenerId} has no wheels`).toHaveLength(2)
+        for (const w of member.wheelAssignments) {
+          expect(w.tier, `${member.awakenerId} has an unfilled wheel slot`).not.toBe('FALLBACK')
+        }
+        expect(member.covenantRecommendation).toBeDefined()
+      }
+      expect(s.recommendation.posseRecommendations.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('still reports what the player is missing, separately from the card', () => {
     const roster = rosterOwning(['Kathigu-Ra'])
-    const status = buildMetaLineupStatus(metaTeams, awakeners, roster, getPosses())
+    const status = buildMetaLineupStatus(metaTeams, awakeners, roster, getPosses(), wheels)
     const partial = status.find((s) => s.missing.length > 0)!
-    expect(partial.recommendation.investmentWarnings.some((w) => /not owned/.test(w))).toBe(true)
+    expect(partial.missing.length).toBeGreaterThan(0)
+    expect(partial.recommendation.investmentWarnings).toEqual([])
   })
 
   it('shows nothing missing on a full roster, but still flags unbuilt members', () => {
@@ -206,7 +227,7 @@ describe('meta lineups', () => {
     // built them: several curated comps contain units whose floor is E1 or
     // higher (Horla, Pollux). Owning the comp and being able to run it are
     // different questions and the tab answers both.
-    const status = buildMetaLineupStatus(metaTeams, awakeners, fullRoster())
+    const status = buildMetaLineupStatus(metaTeams, awakeners, fullRoster(), getPosses(), wheels)
     expect(status.length).toBe(metaTeams.length)
     expect(status.every((s) => s.missing.length === 0)).toBe(true)
     for (const s of status) {
@@ -216,7 +237,7 @@ describe('meta lineups', () => {
 
   it('counts what is missing and puts the closest comps first', () => {
     const roster = rosterOwning(['Kathigu-Ra', 'Clementine', 'Tinct'])
-    const status = buildMetaLineupStatus(metaTeams, awakeners, roster)
+    const status = buildMetaLineupStatus(metaTeams, awakeners, roster, getPosses(), wheels)
     expect(status[0].missing.length).toBeLessThanOrEqual(status[status.length - 1].missing.length)
     const partial = status.find((s) => s.ownedCount > 0 && s.missing.length > 0)
     expect(partial?.missing.length).toBeGreaterThan(0)
