@@ -19,8 +19,13 @@ import type {
   EnlightenSlot,
   TeamRole,
   MetaTeam,
+  CandidateTeam,
+  TeamRecommendation,
+  EnrichedPosse,
 } from './types'
 import { getAwakenerEntry, getWheelEntry } from './roster'
+import { buildCandidateTeam } from './filter'
+import { buildTeamRecommendation } from './assign'
 import type { BisEntry } from './db'
 
 // Investment ladder, cheapest first. E0 is "owned, no copies".
@@ -79,31 +84,6 @@ export interface BreakpointAdvice {
   note: string
   keySkillSlots: string[]
   keyTalents: string[]
-}
-
-export interface PullTarget {
-  awakenerId: string
-  name: string
-  realm: string
-  type: string
-  tier: string
-  score: number
-  /** Cheapest point they are worth fielding — what you are actually pulling to. */
-  entryPoint: EnlightenSlot
-  stoppingPoint?: EnlightenSlot
-  reasons: string[]
-}
-
-export interface WheelTarget {
-  wheelId: string
-  name: string
-  rarity: string
-  forAwakenerId: string
-  forAwakenerName: string
-  owned: boolean
-  starLevel: number
-  recommendedStarFloor?: number
-  reason: string
 }
 
 export interface MetaLineupStatus {
@@ -243,15 +223,116 @@ export function findRoleGaps(
   }))
 }
 
+/** Owned characters built to at least their own comfort floor. */
+function fieldablePool(
+  awakeners: Record<string, EnrichedAwakener>,
+  roster: UserRoster
+): string[] {
+  return Object.values(awakeners)
+    .filter((a) => {
+      if (!a.annotation) return false
+      const entry = getAwakenerEntry(roster, a.id)
+      if (!entry.owned) return false
+      return slotIndex(entry.enlightenSlot ?? 'E0') >= slotIndex(a.annotation.viabilityFloor ?? 'E0')
+    })
+    .map((a) => a.id)
+}
+
+// Search width for the "best team containing X" beam. buildCandidateTeam costs
+// roughly 0.15ms, so a beam of 3 over a pool capped at 28 is a few hundred
+// scoring calls per candidate — cheap enough to run for every unowned character
+// inside a single request.
+const BEAM_WIDTH = 3
+const POOL_CAP = 28
+
+/**
+ * Best four-unit team that can be built from `pool`, optionally forced to
+ * include `required`. Greedy beam rather than exhaustive: C(28,3) per candidate
+ * across forty candidates would be ~45k scoring calls, which is too slow for a
+ * request, and the beam lands on the same team in almost every case because
+ * team score is dominated by the carry plus its two best enablers.
+ */
+function bestTeamFrom(
+  pool: string[],
+  awakeners: Record<string, EnrichedAwakener>,
+  roster: UserRoster,
+  required?: string
+): CandidateTeam | null {
+  const candidates = pool.filter((id) => id !== required).slice(0, POOL_CAP)
+  if (candidates.length + (required ? 1 : 0) < 4) return null
+
+  let beam: string[][] = required ? [[required]] : candidates.map((id) => [id]).slice(0, BEAM_WIDTH)
+
+  while (beam[0].length < 4) {
+    const next: { ids: string[]; score: number }[] = []
+    for (const partial of beam) {
+      for (const id of candidates) {
+        if (partial.includes(id)) continue
+        const ids = [...partial, id]
+        // Partial teams are scored the same way full ones are; the relative
+        // ordering is what the beam needs, not an absolute value.
+        next.push({ ids, score: buildCandidateTeam(ids, awakeners, roster).score })
+      }
+    }
+    if (!next.length) return null
+    next.sort((a, b) => b.score - a.score)
+    const seen = new Set<string>()
+    beam = []
+    for (const cand of next) {
+      const key = [...cand.ids].sort().join('|')
+      if (seen.has(key)) continue
+      seen.add(key)
+      beam.push(cand.ids)
+      if (beam.length >= BEAM_WIDTH) break
+    }
+  }
+
+  return buildCandidateTeam(beam[0], awakeners, roster)
+}
+
+export interface PullTargetTeam {
+  awakenerIds: string[]
+  awakenerNames: string[]
+  score: number
+}
+
+export interface PullTarget {
+  awakenerId: string
+  name: string
+  realm: string
+  type: string
+  tier: string
+  /** How much the best fieldable team improves if you acquire them. */
+  delta: number
+  /** Cheapest point they are worth fielding — what you are actually pulling to. */
+  entryPoint: EnlightenSlot
+  stoppingPoint?: EnlightenSlot
+  /** The team they would slot into, drawn from characters already owned. */
+  bestTeam?: PullTargetTeam
+  reasons: string[]
+}
+
+/**
+ * Rank unowned characters by what they would actually do for THIS collection.
+ *
+ * The previous version scored on tier plus a role-gap bonus, which recommended
+ * the same handful of strong characters to everyone regardless of what they
+ * owned. This instead measures the thing the player cares about: build the best
+ * team the roster can field today, then build the best team it could field with
+ * each candidate added, and rank by the difference. A character who slots into
+ * an existing core beats a stronger one who has nobody to play with.
+ */
 export function buildPullTargets(
   awakeners: Record<string, EnrichedAwakener>,
   roster: UserRoster,
   limit = 12
 ): PullTarget[] {
+  const pool = fieldablePool(awakeners, roster)
+  const baseline = bestTeamFrom(pool, awakeners, roster)
+  const baselineScore = baseline?.score ?? 0
+
   const gaps = new Set(findRoleGaps(awakeners, roster).map((g) => g.role))
-  const gapLabels = new Map(
-    findRoleGaps(awakeners, roster).map((g) => [g.role, g.label] as const)
-  )
+  const gapLabels = new Map(findRoleGaps(awakeners, roster).map((g) => [g.role, g.label] as const))
 
   const targets: PullTarget[] = []
 
@@ -260,55 +341,51 @@ export function buildPullTargets(
     if (!ann) continue
     if (getAwakenerEntry(roster, awakener.id).owned) continue
 
-    const reasons: string[] = []
-    let score = TIER_SCORE[ann.tier ?? 'C'] ?? 1
-    reasons.push(`Tier ${ann.tier ?? 'C'}`)
+    // Score them as if acquired at their comfort floor — that is the pull the
+    // player is actually considering, not a hypothetical maxed copy.
+    const hypothetical: UserRoster = {
+      ...roster,
+      awakeners: {
+        ...roster.awakeners,
+        [awakener.id]: {
+          ...(roster.awakeners[awakener.id] ?? {}),
+          owned: true,
+          enlightenSlot: ann.viabilityFloor ?? 'E0',
+          enlightenCopies: 0,
+          characterLevel: roster.keeperLevel ?? 80,
+          skillLevels: roster.awakeners[awakener.id]?.skillLevels ?? {
+            Strike: 1, Defense: 1, Skill1: 1, Skill2: 1, Rouse: 1, Exalt: 1, OverExalt: 0,
+          },
+          talentLevels: roster.awakeners[awakener.id]?.talentLevels ?? {
+            madnessOmen: 0, soulforgeAptitude: 0, gnosticPotential: 0,
+          },
+        },
+      },
+    }
 
-    // Filling a hole beats raw power — a second S-tier carry does less for a
-    // roster with no Keyflare bot than a B-tier Keyflare bot does.
+    const withThem = bestTeamFrom([awakener.id, ...pool], awakeners, hypothetical, awakener.id)
+    if (!withThem) continue
+    const delta = Math.round((withThem.score - baselineScore) * 100) / 100
+
+    const reasons: string[] = []
+    const teammates = withThem.awakenerIds.filter((id) => id !== awakener.id)
+    if (teammates.length) {
+      reasons.push(
+        `Slots straight into a team with ${teammates.map((id) => awakeners[id].name).join(', ')}`
+      )
+    }
     const filled = (ann.teamRoles ?? []).filter((r) => gaps.has(r))
     if (filled.length) {
-      score += 3
-      reasons.push(
-        `Fills a gap in your roster: ${filled.map((r) => gapLabels.get(r) ?? r).join(', ')}`
-      )
+      reasons.push(`Covers ${filled.map((r) => gapLabels.get(r) ?? r).join(', ')}, which nothing you have built does`)
     }
-
-    // Synergy is only worth counting against units the player can actually
-    // field, so partners must be owned and at their own floor.
-    const partners = (ann.keyPairings ?? [])
-      .map((p) => p.partnerId)
-      .concat(ann.synergizesWith ?? [])
-      .filter((id, i, arr) => arr.indexOf(id) === i)
-      .filter((id) => {
-        const partner = awakeners[id]
-        if (!partner?.annotation) return false
-        const e = getAwakenerEntry(roster, id)
-        if (!e.owned) return false
-        return slotIndex(e.enlightenSlot ?? 'E0') >= slotIndex(partner.annotation.viabilityFloor ?? 'E0')
-      })
-    if (partners.length) {
-      score += Math.min(partners.length, 3)
-      const names = partners.slice(0, 3).map((id) => awakeners[id].name)
-      reasons.push(
-        `Pairs with ${names.join(', ')}${partners.length > 3 ? ` and ${partners.length - 3} more` : ''} that you already run`
-      )
-    }
-
-    // Cheap-to-use units are better pulls for a thin roster than ones that need
-    // three copies before they do anything.
     const floor = ann.viabilityFloor ?? 'E0'
-    if (floor === 'E0') {
-      score += 1
-      reasons.push('Works straight from E0')
-    } else if (slotIndex(floor) >= slotIndex('E3')) {
-      score -= 1
-      reasons.push(`Needs ${floor} before they pull their weight`)
-    }
-
-    const breakpoints = [...(ann.enlightenBreakpoints ?? [])].sort(
-      (a, b) => slotIndex(a) - slotIndex(b)
+    reasons.push(
+      floor === 'E0'
+        ? 'Works straight from E0'
+        : `Needs ${floor} before they pull their weight`
     )
+
+    const breakpoints = [...(ann.enlightenBreakpoints ?? [])].sort((a, b) => slotIndex(a) - slotIndex(b))
 
     targets.push({
       awakenerId: awakener.id,
@@ -316,15 +393,20 @@ export function buildPullTargets(
       realm: awakener.realm,
       type: awakener.type,
       tier: ann.tier ?? 'C',
-      score,
+      delta,
       entryPoint: floor,
       stoppingPoint: breakpoints[breakpoints.length - 1],
+      bestTeam: {
+        awakenerIds: withThem.awakenerIds,
+        awakenerNames: withThem.awakenerIds.map((id) => awakeners[id].name),
+        score: Math.round(withThem.score * 100) / 100,
+      },
       reasons,
     })
   }
 
   return targets
-    .sort((a, b) => (b.score !== a.score ? b.score - a.score : a.name.localeCompare(b.name)))
+    .sort((a, b) => (b.delta !== a.delta ? b.delta - a.delta : a.name.localeCompare(b.name)))
     .slice(0, limit)
 }
 
@@ -332,66 +414,106 @@ export function buildPullTargets(
 // Wheel targets
 // ---------------------------------------------------------------------------
 
+export interface WheelTarget {
+  wheelId: string
+  name: string
+  rarity: string
+  owned: boolean
+  starLevel: number
+  recommendedStarFloor?: number
+  /** Characters the player already fields who want this wheel. */
+  wantedBy: { id: string; name: string }[]
+  /** How many of the player's strongest fieldable teams contain a wanted-by unit. */
+  teamsAffected: number
+  reason: string
+}
+
+/**
+ * Wheels ranked by how much they would improve teams the player can already
+ * field, rather than by a flat walk of every BiS row. A wheel wanted by three
+ * characters who all appear in the rosters's best teams is a better pull than a
+ * best-in-slot for someone who has nobody to play with.
+ */
 export function buildWheelTargets(
   awakeners: Record<string, EnrichedAwakener>,
   wheels: Record<string, EnrichedWheel>,
   bis: Record<string, BisEntry>,
   roster: UserRoster,
   starFloors: Record<string, { starFloor: number; note?: string }> = {},
-  limit = 20
+  limit = 16
 ): WheelTarget[] {
-  const out: WheelTarget[] = []
+  const pool = fieldablePool(awakeners, roster)
 
-  for (const awakener of Object.values(awakeners)) {
-    const ann = awakener.annotation
-    if (!ann) continue
-    const entry = getAwakenerEntry(roster, awakener.id)
-    // Only advise on wheels for characters the player actually fields.
-    if (!entry.owned) continue
-    if (slotIndex(entry.enlightenSlot ?? 'E0') < slotIndex(ann.viabilityFloor ?? 'E0')) continue
+  // The characters that actually show up when this roster builds teams. Units
+  // sitting in the collection but never fielded should not drive wheel advice.
+  const fielded = new Set<string>()
+  const best = bestTeamFrom(pool, awakeners, roster)
+  if (best) best.awakenerIds.forEach((id) => fielded.add(id))
+  // One team per carry the player can field: a carry is what defines a team, so
+  // anchoring on each of them covers the compositions this roster would
+  // actually build rather than an arbitrary slice of the collection.
+  const carries = pool.filter((id) =>
+    (awakeners[id].annotation?.teamRoles ?? []).includes('main_dps')
+  )
+  for (const anchor of (carries.length ? carries : pool).slice(0, 10)) {
+    const team = bestTeamFrom(pool, awakeners, roster, anchor)
+    if (team) team.awakenerIds.forEach((id) => fielded.add(id))
+  }
+  // A roster too thin to form a team still deserves wheel advice for the
+  // characters it does have built.
+  if (fielded.size === 0) pool.forEach((id) => fielded.add(id))
 
-    const variants = bis[awakener.id]?.variants ?? []
-    for (const variant of variants) {
+  const byWheel = new Map<string, WheelTarget>()
+
+  for (const awakenerId of fielded) {
+    const awakener = awakeners[awakenerId]
+    if (!awakener) continue
+    for (const variant of bis[awakenerId]?.variants ?? []) {
       for (const rec of variant.wheels) {
         if (rec.tier !== 'BIS_SSR' && rec.tier !== 'BIS_SR') continue
         const wheel = wheels[rec.wheelId]
         if (!wheel) continue
-        const wheelEntry = getWheelEntry(roster, rec.wheelId)
+        const entry = getWheelEntry(roster, rec.wheelId)
         const floor = starFloors[rec.wheelId]
+        const underAscended = entry.owned && floor && (entry.starLevel ?? 0) < floor.starFloor
+        if (entry.owned && !underAscended) continue
 
-        if (!wheelEntry.owned) {
-          out.push({
-            wheelId: rec.wheelId,
-            name: wheel.name,
-            rarity: wheel.rarity,
-            forAwakenerId: awakener.id,
-            forAwakenerName: awakener.name,
-            owned: false,
-            starLevel: 0,
-            recommendedStarFloor: floor?.starFloor,
-            reason: `Best-in-slot for ${awakener.name}, who you already run.${floor?.note ? ` ${floor.note}` : ''}`,
-          })
-        } else if (floor && (wheelEntry.starLevel ?? 0) < floor.starFloor) {
-          out.push({
-            wheelId: rec.wheelId,
-            name: wheel.name,
-            rarity: wheel.rarity,
-            forAwakenerId: awakener.id,
-            forAwakenerName: awakener.name,
-            owned: true,
-            starLevel: wheelEntry.starLevel ?? 0,
-            recommendedStarFloor: floor.starFloor,
-            reason: `Owned at E${wheelEntry.starLevel ?? 0}, but wants at least E${floor.starFloor} for ${awakener.name}.${floor.note ? ` ${floor.note}` : ''}`,
-          })
+        const existing = byWheel.get(rec.wheelId)
+        if (existing) {
+          existing.wantedBy.push({ id: awakenerId, name: awakener.name })
+          existing.teamsAffected += 1
+          continue
         }
+        byWheel.set(rec.wheelId, {
+          wheelId: rec.wheelId,
+          name: wheel.name,
+          rarity: wheel.rarity,
+          owned: !!entry.owned,
+          starLevel: entry.starLevel ?? 0,
+          recommendedStarFloor: floor?.starFloor,
+          wantedBy: [{ id: awakenerId, name: awakener.name }],
+          teamsAffected: 1,
+          reason: '',
+        })
       }
     }
   }
 
-  // One row per wheel — a wheel wanted by three characters is still one pull.
-  const seen = new Set<string>()
+  const out = [...byWheel.values()]
+  for (const t of out) {
+    const names = t.wantedBy.map((w) => w.name)
+    const floorNote = starFloors[t.wheelId]?.note
+    t.reason = t.owned
+      ? `Owned at E${t.starLevel}, but ${names.join(' and ')} want at least E${t.recommendedStarFloor}.${floorNote ? ` ${floorNote}` : ''}`
+      : `Best-in-slot for ${names.join(', ')}, who you already field.${floorNote ? ` ${floorNote}` : ''}`
+  }
+
   return out
-    .filter((t) => (seen.has(t.wheelId) ? false : (seen.add(t.wheelId), true)))
+    .sort((a, b) =>
+      b.wantedBy.length !== a.wantedBy.length
+        ? b.wantedBy.length - a.wantedBy.length
+        : a.name.localeCompare(b.name)
+    )
     .slice(0, limit)
 }
 
@@ -399,19 +521,40 @@ export function buildWheelTargets(
 // Meta lineups
 // ---------------------------------------------------------------------------
 
+export interface MetaLineupStatus {
+  name: string
+  realm: string
+  source?: string
+  notes: string
+  awakenerIds: string[]
+  awakenerNames: string[]
+  ownedCount: number
+  missing: { id: string; name: string }[]
+  belowFloor: { id: string; name: string; current: EnlightenSlot; floor: EnlightenSlot }[]
+  complete: boolean
+  /**
+   * The comp rendered exactly as a generated one — same gear, posse, archetype
+   * chips, and breakdown. Built against the player's own roster, so a comp they
+   * half own comes back with the missing members flagged in
+   * `investmentWarnings` rather than as a separate, thinner display format.
+   */
+  recommendation: TeamRecommendation
+}
+
 export function buildMetaLineupStatus(
   teams: MetaTeam[],
   awakeners: Record<string, EnrichedAwakener>,
-  roster: UserRoster
+  roster: UserRoster,
+  posses?: Record<string, EnrichedPosse>
 ): MetaLineupStatus[] {
   return teams
-    .map((team) => {
+    .map((team, i) => {
       const missing: { id: string; name: string }[] = []
       const belowFloor: MetaLineupStatus['belowFloor'] = []
       let ownedCount = 0
 
-      team.awakenerIds.forEach((id, i) => {
-        const name = team.awakenerNames[i] ?? awakeners[id]?.name ?? id
+      team.awakenerIds.forEach((id, idx) => {
+        const name = team.awakenerNames[idx] ?? awakeners[id]?.name ?? id
         const entry = getAwakenerEntry(roster, id)
         if (!entry.owned) {
           missing.push({ id, name })
@@ -420,10 +563,19 @@ export function buildMetaLineupStatus(
         ownedCount += 1
         const floor = awakeners[id]?.annotation?.viabilityFloor ?? 'E0'
         const current = entry.enlightenSlot ?? 'E0'
-        if (slotIndex(current) < slotIndex(floor)) {
-          belowFloor.push({ id, name, current, floor })
-        }
+        if (slotIndex(current) < slotIndex(floor)) belowFloor.push({ id, name, current, floor })
       })
+
+      const candidate = buildCandidateTeam(team.awakenerIds, awakeners, roster)
+      candidate.metaName = team.name
+      candidate.metaSource = team.source
+      const recommendation = buildTeamRecommendation(
+        candidate,
+        i + 1,
+        roster,
+        awakeners,
+        posses
+      )
 
       return {
         name: team.name,
@@ -436,6 +588,7 @@ export function buildMetaLineupStatus(
         missing,
         belowFloor,
         complete: missing.length === 0 && belowFloor.length === 0,
+        recommendation,
       }
     })
     // Closest to finished first — those are the ones worth one more pull.
@@ -448,19 +601,28 @@ export function buildMetaLineupStatus(
 
 // ---------------------------------------------------------------------------
 
+export interface MetaAdvice {
+  breakpoints: BreakpointAdvice[]
+  pullTargets: PullTarget[]
+  wheelTargets: WheelTarget[]
+  metaLineups: MetaLineupStatus[]
+  roleGaps: { role: TeamRole; label: string }[]
+}
+
 export function buildMetaAdvice(
   awakeners: Record<string, EnrichedAwakener>,
   wheels: Record<string, EnrichedWheel>,
   bis: Record<string, BisEntry>,
   metaTeams: MetaTeam[],
   roster: UserRoster,
-  starFloors: Record<string, { starFloor: number; note?: string }> = {}
+  starFloors: Record<string, { starFloor: number; note?: string }> = {},
+  posses?: Record<string, EnrichedPosse>
 ): MetaAdvice {
   return {
     breakpoints: buildBreakpointAdvice(awakeners, roster),
     pullTargets: buildPullTargets(awakeners, roster),
     wheelTargets: buildWheelTargets(awakeners, wheels, bis, roster, starFloors),
-    metaLineups: buildMetaLineupStatus(metaTeams, awakeners, roster),
+    metaLineups: buildMetaLineupStatus(metaTeams, awakeners, roster, posses),
     roleGaps: findRoleGaps(awakeners, roster),
   }
 }
