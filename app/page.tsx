@@ -21,6 +21,10 @@ export default function Home() {
       roles: a.annotation?.teamRoles ?? [],
       isDivineRealm: !!a.isDivineRealm,
       isLemurian: !!a.isLemurian,
+      // Investment guidance shown on the card itself, so a player can see where
+      // to stop without opening the detail modal or the Meta tab.
+      viabilityFloor: a.annotation?.viabilityFloor ?? "E0",
+      enlightenBreakpoints: a.annotation?.enlightenBreakpoints ?? [],
     })),
     wheels: Object.values(wheels).map((w) => ({
       id: w.id,
