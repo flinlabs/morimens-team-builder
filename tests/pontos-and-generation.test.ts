@@ -440,11 +440,42 @@ describe('wheel identity and posse fallback — third screenshot round', () => {
 })
 
 describe('MRMS corrections — Propagation comp, isolated carry, D-Tide tier fill', () => {
-  it('the Propagation Caro curated comp fields Doresain, not embryo-scaling Sorel', async () => {
+  it('no curated comp puts Saya and Sorel on the same team', async () => {
+    // Saya turns the realm into Propagation: Caro, which raises the Embryo
+    // Fusion threshold to 200% — and Sorel's Infinite Devour scales with embryo
+    // count, so the divine realm actively fights her. Doresain's kill-scaling
+    // does not care, which is why he is the Caro-core partner instead.
+    //
+    // Asserted as an invariant over the whole list rather than against one
+    // team's name: the curated set gets re-picked from time to time, and the
+    // rule is what has to survive that, not the label.
     const { getMetaTeams } = await import('@/lib/db')
-    const t = getMetaTeams().teams.find((x) => x.name === 'Saya — Propagation Caro')!
-    expect(t.awakenerNames).toContain('Doresain')
-    expect(t.awakenerNames).not.toContain('Sorel')
+    const teams = getMetaTeams().teams
+    const sayaComps = teams.filter((t) => t.awakenerNames.includes('Saya'))
+    expect(sayaComps.length).toBeGreaterThan(0)
+    for (const t of sayaComps) {
+      expect(t.awakenerNames, `${t.name} pairs Saya with Sorel`).not.toContain('Sorel')
+    }
+  })
+
+  it('every curated comp is legal: 4 unique units, <=2 realms, no variant clash', async () => {
+    const { getMetaTeams } = await import('@/lib/db')
+    const { hasVariantConflict, getRealmsInTeam } = await import('@/lib/filter')
+    for (const t of getMetaTeams().teams) {
+      expect(t.awakenerIds, `${t.name} is not four units`).toHaveLength(4)
+      expect(new Set(t.awakenerIds).size, `${t.name} repeats a unit`).toBe(4)
+      for (const id of t.awakenerIds) {
+        expect(awk[id], `${t.name} references unknown ${id}`).toBeDefined()
+      }
+      expect(
+        hasVariantConflict(t.awakenerIds, awk),
+        `${t.name} fields two variants of one character`
+      ).toBe(false)
+      expect(
+        getRealmsInTeam(t.awakenerIds, awk).length,
+        `${t.name} spans more than two realms`
+      ).toBeLessThanOrEqual(2)
+    }
   })
 
   it('an isolated off-realm carry scores below the same carry with realm support', async () => {
