@@ -236,15 +236,9 @@ Applied:
    disagree and it is the only seeded entry in the file. Worth settling before
    more wheels get floors on the same basis.
 
-8. **Utility ranks are not modelled.** Your framing — Castor and Arachne are
-   "super useful", Pollux is "a really good DPS" — maps to Cheri's separate
-   DPS Rank and Support Rank, which our annotations flatten into one `tier`.
-   Castor sits at `A` and Arachne at `S` today, which does not capture that
-   Castor's value is almost entirely support utility. If you want that split,
-   it wants two new optional annotation fields (`dpsRank`, `supportRank`) and
-   a pass over the roster; the advice engine would pick them up as a better
-   signal than `tier` for the pull ranking. Left alone rather than inferring
-   58 ranks from role lists.
+8. ~~**Utility ranks are not modelled.**~~ **RESOLVED 2026-08-03** — the
+   community DPS and Support tier lists arrived, so the split is now built from
+   transcribed data rather than inferred. See the 2026-08-03 entry below.
 
 
 ## 2026-07-28 — curated comp list re-picked
@@ -370,8 +364,74 @@ provisional 2026-07-28 entry.
     Russian log's Cetarchon / Jenkin / Ogier / Clementine. Say which, if any,
     should join the twelve.
 
-11. **Tier stays S, but the flattening problem is now sharper.** Her value is
-    mostly invisible support — Keyflare, Sigil Yield, team DMG Amplification —
-    which a single `tier` cannot express any better than it expressed Castor's.
-    This is the same `dpsRank` / `supportRank` split raised in question 8, and
-    she is now the clearest argument for doing it.
+11. ~~**Tier stays S, but the flattening problem is now sharper.**~~
+    **RESOLVED 2026-08-03.** She is now graded A as a DPS and A as a support,
+    which captures what a single `tier` could not — see question 12 below for
+    the one judgement call inside that.
+
+
+
+## 2026-08-03 — per-role tier lists
+
+### Applied
+
+- **`annotations/tier-lists.json`** (new). Verbatim transcription of the
+  community Newbie DPS and Newbie Support tier lists, keyed by awakener id,
+  with both published scales included so a future reader can check a grade
+  against the definition it was awarded under. All 59 awakeners are covered;
+  every name resolved against the db on the first pass.
+
+  Kept as its own file rather than folded into `annotations/awakeners.json`
+  because the community republishes these lists as a unit. A re-transcription
+  can overwrite the whole file without touching a single hand-written note,
+  pairing, or breakpoint — the same isolation principle the sync scripts use.
+
+- **`dpsRank` / `supportRank` / `dpsFloor` / `supportFloor`** on
+  `AwakenerAnnotation`, merged in at `getAwakeners()` load time. The legacy
+  `tier` field stays, since generation and older UI read it, but it is now
+  documented as the thing to migrate away from.
+
+- **Meta tab shows both grades** as separate chips instead of one "Tier X".
+
+  Three cases prove the split earns its place: Kathigu-Ra is A as a carry and
+  C as a support, Clementine is C and S, and Castor — the character that
+  prompted the question — is B+ and A. A single grade was hiding all three.
+
+- **Role-specific floors are recorded separately from `viabilityFloor`.** The
+  source prints an investment level next to some portraits, and it differs by
+  role: Murphy: Fauxborn is E2 as a DPS but unqualified as a support, Helot:
+  Catena is E3 on both lists yet A as a carry and C+ as a support. These are
+  answers to a different question than "when is this character worth fielding
+  at all", so they are stored alongside rather than overwriting.
+
+### Deliberate choice worth knowing
+
+- **An unranked role is stored as absent, not as a low grade.** Both lists
+  state that an unlisted character would need "a crazy reason" to be used in
+  that role — which is stronger than a C, and different in kind. Backfilling a
+  C would have made Aigis read as a usable DPS. There is a test pinning this.
+
+### Needs your call
+
+12. **Cetarchon is encoded A/A; you said "S/A" for DPS.** I read that as
+    uncertainty between the two and took the lower one, for a specific reason:
+    these are explicitly *newbie* lists, where S means "needs very little
+    investment to steamroll story mode." Both of her guides say she is the most
+    gimmick-vulnerable unit in the game, that she needs the player to read
+    enemy intent patterns to time Whalefall, and that she "scales with player
+    knowledge." That is close to the opposite of what S is measuring, even
+    though her ceiling clearly reaches it.
+
+    If you meant S outright, it is a one-word change in
+    `annotations/tier-lists.json` and one assertion in `tests/tier-lists.test.ts`.
+
+    Note also this is the one grade in the file that is not from the community
+    lists — she released after they were published — so her entry carries a
+    `source` field crediting you. Worth keeping that convention if more
+    post-list characters get graded.
+
+13. **Where should the ranks feed decisions, beyond display?** Right now they
+    are shown and used in the pull-target reason text, but ranking itself is
+    still the marginal-team-value delta, and generation still reads the legacy
+    `tier`. Wiring `supportRank` into the generator's support scoring is a real
+    behavioural change and I did not want to make it silently. Say the word.
