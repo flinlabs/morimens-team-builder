@@ -60,6 +60,34 @@ const ROLE_LABEL: Partial<Record<TeamRole, string>> = {
 
 const TIER_SCORE: Record<string, number> = { S: 4, A: 3, B: 2, C: 1 }
 
+// The community publishes two separate newbie tier lists — how well a character
+// carries, and how much they improve a team as support — because the two
+// answers routinely diverge. Kathigu-Ra is A as a DPS and C as a support;
+// Clementine is C and S. Reporting one grade for a pull recommendation would
+// hide exactly the information the player needs.
+const DPS_RANK_SCORE: Record<string, number> = { S: 5, A: 4, 'B+': 3, B: 2, C: 1 }
+const SUPPORT_RANK_SCORE: Record<string, number> = { S: 5, A: 4, B: 3, 'C+': 2, C: 1 }
+
+/**
+ * The grade that matters for how this character would actually be used, chosen
+ * by whichever role they score higher in rather than by their declared
+ * teamRoles — a unit fielded as a carry because nothing better is owned is
+ * still being judged on its carry grade.
+ */
+export function bestRankFor(ann: {
+  dpsRank?: string
+  supportRank?: string
+  dpsFloor?: string
+  supportFloor?: string
+}): { role: 'DPS' | 'Support'; rank: string; floor?: string } | null {
+  const dps = ann.dpsRank ? DPS_RANK_SCORE[ann.dpsRank] ?? 0 : -1
+  const sup = ann.supportRank ? SUPPORT_RANK_SCORE[ann.supportRank] ?? 0 : -1
+  if (dps < 0 && sup < 0) return null
+  return dps >= sup
+    ? { role: 'DPS', rank: ann.dpsRank!, floor: ann.dpsFloor }
+    : { role: 'Support', rank: ann.supportRank!, floor: ann.supportFloor }
+}
+
 export type InvestmentStatus =
   | 'not_owned'
   | 'below_floor'
@@ -82,6 +110,10 @@ export interface BreakpointAdvice {
   nextBreakpoint?: EnlightenSlot
   status: InvestmentStatus
   note: string
+  dpsRank?: string
+  supportRank?: string
+  dpsFloor?: string
+  supportFloor?: string
   keySkillSlots: string[]
   keyTalents: string[]
 }
@@ -174,6 +206,10 @@ export function buildBreakpointAdvice(
       nextBreakpoint,
       status,
       note,
+      dpsRank: ann.dpsRank,
+      supportRank: ann.supportRank,
+      dpsFloor: ann.dpsFloor,
+      supportFloor: ann.supportFloor,
       keySkillSlots: ann.keySkillSlots ?? [],
       keyTalents: ann.keyTalents ?? [],
     })
@@ -302,6 +338,10 @@ export interface PullTarget {
   realm: string
   type: string
   tier: string
+  dpsRank?: string
+  supportRank?: string
+  dpsFloor?: string
+  supportFloor?: string
   /** How much the best fieldable team improves if you acquire them. */
   delta: number
   /** Cheapest point they are worth fielding — what you are actually pulling to. */
@@ -378,6 +418,14 @@ export function buildPullTargets(
     if (filled.length) {
       reasons.push(`Covers ${filled.map((r) => gapLabels.get(r) ?? r).join(', ')}, which nothing you have built does`)
     }
+    const best = bestRankFor(ann)
+    if (best) {
+      reasons.push(
+        `Community rank ${best.rank} as ${best.role.toLowerCase()}` +
+          (best.floor ? `, at ${best.floor}` : '')
+      )
+    }
+
     const floor = ann.viabilityFloor ?? 'E0'
     reasons.push(
       floor === 'E0'
@@ -393,6 +441,10 @@ export function buildPullTargets(
       realm: awakener.realm,
       type: awakener.type,
       tier: ann.tier ?? 'C',
+      dpsRank: ann.dpsRank,
+      supportRank: ann.supportRank,
+      dpsFloor: ann.dpsFloor,
+      supportFloor: ann.supportFloor,
       delta,
       entryPoint: floor,
       stoppingPoint: breakpoints[breakpoints.length - 1],
