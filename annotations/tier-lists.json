@@ -1,0 +1,317 @@
+{
+  "_note": "Community newbie tier lists, transcribed verbatim. Two SEPARATE rankings: how well a character carries as main DPS, and how much they improve a team as support. Keeping them apart is the whole point \u2014 Kathigu-Ra is A as a DPS and C as a support, Clementine is the reverse, and the single `tier` field on annotations/awakeners.json cannot express either. `dpsFloor` / `supportFloor` record the investment level the source printed in parentheses next to a portrait, e.g. \"Mouchette (E2)\"; that is the level at which the rank applies, and it is role-specific, so a unit can be listed at different floors on the two lists (Murphy: Fauxborn is E2 as a DPS and unqualified as a support). Absent from a list means the source did not rank them there at all \u2014 per its own note, you would need a crazy reason to use them in that role. That is meaningful data, so absence is left as absence rather than backfilled with a low grade.",
+  "_dpsScale": {
+    "S": "Insane \u2014 needs very little investment to steamroll story mode and D-Effect Zone.",
+    "A": "Great \u2014 clears normal story as main DPS even with a suboptimal team; good in D-Tide Alert 5.",
+    "B+": "Good early \u2014 clears normal story as main DPS, but needs specific teammates or high investment for endgame.",
+    "B": "Decent \u2014 clears normal story as main DPS, but needs specific teammates or high investment to finish all chapters.",
+    "C": "Usable \u2014 an unrealistic amount of effort for a new player to clear story with; better used later as support or secondary DPS."
+  },
+  "_supportScale": {
+    "S": "Insane \u2014 improves almost any team by being on it.",
+    "A": "Great \u2014 a premium support, strong in a variety of situations; lets weak teams punch above their weight.",
+    "B": "Decent \u2014 good at one or two specific things, valuable when you need those things.",
+    "C+": "Niche \u2014 a unique ability that matters in some rare situations.",
+    "C": "Usable \u2014 works as a support, but others fill the same role better."
+  },
+  "ranks": {
+    "awakener-0001": {
+      "name": "\"24\"",
+      "dpsRank": "B",
+      "supportRank": "B"
+    },
+    "awakener-0002": {
+      "name": "Agrippa",
+      "dpsRank": "B",
+      "dpsFloor": "E3",
+      "supportRank": "B"
+    },
+    "awakener-0003": {
+      "name": "Aigis",
+      "supportRank": "S"
+    },
+    "awakener-0004": {
+      "name": "Alva",
+      "dpsRank": "B",
+      "dpsFloor": "E3",
+      "supportRank": "B"
+    },
+    "awakener-0005": {
+      "name": "Aurita",
+      "dpsRank": "B"
+    },
+    "awakener-0006": {
+      "name": "Caecus",
+      "dpsRank": "B",
+      "supportRank": "B"
+    },
+    "awakener-0007": {
+      "name": "Casiah",
+      "supportRank": "B"
+    },
+    "awakener-0008": {
+      "name": "Castor",
+      "dpsRank": "B+",
+      "dpsFloor": "E3",
+      "supportRank": "A"
+    },
+    "awakener-0009": {
+      "name": "Celeste",
+      "supportRank": "B"
+    },
+    "awakener-0010": {
+      "name": "Clementine",
+      "dpsRank": "C",
+      "dpsFloor": "E2",
+      "supportRank": "S"
+    },
+    "awakener-0011": {
+      "name": "Corposant",
+      "dpsRank": "B+",
+      "dpsFloor": "E3",
+      "supportRank": "A",
+      "supportFloor": "E3"
+    },
+    "awakener-0012": {
+      "name": "Daffodil",
+      "dpsRank": "B",
+      "supportRank": "B"
+    },
+    "awakener-0013": {
+      "name": "Doll",
+      "supportRank": "B"
+    },
+    "awakener-0014": {
+      "name": "Doresain",
+      "dpsRank": "B+",
+      "supportRank": "B"
+    },
+    "awakener-0015": {
+      "name": "Erica",
+      "supportRank": "B"
+    },
+    "awakener-0016": {
+      "name": "Faint",
+      "supportRank": "B"
+    },
+    "awakener-0017": {
+      "name": "Faros",
+      "dpsRank": "B",
+      "dpsFloor": "E2",
+      "supportRank": "B"
+    },
+    "awakener-0018": {
+      "name": "Doll: Inferno",
+      "supportRank": "A",
+      "supportFloor": "E1"
+    },
+    "awakener-0019": {
+      "name": "Helot: Catena",
+      "dpsRank": "A",
+      "dpsFloor": "E3",
+      "supportRank": "C+",
+      "supportFloor": "E3"
+    },
+    "awakener-0020": {
+      "name": "Ramona: Timeworn",
+      "dpsRank": "C",
+      "dpsFloor": "E2",
+      "supportRank": "B"
+    },
+    "awakener-0021": {
+      "name": "Goliath",
+      "dpsRank": "C",
+      "supportRank": "B"
+    },
+    "awakener-0022": {
+      "name": "Hameln",
+      "supportRank": "B"
+    },
+    "awakener-0023": {
+      "name": "Helot",
+      "dpsRank": "C",
+      "supportRank": "B"
+    },
+    "awakener-0024": {
+      "name": "Horla",
+      "supportRank": "S",
+      "supportFloor": "E1"
+    },
+    "awakener-0025": {
+      "name": "Jenkin",
+      "dpsRank": "B",
+      "dpsFloor": "E1",
+      "supportRank": "B"
+    },
+    "awakener-0026": {
+      "name": "Karen",
+      "supportRank": "B"
+    },
+    "awakener-0027": {
+      "name": "Kathigu-Ra",
+      "dpsRank": "A",
+      "dpsFloor": "E3",
+      "supportRank": "C"
+    },
+    "awakener-0028": {
+      "name": "Leigh",
+      "supportRank": "B"
+    },
+    "awakener-0029": {
+      "name": "Lily",
+      "dpsRank": "B",
+      "dpsFloor": "E3",
+      "supportRank": "A",
+      "supportFloor": "E3"
+    },
+    "awakener-0030": {
+      "name": "Liz",
+      "dpsRank": "B",
+      "dpsFloor": "E1"
+    },
+    "awakener-0031": {
+      "name": "Lotan",
+      "dpsRank": "B",
+      "dpsFloor": "E3"
+    },
+    "awakener-0032": {
+      "name": "Miryam",
+      "supportRank": "A"
+    },
+    "awakener-0033": {
+      "name": "Mouchette",
+      "dpsRank": "S",
+      "dpsFloor": "E2"
+    },
+    "awakener-0034": {
+      "name": "Murphy",
+      "supportRank": "A",
+      "supportFloor": "E1"
+    },
+    "awakener-0035": {
+      "name": "Murphy: Fauxborn",
+      "dpsRank": "B+",
+      "dpsFloor": "E2",
+      "supportRank": "A"
+    },
+    "awakener-0036": {
+      "name": "Nautila",
+      "supportRank": "B"
+    },
+    "awakener-0037": {
+      "name": "Nymphaea",
+      "dpsRank": "B",
+      "dpsFloor": "E3",
+      "supportRank": "B"
+    },
+    "awakener-0038": {
+      "name": "Ogier",
+      "supportRank": "C"
+    },
+    "awakener-0039": {
+      "name": "Pandia",
+      "dpsRank": "C",
+      "supportRank": "C+"
+    },
+    "awakener-0040": {
+      "name": "Pickman",
+      "dpsRank": "C",
+      "supportRank": "A",
+      "supportFloor": "E2"
+    },
+    "awakener-0041": {
+      "name": "Pollux",
+      "dpsRank": "A",
+      "dpsFloor": "E3"
+    },
+    "awakener-0042": {
+      "name": "Ramona",
+      "supportRank": "B"
+    },
+    "awakener-0043": {
+      "name": "Ryker",
+      "supportRank": "A"
+    },
+    "awakener-0044": {
+      "name": "Salvador",
+      "dpsRank": "B",
+      "dpsFloor": "E2",
+      "supportRank": "A"
+    },
+    "awakener-0045": {
+      "name": "Sanga",
+      "dpsRank": "C",
+      "supportRank": "B"
+    },
+    "awakener-0046": {
+      "name": "Sorel",
+      "dpsRank": "B",
+      "supportRank": "C"
+    },
+    "awakener-0047": {
+      "name": "Tawil",
+      "dpsRank": "B+",
+      "dpsFloor": "E2",
+      "supportRank": "A",
+      "supportFloor": "E2"
+    },
+    "awakener-0048": {
+      "name": "Thais",
+      "supportRank": "S"
+    },
+    "awakener-0049": {
+      "name": "Tinct",
+      "supportRank": "B"
+    },
+    "awakener-0050": {
+      "name": "Tulu",
+      "dpsRank": "C",
+      "supportRank": "B"
+    },
+    "awakener-0051": {
+      "name": "Uvhash",
+      "dpsRank": "C"
+    },
+    "awakener-0052": {
+      "name": "Wanda",
+      "dpsRank": "C",
+      "supportRank": "C+"
+    },
+    "awakener-0053": {
+      "name": "Winkle",
+      "supportRank": "B"
+    },
+    "awakener-0054": {
+      "name": "Xu",
+      "dpsRank": "B+",
+      "supportRank": "A"
+    },
+    "awakener-0055": {
+      "name": "Vortice",
+      "dpsRank": "S",
+      "supportRank": "B"
+    },
+    "awakener-0056": {
+      "name": "Arachne",
+      "dpsRank": "B+",
+      "supportRank": "S"
+    },
+    "awakener-0057": {
+      "name": "Saya",
+      "supportRank": "S"
+    },
+    "awakener-0058": {
+      "name": "Pontos",
+      "dpsRank": "B+",
+      "dpsFloor": "E3",
+      "supportRank": "A",
+      "supportFloor": "E3"
+    },
+    "awakener-0059": {
+      "name": "Lotan: Cetarchon",
+      "dpsRank": "A",
+      "supportRank": "A",
+      "source": "Felix \u2014 not on the community lists, which predate her release."
+    }
+  }
+}
