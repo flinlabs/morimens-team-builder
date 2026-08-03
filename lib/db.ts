@@ -28,7 +28,21 @@ function readDB<T>(filename: string): T {
 // ---------------------------------------------------------------------------
 
 export function getAwakeners(): Record<string, EnrichedAwakener> {
-  return readDB<Record<string, EnrichedAwakener>>('awakeners.json')
+  const all = readDB<Record<string, EnrichedAwakener>>('awakeners.json')
+  // Merge the per-role tier grades onto the annotation so every consumer sees
+  // them without a second lookup. Done at read time rather than baked into
+  // db/awakeners.json so re-transcribing a republished tier list never touches
+  // the hand-written annotations.
+  const tiers = getTierLists()
+  for (const [id, awakener] of Object.entries(all)) {
+    const t = tiers[id]
+    if (!t || !awakener.annotation) continue
+    awakener.annotation.dpsRank = t.dpsRank as never
+    awakener.annotation.supportRank = t.supportRank as never
+    awakener.annotation.dpsFloor = t.dpsFloor as never
+    awakener.annotation.supportFloor = t.supportFloor as never
+  }
+  return all
 }
 
 export function getWheels(): Record<string, EnrichedWheel> {
@@ -95,6 +109,39 @@ export function getBisData(): Record<string, BisEntry> {
     _bisCache = {}
   }
   return _bisCache
+}
+
+let _tierListCache: Record<string, TierListEntry> | null = null
+
+export interface TierListEntry {
+  name: string
+  dpsRank?: string
+  supportRank?: string
+  dpsFloor?: string
+  supportFloor?: string
+  source?: string
+}
+
+/**
+ * Per-role tier grades from annotations/tier-lists.json, merged onto each
+ * awakener's annotation at load. Kept in its own file rather than inlined into
+ * annotations/awakeners.json because the community re-publishes these lists as
+ * a unit, and a separate file can be re-transcribed wholesale without touching
+ * the hand-written notes and pairings.
+ */
+export function getTierLists(): Record<string, TierListEntry> {
+  if (_tierListCache) return _tierListCache
+  try {
+    const raw = fs.readFileSync(
+      path.join(process.cwd(), 'annotations', 'tier-lists.json'),
+      'utf-8'
+    )
+    const parsed = JSON.parse(raw) as { ranks?: Record<string, TierListEntry> }
+    _tierListCache = parsed.ranks ?? {}
+  } catch {
+    _tierListCache = {}
+  }
+  return _tierListCache
 }
 
 let _wheelFloorCache: Record<string, { starFloor: number; note?: string }> | null = null
