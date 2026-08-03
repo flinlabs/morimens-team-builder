@@ -3063,13 +3063,28 @@
         "wheels": [
           {
             "tier": "BIS_SSR",
+            "wheelId": "wheel-0018",
+            "wheelName": "Celestial Beast"
+          },
+          {
+            "tier": "ALT_SSR",
             "wheelId": "wheel-0172",
             "wheelName": "Cetus Occasus"
           },
           {
             "tier": "ALT_SSR",
-            "wheelId": "wheel-0018",
-            "wheelName": "Celestial Beast"
+            "wheelId": "wheel-0042",
+            "wheelName": "Twisted Knight Ballad"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0036",
+            "wheelName": "Path Forsaken"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0031",
+            "wheelName": "Treasured Rarity"
           },
           {
             "tier": "ALT_SSR",
@@ -3078,31 +3093,120 @@
           },
           {
             "tier": "ALT_SSR",
-            "wheelId": "wheel-0121",
-            "wheelName": "Sunfall"
+            "wheelId": "wheel-0008",
+            "wheelName": "Bloody Feast"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0055",
+            "wheelName": "Blade of the Titan"
           },
           {
             "tier": "BIS_SR",
             "wheelId": "wheel-0173",
             "wheelName": "Undying Hungerbone"
+          },
+          {
+            "tier": "ALT_SR",
+            "wheelId": "wheel-0083",
+            "wheelName": "Analysis of Death"
+          },
+          {
+            "tier": "ALT_SR",
+            "wheelId": "wheel-0087",
+            "wheelName": "Critical Point"
+          },
+          {
+            "tier": "ALT_SR",
+            "wheelId": "wheel-0099",
+            "wheelName": "Kiss of Farewell"
           }
         ],
         "covenants": [
+          {
+            "covenantId": "covenant-0014",
+            "covenantName": "April Tribute"
+          },
+          {
+            "covenantId": "covenant-0009",
+            "covenantName": "Paradox"
+          },
           {
             "covenantId": "covenant-0020",
             "covenantName": "Steppenwolf"
           },
           {
-            "covenantId": "covenant-0014",
-            "covenantName": "April Tribute"
+            "covenantId": "covenant-0005",
+            "covenantName": "Twisted Twins: Black"
           }
         ],
         "preferredStats": [
           "Crit DMG",
+          "Crit Rate",
           "Sigil Yield",
+          "DMG Amplification"
+        ],
+        "notes": "Hand-authored from the two community guides, not from the Mythag Compendium, which has no build for her yet. The headline finding is that her signature is not mandatory: 'Lotan's WoDs can be substituted with a bunch of others to pretty much no difference in performance.' Cetus Occasus is BiS only at E1, where Sigil Yield converts into Strike crit rate and base damage via Rotting Remains; below E1 ignore Sigil Yield entirely and build crit rate instead. Celestial Beast leads because both her Skills count as Strikes, so its Exalt-and-Strike base damage and per-Strike crit stacking cover her whole kit. Split the build by what you need: crit rate and Strike damage (Twisted Knight Ballad, Path Forsaken, Special Training, Blade of the Titan) for mob clearing, full crit DMG (Treasured Rarity, Private Afternoon, Bloody Feast, Amber-Tinted Death, Celestial Beast) when mobbing does not matter. Special Training deserves a mention for fixing her crit rate single-handedly, since she always Rouses turn 1; paired with April Tribute she reaches 100% crit rate. Covenants split by role \u2014 April Tribute for subDPS and mob clearing, Paradox for main DPS in long fights, and at E2 or above Twisted Twins: Black is arguably best of all, since the odd-turn Strike copy pulls a Short Blade and removes the need to search for her cards. Do not run Dream of Medicine on her except as a Freeze/Exhaust countermeasure \u2014 the guides call it counterproductive, because copied Short Blades do not advance the stack counter. Substat priority at E1 is Crit DMG = Sigil Yield > Crit Rate = DMG Amp = Death Resistance > Realm Mastery; without E1, drop Sigil Yield and prioritise Crit Rate."
+      },
+      {
+        "variant": "Support",
+        "wheels": [
+          {
+            "tier": "BIS_SSR",
+            "wheelId": "wheel-0124",
+            "wheelName": "Heart of Silver"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0174",
+            "wheelName": "Falling Upward"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0016",
+            "wheelName": "Manikin of Oblivion"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0024",
+            "wheelName": "Grace Through Pain"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0035",
+            "wheelName": "The Last Verse"
+          },
+          {
+            "tier": "BIS_SR",
+            "wheelId": "wheel-0080",
+            "wheelName": "Sever and Scar"
+          }
+        ],
+        "covenants": [
+          {
+            "covenantId": "covenant-0014",
+            "covenantName": "April Tribute"
+          },
+          {
+            "covenantId": "covenant-0001",
+            "covenantName": "Deus Ex Machina"
+          },
+          {
+            "covenantId": "covenant-0013",
+            "covenantName": "Life Drain"
+          },
+          {
+            "covenantId": "covenant-0006",
+            "covenantName": "Burial Ground's Sighs"
+          }
+        ],
+        "preferredStats": [
+          "Keyflare Regen",
+          "DMG Amplification",
+          "Death Resistance",
           "Realm Mastery"
         ],
-        "notes": "Provisional \u2014 hand-authored from the pre-release infographic, not from the Mythag Compendium, because SKeyDB carries no build for her yet. Cetus Occasus is the clear signature: it raises Strike crit DMG and then converts her Base Aliemus (200, the highest in the game) into stacking Exalt crit DMG, and both halves of that match how she actually deals damage. Celestial Beast is the strongest generic alternate because Long Blade: Perish and Short Blade: Devour both count as Strikes, so its Exalt-and-Strike base damage and per-Strike crit stacking read almost as a second signature. Amber-Tinted Death is the STR option, and STR is her steepest multiplier once Night of Whalefall doubles the Exalt's STR bonus. Undying Hungerbone is the SR floor and covers the same Strike crit DMG line. Watch Sigil Yield: Rotting Remains turns each 1% of it into Strike crit rate and base damage, so both signature Wheels carry a Sigil Yield mainstat by design and the Sigil Yield covenant sets (Organic Form, Feast from Afar) may be live rather than economy picks \u2014 Organic Form's Death Resistance reduction is a poor match for Whalefall's +25% incoming damage, so that pairing needs testing before it is recommended. Realm Mastery is not a dead stat on her either: it becomes Primordia: Chaos Mastery and converts into Posse Potency."
+        "notes": "Her better role according to both guides. Heart of Silver is the stand-out because Keyflare Regen is set to the team average under Primordia: Chaos and every Rouse fires the chosen Posse \u2014 though the guides note it works nearly as well on a teammate. Sever and Scar maxes out instantly off her high ATK for -90 STR, which is strong into multi-hit enemies and gives the team DMG Amplification; stacked with Grace Through Pain her 2-cost mitigates 240+ damage a turn. Falling Upward is genuinely good on her rather than only on Saya: her high ATK pushes it past 8000 Corrosion for 0 cost, which accelerates her own Exalt. Manikin of Oblivion is worth trying on an Exalt-based unit with costs this high \u2014 it can refund roughly 90 Aliemus off her Over-Exalt. Death-resist wheels work but are usually contested and better placed elsewhere."
       }
     ]
   }
