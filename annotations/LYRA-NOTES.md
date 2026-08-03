@@ -171,24 +171,20 @@ Applied:
    second signature), Amber-Tinted Death for the STR line, Undying Hungerbone
    as the SR floor. Replace wholesale when the Compendium publishes.
 
-3. **Does the equipped Posse still function with her on the team?** Primordial
-   Echo says the currently equipped Posse is automatically unleashed the first
-   time Rouse Cards are played each turn. Memory Fragments says the carried
-   Posse can no longer be unleashed. Read together these look contradictory —
-   my assumption is that the Posse *button* becomes Primordia: Dual Recurrence
-   / Triad Revelation while the equipped Posse still fires passively off
-   Rouses, which is why she keeps a normal `anchorPosse`. If that's wrong,
-   posse recommendation should be suppressed entirely on her teams. Needs
-   in-game verification.
+3. ~~**Does the equipped Posse still function with her on the team?**~~
+   **RESOLVED 2026-08-03** by both community guides, and my reading was right.
+   The Posse *button* becomes Primordia: Dual Recurrence / Triad Revelation,
+   while the chosen Posse still fires — specifically it triggers whenever you
+   Rouse a unit via Keyflare. She keeps a normal `anchorPosse` and posse
+   recommendation stays enabled on her teams. Note the Posse button costs
+   double, and the three-Posse set is almost always better than the double.
 
-4. **Falling Upward (wheel-0174) — Saya BiS candidate?** Ownerless SSR, so the
-   Mythic retag applies. Team Unique, adds a 0-cost card dealing AOE
-   Corrosion and applying Perception Warp to other Awakeners' Command Cards.
-   I left it *out* of `NICHE_MYTHIC_WHEEL_IDS`, so it is available as generic
-   filler — it reads as broadly useful rather than event-locked like School
-   Day. But Corrosion plus Warp points straight at Saya, whose Rouse already
-   grants Warp. If it's a real Saya BiS row rather than filler, say so and
-   I'll move it.
+4. ~~**Falling Upward (wheel-0174) — Saya BiS candidate?**~~
+   **RESOLVED 2026-08-03.** Leaving it out of `NICHE_MYTHIC_WHEEL_IDS` was
+   correct, but for a reason I had not guessed: the in-depth guide lists it
+   under Cetarchon's *own* support wheels, not Saya's. Her high ATK pushes it
+   past 8000 Corrosion for 0 cost, which accelerates her Exalt. It is now a
+   Support-variant row on her BiS entry.
 
 5. **One R wheel per support, or two?** Pass 0.5 takes a single slot and lets
    the second fall through to the normal BiS cascade, so supports that need a
@@ -299,3 +295,83 @@ Applied:
    If Morimens does in fact allow both Helot forms on one team, then
    `hasVariantConflict` is wrong for every EX pair and that is a much larger
    correction than one comp.
+
+
+
+## 2026-08-03 — Cetarchon re-annotated from community guides
+
+Two guides arrived (an in-depth English community guide and the Russian
+"Experimental log: Lotan:Cetarchon"), and they overturned several things I had
+guessed at from the pre-release infographic. Everything below replaces the
+provisional 2026-07-28 entry.
+
+### Corrected
+
+- **Role: subDPS/support first, not main DPS.** Both guides converge here. The
+  in-depth guide: "despite everything about her visual design (and cards)
+  screaming carry, G.Lotan actually provides a lot of invisible support" and
+  "IMO she isn't designed to be Main DPS." `teamRoles` is now
+  `sub_dps, main_dps, keyflare_support, str_support` — carry retained as a real
+  second role, since it is a supported playstyle, just not her best one.
+
+- **Breakpoints were wrong.** I had E1/E3/OE. The guide gives an explicit
+  priority order — **E0 > E2 > E3 > OE > E1 > AA** — and the Russian log agrees
+  that "functionally e2 is the only one that counts." E1 is explicitly
+  skippable and AA explicitly not recommended, so neither is a breakpoint.
+  Now `E2, E3, OE`, floor unchanged at E0.
+
+- **Her signature is not best-in-slot.** "Lotan's WoDs can be substituted with
+  a bunch of others to pretty much no difference in performance." Cetus Occasus
+  is BiS only *at E1*, where Sigil Yield begins converting into Strike crit via
+  Rotting Remains. Below E1 the guides say ignore Sigil Yield entirely and
+  build crit rate. Celestial Beast now leads the Carry variant.
+
+  This also softens the Sigil Yield finding from 2026-07-28: it is a live
+  combat stat, but only from E1, and it is a *preference* rather than a
+  requirement. The wheel purpose overrides in `annotations/wheels.json` stay
+  correct either way.
+
+- **Her own Posse is not her anchor.** "Cetus-Devouring Storm... it is better
+  to Discover this than to actually run it IMO." `anchorPosse` is now A Mouse's
+  Wisdom (posse-0004), which makes all Rouses free — and since the chosen Posse
+  fires on every Keyflare Rouse under Primordia: Chaos, that is a large tempo
+  swing. Cetus-Devouring Storm stays in `recommendedPosses`.
+
+- **Ogier was wrong as a key pairing.** I had inferred him from the 1500% STR
+  bonus. The guide names him explicitly as a non-synergy: "Certain units (e.g.
+  Ogier, Nautila) can serve a function on the team, but they do not
+  particularly have standout synergies." STR support is "not so much a must but
+  a strong want." Key pairings are now Hameln, Castor, Arachne, Aigis, Faint.
+
+- **All-Chaos was overstated.** Mono doubles two bonuses, but both guides field
+  her mixed far more often, and the in-depth guide says she "can be slotted as
+  splash support nearly anywhere." The real constraint is different: she needs
+  a team that does not depend on a specific chosen Posse.
+
+- **New BiS shape: two variants, Carry and Support.** Support gets Heart of
+  Silver, Sever and Scar, Falling Upward, Manikin of Oblivion. Twisted Twins:
+  Black is arguably her best covenant at E2+, and Dream of Medicine is
+  explicitly counterproductive on her — copied Short Blades do not advance the
+  stack counter, which is a mechanic worth remembering generally.
+
+- **Test rewritten, not restored.** `tests/lineup-tokens.test.ts` asserted
+  Cetus Occasus was her first BiS wheel. That assertion encoded my guess, and
+  the guides contradict it, so it now checks that both role variants exist and
+  that Celestial Beast leads the Carry list with the signature present further
+  down.
+
+### Still open
+
+10. **Teams from the guides are NOT in `meta-teams.json`.** The curated list is
+    Felix's hand-picked twelve and I did not touch it. The guides supply
+    several candidates that pass the legality sweep — Cetarchon / Hameln /
+    Ryker / Castor (Chaos+Ultra), Cetarchon / Arachne / Daffodil / Karen
+    (Chaos+Ultra), Cetarchon / Doresain / Pickman / Leigh (Chaos+Caro), and the
+    Russian log's Cetarchon / Jenkin / Ogier / Clementine. Say which, if any,
+    should join the twelve.
+
+11. **Tier stays S, but the flattening problem is now sharper.** Her value is
+    mostly invisible support — Keyflare, Sigil Yield, team DMG Amplification —
+    which a single `tier` cannot express any better than it expressed Castor's.
+    This is the same `dpsRank` / `supportRank` split raised in question 8, and
+    she is now the clearest argument for doing it.
