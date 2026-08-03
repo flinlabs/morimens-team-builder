@@ -2210,7 +2210,10 @@
   "awakener-0059": {
     "id": "awakener-0059",
     "teamRoles": [
-      "main_dps"
+      "sub_dps",
+      "main_dps",
+      "keyflare_support",
+      "str_support"
     ],
     "synergyTags": [
       "strike_synergy",
@@ -2218,62 +2221,79 @@
       "divine_realm"
     ],
     "requires": [],
-    "requiresCondition": "Wants an all-Chaos lineup. Primordial Influx doubles its DMG Amplification bonus and Primordia: Chaos Mastery doubles its Posse Potency scaling only when every Awakener on the team is Chaos, while Indivisible Realm switches off other realms' Pure Realm, Double Realm Mastery, and Double DMG Amplification effects \u2014 so a splash unit costs more than it gives.",
+    "requiresCondition": "No hard requirement. An all-Chaos lineup doubles the DMG Amplification bonus and the Primordia: Chaos Mastery scaling, but both guides field her mixed far more often than mono \u2014 she splashes into Ultra, Caro and Aequor cores without complaint, because the 2000 opening Keyflare and the team-average Keyflare Regen are realm-agnostic. What she genuinely needs is a team that does not depend on a specific chosen Posse, since Memory Fragments replaces the Posse button.",
     "synergizesWith": [
-      "awakener-0038",
-      "awakener-0029",
-      "awakener-0004",
-      "awakener-0018",
-      "awakener-0036",
+      "awakener-0022",
       "awakener-0043",
-      "awakener-0022"
+      "awakener-0008",
+      "awakener-0056",
+      "awakener-0012",
+      "awakener-0003",
+      "awakener-0025",
+      "awakener-0014",
+      "awakener-0040",
+      "awakener-0016",
+      "awakener-0058",
+      "awakener-0020",
+      "awakener-0001"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
     "enlightenBreakpoints": [
-      "E1",
+      "E2",
       "E3",
       "OE"
     ],
     "keySkillSlots": [
-      "Strike",
       "Skill1",
       "Skill2",
-      "Exalt"
+      "Exalt",
+      "Rouse"
     ],
     "keyTalents": [
       "soulforge_aptitude",
       "madness_omen"
     ],
-    "anchorPosse": "posse-0053",
+    "anchorPosse": "posse-0004",
     "recommendedPosses": [
-      "posse-0053"
+      "posse-0004",
+      "posse-0012",
+      "posse-0025",
+      "posse-0053",
+      "posse-0024",
+      "posse-0028",
+      "posse-0041",
+      "posse-0023"
     ],
     "keyPairings": [
       {
-        "partnerId": "awakener-0038",
-        "reason": "Mundus Severance carries a 1500% STR bonus that the Night of Whalefall Over-Exalt doubles again, so flat STR is her steepest scaling lever and Ogier is the Chaos unit that supplies it."
+        "partnerId": "awakener-0022",
+        "reason": "Hameln's one real drawback is how expensive it is to Rouse him, and Primordia: Chaos hands the team 2000 Keyflare at battle start \u2014 so he comes online turn 1 as a permanent +2 Arithmetica unit, generates the Insights her card loop wants, and can double-play Long Blade."
       },
       {
-        "partnerId": "awakener-0029",
-        "reason": "Great Blade: Whalefall makes every enemy deal 25% more damage to the team for as long as it sits in hand, so Lily's death resistance and healing pay the upkeep on her own damage buff."
+        "partnerId": "awakener-0008",
+        "reason": "Castor is the strongest Ultra partner for carry Cetarchon: Plume into Long Blade clears mobs outright, his draw and Arithmetica feed her combo, Umbral buffs her damage, and he can stall the long multi-phase fights where she otherwise falls off."
       },
       {
-        "partnerId": "awakener-0004",
-        "reason": "Long Blade: Perish and Short Blade: Devour both count as Strikes, so Alva feeds the Strike loop while her shields offset the Whalefall damage taken."
+        "partnerId": "awakener-0056",
+        "reason": "Arachne damages through enemy immunity with Verdict, so Cetarchon's opening Exalt can delete a boss phase and Arachne's Pursuit spam finishes what survives."
       },
       {
-        "partnerId": "awakener-0018",
-        "reason": "Deadly Duel steals up to 10 Aliemus from every other Awakener each time it is played; a battery that keeps refilling the team turns that theft into a renewable resource instead of a one-off tax."
+        "partnerId": "awakener-0003",
+        "reason": "Aigis's stun is effectively a free turn, which is exactly what Cetarchon needs to bank another Deadly Duel stack while holding Whalefall, and her Vulnerable opens the Exalt window."
+      },
+      {
+        "partnerId": "awakener-0016",
+        "reason": "Whalefall makes every enemy hit 25% harder for as long as it sits in hand; against enemies without multi-hits Faint's stacked death resistance removes that drawback almost entirely."
       }
     ],
     "isDivineRealm": true,
-    "divineRealmNote": "Primordial Breath reforges Chaos into Primordia: Chaos \u2014 the same realm-rewriting pattern as Divine Aequor, Propagation: Caro, and Singularity: Ultra. SKeyDB's searchTags for her are still just [\"STR Up\"], so the automatic Divine derivation in the sync misses her; this flag is set by hand until upstream tags catch up.",
+    "divineRealmNote": "Primordial Breath reforges Chaos into Primordia: Chaos \u2014 the same realm-rewriting pattern as Divine Aequor, Propagation: Caro and Singularity: Ultra, and the community calls it Divine/Primordial Chaos interchangeably. SKeyDB's searchTags for her are still just [\"STR Up\"], so the automatic Divine derivation misses her; this flag is set by hand until upstream tags catch up.",
     "tier": "S",
-    "notes": "Chaos Strike hypercarry who rewrites the realm around herself. Primordial Breath sets Base Keyflare to 2000, grants 2000 Keyflare at battle start, gives the team +50% DMG Amplification (doubled on an all-Chaos lineup) and +10% ATK/DEF, and flattens every Awakener's Keyflare Regen Level to the team average with no decay \u2014 which removes the usual need for a dedicated keyflare bot but rewards raising the whole team's regen rather than spiking one unit. Her damage loop is Short Blade: Devour into Long Blade: Perish to forge Great Blade: Whalefall, an unplayable Forced Retain buff card that turns all her Command Cards into Deadly Duel and lets Mundus Severance fire as a guaranteed crit with a 1500% STR bonus. Whalefall's cost is real: while it is in hand every enemy deals 25% more damage to your team, so shields, healing, and death resistance are not optional. Deadly Duel steals up to 10 Aliemus from each other Awakener, so teammates who need their own Exalt online \u2014 \"24\" most obviously \u2014 are competing with her for the same pool. Sigil Yield is a live combat stat for her, not economy: Rotting Remains converts each 1% of Sigil Yield from her, her Wheels, and her Covenant into Strike crit rate and base damage, and both signature Wheels carry a Sigil Yield mainstat to match. Soulforge adds a 500~1000% STR bonus to Mundus Severance and is her top leveling priority. Numbers here come from the pre-release infographic (internal test server, Lv. 60, all skills Lv. 6) and may shift; tier and breakpoints are provisional pending community testing \u2014 see annotations/LYRA-NOTES.md.",
+    "notes": "Chaos realm-rewriter who reads as a carry and plays as a support. Primordial Breath grants 2000 Keyflare at battle start and sets Base Keyflare to 2000, which in practice guarantees two Rouses and two Posse triggers by turn 2 \u2014 one of the highest tempo swings in the game. It also flattens every Awakener's Keyflare Regen to the team average with no decay, so raising the whole team's regen beats spiking one unit, and it gives +50% team DMG Amplification (doubled on all-Chaos) plus 10% ATK and DEF. The cost is Indivisible Realm switching off other realms' Pure Realm and doubling effects. Her damage loop is Short Blade three times into Long Blade to forge Great Blade: Whalefall, an unplayable Forced Retain card that converts all her Command Cards into Deadly Duel and unlocks Mundus Severance as a guaranteed crit. Whalefall's scaling is the point: her Exalt gains roughly 1875 damage per 100 damage of enemy intent at E0, doubled at E3, so she is best into hard-hitting enemies and can hit six figures against A5-tier intent. Three caveats the guides stress. She is the most gimmick-vulnerable unit in the game \u2014 Freeze, Exhaust-on-play, Seal and Counter all wreck her, and she needs both Skills to Exalt at all. Her Exalt auto-targets the highest-intent enemy, which is not always the one you want dead. And she brings essentially no defensive utility, so she wants to end fights rather than survive them. Note also that duplicated or copied Short Blades do not advance the stack counter; only replays of that specific card do, which limits her synergy with card-copying supports.",
     "contentNotes": {
-      "arc1": "Soulforge is inert in Faded Legacy, which removes the 500~1000% STR bonus on Mundus Severance \u2014 a large share of her ceiling. She still functions, but her Arc 1 case is much weaker than her Arc 2 one.",
-      "arc2": "Astral Reign limited unit and her intended home. Realm Mastery becomes Primordia: Chaos Mastery, so Realm Mastery substats convert into Posse Potency at 0.05% per point (doubled on an all-Chaos team), which in turn scales Fixed Poison/Counter/STR/Ancient Embers by 2% per point and Fixed Shield, Fixed HP Recovery, STR down, Crit Rate, Crit DMG, DMG Amplification, Realm Mastery, Aliemus Generation, Embryo Fusion, and Keyflare Generation by 1% per point."
+      "arc1": "Soulforge is inert in Faded Legacy, removing the 500~1000% STR bonus on Mundus Severance and the Black Sigil generation that makes her a Sigil engine. She still functions on Primordia: Chaos tempo alone, but her Arc 1 case is much weaker than her Arc 2 one.",
+      "arc2": "Astral Reign limited unit and her intended home. Realm Mastery becomes Primordia: Chaos Mastery, converting into Posse Potency at 0.05% per point (doubled on an all-Chaos team), which scales Fixed Poison/Counter/STR/Ancient Embers by 2% per point and Fixed Shield, Fixed HP Recovery, STR down, Crit Rate, Crit DMG, DMG Amplification, Realm Mastery, Aliemus Generation, Embryo Fusion and Keyflare Generation by 1% per point. Strong into long explorations (W1/W2/W5) where she trivialises mobs, and into W3 on damage floor alone; weakest into W4 and multi-phase bosses."
     }
   }
 }
