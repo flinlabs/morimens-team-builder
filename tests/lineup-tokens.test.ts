@@ -124,14 +124,26 @@ describe('Lotan: Cetarchon drop', () => {
     expect(gnostic?.defaultMaxed).toBe(true)
   })
 
-  it('has a BiS entry despite SKeyDB carrying no build for her', () => {
+  it('has a hand-authored BiS entry despite SKeyDB carrying no build for her', () => {
     // recommendedWheelsFor falls back to the build record, which is null here,
     // so without db/bis.json she would gear entirely from generic filler.
-    const bis = cetarchon.build
-    expect(bis).toBeNull()
-    // The hand-authored entry is what keeps her gearing sane.
-    const entry = getBisData()['awakener-0059']
-    expect(entry?.variants?.[0]?.wheels?.[0]?.wheelId).toBe('wheel-0172')
+    expect(cetarchon.build).toBeNull()
+
+    const entry = getBisData()['awakener-0059']!
+    // Both community guides split her by role — she is played as often as a
+    // support as a carry — so the entry has to carry both variants.
+    const variants = entry.variants.map((v) => v.variant)
+    expect(variants).toContain('Carry')
+    expect(variants).toContain('Support')
+
+    // Deliberately NOT her signature. The guides are explicit that Cetus
+    // Occasus is only best-in-slot at E1, where Sigil Yield starts converting
+    // into Strike crit via Rotting Remains, and that generic crit wheels
+    // perform near-identically otherwise. Celestial Beast leads because both
+    // her Skills count as Strikes.
+    const carry = entry.variants.find((v) => v.variant === 'Carry')!
+    expect(carry.wheels[0].wheelId).toBe('wheel-0018')
+    expect(carry.wheels.some((w) => w.wheelId === 'wheel-0172')).toBe(true)
   })
 
   it('ships her three new wheels and her signature posse', () => {
