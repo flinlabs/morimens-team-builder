@@ -116,6 +116,53 @@ function Card({ children }: { children: React.ReactNode }) {
   );
 }
 
+/* Two grades rather than one, because the community publishes two lists and
+   they routinely disagree — Kathigu-Ra is A as a carry and C as a support.
+   A grade the source didn't award is left off entirely rather than shown as a
+   low one: absence means "you'd need a crazy reason to use them in that role",
+   which is not the same as being bad at it. */
+function RankChips({
+  dpsRank,
+  supportRank,
+  dpsFloor,
+  supportFloor,
+}: {
+  dpsRank?: string;
+  supportRank?: string;
+  dpsFloor?: string;
+  supportFloor?: string;
+}) {
+  if (!dpsRank && !supportRank) return null;
+  const shade = (r: string) =>
+    r === "S"
+      ? "border-[var(--gold)] bg-[var(--gold)]/15 text-[var(--gold-bright)]"
+      : r === "A"
+        ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+        : "border-[var(--border)] bg-[var(--bg-3)] text-[var(--text-dim)]";
+  return (
+    <>
+      {dpsRank && (
+        <span
+          title={dpsFloor ? `Rated as a DPS at ${dpsFloor}` : "Community DPS rank"}
+          className={`rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${shade(dpsRank)}`}
+        >
+          DPS {dpsRank}
+          {dpsFloor ? ` · ${dpsFloor}` : ""}
+        </span>
+      )}
+      {supportRank && (
+        <span
+          title={supportFloor ? `Rated as a support at ${supportFloor}` : "Community support rank"}
+          className={`rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${shade(supportRank)}`}
+        >
+          SUP {supportRank}
+          {supportFloor ? ` · ${supportFloor}` : ""}
+        </span>
+      )}
+    </>
+  );
+}
+
 function Chip({ children, tone = "dim" }: { children: React.ReactNode; tone?: "dim" | "gold" }) {
   return (
     <span
@@ -289,7 +336,12 @@ export default function MetaPanel({
                       {t.name}
                     </button>
                     <RealmSigil realm={t.realm as Realm} size={14} />
-                    <Chip tone="gold">Tier {t.tier}</Chip>
+                    <RankChips
+                      dpsRank={t.dpsRank}
+                      supportRank={t.supportRank}
+                      dpsFloor={t.dpsFloor}
+                      supportFloor={t.supportFloor}
+                    />
                     <Chip>Pull to {t.entryPoint}</Chip>
                     {t.stoppingPoint && t.stoppingPoint !== t.entryPoint && (
                       <Chip>Stop at {t.stoppingPoint}</Chip>
@@ -369,7 +421,12 @@ export default function MetaPanel({
                       >
                         {style.label}
                       </span>
-                      <Chip tone="gold">Tier {b.tier}</Chip>
+                      <RankChips
+                        dpsRank={b.dpsRank}
+                        supportRank={b.supportRank}
+                        dpsFloor={b.dpsFloor}
+                        supportFloor={b.supportFloor}
+                      />
                     </div>
 
                     <div className="mb-1">
