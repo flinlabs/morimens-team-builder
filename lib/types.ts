@@ -190,7 +190,21 @@ export interface AwakenerAnnotation {
   divineRealmNote?: string
 
   // General
+  /**
+   * Legacy single-axis grade. Kept because generation and older UI read it,
+   * but it conflates two questions players ask separately — Kathigu-Ra is a
+   * top-end carry and a bottom-tier support, Clementine is the reverse. Prefer
+   * dpsRank / supportRank below, merged in from annotations/tier-lists.json.
+   */
   tier: 'S' | 'A' | 'B' | 'C'
+  /** How well they carry as main DPS. Absent = not ranked as a DPS at all. */
+  dpsRank?: 'S' | 'A' | 'B+' | 'B' | 'C'
+  /** How much they improve a team as support. Absent = not ranked as support. */
+  supportRank?: 'S' | 'A' | 'B' | 'C+' | 'C'
+  /** Investment level at which the DPS rank applies, when the source stated one. */
+  dpsFloor?: EnlightenSlot
+  /** Investment level at which the support rank applies, when the source stated one. */
+  supportFloor?: EnlightenSlot
   notes: string
   contentNotes?: {
     arc1?: string
