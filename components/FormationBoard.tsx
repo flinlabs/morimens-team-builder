@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRosterStore } from "@/lib/store";
+import Hint from "./Hint";
 import type { Realm, EnlightenSlot } from "@/lib/types";
 import { RealmSigil, REALM_COLOR, REALM_RANK } from "./realm";
 import { toTotal, plusCount, ENLIGHTEN_MILESTONES } from "@/lib/enlighten";
@@ -421,6 +422,8 @@ function Slot({
   onEditCovenant,
   wheelMeta,
   covenantMeta,
+  pinned,
+  onTogglePin,
 }: {
   awk: AwkLite | null;
   plan?: SlotPlan;
@@ -431,6 +434,9 @@ function Slot({
   onEditCovenant?: () => void;
   wheelMeta?: Record<string, { name: string }>;
   covenantMeta?: Record<string, { name: string }>;
+  /** Generate keeps this slot instead of refilling it. */
+  pinned?: boolean;
+  onTogglePin?: () => void;
 }) {
   const roster = useRosterStore((s) => s.roster);
 
@@ -485,7 +491,32 @@ function Slot({
           className="h-full w-full object-cover object-top"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
-        <button
+        {onTogglePin && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onTogglePin();
+              }}
+              title={
+                pinned
+                  ? "Pinned — Generate will keep this character. Click to unpin."
+                  : "Pin this character so Generate builds around them"
+              }
+              aria-pressed={!!pinned}
+              className={`absolute left-1.5 top-1.5 z-20 flex h-6 w-6 items-center justify-center rounded-full border text-[11px] leading-none transition ${
+                pinned
+                  ? "border-[var(--gold)] bg-[var(--gold)] text-[#1b150a]"
+                  : "border-[var(--border-bright)] bg-[var(--bg-2)]/80 text-[var(--text-dim)] opacity-0 group-hover:opacity-100 focus-visible:opacity-100 hover:border-[var(--gold)] hover:text-[var(--gold-bright)]"
+              }`}
+            >
+              {/* Pin glyph. Filled when active so the state reads at a glance
+                  even on a small phone slot, where a subtle outline would not. */}
+              <svg viewBox="0 0 16 16" className="h-3 w-3" fill="currentColor" aria-hidden>
+                <path d="M9.6 1.2a1 1 0 0 1 1.4 0l3.8 3.8a1 1 0 0 1-.5 1.7l-1.9.4-3 3 .3 2.2a1 1 0 0 1-1.7.9L5.4 11 2.7 13.7a.7.7 0 1 1-1-1L4.5 10 2.3 7.8a1 1 0 0 1 .9-1.7l2.2.3 3-3 .4-1.9a1 1 0 0 1 .8-.3z" />
+              </svg>
+            </button>
+          )}
+          <button
           onClick={onClear}
           title="Remove from lineup"
           className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm text-white/85 backdrop-blur-sm transition hover:bg-[var(--realm-caro)]/80 hover:text-white"
@@ -621,6 +652,8 @@ export default function FormationBoard({
   wheelMeta,
   covenantMeta,
   posseMeta,
+  pinnedSlots,
+  onTogglePin,
 }: {
   title?: string;
   awakeners: AwkLite[];
@@ -640,6 +673,9 @@ export default function FormationBoard({
   wheelMeta?: Record<string, { name: string }>;
   covenantMeta?: Record<string, { name: string }>;
   posseMeta?: Record<string, PosseInfo>;
+  /** Which slots Generate must keep. Undefined hides the pin affordance. */
+  pinnedSlots?: boolean[];
+  onTogglePin?: (slotIndex: number) => void;
 }) {
   const roster = useRosterStore((s) => s.roster);
   const editable = !!gear && !!onChangeSlotGear;
@@ -872,6 +908,13 @@ export default function FormationBoard({
               Import code
             </button>
           )}
+          {onImport && (
+            <Hint label="What is an import code?">
+              Paste a <span className="font-mono">@@…@@</span> lineup code copied from the
+              game&apos;s Lineup screen, or shared by someone else, and this board fills in
+              — characters, wheels, covenants and posse together.
+            </Hint>
+          )}
           {slots.some(Boolean) && (
             <button
               onClick={exportToMorimens}
@@ -879,6 +922,13 @@ export default function FormationBoard({
             >
               Export to Morimens
             </button>
+          )}
+          {slots.some(Boolean) && (
+            <Hint label="What does exporting do?">
+              Copies this team as a <span className="font-mono">@@…@@</span> code. Paste it
+              into the game&apos;s Lineup screen to set the whole team up at once, or send
+              it to someone else to share the build.
+            </Hint>
           )}
           {onClearAll && slots.some(Boolean) && (
             <button
@@ -890,6 +940,19 @@ export default function FormationBoard({
           )}
         </div>
       </div>
+
+      {onTogglePin && (
+        <p className="mb-2 flex items-center gap-1.5 text-[11px] text-[var(--text-dim)]">
+          Deploy someone by hand and they&apos;re pinned — Generate keeps pinned slots and
+          only fills the rest.
+          <Hint label="How does pinning work?" align="left">
+            A pinned character stays put when you Generate, and the engine builds the rest
+            of the team around them. Use it to lock in a carry you want to play, or to keep
+            a result you like while rerolling the others. Click the pin badge on a slot to
+            toggle it.
+          </Hint>
+        </p>
+      )}
 
       <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
         {[0, 1, 2, 3].map((i) => {
@@ -911,6 +974,8 @@ export default function FormationBoard({
               onEditCovenant={() => setPicker({ kind: "covenants", slotIndex: i })}
               wheelMeta={wheelMeta}
               covenantMeta={covenantMeta}
+              pinned={pinnedSlots?.[i]}
+              onTogglePin={onTogglePin ? () => onTogglePin(i) : undefined}
             />
           );
         })}
