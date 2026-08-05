@@ -435,3 +435,61 @@ provisional 2026-07-28 entry.
     still the marginal-team-value delta, and generation still reads the legacy
     `tier`. Wiring `supportRank` into the generator's support scoring is a real
     behavioural change and I did not want to make it silently. Say the word.
+
+
+## 2026-08-03 — onboarding for undiscovered features
+
+### Applied
+
+- **Pinning had no UI at all.** This was the root cause of nobody knowing about
+  it, and no tooltip could have fixed it: the feature was implicit (place a
+  character by hand and they're pinned, clear the slot and they're unpinned),
+  `FormationBoard` never received the pin state, and `Slot` had no way to show
+  it. There was nothing to hover.
+
+  Slots now take `pinnedSlots` / `onTogglePin` and render a pin badge — always
+  visible when active, revealed on hover or focus when not — that toggles on
+  click. Wired into both the single board and all five D-Tide boards. A one-line
+  explainer sits above the grid.
+
+- **`components/Hint.tsx`** (new). Opens on click as well as hover, because
+  hover does not exist on touch and a large share of this tool's traffic is
+  players checking builds on a phone. A hover-only tooltip would have been
+  invisible to exactly the people who need it. Closes on outside click and
+  Escape, and carries the usual `aria-expanded` / `role="tooltip"` wiring.
+
+- **`components/QuickStart.tsx`** (new). Three-step first-visit guide covering
+  the inventory expectation, pinning, and the lineup codes, then reachable
+  afterwards from a "Quick guide" link beside the tabs. A tooltip only fires
+  once you hover the control, which requires already knowing the control
+  matters — so the guide shows itself unprompted the first time instead.
+
+  Its dismissal flag lives in its own localStorage key rather than in the
+  roster store, so exporting an inventory never carries UI state with it and
+  importing someone else's file cannot re-trigger or suppress the guide.
+
+- **Set the expectation that inventory is manual.** The Backup hint now says
+  plainly that no tool can read a Morimens account — there is no public API —
+  and that Import inventory only reads a file this app exported.
+
+- **`vitest.config.ts` testTimeout raised to 30s.** The suite started failing a
+  different test on each run, which looked like a logic regression and was not:
+  Vitest's 5s per-test default was being tripped under parallel load now that
+  the D-Tide five-board solve and the pull-advice beam search both legitimately
+  run for seconds. Raised rather than worked around; the assertions are sound.
+  Confirmed stable across repeated full runs.
+
+### Needs your call
+
+14. **The guide fires for existing users too.** Everyone who has already used
+    the tool will see it once on their next visit, since the flag starts unset.
+    That seemed right — they are precisely the people who did not know about
+    these features — but it is a one-line change if you would rather it only
+    reached genuinely new visitors.
+
+15. **Analytics would answer this properly.** You asked about Google Analytics
+    earlier and the conclusion was that a single-route app needs a custom event
+    layer to learn anything. This is the case that makes it worth building:
+    events on guide completion versus skip, pin toggles, and export/import
+    would tell you whether the onboarding actually worked rather than leaving
+    it to guesswork.
