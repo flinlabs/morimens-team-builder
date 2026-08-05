@@ -23,6 +23,8 @@ import {
 } from "@/lib/catalog-client";
 import { KeywordText } from "@/lib/template";
 import TeamFormation from "./TeamFormation";
+import Hint from "./Hint";
+import QuickStart from "./QuickStart";
 
 const ROLE_LABEL: Record<string, string> = {
   main_dps: "Main DPS",
@@ -994,6 +996,12 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             {label}
           </button>
         ))}
+        {/* Reopens the first-visit guide. Kept beside the tabs rather than
+            buried in a footer, since the whole problem is that the features it
+            explains are ones people never find. */}
+        <span className="ml-auto flex items-center">
+          <QuickStart />
+        </span>
       </nav>
 
       {view === "teams" && (
@@ -1076,6 +1084,10 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               setPlans((p) => ({ ...p, [id]: { ...p[id], ...patch } }));
             }}
             onChangePosse={(id) => setPosseId(id)}
+            pinnedSlots={pinned}
+            onTogglePin={(i) =>
+              setPinned((prev) => prev.map((p, pi) => (pi === i ? !p : p)))
+            }
             onImport={(lineup) => {
               setSlots(lineup.slots);
               setPlans(lineup.plans);
@@ -1126,6 +1138,14 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
               }}
               onChangePosse={(id) =>
                 setDtidePosses((prev) => prev.map((x, xi) => (xi === i ? id : x)))
+              }
+              pinnedSlots={dtidePinned[i]}
+              onTogglePin={(si) =>
+                setDtidePinned((prev) =>
+                  prev.map((board, bi) =>
+                    bi === i ? board.map((p, pi) => (pi === si ? !p : p)) : board
+                  )
+                )
               }
               wheelMeta={wheelMeta}
               covenantMeta={covenantMeta}
@@ -1213,9 +1233,15 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
             onChange={handleImportFile}
             className="hidden"
           />
-          <span className="text-[11px] text-[var(--text-dim)]">
+          <span className="flex items-center gap-1.5 text-[11px] text-[var(--text-dim)]">
             Your inventory saves automatically in this browser. Export a file to
             back it up or move it to another device.
+            <Hint label="Can I import from the game?" align="left">
+              Not from Morimens itself — the game has no public API, so no tool can read
+              your account. You tick off what you own on this tab once, and it stays saved
+              in this browser. <strong>Import inventory</strong> only reads a file that
+              this app exported, which is how you move your collection to another device.
+            </Hint>
           </span>
         </div>
       </section>
