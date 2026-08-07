@@ -25,6 +25,12 @@ import type {
 } from './types'
 import { getAwakenerEntry, getWheelEntry } from './roster'
 import { buildCandidateTeam } from './filter'
+import {
+  itemsForAwakener,
+  routeSummary,
+  type AcquisitionCatalog,
+  type AcquisitionItem,
+} from './acquisition'
 import { buildTeamRecommendation } from './assign'
 import type { BisEntry } from './db'
 
@@ -295,11 +301,20 @@ function bestTeamFrom(
   required?: string
 ): CandidateTeam | null {
   const candidates = pool.filter((id) => id !== required).slice(0, POOL_CAP)
-  if (candidates.length + (required ? 1 : 0) < 4) return null
+  const available = candidates.length + (required ? 1 : 0)
+  if (available === 0) return null
+
+  // Build up to four, but settle for whatever the roster can actually field.
+  // Requiring a full team here meant a player with three characters got no
+  // recommendations at all — which is precisely the player who needs them, and
+  // the one whose roster is most likely to be short. buildCandidateTeam scores
+  // partial lineups fine, and the comparison is like-for-like either way since
+  // baseline and hypothetical are built the same way.
+  const size = Math.min(4, available)
 
   let beam: string[][] = required ? [[required]] : candidates.map((id) => [id]).slice(0, BEAM_WIDTH)
 
-  while (beam[0].length < 4) {
+  while (beam[0].length < size) {
     const next: { ids: string[]; score: number }[] = []
     for (const partial of beam) {
       for (const id of candidates) {
@@ -332,7 +347,23 @@ export interface PullTargetTeam {
   score: number
 }
 
+export type InvestmentKind = 'acquire' | 'enlighten'
+
 export interface PullTarget {
+  /**
+   * Whether this is a character to obtain or one already owned who is a copy
+   * away from mattering more. Both compete for the same currencies, so both
+   * belong in one ranked list — recommending only acquisitions hides the case
+   * where the best use of a Prototype Horizon is the carry you already run.
+   */
+  kind: InvestmentKind
+  /** Enlighten level the recommendation moves them to. */
+  targetSlot: EnlightenSlot
+  /** Current level, for enlighten recommendations. */
+  currentSlot?: EnlightenSlot
+  /** How to actually get it, given what the player holds. */
+  route?: string
+  routeItems?: string[]
   awakenerId: string
   name: string
   realm: string
@@ -362,61 +393,132 @@ export interface PullTarget {
  * each candidate added, and rank by the difference. A character who slots into
  * an existing core beats a stronger one who has nobody to play with.
  */
+/**
+ * Build a hypothetical roster with one character moved to a given level.
+ * Everything else is left exactly as the player has it, so the delta measured
+ * against it is attributable to that single change.
+ */
+function rosterWith(
+  roster: UserRoster,
+  awakenerId: string,
+  slot: EnlightenSlot
+): UserRoster {
+  const existing = roster.awakeners[awakenerId]
+  return {
+    ...roster,
+    awakeners: {
+      ...roster.awakeners,
+      [awakenerId]: {
+        ...(existing ?? {}),
+        owned: true,
+        enlightenSlot: slot,
+        enlightenCopies: existing?.enlightenCopies ?? 0,
+        characterLevel: existing?.characterLevel ?? roster.keeperLevel ?? 80,
+        skillLevels: existing?.skillLevels ?? {
+          Strike: 1, Defense: 1, Skill1: 1, Skill2: 1, Rouse: 1, Exalt: 1, OverExalt: 0,
+        },
+        talentLevels: existing?.talentLevels ?? {
+          madnessOmen: 0, soulforgeAptitude: 0, gnosticPotential: 0,
+        },
+      },
+    },
+  }
+}
+
+/**
+ * Rank what the player should spend copies on, across both routes at once.
+ *
+ * The previous version only considered characters the player did not own, which
+ * quietly assumed acquisition is always the better use of a copy. It is often
+ * not: a carry sitting one Enlighten below a breakpoint can be worth more than
+ * any new character, and a Prototype Horizon spends identically on either. So
+ * both are measured the same way — build the best team the roster can field
+ * today, build it again with the single change applied, and rank by the
+ * difference — and returned in one list.
+ *
+ * Enlighten candidates step to their next recorded breakpoint rather than one
+ * rung, because the rungs between breakpoints are precisely the ones the
+ * annotations say do not change how a character plays.
+ */
 export function buildPullTargets(
   awakeners: Record<string, EnrichedAwakener>,
   roster: UserRoster,
-  limit = 12
+  limit = 12,
+  catalog?: AcquisitionCatalog
 ): PullTarget[] {
   const pool = fieldablePool(awakeners, roster)
   const baseline = bestTeamFrom(pool, awakeners, roster)
   const baselineScore = baseline?.score ?? 0
 
-  const gaps = new Set(findRoleGaps(awakeners, roster).map((g) => g.role))
-  const gapLabels = new Map(findRoleGaps(awakeners, roster).map((g) => [g.role, g.label] as const))
+  const roleGaps = findRoleGaps(awakeners, roster)
+  const gaps = new Set(roleGaps.map((g) => g.role))
+  const gapLabels = new Map(roleGaps.map((g) => [g.role, g.label] as const))
 
   const targets: PullTarget[] = []
 
   for (const awakener of Object.values(awakeners)) {
     const ann = awakener.annotation
     if (!ann) continue
-    if (getAwakenerEntry(roster, awakener.id).owned) continue
 
-    // Score them as if acquired at their comfort floor — that is the pull the
-    // player is actually considering, not a hypothetical maxed copy.
-    const hypothetical: UserRoster = {
-      ...roster,
-      awakeners: {
-        ...roster.awakeners,
-        [awakener.id]: {
-          ...(roster.awakeners[awakener.id] ?? {}),
-          owned: true,
-          enlightenSlot: ann.viabilityFloor ?? 'E0',
-          enlightenCopies: 0,
-          characterLevel: roster.keeperLevel ?? 80,
-          skillLevels: roster.awakeners[awakener.id]?.skillLevels ?? {
-            Strike: 1, Defense: 1, Skill1: 1, Skill2: 1, Rouse: 1, Exalt: 1, OverExalt: 0,
-          },
-          talentLevels: roster.awakeners[awakener.id]?.talentLevels ?? {
-            madnessOmen: 0, soulforgeAptitude: 0, gnosticPotential: 0,
-          },
-        },
-      },
+    const entry = getAwakenerEntry(roster, awakener.id)
+    const floor = ann.viabilityFloor ?? 'E0'
+    const breakpoints = [...(ann.enlightenBreakpoints ?? [])].sort(
+      (a, b) => slotIndex(a) - slotIndex(b)
+    )
+
+    let kind: InvestmentKind
+    let targetSlot: EnlightenSlot
+    let currentSlot: EnlightenSlot | undefined
+
+    if (!entry.owned) {
+      kind = 'acquire'
+      targetSlot = floor
+    } else {
+      kind = 'enlighten'
+      currentSlot = entry.enlightenSlot ?? 'E0'
+      // Next rung that the annotations say actually changes something: the
+      // comfort floor if they are below it, otherwise the next breakpoint.
+      const next =
+        slotIndex(currentSlot) < slotIndex(floor)
+          ? floor
+          : breakpoints.find((b) => slotIndex(b) > slotIndex(currentSlot!))
+      // Already at their stopping point — nothing worth spending on.
+      if (!next) continue
+      targetSlot = next
     }
 
-    const withThem = bestTeamFrom([awakener.id, ...pool], awakeners, hypothetical, awakener.id)
+    const hypothetical = rosterWith(roster, awakener.id, targetSlot)
+    const searchPool = entry.owned ? pool : [awakener.id, ...pool]
+    const withThem = bestTeamFrom(searchPool, awakeners, hypothetical, awakener.id)
     if (!withThem) continue
     const delta = Math.round((withThem.score - baselineScore) * 100) / 100
 
+    // An enlighten that changes nothing about the best team the player can
+    // field is not worth listing; an acquisition at least adds an option.
+    if (kind === 'enlighten' && delta <= 0) continue
+
     const reasons: string[] = []
     const teammates = withThem.awakenerIds.filter((id) => id !== awakener.id)
+
+    if (kind === 'enlighten') {
+      reasons.push(
+        slotIndex(currentSlot!) < slotIndex(floor)
+          ? `At ${currentSlot}, below the ${floor} they need — the cheapest fix in your collection`
+          : `One breakpoint away: ${currentSlot} to ${targetSlot}`
+      )
+    }
     if (teammates.length) {
       reasons.push(
-        `Slots straight into a team with ${teammates.map((id) => awakeners[id].name).join(', ')}`
+        `${kind === 'enlighten' ? 'Plays in' : 'Slots straight into'} a team with ${teammates
+          .map((id) => awakeners[id].name)
+          .join(', ')}`
       )
     }
     const filled = (ann.teamRoles ?? []).filter((r) => gaps.has(r))
-    if (filled.length) {
-      reasons.push(`Covers ${filled.map((r) => gapLabels.get(r) ?? r).join(', ')}, which nothing you have built does`)
+    if (filled.length && kind === 'acquire') {
+      reasons.push(
+        `Covers ${filled.map((r) => gapLabels.get(r) ?? r).join(', ')}, which nothing you have built does`
+      )
     }
     const best = bestRankFor(ann)
     if (best) {
@@ -425,17 +527,24 @@ export function buildPullTargets(
           (best.floor ? `, at ${best.floor}` : '')
       )
     }
+    if (kind === 'acquire') {
+      reasons.push(
+        floor === 'E0'
+          ? 'Works straight from E0'
+          : `Needs ${floor} before they pull their weight`
+      )
+    }
 
-    const floor = ann.viabilityFloor ?? 'E0'
-    reasons.push(
-      floor === 'E0'
-        ? 'Works straight from E0'
-        : `Needs ${floor} before they pull their weight`
-    )
-
-    const breakpoints = [...(ann.enlightenBreakpoints ?? [])].sort((a, b) => slotIndex(a) - slotIndex(b))
+    const routeItems: AcquisitionItem[] = catalog
+      ? itemsForAwakener(awakener, catalog, roster)
+      : []
 
     targets.push({
+      kind,
+      targetSlot,
+      currentSlot,
+      route: catalog ? routeSummary(routeItems, roster) ?? undefined : undefined,
+      routeItems: routeItems.map((i) => i.name),
       awakenerId: awakener.id,
       name: awakener.name,
       realm: awakener.realm,
@@ -730,11 +839,12 @@ export function buildMetaAdvice(
   metaTeams: MetaTeam[],
   roster: UserRoster,
   starFloors: Record<string, { starFloor: number; note?: string }> = {},
-  posses?: Record<string, EnrichedPosse>
+  posses?: Record<string, EnrichedPosse>,
+  catalog?: AcquisitionCatalog
 ): MetaAdvice {
   return {
     breakpoints: buildBreakpointAdvice(awakeners, roster),
-    pullTargets: buildPullTargets(awakeners, roster),
+    pullTargets: buildPullTargets(awakeners, roster, 12, catalog),
     wheelTargets: buildWheelTargets(awakeners, wheels, bis, roster, starFloors),
     metaLineups: buildMetaLineupStatus(metaTeams, awakeners, roster, posses, wheels),
     roleGaps: findRoleGaps(awakeners, roster),
