@@ -19,6 +19,7 @@ import {
   getMetaTeams,
   getWheelStarFloors,
   getPosses,
+  getAcquisitionCatalog,
 } from '@/lib/db'
 import { buildMetaAdvice } from '@/lib/pull-advice'
 import type { UserRoster } from '@/lib/types'
@@ -47,7 +48,8 @@ export async function POST(req: Request) {
       getMetaTeams().teams,
       roster,
       getWheelStarFloors(),
-      getPosses()
+      getPosses(),
+      getAcquisitionCatalog()
     )
     return NextResponse.json(advice)
   } catch (err) {
