@@ -1,0 +1,205 @@
+{
+  "_note": "Every route by which a player can obtain a character copy or a Wheel of Destiny, described declaratively so the advice engine can say WHICH item gets a given recommendation rather than only naming the target. Each item states what it grants (awakener or wheel), whether the player picks the reward or it is random, and what pool it draws from. Constraints compose: `arc` limits to that arc's limited pool, `realm` limits to that realm, `ownedOnly` means it can only duplicate something already in the collection. Items are keyed by a stable slug so roster counts survive a rename.",
+  "_arcNames": {
+    "FADED_LEGACY": "Faded Legacy (Arc 1)",
+    "ASTRAL_REIGN": "Astral Reign (Arc 2)"
+  },
+  "_assumptions": [
+    "The four realm-branded selectors (Ultra, Caro, Aequor, Chaos) are modelled as realm-locked, because they come as a symmetric set of eight — an awakener and a wheel selector per realm — which is hard to read any other way. If the realm word is only branding and they can pick any limited reward, drop the `realm` key from those eight entries and nothing else changes.",
+    "Prototype Horizon is modelled as ownedOnly, i.e. a duplicate rather than a way to acquire someone new, on the strength of the word 'duplicates'. If it can also grant an unowned character, remove `ownedOnly` and it will start appearing on acquisition recommendations too.",
+    "Wheel availability is derived from the owning awakener, since db/wheels.json carries no availabilityType of its own. That derivation is exact for signature wheels (each limited awakener's SSR and SR inherit their owner's arc) but says nothing about ownerless Mythic wheels, which are therefore treated as unobtainable through these items."
+  ],
+  "items": [
+    {
+      "slug": "prototype-horizon",
+      "name": "Prototype Horizon",
+      "grants": "awakener",
+      "selection": "choose",
+      "ownedOnly": true,
+      "note": "Duplicate of any character you choose — the most flexible way to push an Enlighten breakpoint."
+    },
+    {
+      "slug": "timeloop-copy",
+      "name": "Timeloop Copy",
+      "grants": "wheel",
+      "selection": "choose",
+      "ownedOnly": true,
+      "note": "Duplicate material for a Wheel of Destiny you already own. Cannot pick up a new wheel."
+    },
+    {
+      "slug": "soul-rewind-core",
+      "name": "Soul Rewind Core",
+      "grants": "awakener",
+      "selection": "choose",
+      "synthesis": { "from": "Soul Rewind Shard", "count": 10 },
+      "note": "Free awakener selector. Synthesised from 10 Soul Rewind Shards, which drop when you pull a character already at +12."
+    },
+    {
+      "slug": "fate-rewind-core",
+      "name": "Fate Rewind Core",
+      "grants": "wheel",
+      "selection": "choose",
+      "synthesis": { "from": "Fate Rewind Shard", "count": 10 },
+      "note": "Free Wheel of Destiny selector. Synthesised from 10 Fate Rewind Shards, which drop when you pull a wheel already at +12."
+    },
+
+    {
+      "slug": "sepirot-captures-fl",
+      "name": "Sepirot Captures: Faded Legacy",
+      "grants": "awakener",
+      "selection": "random",
+      "arc": "FADED_LEGACY"
+    },
+    {
+      "slug": "fated-captures-fl",
+      "name": "Fated Captures: Faded Legacy",
+      "grants": "wheel",
+      "selection": "random",
+      "arc": "FADED_LEGACY"
+    },
+    {
+      "slug": "ultra-mapping-fl",
+      "name": "Ultra Mapping: Faded Legacy",
+      "grants": "awakener",
+      "selection": "choose",
+      "arc": "FADED_LEGACY",
+      "realm": "ULTRA"
+    },
+    {
+      "slug": "ultra-prophecy-fl",
+      "name": "Ultra Prophecy: Faded Legacy",
+      "grants": "wheel",
+      "selection": "choose",
+      "arc": "FADED_LEGACY",
+      "realm": "ULTRA"
+    },
+    {
+      "slug": "caro-birth-fl",
+      "name": "Caro Birth: Faded Legacy",
+      "grants": "awakener",
+      "selection": "choose",
+      "arc": "FADED_LEGACY",
+      "realm": "CARO"
+    },
+    {
+      "slug": "caro-whisper-fl",
+      "name": "Caro Whisper: Faded Legacy",
+      "grants": "wheel",
+      "selection": "choose",
+      "arc": "FADED_LEGACY",
+      "realm": "CARO"
+    },
+    {
+      "slug": "aequor-mystery-fl",
+      "name": "Aequor Mystery: Faded Legacy",
+      "grants": "awakener",
+      "selection": "choose",
+      "arc": "FADED_LEGACY",
+      "realm": "AEQUOR"
+    },
+    {
+      "slug": "aequor-codex-fl",
+      "name": "Aequor Codex: Faded Legacy",
+      "grants": "wheel",
+      "selection": "choose",
+      "arc": "FADED_LEGACY",
+      "realm": "AEQUOR"
+    },
+    {
+      "slug": "chaos-echo-fl",
+      "name": "Chaos Echo: Faded Legacy",
+      "grants": "awakener",
+      "selection": "choose",
+      "arc": "FADED_LEGACY",
+      "realm": "CHAOS"
+    },
+    {
+      "slug": "chaos-experiment-fl",
+      "name": "Chaos Experiment: Faded Legacy",
+      "grants": "wheel",
+      "selection": "choose",
+      "arc": "FADED_LEGACY",
+      "realm": "CHAOS"
+    },
+
+    {
+      "slug": "sepirot-captures-ar",
+      "name": "Sepirot Captures: Astral Reign",
+      "grants": "awakener",
+      "selection": "random",
+      "arc": "ASTRAL_REIGN"
+    },
+    {
+      "slug": "suspended-fate-ar",
+      "name": "Suspended Fate: Astral Reign",
+      "grants": "wheel",
+      "selection": "random",
+      "arc": "ASTRAL_REIGN",
+      "note": "The Astral Reign counterpart to Fated Captures, renamed."
+    },
+    {
+      "slug": "ultra-mapping-ar",
+      "name": "Ultra Mapping: Astral Reign",
+      "grants": "awakener",
+      "selection": "choose",
+      "arc": "ASTRAL_REIGN",
+      "realm": "ULTRA"
+    },
+    {
+      "slug": "ultra-prophecy-ar",
+      "name": "Ultra Prophecy: Astral Reign",
+      "grants": "wheel",
+      "selection": "choose",
+      "arc": "ASTRAL_REIGN",
+      "realm": "ULTRA"
+    },
+    {
+      "slug": "caro-birth-ar",
+      "name": "Caro Birth: Astral Reign",
+      "grants": "awakener",
+      "selection": "choose",
+      "arc": "ASTRAL_REIGN",
+      "realm": "CARO"
+    },
+    {
+      "slug": "caro-whisper-ar",
+      "name": "Caro Whisper: Astral Reign",
+      "grants": "wheel",
+      "selection": "choose",
+      "arc": "ASTRAL_REIGN",
+      "realm": "CARO"
+    },
+    {
+      "slug": "aequor-mystery-ar",
+      "name": "Aequor Mystery: Astral Reign",
+      "grants": "awakener",
+      "selection": "choose",
+      "arc": "ASTRAL_REIGN",
+      "realm": "AEQUOR"
+    },
+    {
+      "slug": "aequor-codex-ar",
+      "name": "Aequor Codex: Astral Reign",
+      "grants": "wheel",
+      "selection": "choose",
+      "arc": "ASTRAL_REIGN",
+      "realm": "AEQUOR"
+    },
+    {
+      "slug": "chaos-echo-ar",
+      "name": "Chaos Echo: Astral Reign",
+      "grants": "awakener",
+      "selection": "choose",
+      "arc": "ASTRAL_REIGN",
+      "realm": "CHAOS"
+    },
+    {
+      "slug": "chaos-experiment-ar",
+      "name": "Chaos Experiment: Astral Reign",
+      "grants": "wheel",
+      "selection": "choose",
+      "arc": "ASTRAL_REIGN",
+      "realm": "CHAOS"
+    }
+  ]
+}
