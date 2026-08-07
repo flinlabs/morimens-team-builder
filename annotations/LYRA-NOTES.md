@@ -493,3 +493,91 @@ provisional 2026-07-28 entry.
     events on guide completion versus skip, pin toggles, and export/import
     would tell you whether the onboarding actually worked rather than leaving
     it to guesswork.
+
+
+## 2026-08-03 — investment recommendations and acquisition routing
+
+### Applied
+
+- **Recommendations now cover enlightening, not just acquiring.** The engine
+  previously skipped every owned character, which silently assumed a copy is
+  always better spent on someone new. It often is not — on a test roster,
+  taking an owned Kathigu-Ra from E0 to his E3 floor scored 0.49, roughly two
+  and a half times the best acquisition available. Both routes are now measured
+  identically (best fieldable team today vs best fieldable team with the single
+  change applied) and returned in one list ranked by the difference, because
+  both spend the same copies and that is the actual decision.
+
+  Enlighten candidates step to the next *breakpoint*, not the next rung — the
+  rungs in between are precisely the ones the annotations say change nothing.
+  An enlighten that does not move the best team at all is dropped rather than
+  listed at zero.
+
+- **`annotations/acquisition.json` + `lib/acquisition.ts`** (new). Every route
+  by which a copy or wheel can be obtained, described declaratively: what it
+  grants, whether the player picks or it rolls, and whether it is locked by arc,
+  by realm, or to things already owned. Constraints compose, so adding an item
+  is a data edit.
+
+- **Wheel availability is derived from the owning awakener.** `db/wheels.json`
+  has no `availabilityType` at all. Signature wheels inherit their owner's
+  exactly — each limited awakener's SSR and SR sit in that awakener's arc — and
+  the derivation was checked across the whole catalogue before relying on it.
+  Ownerless Mythic, R and N wheels have nothing to inherit and are treated as
+  outside these items rather than guessed at.
+
+  Realm is taken from the owner too, not from the wheel's own `realm` field,
+  which is NEUTRAL for 82 of 140 records and would have defeated every
+  realm-locked selector.
+
+- **`components/CurrencyInventory.tsx`** (new). Optional mini-inventory on the
+  Inventory tab. Counts are stored under item slug in `roster.currencies`,
+  zeroes dropped rather than persisted, and the field is optional so rosters
+  exported before today still import cleanly.
+
+- **Recommendations say how to act on themselves.** Each one now carries a
+  route line — "You hold 2× Chaos Echo" or "Obtainable with Ultra Mapping:
+  Faded Legacy" — preferring an item the player holds, and a guaranteed pick
+  over a random one.
+
+### Bug found while building this
+
+- **Thin rosters got no advice at all.** `bestTeamFrom` returned null unless
+  four *fieldable* units existed, so a player with two or three characters —
+  exactly the person these recommendations are for — saw an empty list. It now
+  builds up to four and settles for what the roster has; `buildCandidateTeam`
+  scores partial lineups fine, and baseline and hypothetical are built the same
+  way so the comparison stays like-for-like. Test pinned.
+
+- **A test fixture of mine was wrong, not the code.** I wrote an assertion
+  assuming Kathigu-Ra was a Faded Legacy Chaos unit. He is Chaos but
+  `LIMITED_ASTRAL_REIGN`, so no Arc 1 selector can produce him and the engine
+  correctly refused to offer one. Fixture moved to "24", and a second test added
+  pinning the Astral Reign behaviour that caught it.
+
+### Assumptions to confirm
+
+16. **Are the four realm packs actually realm-locked?** Ultra Prophecy, Caro
+    Whisper, Aequor Codex and Chaos Experiment are modelled as restricted to
+    their realm, on the strength of arriving as a symmetric set of eight — an
+    awakener and a wheel selector per realm. If the realm word is only branding
+    and any of them can pick any limited reward, delete the `realm` key from
+    those eight entries in `annotations/acquisition.json` and nothing else
+    changes.
+
+17. **Can a Prototype Horizon grant a character you do not own?** Modelled as
+    `ownedOnly`, i.e. a pure duplicate, from the word "duplicates". If it can
+    also acquire, remove `ownedOnly` and it will start appearing on acquisition
+    recommendations too. Timeloop Copy is unambiguous — you said outright it
+    cannot select new ones — so that one is not in question.
+
+18. **Do the Rewind Cores draw from the whole catalogue?** Modelled as
+    unrestricted selectors, since you described them as free selectors without
+    qualification. If they are limited-pool or arc-locked, they need an `arc`
+    key like the packs.
+
+19. **Shard counts are not tracked.** You can record Cores but not the Shards
+    they synthesise from. Adding them is easy, but I would want to know whether
+    the 10:1 conversion is worth modelling — showing "you are 3 shards from a
+    Soul Rewind Core" is a different and possibly more useful message than a
+    Core count alone.
