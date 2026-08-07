@@ -284,9 +284,10 @@ export default function MetaPanel({
   return (
     <div className="space-y-5">
       <p className="text-xs leading-relaxed text-[var(--text-dim)]">
-        Ranked against your collection rather than in the abstract. A pull is scored by how
-        much it improves the best team you could actually field, so a character who slots
-        into a core you already own outranks a stronger one with nobody to play with.
+        Ranked against your collection rather than in the abstract. Everything is scored
+        the same way — how much it improves the best team you could actually field — so
+        enlightening someone you already run competes directly with acquiring someone new,
+        which is the real choice, since both spend the same copies.
       </p>
 
       {advice.roleGaps.length > 0 && (
@@ -336,14 +337,28 @@ export default function MetaPanel({
                       {t.name}
                     </button>
                     <RealmSigil realm={t.realm as Realm} size={14} />
+                    {/* Acquiring and enlightening spend the same currencies, so
+                        they share one ranked list — the badge is what tells the
+                        two apart at a glance. */}
+                    <span
+                      className={`rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                        t.kind === "enlighten"
+                          ? "border-[var(--gold)]/50 bg-[var(--gold)]/10 text-[var(--gold-bright)]"
+                          : "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+                      }`}
+                    >
+                      {t.kind === "enlighten"
+                        ? `${t.currentSlot} → ${t.targetSlot}`
+                        : "Acquire"}
+                    </span>
                     <RankChips
                       dpsRank={t.dpsRank}
                       supportRank={t.supportRank}
                       dpsFloor={t.dpsFloor}
                       supportFloor={t.supportFloor}
                     />
-                    <Chip>Pull to {t.entryPoint}</Chip>
-                    {t.stoppingPoint && t.stoppingPoint !== t.entryPoint && (
+                    {t.kind === "acquire" && <Chip>Pull to {t.entryPoint}</Chip>}
+                    {t.stoppingPoint && t.stoppingPoint !== t.targetSlot && (
                       <Chip>Stop at {t.stoppingPoint}</Chip>
                     )}
                     {t.delta > 0 && (
@@ -352,6 +367,10 @@ export default function MetaPanel({
                       </span>
                     )}
                   </div>
+
+                  {t.route && (
+                    <p className="mb-1 text-[11px] text-[var(--text-muted)]">{t.route}</p>
+                  )}
 
                   {t.bestTeam && (
                     <div className="mb-1.5 flex items-center gap-1">
