@@ -24,6 +24,8 @@ import {
 import { KeywordText } from "@/lib/template";
 import TeamFormation from "./TeamFormation";
 import Hint from "./Hint";
+import CurrencyInventory from "./CurrencyInventory";
+import type { AcquisitionItem } from "@/lib/acquisition";
 import QuickStart from "./QuickStart";
 
 const ROLE_LABEL: Record<string, string> = {
@@ -72,6 +74,8 @@ export interface Catalog {
   wheels: { id: string; name: string; realm: string; rarity: string; mainstatKey?: string; effect?: string }[];
   covenants: { id: string; name: string; mainstat?: string; effect?: string; effect3?: string }[];
   posses: { id: string; name: string; realm: string; hasCharacterBonus: boolean; effect?: string }[];
+  /** Acquisition items, for the Selectors mini-inventory. */
+  acquisitionItems?: AcquisitionItem[];
 }
 
 const ENLIGHTEN: EnlightenSlot[] = ["E0", "E1", "E2", "E3", "OE", "AA"];
@@ -1208,6 +1212,10 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
 
       {view === "inventory" && (
         <>
+      {catalog.acquisitionItems && catalog.acquisitionItems.length > 0 && (
+        <CurrencyInventory items={catalog.acquisitionItems} />
+      )}
+
       {/* Inventory backup — export / import (no account, so this is the safety net) */}
       <section className="mb-5 rounded-xl border border-[var(--border)] bg-[var(--bg-2)]/85 p-3">
         <div className="flex flex-wrap items-center gap-3">
