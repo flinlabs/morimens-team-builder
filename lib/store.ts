@@ -21,6 +21,7 @@ import {
   setPosseUnlocked,
   setArcRuleset,
   setKeeperLevel,
+  setCurrency,
   getOwnedAwakenerIds,
   getOwnedWheelIds,
   getUnlockedPosseCount,
@@ -78,6 +79,7 @@ interface RosterStore {
   // Settings actions
   setArcRuleset: (ruleset: ArcRuleset) => void
   setKeeperLevel: (level: number) => void
+  setCurrency: (slug: string, count: number) => void
   setPreferredRealm: (realm: Realm | undefined) => void
 
   // Derived
@@ -223,6 +225,9 @@ export const useRosterStore = create<RosterStore>((set, get) => ({
 
   setKeeperLevel: (level) =>
     updateAndSave(set, (r) => setKeeperLevel(r, level)),
+
+  setCurrency: (slug, count) =>
+    updateAndSave(set, (r) => setCurrency(r, slug, count)),
 
   setPreferredRealm: (realm) =>
     updateAndSave(set, (r) => ({

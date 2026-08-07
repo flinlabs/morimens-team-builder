@@ -391,6 +391,12 @@ export interface UserRoster {
   wheels: Record<string, WheelEntry>
   covenants: Record<string, CovenantEntry>
   posses: Record<string, PosseEntry>
+  /**
+   * Counts of acquisition items held, keyed by the slug in
+   * annotations/acquisition.json. Optional so rosters exported before this
+   * existed still import cleanly.
+   */
+  currencies?: Record<string, number>
   settings: AppSettings
 }
 

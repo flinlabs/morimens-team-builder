@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import type { AcquisitionCatalog, AcquisitionItem } from './acquisition'
 import type {
   EnrichedAwakener,
   EnrichedWheel,
@@ -109,6 +110,24 @@ export function getBisData(): Record<string, BisEntry> {
     _bisCache = {}
   }
   return _bisCache
+}
+
+let _acquisitionCache: AcquisitionCatalog | null = null
+
+/** Acquisition item catalog from annotations/acquisition.json. */
+export function getAcquisitionCatalog(): AcquisitionCatalog {
+  if (_acquisitionCache) return _acquisitionCache
+  try {
+    const raw = fs.readFileSync(
+      path.join(process.cwd(), 'annotations', 'acquisition.json'),
+      'utf-8'
+    )
+    const parsed = JSON.parse(raw) as { items?: AcquisitionItem[] }
+    _acquisitionCache = { items: parsed.items ?? [] }
+  } catch {
+    _acquisitionCache = { items: [] }
+  }
+  return _acquisitionCache
 }
 
 let _tierListCache: Record<string, TierListEntry> | null = null

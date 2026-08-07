@@ -65,6 +65,7 @@ export function createEmptyRoster(): UserRoster {
     version: 1,
     lastUpdated: new Date().toISOString(),
     keeperLevel: 1,
+    currencies: {},
     awakeners: {},
     wheels: {},
     covenants: {},
@@ -315,6 +316,20 @@ export function setKeeperLevel(
   keeperLevel: number
 ): UserRoster {
   return { ...roster, keeperLevel }
+}
+
+/** Set how many of an acquisition item the player holds. */
+export function setCurrency(
+  roster: UserRoster,
+  slug: string,
+  count: number
+): UserRoster {
+  const next = { ...(roster.currencies ?? {}) }
+  // Drop zeroes rather than storing them, so an exported roster stays small
+  // and a future rename of a slug leaves no dead keys behind.
+  if (count > 0) next[slug] = count
+  else delete next[slug]
+  return { ...roster, currencies: next }
 }
 
 // ---------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+import { getAcquisitionCatalog } from '@/lib/db'
 import { getAwakeners, getWheels, getCovenants, getPosses } from "@/lib/db";
 import RosterBuilder, { type Catalog } from "@/components/RosterBuilder";
 
@@ -42,6 +43,9 @@ export default function Home() {
       realm: p.realm,
       hasCharacterBonus: p.hasCharacterBonus,
     })),
+    // Acquisition items, so the Inventory tab can offer counts and the Meta tab
+    // can route each recommendation to something that would actually grant it.
+    acquisitionItems: getAcquisitionCatalog().items,
   };
 
   return (
