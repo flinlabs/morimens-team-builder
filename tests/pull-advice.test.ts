@@ -82,8 +82,43 @@ describe('breakpoint advice', () => {
 })
 
 describe('pull targets', () => {
-  it('recommends nobody when everything is owned', () => {
-    expect(buildPullTargets(awakeners, fullRoster())).toHaveLength(0)
+  it('switches to enlighten advice when everything is already owned', () => {
+    // fullRoster() owns every character at E0, so there is nothing to acquire
+    // — but plenty to invest in. The old behaviour returned an empty list here,
+    // which told a complete-roster player nothing at all.
+    const targets = buildPullTargets(awakeners, fullRoster())
+    expect(targets.length).toBeGreaterThan(0)
+    expect(targets.every((t) => t.kind === 'enlighten')).toBe(true)
+    for (const t of targets) {
+      expect(t.currentSlot).toBeDefined()
+      expect(t.targetSlot).not.toBe(t.currentSlot)
+    }
+  })
+
+  it('ranks enlightening an owned character against acquiring a new one', () => {
+    // Both spend the same currency, so both belong in one list. A roster with
+    // a strong core held below its breakpoints should see at least one of each.
+    const roster = rosterOwning(['Kathigu-Ra', 'Clementine', 'Tinct', 'Horla'])
+    const targets = buildPullTargets(awakeners, roster, 20)
+    const kinds = new Set(targets.map((t) => t.kind))
+    expect(kinds.has('enlighten')).toBe(true)
+    expect(kinds.has('acquire')).toBe(true)
+    // Sorted purely by measured team improvement, regardless of kind.
+    for (let i = 1; i < targets.length; i++) {
+      expect(targets[i - 1].delta).toBeGreaterThanOrEqual(targets[i].delta)
+    }
+  })
+
+  it('never suggests enlightening someone already at their stopping point', () => {
+    const roster = fullRoster()
+    for (const [id, a] of Object.entries(awakeners)) {
+      const bp = a.annotation?.enlightenBreakpoints ?? []
+      if (bp.length) roster.awakeners[id].enlightenSlot = bp[bp.length - 1]
+    }
+    for (const t of buildPullTargets(awakeners, roster, 30)) {
+      if (t.kind !== 'enlighten') continue
+      expect(t.stoppingPoint).not.toBe(t.currentSlot)
+    }
   })
 
   it('names the team the pull would slot into, drawn from units already owned', () => {
