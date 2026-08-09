@@ -581,3 +581,66 @@ provisional 2026-07-28 entry.
     the 10:1 conversion is worth modelling — showing "you are 3 shards from a
     Soul Rewind Core" is a different and possibly more useful message than a
     Core count alone.
+
+
+## 2026-08-03 — team score surfaced
+
+### Applied
+
+- **The score is now shown on every team card**, with a "?" that opens a full
+  breakdown of the six terms that produced it.
+
+  It is the same number the generator ranks by, passed through on the
+  recommendation rather than recalculated for display. A parallel calculation
+  would have been free to drift, which is the one thing this feature must not
+  do — a displayed score that disagreed with the ranking would make debugging
+  harder, not easier. Pinned by a test asserting `rec.score === candidate.score`.
+
+- **`ScoreComponent[]` on `CandidateTeam`**, one entry per additive term:
+  Investment, Synergy, Chaos splash, Realm mixing, Unmet conditions, Isolated
+  carry. Each carries a note on what moves it. A test asserts the components
+  sum to the reported total, so no term can be silently dropped or double
+  counted.
+
+- **`POST /api/score-team`** (new) scores an arbitrary lineup, and the manual
+  Formation board now shows a live score as you build. That was the second half
+  of the request: the board was already the "plug in your own team" surface, it
+  just never said what the engine made of it. Debounced at 250ms with stale
+  responses discarded, since the requests can return out of order.
+
+### Calibration, and why the panel quotes it
+
+A bare number tells nobody anything, so the panel states the scale measured
+against the current scorer:
+
+- an arbitrary four scores about **0.31–0.47**
+- the twelve curated comps score **1.03–1.16** with every member at E0
+- the same comps score **1.23–1.37** fully invested
+
+The chip bands on those figures (Loose / Workable / Solid / Strong). If the
+scoring weights change, those numbers go stale — there is a test asserting a
+curated comp beats an arbitrary four and clears 0.9, which will fail if the
+relationship inverts, but the specific band thresholds in `TeamScore.tsx` are
+not otherwise defended and would need a re-measure.
+
+The panel says outright that the score is a relative ranking signal rather than
+a rating worth optimising, and that a strong team scoring badly most likely
+means a missing annotation rather than a bad team. That framing matters more
+than the number: Investment is by far the largest term, so the score mostly
+reflects how built your characters are, and someone reading it as a pure "is
+this comp good" measure will be misled.
+
+### Needs your call
+
+20. **Should the score appear on the Meta tab's curated lineups?** Those render
+    through the same `TeamFormation` component, so they already show one — but
+    it is computed against the ideal roster used to display them fully geared,
+    which means every curated comp shows a high score regardless of what the
+    player owns. That is consistent with the rest of that section, though it may
+    read as a rating of the comp rather than of their build. Easy to suppress
+    there if it is confusing.
+
+21. **Band thresholds are mine, not measured against player expectation.** Solid
+    starts at 1.0 because that is roughly where a curated comp lands at E0. If
+    the community reads "Solid" as higher praise than that deserves, the
+    thresholds are four numbers in one function.
