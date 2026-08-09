@@ -14,6 +14,7 @@ import FormationBoard, {
   type PosseInfo,
 } from "./FormationBoard";
 import { KeywordText } from "@/lib/template";
+import TeamScore from "./TeamScore";
 
 export default function TeamFormation({
   team,
@@ -46,10 +47,19 @@ export default function TeamFormation({
 
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)]/40 p-3 sm:p-4">
-      <div className="mb-2 flex items-baseline justify-between gap-3">
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
         <h3 className="font-title text-sm text-[var(--gold-bright)]">Team {team.rank}</h3>
         {team.realmNote && (
           <span className="text-xs text-[var(--realm-caro)]">{team.realmNote}</span>
+        )}
+        {typeof team.score === "number" && (
+          <span className="ml-auto">
+            <TeamScore
+              score={team.score}
+              breakdown={team.scoreBreakdown}
+              memberCount={team.composition.length}
+            />
+          </span>
         )}
       </div>
       <p className="font-display mb-2 text-[15px] leading-snug text-[var(--text)]">
