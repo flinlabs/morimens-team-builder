@@ -429,6 +429,14 @@ export interface GenerationPreferences {
   preferredRealm?: Realm
 }
 
+/** One additive term in a team's score, for the breakdown panel. */
+export interface ScoreComponent {
+  label: string
+  value: number
+  /** Why this term exists and what moves it. */
+  detail: string
+}
+
 export interface CandidateTeam {
   awakenerIds: string[]
   realmComposition: Realm[]
@@ -437,6 +445,8 @@ export interface CandidateTeam {
   roleCoverage: TeamRole[]
   coverageGaps: string[]
   score: number
+  /** Every term that produced `score`, in the order they are applied. */
+  scoreBreakdown?: ScoreComponent[]
   // Set when this team comes from the curated meta library rather than search.
   metaName?: string
   metaSource?: string
@@ -494,6 +504,9 @@ export interface TeamRecommendation {
   metaSource?: string
   // Deterministic explanation of what the composition is doing.
   analysis?: TeamAnalysis
+  /** The engine's own ranking score, surfaced so players can sanity-check it. */
+  score?: number
+  scoreBreakdown?: ScoreComponent[]
 }
 
 export interface AITeamResponse {
