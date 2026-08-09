@@ -468,8 +468,10 @@ export function buildCandidateTeam(
     }
   }
 
+  const viabilityAverage = viabilitySum / awakenerIds.length
+
   const score =
-    viabilitySum / awakenerIds.length +
+    viabilityAverage +
     synergyBonus +
     chaosSplashBonus -
     penaltyDeduction -
@@ -490,6 +492,44 @@ export function buildCandidateTeam(
     roleCoverage: covered,
     coverageGaps: allGaps,
     score: Math.round(score * 100) / 100,
+    scoreBreakdown: [
+      {
+        label: 'Investment',
+        value: viabilityAverage,
+        detail:
+          'Average viability of the four members — Enlighten level, character level, skill and talent levels, and gear. This is the largest term by far, so a team of well-built characters will outscore a theoretically better one you have not levelled.',
+      },
+      {
+        label: 'Synergy',
+        value: synergyBonus,
+        detail:
+          'Credit for annotated pairings between members: shared realm mechanics, named key pairings, and complementary roles. Drawn from annotations/awakeners.json, so a missing edge here means a missing annotation rather than a missing interaction in the game.',
+      },
+      {
+        label: 'Chaos splash',
+        value: chaosSplashBonus,
+        detail:
+          'Flat credit for one Chaos member alongside another realm. Chaos brings team-wide Keyflare and Aliemus generation, Death Resistance and double-posse effects that the synergy graph — mostly intra-realm edges — never counts, which was skewing rankings against mixed comps.',
+      },
+      {
+        label: 'Realm mixing',
+        value: -penaltyDeduction,
+        detail:
+          'Penalty for a realm combination the game does not reward. Zero for legal pairings.',
+      },
+      {
+        label: 'Unmet conditions',
+        value: -conditionPenalty,
+        detail:
+          'Penalty for a member whose kit needs a team it does not have — currently the Lemurian requirement, which scales off three other Lemurians and loses 0.2 per missing one.',
+      },
+      {
+        label: 'Isolated carry',
+        value: -isolatedCarryPenalty,
+        detail:
+          'Penalty when a main DPS is the only member of their realm, so their realm machinery feeds nobody. Chaos carries are exempt, since Chaos is designed to operate inside other realms.',
+      },
+    ],
   }
 }
 
