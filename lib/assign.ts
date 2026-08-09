@@ -768,6 +768,8 @@ export function buildTeamRecommendation(
     metaName: candidate.metaName,
     metaSource: candidate.metaSource,
     analysis: analyzeTeam(candidate.awakenerIds, awakeners),
+    score: candidate.score,
+    scoreBreakdown: candidate.scoreBreakdown,
   }
 }
 
