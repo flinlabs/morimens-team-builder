@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRosterStore } from "@/lib/store";
 import Hint from "./Hint";
-import type { Realm, EnlightenSlot } from "@/lib/types";
+import TeamScore from "./TeamScore";
+import type { Realm, EnlightenSlot, ScoreComponent } from "@/lib/types";
 import { RealmSigil, REALM_COLOR, REALM_RANK } from "./realm";
 import { toTotal, plusCount, ENLIGHTEN_MILESTONES } from "@/lib/enlighten";
 import { wheelTooltip, covenantTooltip, posseEffectText } from "@/lib/catalog-client";
@@ -678,6 +679,50 @@ export default function FormationBoard({
   onTogglePin?: (slotIndex: number) => void;
 }) {
   const roster = useRosterStore((s) => s.roster);
+
+  // Ad-hoc scoring of the current board. Debounced because the board changes on
+  // every slot edit and each call re-runs the real scorer server-side; 250ms is
+  // below the threshold where it reads as lag but well above a drag-and-drop
+  // burst. Stale responses are discarded rather than allowed to overwrite a
+  // newer one, since the requests can return out of order.
+  const filledIds = useMemo(() => slots.filter((x): x is string => !!x), [slots]);
+  const [scored, setScored] = useState<{
+    score: number;
+    scoreBreakdown?: ScoreComponent[];
+    coverageGaps?: string[];
+    memberCount: number;
+  } | null>(null);
+  const [scoring, setScoring] = useState(false);
+
+  useEffect(() => {
+    if (filledIds.length === 0) {
+      setScored(null);
+      return;
+    }
+    let cancelled = false;
+    setScoring(true);
+    const t = setTimeout(() => {
+      fetch("/api/score-team", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ awakenerIds: filledIds, roster }),
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (!cancelled && data && typeof data.score === "number") setScored(data);
+        })
+        .catch(() => {
+          // A failed score is not worth surfacing — the board still works.
+        })
+        .finally(() => {
+          if (!cancelled) setScoring(false);
+        });
+    }, 250);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [filledIds, roster]);
   const editable = !!gear && !!onChangeSlotGear;
   const [picker, setPicker] = useState<PickerState | null>(null);
   const [exportState, setExportState] = useState<
@@ -940,6 +985,34 @@ export default function FormationBoard({
           )}
         </div>
       </div>
+
+      {/* Live score for whatever is on the board right now. The manual board is
+          already the "plug in your own team" surface — it just never told you
+          what the engine made of it. Same endpoint, same scorer the generator
+          ranks by, so the number here and on a generated card mean the same
+          thing. */}
+      {filledIds.length > 0 && (
+        <div className="mb-2 flex flex-wrap items-center gap-2">
+          <span className="font-title text-[11px] uppercase tracking-wider text-[var(--text-dim)]">
+            This lineup
+          </span>
+          {scoring && !scored && (
+            <span className="text-[11px] text-[var(--text-dim)]">scoring…</span>
+          )}
+          {scored && (
+            <TeamScore
+              score={scored.score}
+              breakdown={scored.scoreBreakdown}
+              memberCount={scored.memberCount}
+            />
+          )}
+          {scored?.coverageGaps?.length ? (
+            <span className="text-[11px] text-[var(--text-dim)]">
+              {scored.coverageGaps[0]}
+            </span>
+          ) : null}
+        </div>
+      )}
 
       {onTogglePin && (
         <p className="mb-2 flex items-center gap-1.5 text-[11px] text-[var(--text-dim)]">
