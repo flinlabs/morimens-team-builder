@@ -644,3 +644,41 @@ this comp good" measure will be misled.
     starts at 1.0 because that is roughly where a curated comp lands at E0. If
     the community reads "Solid" as higher praise than that deserves, the
     thresholds are four numbers in one function.
+
+
+## 2026-08-03 — popover positioning fix
+
+The score breakdown panel was rendering off the left edge of the screen, clipped
+and unreadable.
+
+The cause was not the score panel specifically. Both it and `Hint` positioned a
+fixed-width panel with plain `position: absolute` against their trigger, which
+has no way to know where the viewport edge is — any trigger near an edge, or
+anywhere at all once the page is scrolled horizontally, pushes the panel off the
+side. The score chip sits `ml-auto` at the right of a team card, which is
+exactly the worst case for a right-aligned panel.
+
+`components/Popover.tsx` (new) now handles positioning for both. It portals to
+`document.body`, measures the trigger's bounding rect, positions fixed, clamps
+to the viewport with an 8px margin, and flips above the trigger when there is
+genuinely more room there. Portalling also removes any dependency on ancestor
+overflow and stacking contexts, which the card layouts have plenty of.
+
+Details worth keeping:
+
+- Placement runs in a `useLayoutEffect` and the panel stays `visibility: hidden`
+  until measured, so it never flashes at the top-left corner before settling.
+- A second measure on the next animation frame, once the panel has real height,
+  so the flip decision is made against its actual size rather than zero.
+- Recomputed on scroll and resize while open, since a fixed panel would
+  otherwise drift away from a trigger that moves.
+- `Hint` gained a 180ms grace period on mouse-out so the pointer can travel from
+  the trigger into the panel to read or select text without it vanishing.
+- The `align` prop on `Hint` is gone — the clamp makes manual side-picking
+  redundant, and the three call sites that passed `align="left"` were working
+  around this bug rather than expressing a preference.
+
+Not verified visually — the test environment is Node with no DOM, so there is no
+automated coverage of the positioning itself. The arithmetic is straightforward
+and the failure mode is visible immediately, but a second pair of eyes on a
+narrow phone viewport would be worth having before this is considered settled.
