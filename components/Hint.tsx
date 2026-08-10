@@ -7,71 +7,77 @@
    a hover-only hint would be invisible to exactly the people who most need it.
    This renders a persistent "?" affordance that opens on click and also on
    hover for mouse users, which means the hint is discoverable without already
-   knowing the feature is there. */
+   knowing the feature is there.
 
-import { useEffect, useId, useRef, useState } from "react";
+   Positioning is delegated to Popover, which portals to the body and clamps to
+   the viewport — an `absolute` panel anchored to a control near a screen edge
+   ends up half off-screen, which is what these used to do. */
+
+import { useRef, useState } from "react";
+import Popover from "./Popover";
 
 export default function Hint({
   label,
   children,
-  align = "right",
 }: {
   /** Short description of what the hint explains, for screen readers. */
   label: string;
   children: React.ReactNode;
-  align?: "left" | "right";
 }) {
   const [open, setOpen] = useState(false);
-  const wrapRef = useRef<HTMLSpanElement>(null);
-  const id = useId();
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    const onDocClick = (e: MouseEvent) => {
-      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("mousedown", onDocClick);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDocClick);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
+  // A small grace period on mouse-out, so moving the pointer from the trigger
+  // into the panel to read or select text does not dismiss it.
+  const cancelClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = null;
+  };
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setOpen(false), 180);
+  };
 
   return (
     <span
-      ref={wrapRef}
-      className="relative inline-flex"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      ref={anchorRef}
+      className="inline-flex"
+      onMouseEnter={() => {
+        cancelClose();
+        setOpen(true);
+      }}
+      onMouseLeave={scheduleClose}
     >
       <button
         type="button"
         aria-label={label}
         aria-expanded={open}
-        aria-describedby={open ? id : undefined}
         onClick={(e) => {
           e.stopPropagation();
+          cancelClose();
           setOpen((v) => !v);
         }}
         className="flex h-4 w-4 items-center justify-center rounded-full border border-[var(--border-bright)] text-[10px] font-bold leading-none text-[var(--text-dim)] transition hover:border-[var(--gold)] hover:text-[var(--gold-bright)]"
       >
         ?
       </button>
-      {open && (
-        <span
-          id={id}
-          role="tooltip"
-          className={`absolute top-6 z-50 w-64 rounded-lg border border-[var(--border-bright)] bg-[var(--bg-2)] p-2.5 text-[11px] leading-relaxed text-[var(--text-muted)] shadow-xl ${
-            align === "right" ? "right-0" : "left-0"
-          }`}
+
+      <Popover
+        open={open}
+        onClose={() => setOpen(false)}
+        anchorRef={anchorRef}
+        width={288}
+        label={label}
+      >
+        <div
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
+          className="text-[11px] leading-relaxed text-[var(--text-muted)]"
         >
           {children}
-        </span>
-      )}
+        </div>
+      </Popover>
     </span>
   );
 }
