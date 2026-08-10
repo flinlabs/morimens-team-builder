@@ -1244,7 +1244,7 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
           <span className="flex items-center gap-1.5 text-[11px] text-[var(--text-dim)]">
             Your inventory saves automatically in this browser. Export a file to
             back it up or move it to another device.
-            <Hint label="Can I import from the game?" align="left">
+            <Hint label="Can I import from the game?">
               Not from Morimens itself — the game has no public API, so no tool can read
               your account. You tick off what you own on this tab once, and it stays saved
               in this browser. <strong>Import inventory</strong> only reads a file that

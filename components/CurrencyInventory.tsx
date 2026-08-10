@@ -68,7 +68,7 @@ export default function CurrencyInventory({ items }: { items: AcquisitionItem[] 
         <span className="flex items-center gap-1.5 text-[11px] text-[var(--text-dim)]">
           Optional — tell the Meta tab what you can spend and it will say which
           recommendations you can act on today.
-          <Hint label="What are selectors?" align="left">
+          <Hint label="What are selectors?">
             Prototype Horizons and Timeloop Copies duplicate something you already own;
             the realm packs and Rewind Cores pull from a limited pool. Recording them lets
             the Meta tab route each recommendation to an item that can actually grant it,

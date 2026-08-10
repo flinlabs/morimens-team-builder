@@ -1018,7 +1018,7 @@ export default function FormationBoard({
         <p className="mb-2 flex items-center gap-1.5 text-[11px] text-[var(--text-dim)]">
           Deploy someone by hand and they&apos;re pinned — Generate keeps pinned slots and
           only fills the rest.
-          <Hint label="How does pinning work?" align="left">
+          <Hint label="How does pinning work?">
             A pinned character stays put when you Generate, and the engine builds the rest
             of the team around them. Use it to lock in a carry you want to play, or to keep
             a result you like while rerolling the others. Click the pin badge on a slot to
