@@ -5,7 +5,7 @@ light (it only ships names + realm + rarity) while the detail modal gets the
 rich, scaling descriptions on demand. Node runtime — reads db/*.json from disk. */
 
 import { NextResponse } from "next/server";
-import { getAwakener, getWheel, getCovenant, getPosse } from "@/lib/db";
+import { getAwakener, getAwakeners, getWheel, getCovenant, getPosse } from "@/lib/db";
 import { RECORD_SLOT_TO_ROSTER } from "@/lib/enlighten";
 import type { EnlightenSlot } from "@/lib/types";
 
@@ -138,6 +138,12 @@ export async function GET(req: Request) {
           descriptionTemplate: e.descriptionTemplate,
           descriptionArgs: e.descriptionArgs ?? {},
         })),
+        // Bind targets for the 2.6.0 binding menu. The whole catalog, sorted by
+        // name — the client filters to what the player owns, since the roster
+        // lives in localStorage and never reaches the server.
+        bindTargets: Object.values(getAwakeners())
+          .map((a) => ({ id: a.id, name: a.name }))
+          .sort((x, y) => x.name.localeCompare(y.name)),
       });
     }
 
