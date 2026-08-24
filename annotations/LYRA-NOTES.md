@@ -841,3 +841,57 @@ yet, and the advice correctly surfaces "Doll, at E0, below the E1 they need" as
 one of the top recommendations. But it does mean the strongest early signal the
 tool gives is about investment rather than acquisition, which is worth being
 deliberate about if the onboarding copy ever describes this tab.
+
+## 2026-08-24 — Caraboo synced live; Propagation: Caro synergy adjudicated
+
+### Applied
+
+- **Caraboo is live** (`awakener-0060`, Caro SSR Warden, Astral Reign). Synced
+  from SKeyDB via `scripts/oneoff-sync-caraboo.mjs` alongside `wheel-0175`
+  Honeyed Deceit, `wheel-0176` Serene Truth, `wheel-0177` Soul Synchronization
+  (ownerless SSR, retagged MYTHIC) and `posse-0062` That Which is No Lie. The
+  staged entry in `pending-characters.json` has been folded in and removed.
+
+- **The staged Saya/Sorel anti-synergy claim was wrong and has been dropped.**
+  The pending entry, written from the pre-release infographics, asserted that
+  Propagation: Caro is bad for Sorel because his Infinite Devour scales with
+  embryo count, and that Caraboo would inherit the same problem. Saya's own
+  adjudicated annotation says the opposite — Sorel is her single recorded
+  `keyPairing`, described there as "an Exalt carry that doesn't need specific
+  cards."
+
+  The mechanics documents settle it. Under the rewrite, embryos and Realm
+  Mastery stop granting Crit Rate, Shield and temporary STR and instead grant
+  Propagation Fiesta, where each stack adds 1% to the **base values of an
+  exalt** — damage, STR, poison and shield alike. Consuming a Propagule Embryo
+  gives 40 stacks per awakener per turn on top of the default 20. Sorel is a
+  multihit Exalt DPS, so the trade is strongly in his favour. Community
+  adjudication beats a pre-release infographic reading, as usual.
+
+  Consequently Caraboo ships with an empty `conflictsWith`. Saya is redundant
+  beside her rather than harmful — two sources of one rewrite waste a slot but
+  break nothing — and marking it a hard conflict would have made the engine
+  forbid a legal team.
+
+- **Synergy edges are keyed to exalt amplification, not to Weakness.** Weakness
+  reduces enemy Active DMG by 25%; it is a survivability debuff, and Vulnerable
+  is the offensive one. Snowy Hex deals Fixed DMG, which Vulnerable does not
+  affect either. So her edges are exalt-centric carries (Sorel, Lotan,
+  Mouchette, Helot: Catena, Uvhash, "24") plus the embryo generators that feed
+  Fiesta stacks (Thais, Aigis, Agrippa, Salvador, Pickman, Leigh). The Mastery
+  effect doubles on an all-Caro or all-Chaos team, which is why the list leans
+  that way rather than spreading across realms.
+
+### Outstanding
+
+- **Lineup token unknown.** SKeyDB reissued the awakener and wheel dictionaries
+  with 2.6.0, and the new values contradict a real in-game code — see the note
+  in `scripts/sync-lineup-tokens.mjs`, where both categories are now pinned.
+  Caraboo's upstream token collides with Arachne's verified one, so she ships
+  with none and cannot appear in a share code until a real block containing her
+  is captured.
+- **BiS is provisional**, flagged in `db/bis.json`. Replace when Mythag
+  publishes.
+- **Soul Synchronization** is currently eligible as generic filler. It is paid
+  archive content, unlike the other two paid-archive wheels which sit in
+  `NICHE_MYTHIC_WHEEL_IDS`. Undecided.
