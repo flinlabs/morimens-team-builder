@@ -1,5 +1,5 @@
 {
-  "_note": "Characters announced but not yet present in SKeyDB. Transcribed from official pre-release infographics so nothing is lost between announcement and the record landing upstream. These are NOT loaded by the app — db/awakeners.json remains the only source of truth for anything the engine reads. When SKeyDB publishes the record, run an isolated one-off sync (see scripts/oneoff-sync-cetarchon.mjs) and fold the fields below into annotations/awakeners.json, then delete the entry from this file.",
+  "_note": "Content announced but not yet present in SKeyDB. Transcribed from official pre-release infographics so nothing is lost between announcement and the record landing upstream. These are NOT loaded by the app -- db/awakeners.json, db/wheels.json and db/posses.json remain the only sources of truth for anything the engine reads. When SKeyDB publishes the records, run an isolated one-off sync (see scripts/oneoff-sync-cetarchon.mjs) and fold the fields below into the annotation layer, then delete the entry from this file.",
   "_warning": "Infographic numbers come from an internal test server at Awakener Lv. 60 with all skills at Lv. 6 and are explicitly subject to change before and after release. Treat everything here as provisional.",
   "pending": [
     {
@@ -12,33 +12,34 @@
         "ATK": 108,
         "DEF": 149,
         "baseAliemus": 150,
-        "realmMastery": { "noPsycheSurge": 24, "psycheSurge12": 72 },
-        "aliemusRegen": { "noPsycheSurge": 2.4, "psycheSurge12": 7.2 }
+        "realmMastery": {
+          "noPsycheSurge": 24,
+          "psycheSurge12": 72
+        },
+        "aliemusRegen": {
+          "noPsycheSurge": 2.4,
+          "psycheSurge12": 7.2
+        }
       },
-
       "realmRewrite": "PROPAGATION_CARO",
-      "realmRewriteNote": "Eden of Propagation — 'When Caraboo is in the team, the Caro Realm is tricked into becoming Propagation: Caro.' This is the SAME rewrite Saya brings, which makes her the first case of two characters sharing one rewrite. Everything already adjudicated about Propagation: Caro applies to her: the raised Embryo Fusion threshold, the loss of first-Devour shield/STR in favour of Propagation Fiesta stacks, and therefore the Saya/Sorel anti-synergy (Sorel's Infinite Devour scales with embryo count). Expect Caraboo/Sorel to be a bad pairing for the same reason, and expect Caraboo and Saya to be redundant rather than additive on one team.",
-
+      "realmRewriteNote": "Eden of Propagation \u2014 'When Caraboo is in the team, the Caro Realm is tricked into becoming Propagation: Caro.' This is the SAME rewrite Saya brings, which makes her the first case of two characters sharing one rewrite. Everything already adjudicated about Propagation: Caro applies to her: the raised Embryo Fusion threshold, the loss of first-Devour shield/STR in favour of Propagation Fiesta stacks, and therefore the Saya/Sorel anti-synergy (Sorel's Infinite Devour scales with embryo count). Expect Caraboo/Sorel to be a bad pairing for the same reason, and expect Caraboo and Saya to be redundant rather than additive on one team.",
       "talents": {
         "Eden of Propagation": "When Caraboo is in the team, the Caro Realm is tricked into becoming Propagation: Caro.",
         "Soulforge Aptitude": "Exalt's Crit. Rate and Crit. DMG +5%~50%. Satiety Max HP bonus (see correction below). In the 'Icefields' terrain: 'Snowy Hex' Arithmetica Cost -1; DMG hits count +1; deal DMG to and inflict Weakness on all enemies."
       },
-
       "skills": {
-        "Exalt — Ta-da\u2605It's the Fairy!": "[Devour: Gain 'Satiety'. Upon dealing DMG, inflict 2592 stacks of Corrosion on the target.] Dispel Burn from all cards in hand. Gain 135 Shield and deal 195 DMG 3 times to all enemies. Each stack of 'Satiety' increases Exalt Base DMG and Shield Generation by 2%. Consume all 'Offering' stacks; each stack increases this skill's hit count by 1 and grants 1 stack of 'Satiety'.",
-        "Buff Card — Blessing": "Retain. Prepare. Gain 1 'Gift' with 1 'Price', and 1 stack of 'Offering'. Three types: Instant Blessing prevents 'Missed Chance'; Lavish Blessing prevents 'Gilded Words'; Tender Blessing prevents 'Veiled Malice'.",
-        "Rouse (1) — Tempting Honeyfruit": "Caraboo gains Aliemus equal to 50% of her Base Aliemus. After using 'Crimson Furnace', the next 'Miracle Blessing' costs -3 Arithmetica, and each Discover option is upgraded to a set containing 1 more 'Blessing' card. Choose 1 set to shuffle into your Draw Pile.",
-        "Command (3) — Miracle Blessing": "Gain 105 Shield. Discover 2 'Blessing' cards with different 'Prices'. Choose 1 to shuffle into your Draw Pile.",
-        "Command (2) — Snowy Hex": "Deal 10800 Fixed DMG to the enemy with the highest HP and inflict Weakness for 2 turns.",
-        "Command (1) — Strike": "Deal 27 DMG. Caraboo gains 10 Aliemus.",
-        "Command (1) — Defense": "Gain 36 Shield. Caraboo gains 10 Aliemus."
+        "Exalt \u2014 Ta-da\u2605It's the Fairy!": "[Devour: Gain 'Satiety'. Upon dealing DMG, inflict 2592 stacks of Corrosion on the target.] Dispel Burn from all cards in hand. Gain 135 Shield and deal 195 DMG 3 times to all enemies. Each stack of 'Satiety' increases Exalt Base DMG and Shield Generation by 2%. Consume all 'Offering' stacks; each stack increases this skill's hit count by 1 and grants 1 stack of 'Satiety'.",
+        "Buff Card \u2014 Blessing": "Retain. Prepare. Gain 1 'Gift' with 1 'Price', and 1 stack of 'Offering'. Three types: Instant Blessing prevents 'Missed Chance'; Lavish Blessing prevents 'Gilded Words'; Tender Blessing prevents 'Veiled Malice'.",
+        "Rouse (1) \u2014 Tempting Honeyfruit": "Caraboo gains Aliemus equal to 50% of her Base Aliemus. After using 'Crimson Furnace', the next 'Miracle Blessing' costs -3 Arithmetica, and each Discover option is upgraded to a set containing 1 more 'Blessing' card. Choose 1 set to shuffle into your Draw Pile.",
+        "Command (3) \u2014 Miracle Blessing": "Gain 105 Shield. Discover 2 'Blessing' cards with different 'Prices'. Choose 1 to shuffle into your Draw Pile.",
+        "Command (2) \u2014 Snowy Hex": "Deal 10800 Fixed DMG to the enemy with the highest HP and inflict Weakness for 2 turns.",
+        "Command (1) \u2014 Strike": "Deal 27 DMG. Caraboo gains 10 Aliemus.",
+        "Command (1) \u2014 Defense": "Gain 36 Shield. Caraboo gains 10 Aliemus."
       },
-
       "states": {
         "Satiety": "Each stack increases Max HP by 10% of Caraboo's CON (max 50 stacks). At maximum stacks, excess stacks instead heal for 3\u00d7 this HP value. Up to 10 stacks gainable per non-Boss battle. Persists between battles.",
         "Offering": "Consumed by Caraboo's Exalt to trigger bonus effects. Stacks up to 5. Persists between battles."
       },
-
       "giftsAndPrices": {
         "gifts": [
           "Gain 130 STR",
@@ -55,32 +56,71 @@
           "Veiled Malice: inflicts 1 random negative effect on your team (2 turns Weakness; 2 turns Fragile; 2 turns Blighten; Poison equal to 1% Max HP; 2 stacks of Void; 1 stack of Stagnation on 2 random cards in hand; or 2 Temporary Symptom Cards on top of the Draw Pile)"
         ]
       },
-
       "enlightens": {
-        "E1 — Secret Devotions": "'Snowy Hex' deals +30% Fixed DMG and grants 10 Aliemus. For every 1 point of Realm Mastery provided by Caraboo and her equipped WoD & Covenant, 'Snowy Hex' deals +0.15% Fixed DMG and grants +0.05 Aliemus.",
-        "E2 — Sevenfold Rite": "Every 7th time Caraboo plays 'Strike' or 'Defense', gain 1 stack of 'Offering' and Discover 2 'Blessing' cards with different 'Prices'. Choose 1 to add to your hand.",
-        "E3 — Threefold Vow": "Caraboo's Exalt DMG hits count +2. The Max HP bonus from each stack of 'Satiety' +50%. Exalt Base DMG and Shield Generation +50%.",
-        "OE — Flawless Fairy Tale": "Discover 2 sets of 'Blessing' cards with different 'Gifts', each set contains 2 cards. Choose 1 set to add to your hand. Reduce all enemies' STR by 14.",
-        "AA — New Moon at Its Zenith": "Rouse 'Tempting Honeyfruit' is enhanced. After using Crimson Furnace, the next 'Miracle Blessing' Discovers 1 additional 'Blessing' card per set. After playing a 'Blessing' card, Embryo Fusion +10. This fusion effect increases based on your lost HP, up to +100%."
+        "E1 \u2014 Secret Devotions": "'Snowy Hex' deals +30% Fixed DMG and grants 10 Aliemus. For every 1 point of Realm Mastery provided by Caraboo and her equipped WoD & Covenant, 'Snowy Hex' deals +0.15% Fixed DMG and grants +0.05 Aliemus.",
+        "E2 \u2014 Sevenfold Rite": "Every 7th time Caraboo plays 'Strike' or 'Defense', gain 1 stack of 'Offering' and Discover 2 'Blessing' cards with different 'Prices'. Choose 1 to add to your hand.",
+        "E3 \u2014 Threefold Vow": "Caraboo's Exalt DMG hits count +2. The Max HP bonus from each stack of 'Satiety' +50%. Exalt Base DMG and Shield Generation +50%.",
+        "OE \u2014 Flawless Fairy Tale": "Discover 2 sets of 'Blessing' cards with different 'Gifts', each set contains 2 cards. Choose 1 set to add to your hand. Reduce all enemies' STR by 14.",
+        "AA \u2014 New Moon at Its Zenith": "Rouse 'Tempting Honeyfruit' is enhanced. After using Crimson Furnace, the next 'Miracle Blessing' Discovers 1 additional 'Blessing' card per set. After playing a 'Blessing' card, Embryo Fusion +10. This fusion effect increases based on your lost HP, up to +100%."
       },
-
-      "signatureWheel": {
-        "name": "Honeyed Deceit",
-        "mainstat": "Realm Mastery",
-        "values": { "noAscension": 36, "ascension12": 72 },
-        "effect": "The wielder's Exalt generates +22/28/34/40% Base Shield. After the wielder plays a Command Card that inflicts Weakness, their next Command Card generates +22/28/34/40% Base Shield. Upon using 'Crimson Furnace', draw the wielder's Skill Card with the highest Arithmetica Cost and gain 22/28/34/40 Embryo Fusion. (Cooldown: 3 turns)"
-      },
-
       "officialCorrections": [
-        "Blessing cards also carry [Exhaust] — once played they are removed for the rest of combat and do not re-enter the deck. This was omitted from the skill preview graphic, so the Skills infographic alone is misleading.",
+        "Blessing cards also carry [Exhaust] \u2014 once played they are removed for the rest of combat and do not re-enter the deck. This was omitted from the skill preview graphic, so the Skills infographic alone is misleading.",
         "Soulforge Aptitude: the English text 'Satiety increases Max HP by 10~100%' is WRONG. Correct reading is that the Max HP bonus provided by Satiety stacks is increased by +100%. Do not encode the infographic wording."
       ],
-
       "provisionalReadings": [
         "Reads as a shielder/sustain Warden with a strong Fixed DMG button, not a carry. Snowy Hex at 10800 Fixed DMG scaling off Realm Mastery via E1 is the damage, and both her signature wheel and her Realm Mastery stat line point the same way.",
         "Likely teamRoles: shielder, healer, sub_dps. Likely synergyTags: embryo_gen (AA grants Embryo Fusion per Blessing), divine_realm.",
         "The Blessing/Gift/Price system is a genuine risk-reward gamble with a randomised downside; the engine has no vocabulary for that today and it may not need one, but it is worth noting that her floor and ceiling are further apart than most.",
-        "Icefields terrain clause in Soulforge is the first terrain-conditional talent the annotations would need to express. Nothing in the engine models terrain."
+        "Icefields terrain clause in Soulforge is the first terrain-conditional talent the annotations would need to express. Nothing in the engine models terrain.",
+        "Realm Mastery is a live damage stat on her, not an economy stat. E1 Secret Devotions converts each point of Realm Mastery from her, her WoD and her Covenant into +0.15% Snowy Hex Fixed DMG. Both signature wheels carry a Realm Mastery mainstat by design. wheel-fit.ts does not currently map REALM_MASTERY in MAINSTAT_PURPOSE and does not list it in SUPPORT_MAINSTATS, so it derives no identity and is never penalised -- the Cetarchon/Sigil Yield trap does not repeat here. No override is needed today, but do not add REALM_MASTERY to SUPPORT_MAINSTATS without exempting her.",
+        "Second character to carry PROPAGATION_CARO, after Saya. The realmRewrite field already handles this without a code change, but it is the first time the coverage note will fire for a reason other than Saya being present, and the note text is currently written as though Saya is the only source. Reword it to name the rewrite rather than the character before she goes live."
+      ],
+      "signatureWheels": [
+        {
+          "name": "Honeyed Deceit",
+          "tier": "primary signature",
+          "source": "WoD Event Awakening \"Whispers in Sugarfrost\" -- limited rate-up",
+          "mainstat": "Realm Mastery",
+          "values": {
+            "noAscension": 36,
+            "ascension12": 72
+          },
+          "effect": "The wielder's Exalt generates +22/28/34/40% Base Shield. After the wielder plays a Command Card that inflicts Weakness, their next Command Card generates +22/28/34/40% Base Shield. Upon using 'Crimson Furnace', draw the wielder's Skill Card with the highest Arithmetica Cost and gain 22/28/34/40 Embryo Fusion. (Cooldown: 3 turns)"
+        },
+        {
+          "name": "Serene Truth",
+          "tier": "secondary / floor",
+          "source": "Gameplay event \"New Moon and Deep Snow\" -- 16 copies free",
+          "mainstat": "Realm Mastery",
+          "values": {
+            "noAscension": 18,
+            "ascension12": 36
+          },
+          "effect": "After the wielder plays a Command Card that inflicts Weakness, their next Command Card generates +22/28/34/40% Base Shield.",
+          "note": "Strictly a subset of Honeyed Deceit: same Weakness-into-Shield clause, half the Realm Mastery, and neither the Exalt shield line nor the Crimson Furnace draw. It is the free floor option, not a competitor. Both wheels want the wielder to be applying Weakness on a Command Card, which on Caraboo means Snowy Hex -- so both are near-dead on a wielder with no Weakness application of their own."
+        }
+      ],
+      "posse": {
+        "name": "That Which is No Lie",
+        "source": "Astral Reign Chapter 6 \"When the Mountain Feasts\"",
+        "effect": "Generate 80 Shield. Realm Mastery +20. Caraboo: The next \"Blessing\" will not come with a \"Price.\"",
+        "note": "The conditional half removes the entire downside of one Blessing, which is the only counterplay to the Gift/Price gamble that exists anywhere in her kit. Treat as her anchor posse rather than a Discovered one. The unconditional half (shield + Realm Mastery) is generically fine for any Caro shielder, so it should not be gated to her."
+      }
+    }
+  ],
+  "pendingWheels": [
+    {
+      "name": "Soul Synchronization",
+      "source": "WoD Archives \"After School Hours\" -- paid archive, Silver Prime 1680",
+      "mainstat": "Sigil Yield",
+      "values": {
+        "noAscension": 10.8,
+        "ascension12": 21.6
+      },
+      "effect": "Team Unique: At the start of exploration, add 1 \"Soul Synchronization\" to your deck. \"Soul Synchronization\" (0 Arithmetica Cost): Gain 1 Arithmetica when played. Retain: while in hand, this card accumulates Fixed HP Recovery (equal to 3/4/5/6% of the wielder's CON) and 1/2/3/4 Fixed Aliemus per turn. If the wielder takes fatal damage, this card prevents their death, releases all stored HP and Aliemus to them, and is then Destroyed.",
+      "openQuestions": [
+        "Niche or not? wheel-0043 (Special Training) and wheel-0044 (School Day) are the existing paid-archive wheels and both sit in NICHE_MYTHIC_WHEEL_IDS in lib/assign.ts, excluded from generic filler. Soul Synchronization does not read niche -- a once-per-run death prevention plus stored sustain is universally useful and scales off CON, so it is arguably the best generic survivability wheel in the game. Recommend NOT adding it to the niche set, but that is Felix's call since it is paid content and recommending it to free players has a cost.",
+        "\"Team Unique\" is a new keyword. The engine already enforces one-wheel-per-lineup through usedWheelIds, so the practical behaviour is correct by accident. Nothing to build unless a later wheel is Team Unique in a way that differs from ordinary uniqueness."
       ]
     }
   ]
