@@ -49283,5 +49283,775 @@
       "realmRewrite": "PRIMORDIA_CHAOS"
     },
     "annotationPending": false
+  },
+  "awakener-0060": {
+    "id": "awakener-0060",
+    "name": "Caraboo",
+    "realm": "CARO",
+    "type": "WARDEN",
+    "faction": "TBD",
+    "rarity": "SSR",
+    "searchTags": [
+      "Weakness",
+      "STR Up",
+      "STR Down",
+      "Fixed DMG",
+      "Dispel",
+      "Corrosion",
+      "Divine Realm"
+    ],
+    "route": {
+      "slug": "caraboo",
+      "canonicalPath": "/database/awakeners/caraboo"
+    },
+    "assets": {
+      "icon": "asset-awakener-0060-icon"
+    },
+    "isDivineRealm": true,
+    "isLemurian": false,
+    "availabilityType": "LIMITED_ASTRAL_REIGN",
+    "aliases": [
+      "caraboo"
+    ],
+    "ingameId": "B11",
+    "numericId": 60,
+    "lineupToken": null,
+    "primaryScalingBase": 20,
+    "baseStatsLv1": {
+      "CON": 21,
+      "ATK": 26,
+      "DEF": 35
+    },
+    "substatsLv1": {
+      "CritRate": 5,
+      "CritDamage": 50,
+      "AliemusRegen": 0.4,
+      "KeyflareRegen": 15,
+      "RealmMastery": 4,
+      "SigilYield": 0,
+      "DamageAmplification": 0,
+      "DeathResistance": 0
+    },
+    "enlightens": [
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.caraboo.secret-devotions",
+        "name": "Secret Devotions",
+        "route": {
+          "slug": "secret-devotions",
+          "canonicalPath": "/database/awakeners/caraboo/enlightens/secret-devotions"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "E1",
+        "descriptionTemplate": "{Snowy Hex} deal +30% {Fixed DMG} and grants 10 Aliemus.\nFor every 1 point of Realm Mastery provided by Caraboo and her equipped WoD & Covenant, {Snowy Hex} deals +0.15% {Fixed DMG} and grants +0.05 Aliemus.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.caraboo.sevenfold-rite",
+        "name": "Sevenfold Rite",
+        "route": {
+          "slug": "sevenfold-rite",
+          "canonicalPath": "/database/awakeners/caraboo/enlightens/sevenfold-rite"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "E2",
+        "descriptionTemplate": "Every {ordinal:7th} time Caraboo plays \"Strike\" or \"Defense\", gain 1 stack of {Offering} and {Discover} 2 {derived:Caraboo's Blessing} cards with different {derived:Price}. Choose 1 to add to your hand.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.caraboo.threefold-vow",
+        "name": "Threefold Vow",
+        "route": {
+          "slug": "threefold-vow",
+          "canonicalPath": "/database/awakeners/caraboo/enlightens/threefold-vow"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "E3",
+        "descriptionTemplate": "Caraboo's Exalt DMG hits count +2. The Max HP bonus from each stack of {Satiety} +50%. Exalt Base DMG and Shield Generation +50%.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.caraboo.flawless-fairy-tale",
+        "name": "Flawless Fairy Tale",
+        "route": {
+          "slug": "flawless-fairy-tale",
+          "canonicalPath": "/database/awakeners/caraboo/enlightens/flawless-fairy-tale"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "OverExalt",
+        "descriptionTemplate": "{Discover} 2 sets of {derived:Caraboo's Blessing} cards with different {derived:Gifts}, each set contains 2 cards. Choose 1 set to add to hand. Permanently reduce all enemies' {STR} by 9% of Caraboo's DEF.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.caraboo.new-moon-at-its-zenith",
+        "name": "New Moon at Its Zenith",
+        "route": {
+          "slug": "new-moon-at-its-zenith",
+          "canonicalPath": "/database/awakeners/caraboo/enlightens/new-moon-at-its-zenith"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "AbsoluteAxiom",
+        "descriptionTemplate": "{Rouse} {Tempting Honeyfruit} is enhanced.\nAfter using {Crimson Furnace}, the next {Miracle Blessing} Discovers 1 additional {derived:Caraboo's Blessing} card per set. After playing a {derived:Caraboo's Blessing} card, {Embryo Fusion} +10. This fusion effect increases based on your lost HP, up to +100%.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Caraboo"
+      }
+    ],
+    "skills": [
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.caraboo.defense",
+        "name": "Defense",
+        "route": {
+          "slug": "defense",
+          "canonicalPath": "/database/awakeners/caraboo/skills/defense"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "Defense",
+        "cardFamily": "command",
+        "cardTypes": [
+          "defense"
+        ],
+        "descriptionTemplate": "Gain [Block:Arg1] Shield. Caraboo gains [Energy:Arg2] Aliemus.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "10",
+              "12",
+              "14",
+              "16",
+              "18",
+              "20"
+            ],
+            "stat": "DEF",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10"
+            ]
+          }
+        },
+        "cardKeywords": [],
+        "cost": "1",
+        "lore": "<Italic:\"This fairy will protect you! My super defense magic can ward off any attack!\">",
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.caraboo.flawless-fairy-tale",
+        "name": "Flawless Fairy Tale",
+        "route": {
+          "slug": "flawless-fairy-tale",
+          "canonicalPath": "/database/awakeners/caraboo/skills/flawless-fairy-tale"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "OverExalt",
+        "cardFamily": "exalt",
+        "cardTypes": [
+          "over_exalt"
+        ],
+        "descriptionTemplate": "{Discover} 2 sets of {derived:Caraboo's Blessing} cards with different {derived:Gifts}, each set contains 2 cards. Choose 1 set to add to hand. Permanently reduce all enemies' {STR} by 9% of Caraboo's DEF.",
+        "descriptionArgs": {},
+        "cardKeywords": [],
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.caraboo.miracle-blessing",
+        "name": "Miracle Blessing",
+        "route": {
+          "slug": "miracle-blessing",
+          "canonicalPath": "/database/awakeners/caraboo/skills/miracle-blessing"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "Skill1",
+        "cardFamily": "command",
+        "cardTypes": [
+          "skill"
+        ],
+        "descriptionTemplate": "Gain [Block:Arg1] Shield. {Discover} {derived:Caraboo's Blessing} cards with [Arg2] different {Prices}, choose [Arg3] to place into your Draw Pile.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "35",
+              "42",
+              "49",
+              "56",
+              "63",
+              "70"
+            ],
+            "stat": "DEF",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "fixed",
+            "value": "2"
+          },
+          "Arg3": {
+            "kind": "fixed",
+            "value": "1"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "3",
+        "lore": "<Italic:\"Want boundless treasure?\"\n\"Want unlimited power?\"\n\"Want a divine elixir to raise the dead?\"\n\"Want a crystal ball to see into hearts?\"\n\"Want a charm to win back your beloved's heart?\"\n\"Want a magic mirror that answers every question?\"\n\"Want a honeyfruit to sate every desire in an instant?\">\nWhatever wish you make, we have it all right here.\nNow, show your sincerity. Present your offerings to the Fairy Godmother!\nThe miracle is descending. Please, wait but 3 seconds!\n3, 2, 1\u2014and... off she scampers!",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.caraboo.sevenfold-rite.skill.caraboo.miracle-blessing",
+            "operation": "override_args",
+            "upgraderId": "enlighten.caraboo.sevenfold-rite",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E2",
+            "ownerAwakenerId": "awakener-0060",
+            "ownerAwakenerName": "Caraboo",
+            "patch": {
+              "descriptionArgs": {
+                "Arg1": {
+                  "kind": "scaling",
+                  "values": [
+                    "35",
+                    "42",
+                    "49",
+                    "56",
+                    "63",
+                    "70"
+                  ],
+                  "stat": "DEF",
+                  "suffix": "%"
+                },
+                "Arg2": {
+                  "kind": "fixed",
+                  "value": "2"
+                },
+                "Arg3": {
+                  "kind": "fixed",
+                  "value": "1"
+                }
+              }
+            }
+          }
+        ],
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.caraboo.snowy-hex",
+        "name": "Snowy Hex",
+        "route": {
+          "slug": "snowy-hex",
+          "canonicalPath": "/database/awakeners/caraboo/skills/snowy-hex"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "Skill2",
+        "cardFamily": "command",
+        "cardTypes": [
+          "skill"
+        ],
+        "descriptionTemplate": "Deal [Arg1] {Fixed DMG} to the enemy with the highest HP. Apply [Arg2] turns of {Weakness}.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "5000",
+              "6000",
+              "7000",
+              "8000",
+              "9000",
+              "10000"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "fixed",
+            "value": "2"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "2",
+        "lore": "On every clear night when snow was about to fall, Caraboo would climb up beside the chimney and gaze quietly into the dim sky. Pointing her wand toward the heavens, she would trace out an incantation of her own making. And then the drifting powder snow would carry her back to that snowy night when she had once handed over her soul.",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.caraboo.secret-devotions.skill.caraboo.snowy-hex",
+            "operation": "mixed",
+            "upgraderId": "enlighten.caraboo.secret-devotions",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E1",
+            "ownerAwakenerId": "awakener-0060",
+            "ownerAwakenerName": "Caraboo",
+            "patch": {
+              "descriptionTemplate": "Deal [Arg1] {Fixed DMG} to the enemy with the highest HP. Apply [Arg2] turns of {Weakness}. Gain [Energy:Arg3] Aliemus.",
+              "descriptionArgs": {
+                "Arg1": {
+                  "kind": "scaling",
+                  "values": [
+                    "5000",
+                    "6000",
+                    "7000",
+                    "8000",
+                    "9000",
+                    "10000"
+                  ],
+                  "stat": "ATK",
+                  "suffix": "%",
+                  "substatBonus": {
+                    "substat": "RealmMastery",
+                    "multiplier": "0.15",
+                    "mode": "additive_factor",
+                    "baseMultiplier": "1.3"
+                  }
+                },
+                "Arg2": {
+                  "kind": "fixed",
+                  "value": "2"
+                },
+                "Arg3": {
+                  "kind": "fixed",
+                  "value": "10",
+                  "substatBonus": {
+                    "substat": "RealmMastery",
+                    "multiplier": "0.05",
+                    "mode": "additive"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.caraboo.strike",
+        "name": "Strike",
+        "route": {
+          "slug": "strike",
+          "canonicalPath": "/database/awakeners/caraboo/skills/strike"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "Strike",
+        "cardFamily": "command",
+        "cardTypes": [
+          "strike"
+        ],
+        "descriptionTemplate": "Deal [Damage:Arg1] DMG. Caraboo gains [Energy:Arg2] Aliemus.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "10",
+              "12",
+              "14",
+              "16",
+              "18",
+              "20"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10"
+            ]
+          }
+        },
+        "cardKeywords": [],
+        "cost": "1",
+        "lore": "<Italic:\"This fairy's making her move! My super attack magic can shatter any defense!\">",
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.caraboo.ta-da-its-the-fairy",
+        "name": "Ta-da\u2605It's the Fairy!",
+        "route": {
+          "slug": "ta-daits-the-fairy",
+          "canonicalPath": "/database/awakeners/caraboo/skills/ta-daits-the-fairy"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "Exalt",
+        "cardFamily": "exalt",
+        "cardTypes": [
+          "exalt"
+        ],
+        "descriptionTemplate": "[{Devour}: Gain 1 stack of {Satiety}. Upon dealing DMG, inflict [Corrosion:Arg10] stacks of {Corrosion} on the target.] Dispel {Burn} from all cards in hand. Gain [Block:Arg2] Shield. Deal [Damage:Arg1] DMG [Arg8] times to all enemies. Each stack of {Satiety} increases Exalt Base DMG and Shield Generation by [Arg6]%. Consume all {Offering} stacks; each stack increases Exalt hit count by 1 and converts into an equal number of stacks of {Satiety}.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "90",
+              "108",
+              "126",
+              "144",
+              "162",
+              "180"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "45",
+              "54",
+              "63",
+              "72",
+              "81",
+              "90"
+            ],
+            "stat": "DEF",
+            "suffix": "%"
+          },
+          "Arg6": {
+            "kind": "fixed",
+            "value": "2",
+            "suffix": "%"
+          },
+          "Arg8": {
+            "kind": "fixed",
+            "value": "3"
+          },
+          "Arg10": {
+            "kind": "scaling",
+            "values": [
+              "400",
+              "800",
+              "1200",
+              "1600",
+              "2000",
+              "2400"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "150",
+        "lore": "The fairy and the wizard crossed paths on a desolate patch of ground in the corner of some little town.\nShe was smilingly beckoning to finely-dressed foreign children, while the wizard had his eyes fixed on the jingling gold bracelet on their mother's wrist.\nTheir gazes met in the air, and in an instant, each understood the other's intent.\nIn this silent contest, the wizard proved the more skilled, edging out a narrow victory on the strength of his seasoned experience.\nAnd thus, a brand-new, beautiful enterprise of swindling and scamming raised its curtain.",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.caraboo.threefold-vow.skill.caraboo.ta-da-its-the-fairy",
+            "operation": "mixed",
+            "upgraderId": "enlighten.caraboo.threefold-vow",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E3",
+            "ownerAwakenerId": "awakener-0060",
+            "ownerAwakenerName": "Caraboo",
+            "patch": {
+              "descriptionTemplate": "[{Devour}: Gain {Satiety}. Upon dealing DMG, inflict [Corrosion:Arg10] stacks of {Corrosion} on the target.] Dispel {Burn} from all cards in hand. Gain [Block:Arg2] Shield. Deal [Damage:Arg1] DMG [Arg8] times to all enemies. Each stack of {Satiety} increases Exalt Base DMG and Shield Generation by [Arg6]%. Consume all {Offering} stacks; each stack increases Exalt hit count by 1 and converts into an equal number of stacks of {Satiety}.",
+              "descriptionArgs": {
+                "Arg1": {
+                  "kind": "scaling",
+                  "values": [
+                    "90",
+                    "108",
+                    "126",
+                    "144",
+                    "162",
+                    "180"
+                  ],
+                  "stat": "ATK",
+                  "suffix": "%"
+                },
+                "Arg2": {
+                  "kind": "scaling",
+                  "values": [
+                    "45",
+                    "54",
+                    "63",
+                    "72",
+                    "81",
+                    "90"
+                  ],
+                  "stat": "DEF",
+                  "suffix": "%"
+                },
+                "Arg6": {
+                  "kind": "fixed",
+                  "value": "3",
+                  "suffix": "%"
+                },
+                "Arg8": {
+                  "kind": "fixed",
+                  "value": "5"
+                },
+                "Arg10": {
+                  "kind": "scaling",
+                  "values": [
+                    "400",
+                    "800",
+                    "1200",
+                    "1600",
+                    "2000",
+                    "2400"
+                  ],
+                  "stat": "ATK",
+                  "suffix": "%"
+                }
+              }
+            }
+          }
+        ],
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.caraboo.tempting-honeyfruit",
+        "name": "Tempting Honeyfruit",
+        "route": {
+          "slug": "tempting-honeyfruit",
+          "canonicalPath": "/database/awakeners/caraboo/skills/tempting-honeyfruit"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "slot": "Rouse",
+        "cardFamily": "rouse",
+        "cardTypes": [
+          "rouse"
+        ],
+        "descriptionTemplate": "Caraboo gains [Arg2]% Base Aliemus. {Rouse}: After using {Crimson Furnace}, the next {Miracle Blessing} costs -3 Arithmetica, and each {Discover} option is upgraded to a set that contains 1 more {derived:Caraboo's Blessing} card. Choose 1 set to shuffle into your Draw Pile.",
+        "descriptionArgs": {
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "25",
+              "30",
+              "35",
+              "40",
+              "45",
+              "50"
+            ],
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [
+          {
+            "id": "mechanic.retain"
+          }
+        ],
+        "cost": "1",
+        "lore": "Greed is the true color of human nature.\nNo one can resist the temptation of sugar, not even the Fairy Godmother herself.\nCaraboo grinned wide, baring a mouthful of pitch-black, pointed teeth.",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.caraboo.new-moon-at-its-zenith.skill.caraboo.tempting-honeyfruit",
+            "operation": "replace_description",
+            "upgraderId": "enlighten.caraboo.new-moon-at-its-zenith",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "AbsoluteAxiom",
+            "ownerAwakenerId": "awakener-0060",
+            "ownerAwakenerName": "Caraboo",
+            "patch": {
+              "descriptionTemplate": "Caraboo gains [Arg2]% Base Aliemus. {Rouse}: After using {Crimson Furnace}, the next {Miracle Blessing} costs -3 Arithmetica, and each {Discover} option is upgraded to a set that contains 2 more {derived:Caraboo's Blessing} cards. Choose 1 set to shuffle into your Draw Pile. After playing a {Blessing} card, {Embryo Fusion} +10. This fusion effect increases based on your lost HP, up to +100%."
+            }
+          }
+        ],
+        "ownerAwakenerName": "Caraboo"
+      }
+    ],
+    "talents": [
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.caraboo.eden-of-propagation",
+        "name": "Eden of Propagation",
+        "route": {
+          "slug": "eden-of-propagation",
+          "canonicalPath": "/database/awakeners/caraboo/talents/eden-of-propagation"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "family": "passive",
+        "descriptionTemplate": "When Caraboo is on the team, the {Caro} Realm is tricked into becoming {Propagation: Caro}.\n\n{Embryo Fusion}: The {Embryo Fusion} gained per turn increases to 50~100, scaling with HP lost. The {Embryo Fusion} cap increases from 100 to 200. Upon reaching the cap, add 1 {Propagule Embryo} into hand.\n\n{Propagule Embryo}: Playing this card no longer grants Crit. Rate. {Devour} no longer grants Shield or Temporary {STR}. The first time each Awakener consumes a {Propagule Embryo} each turn, they gain 40 stacks of {Propagation Fiesta}: Each stack enhances the following Final effects of that Awakener's next Exalt this turn by 1%: Final DMG, Fixed Shield, Fixed HP Recovery, Fixed {STR}/{STR\u25bc}, {Tentacle DMG} Bonus, Fixed {Poison}, and Fixed {Counter}.\n\n{Crimson Furnace}: The auto-accumulation At turn start changes to 10% of HP lost, up to 50% of Max HP. No longer accumulates at the end of battle. 3 turns cooldown.\n\nCrimson Corrosion: After using {Crimson Furnace}, inflict {Corrosion} on all enemies equal to 1% of their Max HP. The more {Crimson Furnace} consumed, the stronger the {Corrosion} effect, up to +100%. Deals 5\u00d7 {Corrosion} effect against \"Empty Shell\" enemies.\n\nAt the start of exploration, Max HP +10%, team DMG Amplification +50%, and all Awakeners gain 20 stacks of {Propagation Fiesta} At turn start. If the team consists only of {Caro} or {Chaos} Awakeners, the DMG Amplification granted by this effect is doubled.\nRealm Mastery becomes {Propagation: Caro Mastery}: Each point of Realm Mastery increases the {Propagation Fiesta} stacks gained from {Propagation: Caro} by 0.05%.\n\nIf the team consists only of {Caro} or {Chaos} Awakeners, the {Propagation: Caro Mastery} effect is doubled.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.caraboo.madness-omen",
+        "name": "Madness Omen",
+        "route": {
+          "slug": "madness-omen",
+          "canonicalPath": "/database/awakeners/caraboo/talents/madness-omen"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "family": "madness_omen",
+        "maxLevel": 12,
+        "descriptionTemplate": "Gain [Arg1] Aliemus after the start of exploration.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "5",
+            "gainPerLevel": "5"
+          }
+        },
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.caraboo.soulforge-aptitude",
+        "name": "Soulforge Aptitude",
+        "route": {
+          "slug": "soulforge-aptitude",
+          "canonicalPath": "/database/awakeners/caraboo/talents/soulforge-aptitude"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "family": "soulforge_aptitude",
+        "maxLevel": 10,
+        "descriptionTemplate": "This talent is only effective in the {Astral Reign} stages.\nThis Awakener's CON, ATK, and DEF +[Arg1]%, and they gain [Arg2] Keyflare upon their first {Rouse}.\nCaraboo's Exalt Crit. Rate and Crit. DMG +[Arg3]%. The amount of Max HP bonus provided by {Satiety} stacks +[Arg5]%.\nIn the \"Icefields\" terrain: {Snowy Hex} Arithmetica Cost -1; DMG hits count +1; deal DMG to & inflict {Weakness} on all enemies.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "3",
+            "gainPerLevel": "3"
+          },
+          "Arg2": {
+            "kind": "linear",
+            "base": "50",
+            "gainPerLevel": "50"
+          },
+          "Arg3": {
+            "kind": "linear",
+            "base": "5",
+            "gainPerLevel": "5"
+          },
+          "Arg4": {
+            "kind": "linear",
+            "base": "5",
+            "gainPerLevel": "5"
+          },
+          "Arg5": {
+            "kind": "linear",
+            "base": "10",
+            "gainPerLevel": "10"
+          }
+        },
+        "ownerAwakenerName": "Caraboo"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.caraboo.gnostic-potential",
+        "name": "Gnostic Potential",
+        "route": {
+          "slug": "gnostic-potential",
+          "canonicalPath": "/database/awakeners/caraboo/talents/gnostic-potential"
+        },
+        "ownerAwakenerId": "awakener-0060",
+        "family": "gnostic_potential",
+        "maxLevel": 5,
+        "defaultMaxed": true,
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "2",
+            "gainPerLevel": "2"
+          },
+          "Talent_Attr_Lv_physique": {
+            "kind": "linear",
+            "base": "2",
+            "gainPerLevel": "2"
+          },
+          "Talent_Attr_Lv_atk": {
+            "kind": "scaling",
+            "values": [
+              "3",
+              "5",
+              "8",
+              "10",
+              "12"
+            ]
+          },
+          "Talent_Attr_Lv_def": {
+            "kind": "scaling",
+            "values": [
+              "4",
+              "7",
+              "10",
+              "14",
+              "17"
+            ]
+          }
+        },
+        "ownerAwakenerName": "Caraboo"
+      }
+    ],
+    "build": null,
+    "annotation": {
+      "id": "awakener-0060",
+      "teamRoles": [
+        "shielder",
+        "weak_applier",
+        "sub_dps",
+        "str_support"
+      ],
+      "synergyTags": [
+        "divine_realm",
+        "embryo_gen"
+      ],
+      "requires": [],
+      "synergizesWith": [],
+      "conflictsWith": [
+        "awakener-0057",
+        "awakener-0046"
+      ],
+      "viabilityFloor": "E0",
+      "enlightenBreakpoints": [
+        "E1",
+        "E3"
+      ],
+      "keySkillSlots": [],
+      "keyTalents": [
+        "madness_omen"
+      ],
+      "recommendedPosses": [
+        "posse-0062"
+      ],
+      "isDivineRealm": true,
+      "tier": "A",
+      "notes": "Caro Warden built around shield generation and a single large Fixed DMG button. Snowy Hex scales off Realm Mastery once E1 is online, which turns her own stat line, both signature wheels and her covenant into damage rather than economy. Blessing cards are a genuine gamble: each Gift arrives with a Price, and the worst roll (Veiled Malice) drops a random debuff on the whole team, so her floor and ceiling sit further apart than most. Blessings also Exhaust, so the deck thins as the fight runs. Applies Weakness on Snowy Hex, which is what both her wheels key off.",
+      "keyPairings": [],
+      "divineRealmNote": "Eden of Propagation mutates Caro into Propagation: Caro \u2014 the same rewrite Saya brings. Embryos become Propagule Embryos granting Propagation Fiesta instead of shield/STR, and Crimson Furnace gains a 3-turn cooldown.",
+      "contentNotes": {
+        "arc2": "Realm Mastery is her scaling stat twice over: the Arc-2 rolled stat and, via E1, her Snowy Hex damage multiplier."
+      },
+      "anchorPosse": "posse-0062",
+      "realmRewrite": "PROPAGATION_CARO"
+    },
+    "annotationPending": false
   }
 }
