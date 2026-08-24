@@ -5,7 +5,16 @@ light (it only ships names + realm + rarity) while the detail modal gets the
 rich, scaling descriptions on demand. Node runtime — reads db/*.json from disk. */
 
 import { NextResponse } from "next/server";
-import { getAwakener, getAwakeners, getWheel, getCovenant, getPosse } from "@/lib/db";
+import {
+  getAwakener,
+  getAwakeners,
+  getWheel,
+  getCovenant,
+  getPosse,
+  getBisData,
+  getWheelStarFloors,
+} from "@/lib/db";
+import { bisTierRank } from "@/lib/bis-client";
 import { RECORD_SLOT_TO_ROSTER } from "@/lib/enlighten";
 import type { EnlightenSlot } from "@/lib/types";
 
@@ -21,6 +30,35 @@ const SKILL_ORDER: Record<string, number> = {
   Exalt: 5,
   OverExalt: 6,
 };
+
+/** Every character/variant that lists this wheel in db/bis.json. */
+function bisUsersOf(wheelId: string) {
+  const awakeners = getAwakeners();
+  const out: {
+    awakenerId: string;
+    awakenerName: string;
+    variant: string;
+    tier: string;
+  }[] = [];
+
+  for (const entry of Object.values(getBisData())) {
+    for (const variant of entry.variants ?? []) {
+      for (const w of variant.wheels ?? []) {
+        if (w.wheelId !== wheelId) continue;
+        out.push({
+          awakenerId: entry.awakenerId,
+          awakenerName: awakeners[entry.awakenerId]?.name ?? entry.awakenerId,
+          variant: variant.variant,
+          tier: w.tier,
+        });
+      }
+    }
+  }
+
+  return out.sort(
+    (a, b) => bisTierRank(a.tier) - bisTierRank(b.tier) || a.awakenerName.localeCompare(b.awakenerName)
+  );
+}
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -95,6 +133,26 @@ export async function GET(req: Request) {
         searchTags: a.searchTags ?? [],
         annotationNotes: a.annotation?.notes ?? null,
         teamRoles: a.annotation?.teamRoles ?? [],
+        // Investment guidance. The roster grid already had this from
+        // app/page.tsx, but the detail modal fetches its own payload and so was
+        // the one surface that showed the enlighten track without ever saying
+        // which nodes are worth paying for.
+        viabilityFloor: a.annotation?.viabilityFloor ?? "E0",
+        enlightenBreakpoints: a.annotation?.enlightenBreakpoints ?? [],
+        tier: a.annotation?.tier ?? null,
+        bisVariants: (getBisData()[a.id]?.variants ?? []).map((v) => ({
+          variant: v.variant,
+          wheels: (v.wheels ?? []).map((w) => ({
+            tier: w.tier,
+            wheelId: w.wheelId,
+            wheelName: w.wheelName,
+          })),
+          covenants: (v.covenants ?? []).map((c) => ({
+            covenantId: c.covenantId,
+            covenantName: c.covenantName,
+          })),
+          preferredStats: v.preferredStats ?? [],
+        })),
         enlightens,
         skills,
         talents,
@@ -121,6 +179,11 @@ export async function GET(req: Request) {
         descriptionTemplate: w.descriptionTemplate ?? "",
         descriptionArgs: w.descriptionArgs ?? {},
         lore: w.lore ?? null,
+        // Reverse BiS lookup: every character/variant this wheel is listed on.
+        // Sorted BiS-first so the strongest claim reads at the top.
+        bisFor: bisUsersOf(w.id),
+        starFloor: getWheelStarFloors()[w.id]?.starFloor ?? null,
+        starFloorNote: getWheelStarFloors()[w.id]?.note ?? null,
       });
     }
 
