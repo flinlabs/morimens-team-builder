@@ -40,6 +40,7 @@ const CATEGORIES = [
 ]
 
 const checkOnly = process.argv.includes('--check')
+const force = process.argv.includes('--force')
 
 async function fetchJSON(url) {
   const res = await fetch(url)
@@ -68,6 +69,27 @@ const writeDb = (f, data) => {
   fs.writeFileSync(filepath, serialize(filepath, data))
 }
 
+/**
+ * Categories whose tokens are deliberately held at their current values.
+ *
+ * SKeyDB reissued the awakener and wheel dictionaries alongside the 2.6.0 drop,
+ * shifting nearly every token one or two places. The new values do not match
+ * the live game: tests/ingame-codec.test.ts decodes a real block copied out of
+ * Morimens whose plaintext names prove Arachne's token is "4" and Kathigu-Ra's
+ * is "1", where upstream now claims "3" and "Z". Applying that reissue makes
+ * every previously shared code decode to the wrong characters, silently.
+ *
+ * The committed values are the ones that real code validates, so they stay put
+ * until upstream is confirmed correct against a fresh in-game capture. Clear an
+ * entry here once that check passes.
+ */
+const PINNED = {
+  awakeners:
+    'Held at pre-2.6.0 values — upstream reissue contradicts a real in-game code (see tests/ingame-codec.test.ts).',
+  wheels:
+    'Held at pre-2.6.0 values — same reissue, shifted by two places.',
+}
+
 async function main() {
   console.log(`🔑 Refreshing lineup tokens${checkOnly ? ' (check only)' : ''}…\n`)
 
@@ -75,6 +97,12 @@ async function main() {
   let missing = 0
 
   for (const { catalog, file } of CATEGORIES) {
+    if (PINNED[catalog] && !force) {
+      console.log(`  ${catalog}: PINNED — skipping`)
+      console.log(`    ${PINNED[catalog]}`)
+      console.log(`    Pass --force to override, but read the note first.\n`)
+      continue
+    }
     const upstream = await fetchJSON(`${SKEYDB_BASE}/catalogs/${catalog}.json`)
     const tokenById = new Map()
     for (const rec of upstream.records || []) {
