@@ -682,3 +682,122 @@ Not verified visually — the test environment is Node with no DOM, so there is 
 automated coverage of the positioning itself. The arithmetic is straightforward
 and the failure mode is visible immediately, but a second pair of eyes on a
 narrow phone viewport would be worth having before this is considered settled.
+
+
+## 2026-08-20 — realm rewrites generalised; Caraboo staged
+
+### Applied
+
+- **Realm-rewrite coverage notes no longer match on character name.** Two
+  branches in `filter.ts` were keyed to the literal strings `'Saya'` and
+  `'Lotan: Cetarchon'`, which meant every future rewriter would silently get no
+  note until someone remembered to add a branch. This is the same
+  data-without-wiring shape as the Arc 1 R-wheel preference.
+
+  There is now a `realmRewrite` field on `AwakenerAnnotation`
+  (`PROPAGATION_CARO` | `DIVINE_AEQUOR` | `SINGULARITY_ULTRA` |
+  `PRIMORDIA_CHAOS`) driving a `REALM_REWRITE_NOTES` table. Populated on the
+  four existing rewriters. Caraboo will inherit the Propagation: Caro note the
+  moment she is annotated, with no code change.
+
+  A test pins that all four are declared, that every rewriter is also flagged
+  `isDivineRealm`, and that only Primordia: Chaos emits the pure-realm dilution
+  warning.
+
+- **`annotations/pending-characters.json`** (new). Caraboo is announced but not
+  yet in SKeyDB, so there is nothing to sync. Her full kit is transcribed there
+  — attributes, talents, all skills, the Gift/Price table, five Enlightens, the
+  Honeyed Deceit wheel — along with both official corrections. Not loaded by the
+  app; `db/awakeners.json` remains the only source the engine reads. A test
+  asserts nothing in the pending file has quietly gone live.
+
+  Both corrections matter and neither is in the infographic:
+  1. Blessing cards also carry **[Exhaust]** — once played they leave the deck
+     for the rest of combat. Omitted from the skill preview graphic.
+  2. Soulforge's English text "Satiety increases Max HP by 10~100%" is **wrong**.
+     The correct reading is that the Max HP bonus from Satiety stacks is
+     increased by +100%. Do not encode the infographic wording.
+
+### Found while doing this — needs your attention
+
+22. **`annotations/awakeners.json` is STALE relative to `db/awakeners.json`.**
+    The sync bakes the annotations file into an embedded `annotation` object on
+    each db record, and `getAwakeners()` reads the db copy — so editing the
+    annotations file alone changes nothing the engine sees. I hit this
+    immediately: my `realmRewrite` edit had no effect until it also went into
+    the db.
+
+    Re-baking the annotations file over the db turned out to be the wrong fix
+    and broke a D-Tide test, because the db is the NEWER of the two. The drift,
+    counted by field:
+
+    - `combatTheme` differs on **47** records
+    - `synergizesWith` on 10
+    - `keyPairings` on 4
+    - `tier`, `requiresThemeLock`, `conflictsWith`, `keySkillSlots`,
+      `divineRealmNote`, `enlightenBreakpoints`, `notes`, `contentNotes`,
+      `recommendedPosses`, `anchorPosse`, `requiresCondition`, `teamRoles` on 1
+      each
+
+    `combatTheme` and `requiresThemeLock` do not appear in
+    `annotations/awakeners.json` at all, so work has been going into the db
+    directly without flowing back. That is fine as a one-off but dangerous as a
+    standing state: the next full `sync-skeydb.mjs` run rebuilds the db from the
+    annotations file and would erase all of it.
+
+    I applied `realmRewrite` surgically to both files rather than reconciling
+    them, because deciding which side wins per field is your call, not mine. But
+    this wants resolving before the next sync — either backfill the annotations
+    file from the db, or make the db the source of truth and stop treating the
+    annotations file as an input.
+
+23. **Uncommitted starter-roster work was in the working tree.** `lib/roster.ts`,
+    `lib/store.ts` and `tests/starter-roster.test.ts` carry a
+    `STARTER_AWAKENER_IDS` / `migrateRoster` feature that is not in HEAD. Its
+    tests pass. I have left it untouched and included it in the delivery so it
+    is not lost, but I did not write it this session and have not reviewed it —
+    check whether it is meant to ship.
+
+
+## 2026-08-03 — starter characters owned by default
+
+Doll, Lotan, Ogier and Ramona are handed out through the story, so a fresh
+roster starting with them unowned made every new player's first job to tick four
+boxes they could never not have.
+
+- `STARTER_AWAKENER_IDS` in `lib/roster.ts`, seeded by `createEmptyRoster()`.
+  Hardcoded by id because that module runs on the client and cannot read
+  `db/awakeners.json`; `tests/starter-roster.test.ts` asserts the list is
+  identical to the SR set, so a fifth SR fails the suite rather than silently
+  going missing. The four happen to be exactly the SR rarity tier and exactly
+  the WELFARE availability tier, which is a stronger guarantee than a list
+  someone typed.
+
+- **Applied to existing rosters too**, via a v1 → v2 migration. Roster entries
+  are sparse — a key exists only once the player has touched that character — so
+  `withStarters` fills only ids with no entry at all. An explicit `owned: false`
+  can only have got there by the player setting it, and is left alone. Anyone
+  who has already recorded investment on a starter keeps it.
+
+- **The migration runs on import as well as load.** `importRoster` previously
+  bypassed it, which would have let an old backup file come back in a state the
+  app no longer produces. Both paths now share `migrateRoster`.
+
+Only the base forms are seeded. Doll: Inferno, Lotan: Cetarchon and Ramona:
+Timeworn are separate limited characters, and handing those out free would
+distort every score in the tool — there is a test pinning that the starter list
+contains no EX variant.
+
+### Note on a transient test failure
+
+A full-suite run during this change reported three failures in
+`tests/realm-rewrite.test.ts` claiming no character declares a `realmRewrite`,
+which is plainly false — the field is present on four annotations. The same file
+passed in isolation, no pairing with any other file reproduced it, and five
+consecutive full runs since have been clean at 142/142.
+
+Not diagnosed. Recording it because an unexplained failure that stops
+reproducing is worth knowing about rather than forgetting: if it resurfaces, the
+likely area is module-level `getAwakeners()` caching interacting with the
+in-place annotation merge added for the tier lists, since that is the one place
+a shared cached object is mutated after read.
