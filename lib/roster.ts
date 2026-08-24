@@ -3,6 +3,7 @@ import type {
   AwakenerEntry,
   WheelEntry,
   CovenantEntry,
+  CovenantCopy,
   PosseEntry,
   AppSettings,
   EnlightenSlot,
@@ -61,7 +62,7 @@ const DEFAULT_SETTINGS: AppSettings = {
 }
 
 /** Current roster schema version. Bump when a migration is added below. */
-const ROSTER_VERSION = 2
+export const ROSTER_VERSION = 3
 
 /**
  * Characters every account has without pulling for them.
@@ -96,8 +97,22 @@ export function migrateRoster(roster: UserRoster): UserRoster {
     ...roster,
     // v1 → v2: seed the free story characters.
     awakeners: withStarters(roster.awakeners ?? {}),
+    // v2 → v3: lift each owned covenant's single completion record into the
+    // per-copy array 2.6.0 needs. Nothing is bound, since binding did not
+    // exist yet, so a migrated roster behaves exactly as it did before.
+    covenants: withCovenantCopies(roster.covenants ?? {}),
     version: ROSTER_VERSION,
   }
+}
+
+function withCovenantCopies(
+  covenants: Record<string, CovenantEntry>
+): Record<string, CovenantEntry> {
+  const next: Record<string, CovenantEntry> = {}
+  for (const [id, entry] of Object.entries(covenants)) {
+    next[id] = entry.copies?.length ? entry : { ...entry, copies: covenantCopies(entry) }
+  }
+  return next
 }
 
 function withStarters(
@@ -284,6 +299,134 @@ export function getCovenantEntry(
   covenantId: string
 ): CovenantEntry {
   return roster.covenants[covenantId] ?? { ...DEFAULT_COVENANT_ENTRY }
+}
+
+/** Investigation Level at which the Awakener-Covenant binding menu unlocks. */
+export const COVENANT_BINDING_LEVEL = 60
+
+export function canBindCovenants(roster: UserRoster): boolean {
+  return (roster.keeperLevel ?? 0) >= COVENANT_BINDING_LEVEL
+}
+
+/**
+ * Every copy of a set the player holds, normalised.
+ *
+ * An entry written before 2.6.0 has no `copies` array and describes one copy
+ * through the legacy top-level fields; an entry written after has the array
+ * and the legacy fields are stale. This is the only place that difference is
+ * allowed to matter — everything else reads through here.
+ *
+ * An unowned set has no copies at all, so callers can treat length as the
+ * count of physical sets available to assign.
+ */
+export function covenantCopies(entry: CovenantEntry): CovenantCopy[] {
+  if (!entry.owned) return []
+  if (entry.copies?.length) return entry.copies
+  return [
+    {
+      id: 'copy-1',
+      threePieceComplete: entry.threePieceComplete,
+      sixPieceComplete: entry.sixPieceComplete,
+      completionPercent: entry.completionPercent,
+      pieces: entry.pieces,
+      substatTotals: entry.substatTotals,
+    },
+  ]
+}
+
+/** Copies of a set that `awakenerId` is allowed to wear. */
+export function copiesAvailableTo(
+  entry: CovenantEntry,
+  awakenerId: string
+): CovenantCopy[] {
+  return covenantCopies(entry).filter((c) => !c.boundTo || c.boundTo === awakenerId)
+}
+
+/**
+ * Best-first ordering for a given wearer.
+ *
+ * A copy bound to this awakener is Prismatic (+50% main attribute) and can
+ * never be taken by anyone else, so it outranks a better-rolled free copy —
+ * the alternative is leaving a strictly stronger item unworn. Below that it is
+ * 6-piece, then 3-piece, then raw completion.
+ */
+export function rankCopiesFor(
+  entry: CovenantEntry,
+  awakenerId: string
+): CovenantCopy[] {
+  return [...copiesAvailableTo(entry, awakenerId)].sort((a, b) => {
+    const bound = Number(b.boundTo === awakenerId) - Number(a.boundTo === awakenerId)
+    if (bound) return bound
+    const six = Number(b.sixPieceComplete) - Number(a.sixPieceComplete)
+    if (six) return six
+    const three = Number(b.threePieceComplete) - Number(a.threePieceComplete)
+    if (three) return three
+    return (b.completionPercent ?? 0) - (a.completionPercent ?? 0)
+  })
+}
+
+/** Add an empty copy of a set (the player pulled a duplicate). */
+export function addCovenantCopy(roster: UserRoster, covenantId: string): UserRoster {
+  const entry = getCovenantEntry(roster, covenantId)
+  const copies = covenantCopies(entry)
+  const next: CovenantCopy = {
+    id: `copy-${nextCopyOrdinal(copies)}`,
+    threePieceComplete: false,
+    sixPieceComplete: false,
+    completionPercent: 0,
+  }
+  return setCovenantEntry(roster, covenantId, { owned: true, copies: [...copies, next] })
+}
+
+export function removeCovenantCopy(
+  roster: UserRoster,
+  covenantId: string,
+  copyId: string
+): UserRoster {
+  const entry = getCovenantEntry(roster, covenantId)
+  const copies = covenantCopies(entry).filter((c) => c.id !== copyId)
+  return setCovenantEntry(roster, covenantId, { copies, owned: copies.length > 0 })
+}
+
+export function updateCovenantCopy(
+  roster: UserRoster,
+  covenantId: string,
+  copyId: string,
+  patch: Partial<CovenantCopy>
+): UserRoster {
+  const entry = getCovenantEntry(roster, covenantId)
+  const copies = covenantCopies(entry).map((c) => (c.id === copyId ? { ...c, ...patch } : c))
+  return setCovenantEntry(roster, covenantId, { copies })
+}
+
+/**
+ * Bind a copy to an awakener, or unbind it when `awakenerId` is undefined.
+ *
+ * One awakener can hold at most one bound copy of a given set — binding a
+ * second would leave the first permanently deactivated for no benefit — so any
+ * existing binding to the same awakener within this set is released first.
+ * Binding across different sets is unrestricted, matching the game.
+ */
+export function bindCovenantCopy(
+  roster: UserRoster,
+  covenantId: string,
+  copyId: string,
+  awakenerId?: string
+): UserRoster {
+  const entry = getCovenantEntry(roster, covenantId)
+  const copies = covenantCopies(entry).map((c) => {
+    if (c.id === copyId) return { ...c, boundTo: awakenerId }
+    if (awakenerId && c.boundTo === awakenerId) return { ...c, boundTo: undefined }
+    return c
+  })
+  return setCovenantEntry(roster, covenantId, { copies })
+}
+
+function nextCopyOrdinal(copies: CovenantCopy[]): number {
+  const used = copies
+    .map((c) => Number(/copy-(\d+)$/.exec(c.id)?.[1] ?? 0))
+    .filter((n) => Number.isFinite(n))
+  return (used.length ? Math.max(...used) : 0) + 1
 }
 
 export function setCovenantEntry(
