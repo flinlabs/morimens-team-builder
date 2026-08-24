@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type {
+  CovenantCopy,
   UserRoster,
   EnlightenSlot,
   SkillSlot,
@@ -18,6 +19,10 @@ import {
   setWheelOwned,
   setWheelEntry,
   setCovenantEntry,
+  addCovenantCopy,
+  removeCovenantCopy,
+  updateCovenantCopy,
+  bindCovenantCopy,
   setPosseUnlocked,
   setArcRuleset,
   setKeeperLevel,
@@ -67,6 +72,10 @@ interface RosterStore {
   setCovenantSixPiece: (id: string, complete: boolean) => void
   setCovenantCompletion: (id: string, percent: number) => void
   setCovenantSubstat: (id: string, statKey: string, value: number) => void
+  addCovenantCopy: (id: string) => void
+  removeCovenantCopy: (id: string, copyId: string) => void
+  updateCovenantCopy: (id: string, copyId: string, patch: Partial<CovenantCopy>) => void
+  bindCovenantCopy: (id: string, copyId: string, awakenerId?: string) => void
 
   // Posse actions
   setPosseUnlocked: (id: string, unlocked: boolean) => void
@@ -170,6 +179,17 @@ export const useRosterStore = create<RosterStore>((set, get) => ({
   // ---------------------------------------------------------------------------
   // Covenant actions
   // ---------------------------------------------------------------------------
+
+  addCovenantCopy: (id) => updateAndSave(set, (r) => addCovenantCopy(r, id)),
+
+  removeCovenantCopy: (id, copyId) =>
+    updateAndSave(set, (r) => removeCovenantCopy(r, id, copyId)),
+
+  updateCovenantCopy: (id, copyId, patch) =>
+    updateAndSave(set, (r) => updateCovenantCopy(r, id, copyId, patch)),
+
+  bindCovenantCopy: (id, copyId, awakenerId) =>
+    updateAndSave(set, (r) => bindCovenantCopy(r, id, copyId, awakenerId)),
 
   setCovenantOwned: (id, owned) =>
     updateAndSave(set, (r) => setCovenantEntry(r, id, { owned })),
