@@ -27,7 +27,9 @@ describe('realm rewrites', () => {
       .filter((a) => a.annotation?.realmRewrite)
       .map((a) => a.name)
       .sort()
-    expect(declared).toEqual(['Arachne', 'Lotan: Cetarchon', 'Saya', 'Vortice'])
+    // Caraboo joined in 2.6.0 and is the first case of two characters sharing
+    // one rewrite — she and Saya both bring Propagation: Caro.
+    expect(declared).toEqual(['Arachne', 'Caraboo', 'Lotan: Cetarchon', 'Saya', 'Vortice'])
   })
 
   it('treats every rewriter as a Divine Realm character', () => {
