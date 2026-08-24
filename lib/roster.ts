@@ -60,13 +60,66 @@ const DEFAULT_SETTINGS: AppSettings = {
   arcRuleset: 'FADED_LEGACY',
 }
 
+/** Current roster schema version. Bump when a migration is added below. */
+const ROSTER_VERSION = 2
+
+/**
+ * Characters every account has without pulling for them.
+ *
+ * These are exactly the four SR awakeners — Doll, Lotan, Ogier and Ramona, all
+ * Chaos, all WELFARE availability — handed out through the story, so starting
+ * a roster with them unowned makes every new player's first job to tick four
+ * boxes they could never not have.
+ *
+ * Listed by id rather than derived at runtime because this module is loaded on
+ * the client and cannot read db/awakeners.json. tests/starter-roster.test.ts
+ * asserts the list is identical to the SR set, so shipping a fifth SR fails the
+ * suite rather than silently leaving them out.
+ */
+export const STARTER_AWAKENER_IDS = [
+  'awakener-0013', // Doll
+  'awakener-0031', // Lotan
+  'awakener-0038', // Ogier
+  'awakener-0042', // Ramona
+] as const
+
+/**
+ * Bring a roster from any earlier schema version up to the current one.
+ *
+ * Shared by loadRoster and importRoster so a file exported before a migration
+ * existed is upgraded on the way in — otherwise importing an old backup would
+ * quietly hand the player a roster in a state the app no longer produces.
+ */
+export function migrateRoster(roster: UserRoster): UserRoster {
+  if ((roster.version ?? 1) >= ROSTER_VERSION) return roster
+  return {
+    ...roster,
+    // v1 → v2: seed the free story characters.
+    awakeners: withStarters(roster.awakeners ?? {}),
+    version: ROSTER_VERSION,
+  }
+}
+
+function withStarters(
+  awakeners: Record<string, AwakenerEntry>
+): Record<string, AwakenerEntry> {
+  const next = { ...awakeners }
+  for (const id of STARTER_AWAKENER_IDS) {
+    // Only fill in a starter the roster has never recorded. Entries are sparse
+    // — a key exists only once the player has touched that character — so an
+    // explicit `owned: false` is a deliberate choice and is left alone.
+    if (!next[id]) next[id] = { ...DEFAULT_AWAKENER_ENTRY, owned: true }
+  }
+  return next
+}
+
 export function createEmptyRoster(): UserRoster {
   return {
-    version: 1,
+    version: ROSTER_VERSION,
     lastUpdated: new Date().toISOString(),
     keeperLevel: 1,
     currencies: {},
-    awakeners: {},
+    awakeners: withStarters({}),
     wheels: {},
     covenants: {},
     posses: {},
@@ -83,9 +136,10 @@ export function loadRoster(): UserRoster {
   try {
     const raw = localStorage.getItem(ROSTER_KEY)
     if (!raw) return createEmptyRoster()
-    const parsed = JSON.parse(raw) as UserRoster
-    // Future: handle version migrations here
-    return parsed
+    // Applied to existing rosters as well as new ones: a player who never
+    // ticked Doll almost certainly owns her. withStarters only fills entries
+    // that do not exist, so anyone who deliberately unticked one keeps that.
+    return migrateRoster(JSON.parse(raw) as UserRoster)
   } catch {
     return createEmptyRoster()
   }
