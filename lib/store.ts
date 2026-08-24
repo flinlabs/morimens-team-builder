@@ -22,6 +22,7 @@ import {
   setArcRuleset,
   setKeeperLevel,
   setCurrency,
+  migrateRoster,
   getOwnedAwakenerIds,
   getOwnedWheelIds,
   getUnlockedPosseCount,
@@ -127,8 +128,11 @@ export const useRosterStore = create<RosterStore>((set, get) => ({
   },
 
   importRoster: (roster) => {
-    saveRoster(roster)
-    set({ roster })
+    // Migrate on the way in, so a backup exported under an older schema comes
+    // back in the state the app currently produces rather than an obsolete one.
+    const migrated = migrateRoster(roster)
+    saveRoster(migrated)
+    set({ roster: migrated })
   },
 
   // ---------------------------------------------------------------------------
