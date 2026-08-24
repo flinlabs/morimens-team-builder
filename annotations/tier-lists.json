@@ -312,6 +312,11 @@
       "dpsRank": "A",
       "supportRank": "A",
       "source": "Felix \u2014 not on the community lists, which predate her release."
+    },
+    "awakener-0060": {
+      "name": "Caraboo",
+      "supportRank": "A",
+      "supportFloor": "E1"
     }
   }
 }
