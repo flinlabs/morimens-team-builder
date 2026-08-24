@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { buildCandidateTeam } from '@/lib/filter'
-import { getAwakeners } from '@/lib/db'
+import { getAwakeners, getWheels, getAllPosses } from '@/lib/db'
 import { fullRoster, awakenerIdByName } from './helpers'
 import fs from 'fs'
 import path from 'path'
@@ -71,7 +71,15 @@ describe('realm rewrites', () => {
 describe('pending character intel', () => {
   const pending = JSON.parse(
     fs.readFileSync(path.join(process.cwd(), 'annotations', 'pending-characters.json'), 'utf-8')
-  ) as { pending: { name: string; realmRewrite?: string }[] }
+  ) as {
+    pending: {
+      name: string
+      realmRewrite?: string
+      signatureWheels?: { name: string }[]
+      posse?: { name: string }
+    }[]
+    pendingWheels?: { name: string }[]
+  }
 
   it('is staged only — nothing pending has leaked into the live db', () => {
     // The file is reference material until SKeyDB publishes the record. If a
@@ -82,6 +90,31 @@ describe('pending character intel', () => {
       expect(live.has(p.name), `${p.name} is live now — fold in and remove from pending`).toBe(
         false
       )
+    }
+  })
+
+  it('staged wheels and posses have not leaked into the live db either', () => {
+    // Same guard as the character check, one level down. A staged wheel or
+    // posse showing up live means the sync ran and the entry was never folded
+    // in, which is how a record ends up with no annotation behind it.
+    const liveWheels = new Set(Object.values(getWheels()).map((w) => w.name))
+    const livePosses = new Set(Object.values(getAllPosses()).map((p) => p.name))
+    const staged = [
+      ...(pending.pendingWheels ?? []).map((w) => w.name),
+      ...pending.pending.flatMap((p) => (p.signatureWheels ?? []).map((w) => w.name)),
+    ]
+    for (const name of staged) {
+      expect(liveWheels.has(name), `${name} is live now -- fold in and remove from pending`).toBe(
+        false
+      )
+    }
+    for (const p of pending.pending) {
+      if (p.posse) {
+        expect(
+          livePosses.has(p.posse.name),
+          `${p.posse.name} is live now -- fold in and remove from pending`
+        ).toBe(false)
+      }
     }
   })
 
