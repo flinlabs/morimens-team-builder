@@ -3,6 +3,7 @@
 import { useEffect, useState, type ChangeEvent, type MouseEvent, type ReactNode } from "react";
 import { useRosterStore } from "@/lib/store";
 import { covenantCopies, canBindCovenants, COVENANT_BINDING_LEVEL } from "@/lib/roster";
+import { BIS_TIER_LABEL } from "@/lib/bis-client";
 import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg, SkeySkillUpgrade } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
 import { ScaledText, maxScalingIndex, applySkillUpgrades, type StatResolver } from "@/lib/template";
@@ -16,6 +17,7 @@ import {
   isSlotUnlocked,
   plusCount,
   trackLabel,
+  copiesForSlot,
 } from "@/lib/enlighten";
 
 /* ---------------------------------------------------------------------------
@@ -94,6 +96,12 @@ interface EffectBlock {
   descriptionArgs: Record<string, DescriptionArg>;
   upgrades?: SkeySkillUpgrade[];
 }
+interface BisVariant {
+  variant: string;
+  wheels: { tier: string; wheelId: string; wheelName: string }[];
+  covenants: { covenantId: string; covenantName: string }[];
+  preferredStats: string[];
+}
 interface AwakenerDetail {
   kind: "awakener";
   type?: string;
@@ -106,6 +114,10 @@ interface AwakenerDetail {
   primaryScalingBase?: number | null;
   statScaling?: { CON: number; ATK: number; DEF: number } | null;
   baseStatsLv1?: { CON: number; ATK: number; DEF: number } | null;
+  viabilityFloor?: EnlightenSlot;
+  enlightenBreakpoints?: EnlightenSlot[];
+  tier?: string | null;
+  bisVariants?: BisVariant[];
 }
 interface WheelDetail {
   kind: "wheel";
@@ -117,6 +129,9 @@ interface WheelDetail {
   descriptionTemplate: string;
   descriptionArgs: Record<string, DescriptionArg>;
   lore?: string | null;
+  bisFor?: { awakenerId: string; awakenerName: string; variant: string; tier: string }[];
+  starFloor?: number | null;
+  starFloorNote?: string | null;
 }
 interface CovenantDetail {
   kind: "covenant";
@@ -254,22 +269,49 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-/* Enlighten track — one slider 0..16 with milestone ticks + timeline labels. */
+/* Enlighten track.
+
+   Two things were being asked of one colour here. The milestone labels used
+   gold for "you have reached this" while gold elsewhere in the app means
+   "recommended", and nothing on the track said which nodes were actually worth
+   paying for — that lived only on the roster grid card. So the track now
+   separates the two questions: gold answers "where am I", teal answers "what
+   should I buy", and the two never share a shape.
+
+   The named nodes also sit at 1/2/3/4/8/16 copies, which crushes E0–E3 into the
+   left fifth of a proportional track. The evenly-spaced chip row above fixes
+   that and doubles as a tap target on mobile; the slider underneath stays
+   proportional because the thumb has to sit at the true copy count. */
 function EnlightenTrack({
   total,
   onChange,
+  breakpoints = [],
+  floor = "E0",
 }: {
   total: number;
   onChange: (total: number) => void;
+  breakpoints?: EnlightenSlot[];
+  floor?: EnlightenSlot;
 }) {
   // The slider spans 1..16 (E0..+12). Position 1 is the owned base, so the
   // track is laid out across (MIN..MAX) rather than 0..MAX.
   const span = ENLIGHTEN_MAX - ENLIGHTEN_MIN;
   const pct = (t: number) => ((t - ENLIGHTEN_MIN) / span) * 100;
   const plus = plusCount(total);
+  const current = fromTotal(total).slot;
+  // A viability floor of E0 is not a recommendation, it is just "owning her is
+  // enough", so it would be noise as a marker.
+  const wanted = new Set<EnlightenSlot>([
+    ...breakpoints,
+    ...(floor && floor !== "E0" ? [floor] : []),
+  ]);
+  const nextTarget = ENLIGHTEN_MILESTONES.find(
+    (m) => wanted.has(m.slot) && total < m.copies
+  );
+
   return (
     <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 pb-3 pt-2">
-      <div className="mb-1 flex items-baseline justify-between">
+      <div className="mb-2 flex items-baseline justify-between">
         <span className="text-sm text-[var(--text)]">Enlightenment</span>
         <span className="tabular-nums text-sm font-semibold text-[var(--gold-bright)]">
           {trackLabel(total)}
@@ -279,20 +321,38 @@ function EnlightenTrack({
         </span>
       </div>
 
-      {/* milestone labels above the track */}
-      <div className="relative mb-1 h-4">
-        {ENLIGHTEN_MILESTONES.map((m) => (
-          <span
-            key={m.slot}
-            className={`absolute -translate-x-1/2 text-[12px] font-medium ${
-              total >= m.copies ? "text-[var(--gold-bright)]" : "text-[var(--text-dim)]"
-            }`}
-            style={{ left: `${pct(m.copies)}%` }}
-            title={m.full}
-          >
-            {m.label}
-          </span>
-        ))}
+      {/* Evenly-spaced named nodes. Tapping one jumps the track to it. */}
+      <div className="mb-2 grid grid-cols-6 gap-1">
+        {ENLIGHTEN_MILESTONES.map((m) => {
+          const reached = total >= m.copies;
+          const isCurrent = m.slot === current;
+          const rec = wanted.has(m.slot);
+          return (
+            <button
+              key={m.slot}
+              type="button"
+              onClick={() => onChange(m.copies)}
+              title={rec ? `${m.full} — recommended breakpoint` : m.full}
+              aria-label={rec ? `${m.full}, recommended breakpoint` : m.full}
+              aria-pressed={isCurrent}
+              className={`relative rounded-md border py-1 text-[12px] font-semibold transition ${
+                isCurrent
+                  ? "border-[var(--gold)] bg-[var(--gold)] text-[#141a24]"
+                  : reached
+                    ? "border-[var(--gold)]/45 text-[var(--gold-bright)] hover:border-[var(--gold)]"
+                    : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--border-bright)]"
+              }`}
+            >
+              {m.label}
+              {rec && (
+                <span
+                  aria-hidden
+                  className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[var(--realm-aequor)] ring-2 ring-[var(--bg-2)]"
+                />
+              )}
+            </button>
+          );
+        })}
       </div>
 
       <input
@@ -302,20 +362,53 @@ function EnlightenTrack({
         value={total}
         onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(Number(e.target.value))}
         className="w-full accent-[var(--gold)]"
+        aria-label="Copies owned"
       />
 
-      {/* tick marks for every milestone, including E0 */}
+      {/* Proportional ticks. Recommended nodes get the teal caret so the slider
+          and the chip row tell the same story. */}
       <div className="relative mt-0.5 h-2">
         {ENLIGHTEN_MILESTONES.map((m) => (
           <span
             key={m.slot}
             className={`absolute h-2 w-px -translate-x-1/2 ${
-              total >= m.copies ? "bg-[var(--gold)]" : "bg-[var(--border-bright)]"
+              wanted.has(m.slot)
+                ? "bg-[var(--realm-aequor)]"
+                : total >= m.copies
+                  ? "bg-[var(--gold)]"
+                  : "bg-[var(--border-bright)]"
             }`}
             style={{ left: `${pct(m.copies)}%` }}
           />
         ))}
       </div>
+
+      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] text-[var(--text-dim)]">
+        <span className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-sm bg-[var(--gold)]" />
+          where you are
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-[var(--realm-aequor)]" />
+          worth investing to
+        </span>
+      </div>
+
+      {nextTarget ? (
+        <p className="mt-1.5 text-[12px] text-[var(--realm-aequor)]">
+          Next breakpoint: {nextTarget.full} — {nextTarget.copies - total} more{" "}
+          {nextTarget.copies - total === 1 ? "copy" : "copies"}.
+        </p>
+      ) : wanted.size > 0 ? (
+        <p className="mt-1.5 text-[12px] text-[var(--text-dim)]">
+          Every recorded breakpoint is reached.
+        </p>
+      ) : (
+        <p className="mt-1.5 text-[12px] text-[var(--text-dim)]">
+          No breakpoints recorded for this character.
+        </p>
+      )}
+
       {plus > 0 && (
         <p className="mt-1.5 text-[12px] text-[var(--text-dim)]">
           {plus >= 4 && plus < 12 && "Over-Exalt active. "}
@@ -324,6 +417,105 @@ function EnlightenTrack({
         </p>
       )}
     </div>
+  );
+}
+
+/* Small teal pill marking a recommended enlighten node. */
+function RecommendedPill({ label = "recommended" }: { label?: string }) {
+  return (
+    <span className="rounded bg-[var(--realm-aequor)]/15 px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[var(--realm-aequor)]">
+      {label}
+    </span>
+  );
+}
+
+/* Recommended gear for a character, read straight off db/bis.json.
+
+   This existed only inside generated team cards, so a player opening a
+   character to decide what to farm had no way to see it. Owned state comes from
+   the roster so the list reads as "you have this / you don't" rather than an
+   abstract wishlist. */
+function BisPanel({
+  variants,
+  wheels,
+  covenants,
+}: {
+  variants: BisVariant[];
+  wheels: Record<string, { owned: boolean; starLevel: number; stackLevel: number }>;
+  covenants: Record<string, { owned: boolean }>;
+}) {
+  if (!variants.length) {
+    return (
+      <p className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-[13px] text-[var(--text-dim)]">
+        No wheel or covenant recommendations recorded for this character yet.
+      </p>
+    );
+  }
+
+  return (
+    <>
+      {variants.map((v) => (
+        <div
+          key={v.variant}
+          className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2.5"
+        >
+          <div className="mb-2 flex items-baseline gap-2">
+            <span className="font-title text-[12px] uppercase tracking-wider text-[var(--gold-bright)]">
+              {v.variant}
+            </span>
+            {v.preferredStats.length > 0 && (
+              <span className="truncate text-[12px] text-[var(--text-dim)]">
+                {v.preferredStats.join(" · ")}
+              </span>
+            )}
+          </div>
+
+          <div className="space-y-1">
+            {v.wheels.map((w) => {
+              const e = wheels[w.wheelId];
+              const owned = !!e?.owned;
+              return (
+                <div key={`${w.tier}-${w.wheelId}`} className="flex items-center gap-2 text-[13px]">
+                  <span className="w-[74px] shrink-0 text-[11px] uppercase tracking-wider text-[var(--realm-aequor)]">
+                    {BIS_TIER_LABEL[w.tier] ?? w.tier}
+                  </span>
+                  <span className={owned ? "text-[var(--text)]" : "text-[var(--text-dim)]"}>
+                    {w.wheelName}
+                  </span>
+                  <span className="ml-auto shrink-0 tabular-nums text-[12px] text-[var(--text-dim)]">
+                    {owned ? `${e.starLevel}★ +${e.stackLevel}` : "not owned"}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {v.covenants.length > 0 && (
+            <div className="mt-2 border-t border-[var(--border)] pt-2">
+              {v.covenants.map((c) => (
+                <div key={c.covenantId} className="flex items-center gap-2 text-[13px]">
+                  <span className="w-[74px] shrink-0 text-[11px] uppercase tracking-wider text-[var(--text-dim)]">
+                    Covenant
+                  </span>
+                  <span
+                    className={
+                      covenants[c.covenantId]?.owned
+                        ? "text-[var(--text)]"
+                        : "text-[var(--text-dim)]"
+                    }
+                  >
+                    {c.covenantName}
+                  </span>
+                  <span className="ml-auto shrink-0 text-[12px] text-[var(--text-dim)]">
+                    {covenants[c.covenantId]?.owned ? "owned" : "not owned"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </>
   );
 }
 
@@ -579,6 +771,8 @@ export default function DetailModal({
                   <Section title="Enlighten">
                     <EnlightenTrack
                       total={total}
+                      breakpoints={d?.enlightenBreakpoints ?? []}
+                      floor={d?.viabilityFloor ?? "E0"}
                       onChange={(t) => {
                         const next = fromTotal(t);
                         setEnlightenLevel(target.id, next.slot, next.copies);
@@ -587,13 +781,20 @@ export default function DetailModal({
                     {d &&
                       d.enlightens.map((node) => {
                         const lit = isSlotUnlocked(node.slot, total);
+                        const isBreakpoint =
+                          (d.enlightenBreakpoints ?? []).includes(node.slot) ||
+                          (d.viabilityFloor && d.viabilityFloor !== "E0"
+                            ? d.viabilityFloor === node.slot
+                            : false);
                         return (
                           <div
                             key={node.id ?? node.slot}
                             className={`rounded-lg border px-3 py-2 transition ${
                               lit
                                 ? "border-[var(--gold)]/40 bg-[var(--bg-2)]"
-                                : "border-[var(--border)] bg-transparent opacity-50"
+                                : isBreakpoint
+                                  ? "border-[var(--realm-aequor)]/40 bg-transparent opacity-80"
+                                  : "border-[var(--border)] bg-transparent opacity-50"
                             }`}
                           >
                             <div className="mb-0.5 flex items-center gap-2">
@@ -603,6 +804,7 @@ export default function DetailModal({
                               <span className="font-display text-sm font-semibold text-[var(--text)]">
                                 {node.name}
                               </span>
+                              {isBreakpoint && <RecommendedPill />}
                               {!lit && (
                                 <span className="ml-auto text-[12px] text-[var(--text-dim)]">
                                   locked
@@ -814,6 +1016,14 @@ export default function DetailModal({
                     })()}
                   </Section>
 
+                  <Section title="Recommended gear">
+                    <BisPanel
+                      variants={d?.bisVariants ?? []}
+                      wheels={roster.wheels}
+                      covenants={roster.covenants}
+                    />
+                  </Section>
+
                   {d?.annotationNotes && (
                     <Section title="Notes">
                       <p className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2 text-[13.5px] leading-relaxed text-[var(--text-muted)]">
@@ -874,6 +1084,44 @@ export default function DetailModal({
                         {d.isMythic && <span className="text-[var(--realm-ultra)]">Mythic</span>}
                       </div>
                     </div>
+                  )}
+
+                  {d && ((d.bisFor?.length ?? 0) > 0 || d.starFloor != null) && (
+                    <Section title="Who wants this">
+                      <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2.5">
+                        {d.starFloor != null && (
+                          <p className="mb-2 border-b border-[var(--border)] pb-2 text-[13px] text-[var(--text-muted)]">
+                            Useful from{" "}
+                            <span className="font-semibold text-[var(--gold-bright)]">
+                              {d.starFloor}★
+                            </span>
+                            {d.starFloorNote ? ` — ${d.starFloorNote}` : "."}
+                          </p>
+                        )}
+                        {(d.bisFor ?? []).length > 0 ? (
+                          <div className="space-y-1">
+                            {(d.bisFor ?? []).map((b) => (
+                              <div
+                                key={`${b.awakenerId}-${b.variant}-${b.tier}`}
+                                className="flex items-center gap-2 text-[13px]"
+                              >
+                                <span className="w-[74px] shrink-0 text-[11px] uppercase tracking-wider text-[var(--realm-aequor)]">
+                                  {BIS_TIER_LABEL[b.tier] ?? b.tier}
+                                </span>
+                                <span className="text-[var(--text)]">{b.awakenerName}</span>
+                                <span className="ml-auto shrink-0 text-[12px] text-[var(--text-dim)]">
+                                  {b.variant.toLowerCase()}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-[13px] text-[var(--text-dim)]">
+                            Not listed as a recommendation for any character yet.
+                          </p>
+                        )}
+                      </div>
+                    </Section>
                   )}
 
                   <Section title="Ascension">
