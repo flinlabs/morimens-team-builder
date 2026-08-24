@@ -3209,5 +3209,41 @@
         "notes": "Her better role according to both guides. Heart of Silver is the stand-out because Keyflare Regen is set to the team average under Primordia: Chaos and every Rouse fires the chosen Posse \u2014 though the guides note it works nearly as well on a teammate. Sever and Scar maxes out instantly off her high ATK for -90 STR, which is strong into multi-hit enemies and gives the team DMG Amplification; stacked with Grace Through Pain her 2-cost mitigates 240+ damage a turn. Falling Upward is genuinely good on her rather than only on Saya: her high ATK pushes it past 8000 Corrosion for 0 cost, which accelerates her own Exalt. Manikin of Oblivion is worth trying on an Exalt-based unit with costs this high \u2014 it can refund roughly 90 Aliemus off her Over-Exalt. Death-resist wheels work but are usually contested and better placed elsewhere."
       }
     ]
+  },
+  "awakener-0060": {
+    "awakenerId": "awakener-0060",
+    "variants": [
+      {
+        "variant": "Support",
+        "wheels": [
+          {
+            "tier": "BIS_SSR",
+            "wheelId": "wheel-0175",
+            "wheelName": "Honeyed Deceit"
+          },
+          {
+            "tier": "BIS_SR",
+            "wheelId": "wheel-0176",
+            "wheelName": "Serene Truth"
+          }
+        ],
+        "covenants": [
+          {
+            "covenantId": "covenant-0008",
+            "covenantName": "Cursed Rabbit"
+          },
+          {
+            "covenantId": "covenant-0001",
+            "covenantName": "Deus Ex Machina"
+          }
+        ],
+        "preferredStats": [
+          "Realm Mastery",
+          "Aliemus"
+        ]
+      }
+    ],
+    "provisional": true,
+    "provisionalNote": "Hand-authored on release day. Mythag has no Caraboo page yet, so this covers only what her own kit makes unambiguous: Honeyed Deceit is her signature and the only wheel keyed to Crimson Furnace, and Serene Truth is the free event floor carrying the same Weakness-into-Shield clause. Cursed Rabbit pairs Realm Mastery (her Snowy Hex multiplier once E1 is online) with a 6-piece that raises Shield and HP Recovery, which is her whole identity; Deus Ex Machina trades that for Arithmetica, which her Blessing engine spends heavily. Replace wholesale once the community list lands."
   }
 }
