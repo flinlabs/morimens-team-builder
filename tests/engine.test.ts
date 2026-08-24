@@ -25,7 +25,8 @@ for (const p of Object.values(posses)) {
 }
 
 describe('single-mode team generation', () => {
-  const result = generateTeams({ roster: fullRoster(), mode: 'single' })
+  const roster = fullRoster()
+  const result = generateTeams({ roster, mode: 'single' })
 
   it('returns at least one team', () => {
     expect(result.teams.length).toBeGreaterThan(0)
@@ -52,12 +53,29 @@ describe('single-mode team generation', () => {
     }
   })
 
-  it('never assigns the same covenant set to two units on a team', () => {
+  it('never assigns the same physical covenant copy to two units on a team', () => {
+    // Before 2.6.0 this was uniqueness by set, because a player could only
+    // hold one. Duplicates are now the intended way to gear several characters
+    // in one set, so the invariant moved down a level: the same set may repeat
+    // across a team, but a given copy is worn once. Entries without a copyId
+    // are unowned build targets, not assignments, and are excluded.
     for (const team of result.teams) {
-      const cov = team.composition
-        .map((c) => c.covenantRecommendation?.covenantId)
-        .filter((id): id is string => !!id)
-      expect(new Set(cov).size).toBe(cov.length)
+      const worn = team.composition
+        .map((c) => c.covenantRecommendation)
+        .filter((r) => r?.covenantId && r.copyId)
+        .map((r) => `${r!.covenantId}#${r!.copyId}`)
+      expect(new Set(worn).size).toBe(worn.length)
+    }
+  })
+
+  it('does not tell a player to build toward a covenant they already own', () => {
+    for (const team of result.teams) {
+      for (const slot of team.composition) {
+        const rec = slot.covenantRecommendation
+        if (!rec?.acquisitionNote || !rec.covenantId) continue
+        if (!roster.covenants[rec.covenantId]?.owned) continue
+        expect(rec.acquisitionNote).toMatch(/Owned, but/)
+      }
     }
   })
 
