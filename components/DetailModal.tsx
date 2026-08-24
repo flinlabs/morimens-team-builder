@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ChangeEvent, type MouseEvent, type ReactNode } from "react";
 import { useRosterStore } from "@/lib/store";
+import { covenantCopies, canBindCovenants, COVENANT_BINDING_LEVEL } from "@/lib/roster";
 import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg, SkeySkillUpgrade } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
 import { ScaledText, maxScalingIndex, applySkillUpgrades, type StatResolver } from "@/lib/template";
@@ -119,6 +120,7 @@ interface WheelDetail {
 }
 interface CovenantDetail {
   kind: "covenant";
+  bindTargets?: { id: string; name: string }[];
   acquisitionSource?: string | null;
   lore?: string | null;
   setEffects: { set: number; descriptionTemplate: string; descriptionArgs: Record<string, DescriptionArg> }[];
@@ -398,6 +400,10 @@ export default function DetailModal({
   const setCovenantSixPiece = useRosterStore((s) => s.setCovenantSixPiece);
   const setCovenantCompletion = useRosterStore((s) => s.setCovenantCompletion);
   const setCovenantSubstat = useRosterStore((s) => s.setCovenantSubstat);
+  const addCovenantCopy = useRosterStore((s) => s.addCovenantCopy);
+  const removeCovenantCopy = useRosterStore((s) => s.removeCovenantCopy);
+  const updateCovenantCopy = useRosterStore((s) => s.updateCovenantCopy);
+  const bindCovenantCopy = useRosterStore((s) => s.bindCovenantCopy);
   const setPosseUnlocked = useRosterStore((s) => s.setPosseUnlocked);
 
   const [detail, setDetail] = useState<Detail | null>(null);
@@ -952,88 +958,174 @@ export default function DetailModal({
             (() => {
               const e = roster.covenants[target.id];
               const d = detail && detail.kind === "covenant" ? detail : null;
-              const three = !!e?.threePieceComplete;
-              const six = !!e?.sixPieceComplete;
-              const completion = e?.completionPercent ?? 0;
+              const copies = covenantCopies(e ?? { owned: false, threePieceComplete: false, sixPieceComplete: false, completionPercent: 0 });
+              const canBind = canBindCovenants(roster);
+              const owned = !!e?.owned;
+              // Bind targets are the awakeners the player actually has. A set
+              // bound to someone unowned would be dead weight the engine still
+              // has to route around.
+              const bindable = (d?.bindTargets ?? []).filter(
+                (t) => roster.awakeners[t.id]?.owned
+              );
+              const nameOf = (id?: string) =>
+                d?.bindTargets?.find((t) => t.id === id)?.name ?? id ?? "";
+              const three = copies.some((c) => c.threePieceComplete);
+              const six = copies.some((c) => c.sixPieceComplete);
               return (
                 <>
-                  <Toggle label="Owned" checked={!!e?.owned} onChange={(v) => setCovenantOwned(target.id, v)} />
-                  <Toggle
-                    label="3-piece set active"
-                    checked={three}
-                    onChange={(v) => setCovenantThreePiece(target.id, v)}
-                  />
-                  <Toggle
-                    label="6-piece set complete"
-                    checked={six}
-                    onChange={(v) => setCovenantSixPiece(target.id, v)}
-                  />
+                  <Toggle label="Owned" checked={owned} onChange={(v) => setCovenantOwned(target.id, v)} />
 
-                  <Section title="Completion">
-                    <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-3 py-2">
-                      <span className="text-sm text-[var(--text)]">Completion %</span>
-                      <input
-                        type="number"
-                        inputMode="decimal"
-                        step="0.1"
-                        min={0}
-                        max={100}
-                        value={completion}
-                        onChange={(ev) => {
-                          const raw = parseFloat(ev.target.value);
-                          const v = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 0;
-                          setCovenantCompletion(target.id, v);
-                        }}
-                        className="ml-auto w-24 rounded border border-[var(--border)] bg-[var(--panel)] px-2 py-1 text-right text-sm tabular-nums text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
-                      />
-                      <span className="text-sm text-[var(--text-dim)]">%</span>
-                    </div>
-                    <p className="text-[12.5px] text-[var(--text-dim)]">
-                      Well-rolled priority substats at lower completion can beat scattered substats
-                      at higher completion.
-                    </p>
-                  </Section>
+                  {owned && (
+                    <Section title={copies.length > 1 ? `Sets owned (${copies.length})` : "Set"}>
+                      <p className="text-[12.5px] text-[var(--text-dim)]">
+                        Each duplicate rolls its own pieces and substats, so they are tracked
+                        separately. Binding a set to an Awakener makes it Prismatic — its main
+                        attribute gains 50% and no other Awakener can equip it.
+                      </p>
 
-                  <Section title="Substats">
-                    <div className="grid grid-cols-2 gap-2">
-                      {COVENANT_SUBSTATS.map((s) => {
-                        const val = e?.substatTotals?.[s.key] ?? 0;
-                        return (
-                          <label
-                            key={s.key}
-                            className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-2)] px-2.5 py-1.5"
-                          >
-                            <span className="min-w-0 flex-1 truncate text-[13px] text-[var(--text-muted)]">
-                              {s.label}
+                      {copies.map((copy, i) => (
+                        <div
+                          key={copy.id}
+                          className={`space-y-2 rounded-lg border px-3 py-2.5 ${
+                            copy.boundTo
+                              ? "border-[var(--gold)]/45 bg-[var(--bg-2)]"
+                              : "border-[var(--border)] bg-[var(--bg-2)]"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-[var(--text)]">
+                              Set {i + 1}
                             </span>
+                            {copy.boundTo && (
+                              <span className="rounded-full border border-[var(--gold)]/50 px-2 py-0.5 text-[11px] text-[var(--gold)]">
+                                Prismatic · {nameOf(copy.boundTo)}
+                              </span>
+                            )}
+                            {copies.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => removeCovenantCopy(target.id, copy.id)}
+                                className="ml-auto rounded border border-[var(--border)] px-2 py-0.5 text-[12px] text-[var(--text-dim)] hover:text-[var(--text)]"
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </div>
+
+                          <Toggle
+                            label="3-piece set active"
+                            checked={copy.threePieceComplete}
+                            onChange={(v) =>
+                              updateCovenantCopy(target.id, copy.id, { threePieceComplete: v })
+                            }
+                          />
+                          <Toggle
+                            label="6-piece set complete"
+                            checked={copy.sixPieceComplete}
+                            onChange={(v) =>
+                              updateCovenantCopy(target.id, copy.id, { sixPieceComplete: v })
+                            }
+                          />
+
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-[var(--text)]">Completion %</span>
                             <input
                               type="number"
                               inputMode="decimal"
                               step="0.1"
                               min={0}
-                              value={val || ""}
-                              placeholder="0"
-                              onChange={(ev: ChangeEvent<HTMLInputElement>) => {
+                              max={100}
+                              value={copy.completionPercent}
+                              onChange={(ev) => {
                                 const raw = parseFloat(ev.target.value);
-                                setCovenantSubstat(
-                                  target.id,
-                                  s.key,
-                                  Number.isFinite(raw) ? Math.max(0, raw) : 0
-                                );
+                                const v = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 0;
+                                updateCovenantCopy(target.id, copy.id, { completionPercent: v });
                               }}
-                              className="w-16 rounded border border-[var(--border)] bg-[var(--panel)] px-1.5 py-1 text-right text-[13px] tabular-nums text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
+                              className="ml-auto w-24 rounded border border-[var(--border)] bg-[var(--panel)] px-2 py-1 text-right text-sm tabular-nums text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
                             />
-                            {s.suffix && (
-                              <span className="text-[12.5px] text-[var(--text-dim)]">{s.suffix}</span>
-                            )}
-                          </label>
-                        );
-                      })}
-                    </div>
-                    <p className="text-[12.5px] text-[var(--text-dim)]">
-                      Record your rolled substat totals across the set (optional).
-                    </p>
-                  </Section>
+                            <span className="text-sm text-[var(--text-dim)]">%</span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-[var(--text)]">Bound to</span>
+                            <select
+                              value={copy.boundTo ?? ""}
+                              disabled={!canBind}
+                              onChange={(ev) =>
+                                bindCovenantCopy(target.id, copy.id, ev.target.value || undefined)
+                              }
+                              className="ml-auto w-44 rounded border border-[var(--border)] bg-[var(--panel)] px-2 py-1 text-sm text-[var(--text)] focus:border-[var(--gold)] focus:outline-none disabled:opacity-50"
+                            >
+                              <option value="">Unbound</option>
+                              {bindable.map((t) => (
+                                <option key={t.id} value={t.id}>
+                                  {t.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            {COVENANT_SUBSTATS.map((sub) => {
+                              const val = copy.substatTotals?.[sub.key] ?? 0;
+                              return (
+                                <label
+                                  key={sub.key}
+                                  className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--panel)] px-2.5 py-1.5"
+                                >
+                                  <span className="min-w-0 flex-1 truncate text-[13px] text-[var(--text-muted)]">
+                                    {sub.label}
+                                  </span>
+                                  <input
+                                    type="number"
+                                    inputMode="decimal"
+                                    step="0.1"
+                                    min={0}
+                                    value={val || ""}
+                                    placeholder="0"
+                                    onChange={(ev: ChangeEvent<HTMLInputElement>) => {
+                                      const raw = parseFloat(ev.target.value);
+                                      updateCovenantCopy(target.id, copy.id, {
+                                        substatTotals: {
+                                          ...(copy.substatTotals ?? {}),
+                                          [sub.key]: Number.isFinite(raw) ? Math.max(0, raw) : 0,
+                                        },
+                                      });
+                                    }}
+                                    className="w-16 rounded border border-[var(--border)] bg-[var(--bg-2)] px-1.5 py-1 text-right text-[13px] tabular-nums text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
+                                  />
+                                  {sub.suffix && (
+                                    <span className="text-[12.5px] text-[var(--text-dim)]">
+                                      {sub.suffix}
+                                    </span>
+                                  )}
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+
+                      <button
+                        type="button"
+                        onClick={() => addCovenantCopy(target.id)}
+                        className="w-full rounded-lg border border-dashed border-[var(--border)] px-3 py-2 text-sm text-[var(--text-muted)] hover:border-[var(--gold)]/50 hover:text-[var(--text)]"
+                      >
+                        + Add duplicate set
+                      </button>
+
+                      {!canBind && (
+                        <p className="text-[12.5px] text-[var(--text-dim)]">
+                          Binding unlocks at Investigation Level {COVENANT_BINDING_LEVEL}. Set your
+                          Keeper level in Roster settings to enable it.
+                        </p>
+                      )}
+                      <p className="text-[12.5px] text-[var(--text-dim)]">
+                        Well-rolled priority substats at lower completion can beat scattered
+                        substats at higher completion.
+                      </p>
+                    </Section>
+                  )}
 
                   {d && (
                     <Section title="Set Effects">
