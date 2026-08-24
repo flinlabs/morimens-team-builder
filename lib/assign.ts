@@ -27,6 +27,9 @@ import {
   getWheelEntry,
   isDualSSRUnlocked,
   getCovenantEntry,
+  covenantCopies,
+  copiesAvailableTo,
+  rankCopiesFor,
   getPosseEntry,
 } from './roster'
 import { getBisData, getWheels, getWheelPurposeOverrides, type BisVariant } from './db'
@@ -394,6 +397,26 @@ export function assignWheels(
 // Covenant recommendation
 // ---------------------------------------------------------------------------
 
+/** Ledger key for one physical copy. See recommendCovenant for why. */
+function copyKey(covenantId: string, copyId: string): string {
+  return `${covenantId}#${copyId}`
+}
+
+/**
+ * True when the player holds the set but every copy is spoken for by someone
+ * else. Worth distinguishing from not owning it at all: the fix is a duplicate
+ * or an unbind, not a first acquisition.
+ */
+function allCopiesBound(
+  roster: UserRoster,
+  covenantId: string,
+  awakenerId: string
+): boolean {
+  const entry = getCovenantEntry(roster, covenantId)
+  const all = covenantCopies(entry)
+  return all.length > 0 && copiesAvailableTo(entry, awakenerId).length === 0
+}
+
 // Pick the best owned recommended covenant (or the top recommendation as a
 // target if none are owned), with completion info and priority substats.
 export function recommendCovenant(
@@ -406,30 +429,57 @@ export function recommendCovenant(
   const ids = recommendedCovenantsFor(awakener, role)
   const prioritySubstats = (variant?.substatPriorityGroups ?? []).flat()
 
-  // A covenant set is a physical item: two characters can't run the same set,
-  // so skip anything a teammate already took and fall to the next recommendation.
+  // A covenant copy is a physical item: two characters can't wear the same one.
+  // Before 2.6.0 that made the whole set unique, which is what `usedCovenantIds`
+  // enforced. Duplicates are now the intended way to gear several characters in
+  // one set, so the ledger tracks `setId#copyId` and a set with three copies
+  // legitimately appears on three boards. Copies bound to somebody else are
+  // filtered out upstream by rankCopiesFor.
   for (const covenantId of ids) {
-    if (usedCovenantIds.has(covenantId)) continue
     const entry = getCovenantEntry(roster, covenantId)
-    if (entry.owned) {
-      usedCovenantIds.add(covenantId)
+    const copy = rankCopiesFor(entry, awakener.id).find(
+      (c) => !usedCovenantIds.has(copyKey(covenantId, c.id))
+    )
+    if (copy) {
+      usedCovenantIds.add(copyKey(covenantId, copy.id))
+      const prismatic = copy.boundTo === awakener.id
       return {
         covenantId,
-        sixPieceAvailable: entry.sixPieceComplete,
-        completionPercent: entry.completionPercent,
+        copyId: copy.id,
+        prismatic,
+        sixPieceAvailable: copy.sixPieceComplete,
+        completionPercent: copy.completionPercent,
         prioritySubstats,
+        note: prismatic
+          ? 'Bound to this awakener — Prismatic, +50% main attribute.'
+          : undefined,
       }
     }
   }
 
+  // Nothing wearable is left. Name the best target and say why it is a target,
+  // which is a different sentence depending on whether the player owns none,
+  // owns copies that are all bound elsewhere, or owns one a teammate is
+  // already wearing. Telling someone to "build toward" a set sitting in their
+  // inventory is the failure mode worth avoiding here.
   for (const target of ids) {
-    if (usedCovenantIds.has(target)) continue
-    usedCovenantIds.add(target)
+    if (usedCovenantIds.has(copyKey(target, 'target'))) continue
+    usedCovenantIds.add(copyKey(target, 'target'))
+    const entry = getCovenantEntry(roster, target)
+    const held = covenantCopies(entry).length
+    let acquisitionNote = 'Not owned — recommended covenant to build toward.'
+    if (held && allCopiesBound(roster, target, awakener.id)) {
+      acquisitionNote =
+        'Owned, but every copy is bound to another awakener. Unbind one or build a duplicate.'
+    } else if (held) {
+      acquisitionNote =
+        'Owned, but a teammate is wearing the only free copy. A duplicate would let both run it.'
+    }
     return {
       covenantId: target,
       sixPieceAvailable: false,
       prioritySubstats,
-      acquisitionNote: 'Not owned — recommended covenant to build toward.',
+      acquisitionNote,
     }
   }
 
@@ -690,7 +740,8 @@ export function buildTeamRecommendation(
   const arc = roster.settings.arcRuleset
   const composition: CharacterAssignment[] = []
   const investmentWarnings: string[] = []
-  // Covenants are per-team unique — a set can't be worn by two characters.
+  // Covenants are per-team unique by copy — one physical set can't be worn by
+  // two characters, but a player holding duplicates can field the set twice.
   const usedCovenantIds = new Set<string>()
 
   // Gear the carry FIRST. Wheels are claimed from a shared pool, so whoever is
