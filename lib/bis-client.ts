@@ -19,7 +19,41 @@ interface BisEntry {
 }
 
 const DATA = bisData as unknown as Record<string, BisEntry>;
-const TIER_ORDER = ["BIS_SSR", "ALT_SSR", "BIS_SR", "SR_SHOP", "GOOD"];
+/**
+ * Canonical tier ordering, strongest first.
+ *
+ * Exported because the detail modal's reverse lookup (which characters use this
+ * wheel) has to rank the same vocabulary, and a second hand-written copy went
+ * stale immediately — it omitted SR_SHOP and GOOD, which together account for
+ * 39 of the wheel references in db/bis.json, and invented BIS_MYTHIC and BIS_R,
+ * which appear nowhere. tests/bis-tiers.test.ts pins this against the data.
+ */
+export const BIS_TIER_ORDER = [
+  "BIS_SSR",
+  "ALT_SSR",
+  "BIS_SR",
+  "ALT_SR",
+  "SR_SHOP",
+  "GOOD",
+] as const;
+
+/** Display labels for the tiers above. */
+export const BIS_TIER_LABEL: Record<string, string> = {
+  BIS_SSR: "BiS SSR",
+  ALT_SSR: "Alt SSR",
+  BIS_SR: "BiS SR",
+  ALT_SR: "Alt SR",
+  SR_SHOP: "SR Shop",
+  GOOD: "Good",
+};
+
+/** Rank of a tier for sorting; unknown tiers sort last. */
+export function bisTierRank(tier: string): number {
+  const i = (BIS_TIER_ORDER as readonly string[]).indexOf(tier);
+  return i === -1 ? BIS_TIER_ORDER.length : i;
+}
+
+const TIER_ORDER: readonly string[] = BIS_TIER_ORDER;
 const HIGH = new Set(["SSR", "MYTHIC"]);
 
 function pickVariant(entry: BisEntry, role?: string): BisVariant | null {
