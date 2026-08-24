@@ -371,13 +371,51 @@ export interface WheelEntry {
   stackLevel: number     // 0–12
 }
 
-export interface CovenantEntry {
-  owned: boolean
+/**
+ * One physical copy of a covenant set.
+ *
+ * Patch 2.6.0 made duplicate sets the intended way to gear several characters
+ * in the same covenant, so a set is no longer one item with one completion
+ * state. Each copy rolls its own pieces and substats — your second Death
+ * Resistance set is always the worse-rolled one — and each can be bound
+ * independently.
+ */
+export interface CovenantCopy {
+  /** Stable within the set so a binding survives reordering or deletion. */
+  id: string
   threePieceComplete: boolean
   sixPieceComplete: boolean
   completionPercent: number
   pieces?: CovenantPiece[]
   /** Aggregate rolled substats the player wants to record (by stat key). */
+  substatTotals?: Record<string, number>
+  /**
+   * Awakener this copy is bound to, if any. A bound copy is Prismatic: its
+   * main attribute gains +50%, and no other awakener can equip it. Binding
+   * unlocks at Investigation Level 60 and unbinding costs 10 pieces per slot,
+   * so it is close to permanent in practice.
+   */
+  boundTo?: string
+}
+
+export interface CovenantEntry {
+  owned: boolean
+  /**
+   * Per-copy records. Optional: a roster written before 2.6.0 describes a
+   * single copy through the legacy fields below. Read through
+   * `covenantCopies()` in lib/roster.ts rather than touching either shape
+   * directly — it normalises both into one array.
+   */
+  copies?: CovenantCopy[]
+  /** @deprecated v2 single-copy fields. Kept so old exports import cleanly. */
+  threePieceComplete: boolean
+  /** @deprecated v2 single-copy fields. */
+  sixPieceComplete: boolean
+  /** @deprecated v2 single-copy fields. */
+  completionPercent: number
+  /** @deprecated v2 single-copy fields. */
+  pieces?: CovenantPiece[]
+  /** @deprecated v2 single-copy fields. */
   substatTotals?: Record<string, number>
 }
 
@@ -486,6 +524,10 @@ export interface WheelAssignment {
 
 export interface CovenantRecommendation {
   covenantId: string
+  /** Which copy of the set to wear. Absent when nothing is owned. */
+  copyId?: string
+  /** True when the assigned copy is bound to this awakener (Prismatic, +50% mainstat). */
+  prismatic?: boolean
   sixPieceAvailable: boolean
   completionPercent?: number
   prioritySubstats: string[]
