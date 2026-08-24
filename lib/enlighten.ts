@@ -47,6 +47,13 @@ function thresholdOf(slot: EnlightenSlot): number {
   return ENLIGHTEN_MILESTONES.find((m) => m.slot === slot)?.copies ?? ENLIGHTEN_MIN;
 }
 
+/** Total copies at which a named slot unlocks. Exported so the detail modal can
+    position recommended-breakpoint markers on the same proportional track the
+    slider uses. */
+export function copiesForSlot(slot: EnlightenSlot): number {
+  return thresholdOf(slot);
+}
+
 /** (slot, copies-past-slot) -> total copies (1..16). */
 export function toTotal(slot: EnlightenSlot, copies: number): number {
   return Math.min(ENLIGHTEN_MAX, thresholdOf(slot) + Math.max(0, copies));
