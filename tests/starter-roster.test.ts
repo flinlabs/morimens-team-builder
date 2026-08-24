@@ -4,6 +4,7 @@ import {
   migrateRoster,
   STARTER_AWAKENER_IDS,
   getAwakenerEntry,
+  ROSTER_VERSION,
 } from '@/lib/roster'
 import type { UserRoster } from '@/lib/types'
 import { getAwakeners } from '@/lib/db'
@@ -74,7 +75,7 @@ describe('migration of existing rosters', () => {
     for (const id of STARTER_AWAKENER_IDS) {
       expect(getAwakenerEntry(migrated, id).owned).toBe(true)
     }
-    expect(migrated.version).toBe(2)
+    expect(migrated.version).toBe(ROSTER_VERSION)
   })
 
   it('respects a starter the player deliberately unticked', () => {
@@ -100,6 +101,6 @@ describe('migration of existing rosters', () => {
   it('is idempotent and leaves a current roster untouched', () => {
     const current = createEmptyRoster()
     expect(migrateRoster(current)).toBe(current)
-    expect(migrateRoster(migrateRoster(v1Roster())).version).toBe(2)
+    expect(migrateRoster(migrateRoster(v1Roster())).version).toBe(ROSTER_VERSION)
   })
 })
