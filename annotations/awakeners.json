@@ -2299,5 +2299,65 @@
       "arc2": "Astral Reign limited unit and her intended home. Realm Mastery becomes Primordia: Chaos Mastery, converting into Posse Potency at 0.05% per point (doubled on an all-Chaos team), which scales Fixed Poison/Counter/STR/Ancient Embers by 2% per point and Fixed Shield, Fixed HP Recovery, STR down, Crit Rate, Crit DMG, DMG Amplification, Realm Mastery, Aliemus Generation, Embryo Fusion and Keyflare Generation by 1% per point. Strong into long explorations (W1/W2/W5) where she trivialises mobs, and into W3 on damage floor alone; weakest into W4 and multi-phase bosses."
     },
     "realmRewrite": "PRIMORDIA_CHAOS"
+  },
+  "awakener-0060": {
+    "id": "awakener-0060",
+    "teamRoles": [
+      "shielder",
+      "weak_applier",
+      "sub_dps",
+      "str_support"
+    ],
+    "synergyTags": [
+      "divine_realm",
+      "embryo_gen"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0046",
+      "awakener-0031",
+      "awakener-0033",
+      "awakener-0019",
+      "awakener-0051",
+      "awakener-0001",
+      "awakener-0048",
+      "awakener-0003",
+      "awakener-0002",
+      "awakener-0044",
+      "awakener-0040",
+      "awakener-0028"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E1",
+      "E3"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [
+      "madness_omen"
+    ],
+    "recommendedPosses": [
+      "posse-0062"
+    ],
+    "isDivineRealm": true,
+    "tier": "A",
+    "notes": "Caro Warden built around shield generation and a single large Fixed DMG button, who brings Propagation: Caro with her. That rewrite is the main reason to field her: embryos and Realm Mastery stop granting shields and STR and instead feed Propagation Fiesta, where each stack adds 1% to the base values of an exalt. She therefore wants an exalt-centric carry beside her and embryo generators behind them, and the Mastery effect doubles if the team is only Caro and Chaos. Her own Snowy Hex scales off Realm Mastery once E1 is online, so the same stat pays twice. Blessing cards are a real gamble: every Gift carries a Price, the worst roll drops a random debuff on the whole team, and Blessings Exhaust, so the deck thins as the fight runs. Her Weakness application is survivability rather than a damage enabler, since Weakness cuts enemy Active DMG by 25% and does nothing for her own Fixed damage.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0046",
+        "reason": "Propagation Fiesta multiplies exalt base values and Sorel is a multihit Exalt carry who lives on supports; the same pairing Saya's annotation already records"
+      },
+      {
+        "partnerId": "awakener-0048",
+        "reason": "Thais generates the embryos that convert into 40 Fiesta stacks per awakener per turn, which is where most of the rewrite's value comes from"
+      }
+    ],
+    "divineRealmNote": "Eden of Propagation mutates Caro into Propagation: Caro, the same rewrite Saya brings. Embryo Fusion caps at 200 instead of 100 and yields a Propagule Embryo; consuming one grants 40 temporary Propagation Fiesta stacks per awakener per turn, and each stack adds 1% to exalt base damage, STR, poison and shield. Devour no longer grants Shield or temporary STR, and Crimson Furnace becomes larger but gains a 3-turn cooldown while inflicting Corrosion.",
+    "contentNotes": {
+      "arc2": "Realm Mastery pays twice on her: it raises Propagation Fiesta stacks by 0.05% per point under the rewrite, and via E1 it adds 0.15% Snowy Hex Fixed DMG per point from her, her wheel and her covenant. Doubled on an all-Caro or all-Chaos team."
+    },
+    "anchorPosse": "posse-0062",
+    "realmRewrite": "PROPAGATION_CARO"
   }
 }
