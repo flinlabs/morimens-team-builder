@@ -115,7 +115,10 @@ function buildDictionaries(): Dictionaries {
 function noTokenError(kind: string, id: string, where: string): Error {
   return new Error(
     `${where} ${kind} "${id}" has no in-game token, so it cannot be shared as a code. ` +
-      `If this is a newly released record, run \`npm run sync:tokens\`.`
+      `If this is a newly released record, check the token against a real code ` +
+      `copied out of the game before trusting \`npm run sync:tokens\` — SKeyDB ` +
+      `reissued the awakener and wheel dictionaries in 2.6.0 and the new values ` +
+      `did not match live game codes.`
   )
 }
 
