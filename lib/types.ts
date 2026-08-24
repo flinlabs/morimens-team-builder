@@ -151,6 +151,13 @@ export interface SkeyBuild {
 // Annotation type (hand-maintained)
 // ---------------------------------------------------------------------------
 
+/** Realm rewrites, keyed by the in-game name of the resulting realm. */
+export type RealmRewrite =
+  | 'PROPAGATION_CARO'
+  | 'DIVINE_AEQUOR'
+  | 'SINGULARITY_ULTRA'
+  | 'PRIMORDIA_CHAOS'
+
 export interface AwakenerAnnotation {
   id: string
 
@@ -205,6 +212,17 @@ export interface AwakenerAnnotation {
   dpsFloor?: EnlightenSlot
   /** Investment level at which the support rank applies, when the source stated one. */
   supportFloor?: EnlightenSlot
+  /**
+   * Which realm rewrite this character brings, if any.
+   *
+   * A handful of characters replace their realm's rules wholesale — Saya and
+   * Caraboo both turn Caro into Propagation: Caro, Vortice makes Divine Aequor,
+   * Arachne Singularity: Ultra, Lotan: Cetarchon Primordia: Chaos. The coverage
+   * notes for these used to match on character name, which meant every new
+   * rewriter silently got no note until someone remembered to add a branch.
+   * Declaring it here keys the behaviour to the mechanic instead of the person.
+   */
+  realmRewrite?: RealmRewrite
   notes: string
   contentNotes?: {
     arc1?: string

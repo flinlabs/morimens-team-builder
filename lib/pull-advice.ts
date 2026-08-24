@@ -641,8 +641,12 @@ export function buildWheelTargets(
 
         const existing = byWheel.get(rec.wheelId)
         if (existing) {
-          existing.wantedBy.push({ id: awakenerId, name: awakener.name })
-          existing.teamsAffected += 1
+          // A character with several BiS variants lists the same wheel in each,
+          // which was printing them twice ("Sever and Scar (Castor/Castor)").
+          if (!existing.wantedBy.some((u) => u.id === awakenerId)) {
+            existing.wantedBy.push({ id: awakenerId, name: awakener.name })
+            existing.teamsAffected += 1
+          }
           continue
         }
         byWheel.set(rec.wheelId, {

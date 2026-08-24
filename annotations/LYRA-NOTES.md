@@ -801,3 +801,43 @@ reproducing is worth knowing about rather than forgetting: if it resurfaces, the
 likely area is module-level `getAwakeners()` caching interacting with the
 in-place annotation merge added for the tier lists, since that is the one place
 a shared cached object is mutated after read.
+
+
+## 2026-08-03 — pull recommendations verified end to end
+
+Ran the advice engine against three real roster shapes — a brand-new account
+with only the four starters, the same account holding a Chaos Echo and two
+Prototype Horizons, and a twelve-character mid-game roster — and read the actual
+output rather than only checking it did not throw. Two defects surfaced that no
+existing test covered.
+
+- **Every recommendation routed to a Soul Rewind Core.** The Core is a `choose`
+  selector with no arc or realm restriction, so it satisfied every target and
+  won the tie-break for all of them. Technically true, useless as advice: it
+  said the same thing about everyone, and it pointed at the most expensive
+  option first — Cores cost ten shards, earned only by pulling something already
+  at +12. `routeSummary` now breaks ties on pool specificity, so a realm-and-arc
+  pack beats an arc-only pack beats the catch-all Core. Mid-game output went
+  from six identical "Soul Rewind Core" lines to Chaos Echo: Astral Reign and
+  Caro Birth: Faded Legacy.
+
+- **Wheel targets repeated a character per BiS variant.** Castor names the same
+  wheel in more than one variant, which rendered as "Sever and Scar
+  (Castor/Castor)". Deduped by awakener id.
+
+Both pinned by tests. Currency routing was already correct — held items win over
+unheld ones, and the enlighten recommendations correctly routed to the held
+Prototype Horizons.
+
+### Worth knowing about new accounts
+
+With only the four starters owned, the fieldable pool is a single character:
+Doll, Lotan and Ogier all sit below their viability floors at E0, so only Ramona
+qualifies. Team previews for a new player are consequently two units, and the
+reasons read "Slots straight into a team with Ramona".
+
+That is accurate rather than broken — their starters genuinely are not built
+yet, and the advice correctly surfaces "Doll, at E0, below the E1 they need" as
+one of the top recommendations. But it does mean the strongest early signal the
+tool gives is about investment rather than acquisition, which is worth being
+deliberate about if the onboarding copy ever describes this tab.

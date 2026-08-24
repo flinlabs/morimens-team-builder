@@ -46247,7 +46247,8 @@
           "reason": "Defensive teammate that stalls while she ramps"
         }
       ],
-      "divineRealmNote": "Provides Divine Realm: Aequor (25% Max HP Tranquil Sea shield every 3 turns); also the first DPS with Realm Mastery scaling built into her kit, which she stacks in combat."
+      "divineRealmNote": "Provides Divine Realm: Aequor (25% Max HP Tranquil Sea shield every 3 turns); also the first DPS with Realm Mastery scaling built into her kit, which she stacks in combat.",
+      "realmRewrite": "DIVINE_AEQUOR"
     },
     "annotationPending": false,
     "statScaling": {
@@ -47030,7 +47031,8 @@
       "anchorPosse": "posse-0050",
       "leapPriority": "high",
       "leapNote": "Triggers Singularity: Ultra \u2014 command cards are buffed, Ultra Round extends the current turn instead of starting a new one, and Annihilation puts the leftmost Ultra-Space card into hand on a 3-turn cooldown.",
-      "divineRealmNote": "Singularity: Ultra. Exalt 'Moira, As I Decree' costs 150 Aliemus; Weaver stacks (cap 3, expanded at E3), Singularity Beacon/Prism, and Final Verdict damage that ignores shields and invulnerability."
+      "divineRealmNote": "Singularity: Ultra. Exalt 'Moira, As I Decree' costs 150 Aliemus; Weaver stacks (cap 3, expanded at E3), Singularity Beacon/Prism, and Final Verdict damage that ignores shields and invulnerability.",
+      "realmRewrite": "SINGULARITY_ULTRA"
     },
     "annotationPending": false,
     "statScaling": {
@@ -47852,7 +47854,8 @@
       "contentNotes": {
         "arc2": "Soulforge and Realm Mastery further amplify Propagation Fiesta"
       },
-      "anchorPosse": "posse-0051"
+      "anchorPosse": "posse-0051",
+      "realmRewrite": "PROPAGATION_CARO"
     },
     "annotationPending": false,
     "statScaling": {
@@ -49276,7 +49279,8 @@
       "contentNotes": {
         "arc1": "Soulforge is inert in Faded Legacy, which removes the 500~1000% STR bonus on Mundus Severance \u2014 a large share of her ceiling. She still functions, but her Arc 1 case is much weaker than her Arc 2 one.",
         "arc2": "Astral Reign limited unit and her intended home. Realm Mastery becomes Primordia: Chaos Mastery, so Realm Mastery substats convert into Posse Potency at 0.05% per point (doubled on an all-Chaos team), which in turn scales Fixed Poison/Counter/STR/Ancient Embers by 2% per point and Fixed Shield, Fixed HP Recovery, STR down, Crit Rate, Crit DMG, DMG Amplification, Realm Mastery, Aliemus Generation, Embryo Fusion, and Keyflare Generation by 1% per point."
-      }
+      },
+      "realmRewrite": "PRIMORDIA_CHAOS"
     },
     "annotationPending": false
   }

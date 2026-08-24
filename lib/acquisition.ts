@@ -120,6 +120,29 @@ export function itemsForWheel(
  * player actually holds. A "choose" item beats a "random" one of equal
  * availability because it is a guarantee rather than a roll.
  */
+/**
+ * How specific an item's pool is. Used to break ties when the player holds
+ * nothing: a realm-and-arc pack draws from a handful of characters, an
+ * arc-only pack from that arc, and a Rewind Core from the entire catalogue.
+ *
+ * Higher is more specific and therefore better advice. The universal Cores are
+ * scarce — ten shards each, earned only by pulling something already at +12 —
+ * so naming one as the route for every recommendation is both unhelpful (it
+ * says the same thing about everyone) and wrong (it points at the most
+ * expensive option first).
+ */
+function specificity(item: AcquisitionItem): number {
+  if (item.ownedOnly) return 3
+  if (item.arc && item.realm) return 2
+  if (item.arc) return 1
+  return 0
+}
+
+/**
+ * One-line summary of how to act on a recommendation, preferring an item the
+ * player actually holds. Among equals, a guaranteed pick beats a roll, and a
+ * narrow pool beats the catch-all Rewind Core.
+ */
 export function routeSummary(items: AcquisitionItem[], roster: UserRoster): string | null {
   if (!items.length) return null
   const counts = roster.currencies ?? {}
@@ -127,12 +150,14 @@ export function routeSummary(items: AcquisitionItem[], roster: UserRoster): stri
   const pool = held.length ? held : items
   const ranked = [...pool].sort((a, b) => {
     if (a.selection !== b.selection) return a.selection === 'choose' ? -1 : 1
+    const spec = specificity(b) - specificity(a)
+    if (spec !== 0) return spec
     return (counts[b.slug] ?? 0) - (counts[a.slug] ?? 0)
   })
   const best = ranked[0]
   const n = counts[best.slug] ?? 0
   if (n > 0) {
-    return `You hold ${n}× ${best.name}${best.selection === 'random' ? ' (random reward)' : ''}`
+    return `You hold ${n}\u00d7 ${best.name}${best.selection === 'random' ? ' (random reward)' : ''}`
   }
   return `Obtainable with ${best.name}${best.selection === 'random' ? ' (random reward)' : ''}`
 }

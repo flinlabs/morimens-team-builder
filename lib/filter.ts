@@ -2,6 +2,7 @@ import type {
   EnrichedAwakener,
   UserRoster,
   Realm,
+  RealmRewrite,
   TeamRole,
   CandidateTeam,
   ViabilityTier,
@@ -277,26 +278,37 @@ export function checkRoleCoverage(
     softGaps.push('Divine Realm character present but no dedicated Aliemus battery')
   }
 
-  // Saya note
-  const hasSaya = awakenerIds.some(id => awakeners[id]?.name === 'Saya')
-  if (hasSaya) {
-    softGaps.push('Saya present — Propagation: Caro active. First-Devour shield/STR replaced by Propagation Fiesta stacks. Ensure team can survive without standard Devour sustain.')
-  }
+  // Realm-rewrite notes.
+  //
+  // Keyed on the declared `realmRewrite` rather than on character names, so a
+  // new rewriter inherits the right note the moment it is annotated. The
+  // previous version matched names, which meant every addition needed a code
+  // change nobody would remember to make.
+  for (const id of awakenerIds) {
+    const rewrite = awakeners[id]?.annotation?.realmRewrite
+    if (!rewrite) continue
+    const self = awakeners[id]
+    const rule = REALM_REWRITE_NOTES[rewrite]
+    if (!rule) continue
 
-  // Lotan: Cetarchon note — Primordial Breath reforges Chaos into Primordia:
-  // Chaos, and its two biggest bonuses are conditional on the whole team being
-  // Chaos. A splash unit is not a small loss here: it halves the DMG
-  // Amplification aura and the Posse Potency scaling at once, on top of
-  // Indivisible Realm already switching off the other realm's own payoffs.
-  const cetarchon = awakenerIds.find(id => awakeners[id]?.name === 'Lotan: Cetarchon')
-  if (cetarchon) {
-    const nonChaos = awakenerIds.filter(id => awakeners[id] && awakeners[id].realm !== 'CHAOS')
-    if (nonChaos.length > 0) {
-      const names = nonChaos.map(id => awakeners[id].name).join(', ')
-      softGaps.push(`Lotan: Cetarchon present with non-Chaos teammates (${names}) — Primordia: Chaos halves both the team DMG Amplification bonus and the Primordia: Chaos Mastery scaling off an all-Chaos lineup, and Indivisible Realm disables their realm's Pure Realm / Double Realm Mastery / Double DMG Amplification effects.`)
+    softGaps.push(`${self.name} present — ${rule.note}`)
+
+    // Rewrites that pay out only on a pure lineup: name who is diluting it.
+    if (rule.wantsPureRealm) {
+      const offRealm = awakenerIds.filter(
+        (x) => awakeners[x] && awakeners[x].realm !== self.realm
+      )
+      if (offRealm.length > 0) {
+        softGaps.push(
+          `${self.name} with non-${self.realm} teammates (${offRealm
+            .map((x) => awakeners[x].name)
+            .join(', ')}) — ${rule.mixedNote}`
+        )
+      }
     }
-    if (!roles.includes('shielder') && !roles.includes('healer') && !roles.includes('death_resist')) {
-      softGaps.push('Lotan: Cetarchon present with no shielder, healer, or death-resist — Great Blade: Whalefall makes every enemy deal 25% more damage to your team while it sits in hand.')
+
+    if (rule.needsSustain && !roles.includes('shielder') && !roles.includes('healer') && !roles.includes('death_resist')) {
+      softGaps.push(`${self.name} present with no shielder, healer, or death-resist — ${rule.sustainNote}`)
     }
   }
 
@@ -393,6 +405,39 @@ function checkRequiresConditions(
   }
 
   return warnings
+}
+
+interface RealmRewriteRule {
+  note: string
+  /** Bonuses that only pay out on a single-realm lineup. */
+  wantsPureRealm?: boolean
+  mixedNote?: string
+  /** The rewrite carries a drawback that needs sustain to absorb. */
+  needsSustain?: boolean
+  sustainNote?: string
+}
+
+const REALM_REWRITE_NOTES: Record<RealmRewrite, RealmRewriteRule> = {
+  PROPAGATION_CARO: {
+    note:
+      'Propagation: Caro active. First-Devour shield/STR is replaced by Propagation Fiesta stacks, and the Embryo Fusion threshold rises — make sure the team survives without standard Devour sustain, and note that embryo-count scalers (Sorel) get less out of it.',
+  },
+  DIVINE_AEQUOR: {
+    note: 'Divine Aequor active — the realm\'s baseline rules are replaced for the whole team.',
+  },
+  SINGULARITY_ULTRA: {
+    note: 'Singularity: Ultra active — the realm\'s baseline rules are replaced for the whole team.',
+  },
+  PRIMORDIA_CHAOS: {
+    note:
+      'Primordia: Chaos active. The team opens on 2000 Keyflare and every Awakener\'s Keyflare Regen is flattened to the team average, so raising the whole team beats spiking one unit.',
+    wantsPureRealm: true,
+    mixedNote:
+      'Primordia: Chaos halves both the team DMG Amplification bonus and the Primordia: Chaos Mastery scaling off an all-Chaos lineup, and Indivisible Realm disables their realm\'s Pure Realm / Double Realm Mastery / Double DMG Amplification effects.',
+    needsSustain: true,
+    sustainNote:
+      'Great Blade: Whalefall makes every enemy deal 25% more damage to your team while it sits in hand.',
+  },
 }
 
 export function buildCandidateTeam(

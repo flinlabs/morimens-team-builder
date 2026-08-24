@@ -6,8 +6,14 @@ import {
   wheelLimitedArc,
   routeSummary,
 } from '@/lib/acquisition'
-import { buildPullTargets } from '@/lib/pull-advice'
-import { getAwakeners, getWheels, getAcquisitionCatalog } from '@/lib/db'
+import { buildPullTargets, buildWheelTargets } from '@/lib/pull-advice'
+import {
+  getAwakeners,
+  getWheels,
+  getAcquisitionCatalog,
+  getBisData,
+  getWheelStarFloors,
+} from '@/lib/db'
 import { fullRoster, awakenerIdByName } from './helpers'
 import type { UserRoster } from '@/lib/types'
 
@@ -138,8 +144,14 @@ describe('routing a recommendation to an item', () => {
     }
     expect(routeSummary(items, holdingBoth)).toMatch(/Chaos Echo/)
 
-    // Holding nothing still names the best route rather than going silent.
-    expect(routeSummary(items, roster)).toMatch(/Obtainable with/)
+    // Holding nothing still names a route rather than going silent — and it
+    // names the narrow one. Every character is obtainable with a Soul Rewind
+    // Core, so leading with that said the same thing about everyone while
+    // pointing at the most expensive option (ten shards) first.
+    const fallback = routeSummary(items, roster)!
+    expect(fallback).toMatch(/Obtainable with/)
+    expect(fallback).toMatch(/Chaos Echo/)
+    expect(fallback).not.toMatch(/Rewind Core/)
   })
 })
 
@@ -175,5 +187,27 @@ describe('advice uses the routes', () => {
     }
     const targets = buildPullTargets(awakeners, roster, 10, catalog)
     expect(targets.length).toBeGreaterThan(0)
+  })
+})
+
+describe('wheel targets', () => {
+  it('lists each interested character once, not once per BiS variant', () => {
+    // Castor has several BiS variants naming the same wheel, which was
+    // rendering as "Sever and Scar (Castor/Castor)".
+    const roster = fullRoster()
+    for (const id of Object.keys(roster.wheels)) {
+      roster.wheels[id] = { ...roster.wheels[id], owned: false }
+    }
+    const targets = buildWheelTargets(
+      awakeners,
+      wheels,
+      getBisData(),
+      roster,
+      getWheelStarFloors()
+    )
+    for (const t of targets) {
+      const ids = t.wantedBy.map((u) => u.id)
+      expect(new Set(ids).size, `${t.name} repeats a character`).toBe(ids.length)
+    }
   })
 })
