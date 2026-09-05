@@ -54,7 +54,7 @@ describe('wheel assignment substitutes a strong idle SSR', () => {
     const MOUCH = idByName('Mouchette')
     const CB = widByName('Celestial Beast')
 
-    const out = assignWheels(awk[MOUCH], r, new Set(), 'sub_dps', true)
+    const out = assignWheels(awk[MOUCH], r, new Set(), 'sub_dps')
     // The idle +12 SSR is worth more than a weak SR, so it should be borrowed.
     expect(out.some((w) => w.wheelId === CB)).toBe(true)
   })
@@ -81,7 +81,7 @@ describe('Overlimit Causality — two SSR/MYTHIC wheels need one at +12', () => 
 
   it('never equips a second SSR when neither owned SSR is +12', () => {
     const r = rosterWith({ stack: 4 }, { stack: 7 })
-    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps', true)
+    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps')
     const owned = out.filter((w) => w.tier !== 'FALLBACK')
     const highCount = owned.filter((w) => isHigh(w.wheelId)).length
     expect(highCount).toBeLessThanOrEqual(1)
@@ -89,14 +89,14 @@ describe('Overlimit Causality — two SSR/MYTHIC wheels need one at +12', () => 
 
   it('allows two SSRs when the FIRST equipped wheel is +12', () => {
     const r = rosterWith({ stack: 12 }, { stack: 5 })
-    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps', true)
+    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps')
     const highCount = out.filter((w) => w.tier !== 'FALLBACK' && isHigh(w.wheelId)).length
     expect(highCount).toBe(2)
   })
 
   it('allows two SSRs when only the SECOND wheel is +12 (interpretation B)', () => {
     const r = rosterWith({ stack: 6 }, { stack: 12 })
-    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps', true)
+    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps')
     const highCount = out.filter((w) => w.tier !== 'FALLBACK' && isHigh(w.wheelId)).length
     expect(highCount).toBe(2)
   })
@@ -104,7 +104,7 @@ describe('Overlimit Causality — two SSR/MYTHIC wheels need one at +12', () => 
   it('never suggests two unowned SSR FALLBACK targets together', () => {
     const r: any = fullRoster()
     for (const id of Object.keys(r.wheels)) r.wheels[id] = { owned: false, starLevel: 0, stackLevel: 0 }
-    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps', true)
+    const out = assignWheels(awk[UNIT], r, new Set(), 'main_dps')
     const highFallbacks = out.filter((w) => w.tier === 'FALLBACK' && isHigh(w.wheelId)).length
     expect(highFallbacks).toBeLessThanOrEqual(1)
   })
