@@ -24,7 +24,11 @@ import type {
   EnrichedPosse,
 } from './types'
 import { getAwakenerEntry, getWheelEntry } from './roster'
-import { buildCandidateTeam } from './filter'
+import {
+  buildCandidateTeam,
+  isValidRealmComposition,
+  hasVariantConflict,
+} from './filter'
 import {
   itemsForAwakener,
   routeSummary,
@@ -288,6 +292,20 @@ const BEAM_WIDTH = 3
 const POOL_CAP = 28
 
 /**
+ * The subset of the generator's legality rules that are real game constraints
+ * rather than engine heuristics: at most two distinct realms, and never two
+ * variants of the same base character. Coverage and class-limit heuristics are
+ * deliberately left out — a hypothetical team is allowed to be badly shaped,
+ * but it is not allowed to be unfieldable.
+ */
+function isLegalLineup(
+  ids: string[],
+  awakeners: Record<string, EnrichedAwakener>
+): boolean {
+  return isValidRealmComposition(ids, awakeners) && !hasVariantConflict(ids, awakeners)
+}
+
+/**
  * Best four-unit team that can be built from `pool`, optionally forced to
  * include `required`. Greedy beam rather than exhaustive: C(28,3) per candidate
  * across forty candidates would be ~45k scoring calls, which is too slow for a
@@ -320,12 +338,20 @@ function bestTeamFrom(
       for (const id of candidates) {
         if (partial.includes(id)) continue
         const ids = [...partial, id]
+        // The same legality gate the generator applies. Without it the beam
+        // recommended teams the game cannot field — a three-realm lineup
+        // (Mouchette into Aigis/Saya/Pontos), or two variants of one
+        // character — and the Meta tab then told the player to pull for it.
+        if (!isLegalLineup(ids, awakeners)) continue
         // Partial teams are scored the same way full ones are; the relative
         // ordering is what the beam needs, not an absolute value.
         next.push({ ids, score: buildCandidateTeam(ids, awakeners, roster).score })
       }
     }
-    if (!next.length) return null
+    // A dead end here means every extension of the current beam was illegal.
+    // The partial lineup is itself legal and scoreable, so return it rather
+    // than dropping the recommendation entirely.
+    if (!next.length) return buildCandidateTeam(beam[0], awakeners, roster)
     next.sort((a, b) => b.score - a.score)
     const seen = new Set<string>()
     beam = []
