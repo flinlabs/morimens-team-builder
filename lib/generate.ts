@@ -383,7 +383,11 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
     // despite being a distinct, guide-sanctioned team worth showing.
     const searchCands = generateCandidateTeams(req.roster, awakeners, {
       ...options,
-      maxResults: Math.max(options.maxResults ?? 0, 30),
+      // A deep bench, not a display list: only six teams are shown, and the
+      // rest are what "Generate" rotates through. Thirty candidates could not
+      // cover a full roster four units at a time, so late presses recycled the
+      // same faces.
+      maxResults: Math.max(options.maxResults ?? 0, 80),
     })
 
     // In off-meta mode the engine may still rebuild a curated composition from
