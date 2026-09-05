@@ -440,10 +440,23 @@ const REALM_REWRITE_NOTES: Record<RealmRewrite, RealmRewriteRule> = {
   },
 }
 
+/**
+ * Per-unit viability scores, memoised for the duration of one search.
+ *
+ * Viability depends on the unit and the roster, neither of which changes while
+ * a search runs, but it was being recomputed inside every candidate — four
+ * times per combination across hundreds of thousands of combinations, and it
+ * accounted for essentially the whole cost of scoring a team. Caching it is
+ * what makes searching the entire roster affordable instead of pre-trimming
+ * the pool.
+ */
+export type ViabilityCache = Map<string, number>
+
 export function buildCandidateTeam(
   awakenerIds: string[],
   awakeners: Record<string, EnrichedAwakener>,
-  roster: UserRoster
+  roster: UserRoster,
+  viabilityCache?: ViabilityCache
 ): CandidateTeam {
   const nonChaosRealms = getNonChaosRealms(awakenerIds, awakeners)
   const hasChaos = hasChaosMember(awakenerIds, awakeners)
@@ -460,11 +473,17 @@ export function buildCandidateTeam(
   // Viability score sum
   let viabilitySum = 0
   for (const id of awakenerIds) {
-    const entry = getAwakenerEntry(roster, id)
     const awakener = awakeners[id]
     if (!awakener) continue
-    const result = scoreViability(id, entry, awakener, roster, roster.settings.arcRuleset)
-    viabilitySum += result.score
+    const cached = viabilityCache?.get(id)
+    if (cached !== undefined) {
+      viabilitySum += cached
+      continue
+    }
+    const entry = getAwakenerEntry(roster, id)
+    const score = scoreViability(id, entry, awakener, roster, roster.settings.arcRuleset).score
+    viabilityCache?.set(id, score)
+    viabilitySum += score
   }
 
   const synergyBonus = synergScore(awakenerIds, awakeners)
@@ -578,13 +597,32 @@ export function buildCandidateTeam(
   }
 }
 
-function combinations<T>(arr: T[], size: number): T[][] {
-  if (size === 0) return [[]]
-  if (arr.length < size) return []
-  const [first, ...rest] = arr
-  const withFirst = combinations(rest, size - 1).map(c => [first, ...c])
-  const withoutFirst = combinations(rest, size)
-  return [...withFirst, ...withoutFirst]
+/**
+ * Lazy index-based combinations.
+ *
+ * The previous version was recursive over array slices — `[first, ...rest]`
+ * copied the remaining pool at every level and the whole result set was
+ * materialised before a single candidate was looked at. On a full roster that
+ * is half a million arrays built up front, and it cost more than scoring the
+ * teams did. Yielding index tuples costs one array per emitted combination and
+ * nothing else.
+ */
+function* combinations<T>(arr: T[], size: number): Generator<T[]> {
+  if (size === 0) {
+    yield []
+    return
+  }
+  if (arr.length < size) return
+  const idx = Array.from({ length: size }, (_, i) => i)
+  const last = size - 1
+  for (;;) {
+    yield idx.map((i) => arr[i])
+    let i = last
+    while (i >= 0 && idx[i] === arr.length - size + i) i--
+    if (i < 0) return
+    idx[i]++
+    for (let j = i + 1; j < size; j++) idx[j] = idx[j - 1] + 1
+  }
 }
 
 function hasMinimumCoverage(
@@ -641,11 +679,18 @@ export function generateCandidateTeams(
     .filter(id => getAwakenerEntry(roster, id).owned)
     .filter(id => !excludeIds.includes(id))
 
-  // Soft comfort floors made nearly every owned unit viable, and the
-  // combination search is O(n^4) — cap the fill pool at the best-scored units
-  // so a 58-unit roster stays fast. On a thin roster nothing is trimmed, so
-  // starters and below-floor filler remain reachable exactly when needed.
-  const POOL_CAP = 40
+  // Every viable owned unit is searched. This used to trim the pool to the 40
+  // best-scored units before enumerating, which is why a chunk of the roster
+  // could never appear in any suggestion no matter how many times Generate was
+  // pressed: the cut was by absolute viability, so the same tail was discarded
+  // every time and the rotation below only ever cycled the survivors.
+  //
+  // The cut existed because the search is O(n^4) and scoring dominated it.
+  // Memoising viability (see ViabilityCache) took ~80% off the cost of scoring
+  // a candidate, so the full roster is now searched in less time than the
+  // trimmed one used to take. POOL_CAP survives only as a safety valve for a
+  // roster far larger than anything the game currently has.
+  const POOL_CAP = 96
   let cappedIds = viableIds
   if (viableIds.length > POOL_CAP) {
     const arc = roster.settings.arcRuleset
@@ -653,6 +698,9 @@ export function generateCandidateTeams(
       scoreViability(id, getAwakenerEntry(roster, id), awakeners[id], roster, arc).score
     cappedIds = [...viableIds].sort((a, b) => scoreOf(b) - scoreOf(a)).slice(0, POOL_CAP)
   }
+
+  // One cache for this whole search.
+  const viabilityCache: ViabilityCache = new Map()
 
   // Validate pinned characters
   for (const id of pinnedIds) {
@@ -669,7 +717,7 @@ export function generateCandidateTeams(
   const fillPool = cappedIds.filter(id => !pinnedIds.includes(id))
 
   // Generate combinations for fill slots
-  const fillCombinations = slotsToFill > 0
+  const fillCombinations: Iterable<string[]> = slotsToFill > 0
     ? combinations(fillPool, slotsToFill)
     : [[]]
 
@@ -712,7 +760,7 @@ export function generateCandidateTeams(
     // any gaps still surface in the team card's coverageGaps).
     if (!relaxCoverage && !hasMinimumCoverage(teamIds, awakeners)) continue
 
-    candidates.push(buildCandidateTeam(teamIds, awakeners, roster))
+    candidates.push(buildCandidateTeam(teamIds, awakeners, roster, viabilityCache))
   }
 
   // Sort by score descending
@@ -728,18 +776,70 @@ export function generateCandidateTeams(
   const pinnedSet = new Set(pinnedIds)
   const occurrences = new Map<string, number>()
   const sliced: CandidateTeam[] = []
-  for (const c of candidates) {
-    if (sliced.length >= maxResults) break
-    if (
-      c.awakenerIds.some(
-        (id) => !pinnedSet.has(id) && (occurrences.get(id) ?? 0) >= PER_UNIT_SLICE_CAP
-      )
-    ) {
-      continue
-    }
+  // Identity, not composition: every candidate here is a distinct object built
+  // once by the loop above, so a Set of references is both correct and free.
+  const taken = new Set<CandidateTeam>()
+  const take = (c: CandidateTeam): void => {
+    taken.add(c)
     c.awakenerIds.forEach((id) => occurrences.set(id, (occurrences.get(id) ?? 0) + 1))
     sliced.push(c)
   }
+  const greedyFill = (limit: number): void => {
+    for (const c of candidates) {
+      if (sliced.length >= limit) break
+      if (taken.has(c)) continue
+      if (
+        c.awakenerIds.some(
+          (id) => !pinnedSet.has(id) && (occurrences.get(id) ?? 0) >= PER_UNIT_SLICE_CAP
+        )
+      ) {
+        continue
+      }
+      take(c)
+    }
+  }
+
+  // Take most of the slice on score, then stop and make sure nobody is left
+  // out entirely before spending the rest.
+  greedyFill(Math.ceil(maxResults * 0.6))
+
+  // Representation pass. The greedy pass optimises the top of the list, and on
+  // a deep roster that leaves whole characters with no candidate in the slice
+  // at all. The rotation in generate.ts can only ever show what reaches it, so
+  // those characters were unreachable however many times Generate was pressed
+  // — the roster tail was invisible rather than merely unlucky. Give every unit
+  // that appears in at least one legal team its best-scoring one.
+  //
+  // Two scans. The first respects a loosened per-unit cap, so introducing a
+  // rare character does not drag the same strong teammate along twenty times;
+  // the second ignores it, because a character whose only legal team is built
+  // around a popular unit should still be reachable.
+  const REPRESENTATION_CAP = PER_UNIT_SLICE_CAP + 4
+  const represented = new Set(sliced.flatMap((c) => c.awakenerIds))
+  const representationPass = (cap: number): void => {
+    for (const c of candidates) {
+      if (sliced.length >= maxResults) break
+      if (taken.has(c)) continue
+      const introduces = c.awakenerIds.filter((id) => !represented.has(id))
+      if (!introduces.length) continue
+      // The cap applies to the passengers, never to the character being
+      // introduced — they are the reason this team is being taken.
+      const passengerOverExposed = c.awakenerIds.some(
+        (id) =>
+          !introduces.includes(id) &&
+          !pinnedSet.has(id) &&
+          (occurrences.get(id) ?? 0) >= cap
+      )
+      if (passengerOverExposed) continue
+      take(c)
+      c.awakenerIds.forEach((id) => represented.add(id))
+    }
+  }
+  representationPass(REPRESENTATION_CAP)
+  representationPass(Infinity)
+
+  // Spend whatever is left on score again.
+  greedyFill(maxResults)
   return sliced
 }
 
