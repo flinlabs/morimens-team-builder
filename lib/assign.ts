@@ -133,7 +133,6 @@ export function assignWheels(
   roster: UserRoster,
   usedWheelIds: Set<string> = new Set(),
   role?: string,
-  allowDualSSR = true,
   // wheelId → awakenerId that has first claim on it. A wheel reserved for
   // someone else is off-limits to substitution/filler passes, so a support
   // geared early can never steal a later carry's owned BiS wheel.
@@ -179,13 +178,17 @@ export function assignWheels(
     )
   }
 
-  // Whether a wheel can be taken from the shared pool (not already in use, or
-  // Dual-SSR unlocked AND single-team mode only — D-Tide never shares copies).
-  // Dual-SSR sharing only applies to SSR/MYTHIC wheels; SR/R/N are always unique.
-  const isAvailable = (id: string): boolean => {
-    if (!usedWheelIds.has(id)) return true
-    return allowDualSSR && isHighRarity(id) && isDualSSRUnlocked(roster, id)
-  }
+  // Whether a wheel can be taken from the shared pool. A wheel is one physical
+  // item and is never worn by two characters at once.
+  //
+  // This used to make an exception for +12 SSRs, on the reading that stacking
+  // to +12 yields a second wieldable copy. That misreads the rule. Stacking
+  // MERGES copies into one stronger wheel, and what +12 actually unlocks is
+  // Overlimit Causality — permission to wear two SSR wheels on ONE character
+  // (`breaksOverlimit` above), not permission to hand the same wheel to a
+  // teammate. The exception only fired in single-team mode, which is exactly
+  // where the duplicate WoD kept surfacing.
+  const isAvailable = (id: string): boolean => !usedWheelIds.has(id)
 
   const out: WheelAssignment[] = []
 
@@ -205,9 +208,6 @@ export function assignWheels(
           slot: (out.length + 1) as 1 | 2,
           wheelId,
           tier: rec.tier,
-        }
-        if (usedWheelIds.has(wheelId) && allowDualSSR) {
-          assignment.dualSSRNote = 'Second copy fielded via unlocked Dual-SSR (+12)'
         }
         out.push(assignment)
         usedWheelIds.add(wheelId)
@@ -733,7 +733,6 @@ export function buildTeamRecommendation(
   awakeners: Record<string, EnrichedAwakener>,
   posses?: Record<string, EnrichedPosse>,
   usedWheelIds: Set<string> = new Set(),
-  allowDualSSR = true,
   usedPosseIds?: Set<string>,
   reservedWheels?: Map<string, string>
 ): TeamRecommendation {
@@ -766,7 +765,7 @@ export function buildTeamRecommendation(
     if (!awakener) continue
     const ann = awakener.annotation
     const role = ann?.teamRoles?.[0] ?? 'flex'
-    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, allowDualSSR, reserved)
+    const wheelAssignments = assignWheels(awakener, roster, usedWheelIds, role, reserved)
     const covenantRecommendation = recommendCovenant(awakener, roster, role, usedCovenantIds)
 
     if (wheelAssignments.some(w => w.tier === 'FALLBACK')) {
@@ -834,7 +833,7 @@ export function buildDtideRecommendation(
 ): TeamRecommendation[] {
   const usedWheelIds = new Set<string>()
   // D-Tide fields all five teams at once, so every wheel must be unique across
-  // the lineup — no second copy even when Dual-SSR is unlocked — and likewise
+  // the lineup, and likewise
   // every posse is locked to one team for the season, so no team may reuse a
   // posse another already runs.
   const usedPosseIds = new Set<string>()
@@ -844,7 +843,7 @@ export function buildDtideRecommendation(
   const reserved = reserveBisWheels(teams, roster, awakeners)
   return teams.map((team, i) =>
     buildTeamRecommendation(
-      team, i + 1, roster, awakeners, posses, usedWheelIds, false, usedPosseIds, reserved
+      team, i + 1, roster, awakeners, posses, usedWheelIds, usedPosseIds, reserved
     )
   )
 }
