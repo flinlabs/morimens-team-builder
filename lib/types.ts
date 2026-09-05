@@ -516,7 +516,6 @@ export interface WheelAssignment {
   slot: 1 | 2
   wheelId: string
   tier: WheelTier | 'FALLBACK'
-  dualSSRNote?: string
   // Why the arc's ruleset changed this pick — currently set when Faded Legacy
   // rules route an ability-bearing R wheel onto a support ahead of a stat stick.
   arcNote?: string
