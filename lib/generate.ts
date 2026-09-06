@@ -486,11 +486,17 @@ export function generateTeams(req: GenerateRequest): GenerateResult {
     }
 
     if (picked.length) {
-      // Thread a single usedWheelIds set across all teams so no wheel is
-      // assigned to two different characters in the same output.
-      const usedWheelIds = new Set<string>()
+      // Each team gets its own wheel pool. These are alternatives to choose
+      // between, not a lineup fielded at once, so there is nothing to
+      // deconflict: sharing one set across them meant team 6 was geared out of
+      // whatever the first five left behind, which is a worse suggestion for no
+      // reason. Only D-Tide fields several teams simultaneously and therefore
+      // needs them disjoint — see the sequential threading in that branch.
+      //
+      // (Wheel uniqueness *within* a team is enforced inside assignWheels, and
+      // that is the constraint the game actually imposes.)
       teams = picked.map((candidate, i) =>
-        buildTeamRecommendation(candidate, i + 1, req.roster, awakeners, posses, usedWheelIds)
+        buildTeamRecommendation(candidate, i + 1, req.roster, awakeners, posses, new Set())
       )
     } else {
       warnings.push(

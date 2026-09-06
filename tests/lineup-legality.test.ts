@@ -86,8 +86,7 @@ describe('a wheel is never worn by two characters at once', () => {
     }
   })
 
-  it('the specific report: pinned Corposant with Helot: Catena, Salvador and Thais', () => {
-    const ids = [
+  it('the specific report: pinned Corposant with Helot: Catena, Salvador and Thais', () => {    const ids = [
       awakenerIdByName('Corposant'),
       awakenerIdByName('Helot: Catena'),
       awakenerIdByName('Salvador'),
@@ -101,5 +100,45 @@ describe('a wheel is never worn by two characters at once', () => {
     const rec = buildTeamRecommendation(candidate, 1, faded, awakeners, posses)
     const wheelIds = rec.composition.flatMap((c) => c.wheelAssignments.map((w) => w.wheelId))
     expect(new Set(wheelIds).size).toBe(wheelIds.length)
+  })
+})
+
+describe('single-mode suggestions are geared independently', () => {
+  // The six teams single mode returns are alternatives to choose between, not a
+  // roster fielded at once. Threading one wheel pool across them meant the
+  // sixth was geared out of whatever the first five left behind — D-Tide
+  // behaviour applied where it does not belong. Only D-Tide fields several
+  // teams simultaneously.
+  //
+  // Pinning is what makes this observable: the rotation deliberately spreads
+  // characters across the returned teams, so without a pin the same unit rarely
+  // appears twice and there is nothing to compare.
+  const roster = fullRoster()
+  const pinned = awakenerIdByName('Saya')
+  const result = generateTeams({ roster, mode: 'single', options: { pinnedIds: [pinned] } })
+
+  it('returns several teams containing the pinned character', () => {
+    expect(result.teams.length).toBeGreaterThan(1)
+    for (const team of result.teams) {
+      expect(team.composition.map((c) => c.awakenerId)).toContain(pinned)
+    }
+  })
+
+  it('gears the pinned character identically in every team', () => {
+    const loadouts = result.teams.map((team) => {
+      const slot = team.composition.find((c) => c.awakenerId === pinned)!
+      return slot.wheelAssignments.map((w) => w.wheelId).sort().join(',')
+    })
+    expect(
+      new Set(loadouts).size,
+      `Saya is geared differently across alternatives: ${[...new Set(loadouts)].join(' vs ')}`
+    ).toBe(1)
+  })
+
+  it('still keeps wheels unique within each individual team', () => {
+    for (const team of result.teams) {
+      const ids = team.composition.flatMap((c) => c.wheelAssignments.map((w) => w.wheelId))
+      expect(new Set(ids).size).toBe(ids.length)
+    }
   })
 })
