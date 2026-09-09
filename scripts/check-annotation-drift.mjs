@@ -43,8 +43,19 @@ const layer = JSON.parse(
 )
 
 // Merged onto the annotation at read time by lib/db.ts rather than stored, so a
-// difference in these four is expected and means nothing.
-const READ_TIME_FIELDS = new Set(['dpsRank', 'supportRank', 'dpsFloor', 'supportFloor'])
+// difference in these is expected and means nothing. All of them come from
+// annotations/tier-lists.json, which is re-transcribed as a unit whenever the
+// community republishes a list.
+const READ_TIME_FIELDS = new Set([
+  'dpsRank',
+  'supportRank',
+  'dpsFloor',
+  'supportFloor',
+  'endgameDpsRank',
+  'endgameSupportRank',
+  'endgameDpsFloor',
+  'endgameSupportFloor',
+])
 
 const stable = (v) => JSON.stringify(v ?? null)
 const truncate = (s, n = 100) => (s.length > n ? `${s.slice(0, n)}…` : s)
