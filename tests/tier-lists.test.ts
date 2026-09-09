@@ -11,6 +11,12 @@ import type { UserRoster } from '@/lib/types'
    support value — because the answers diverge. A single `tier` field could not
    express that, which is why the Meta tab used to report Castor as a flat "A"
    when his actual value is almost entirely support utility.
+
+   Since the September 2026 D-Effect Zone rework there is a second pair of
+   lists for Nightmare and Madness, kept on separate fields. Those assume a
+   maxed account and disagree with the newbie grades on purpose, so the tests
+   below pin a few of the disagreements: if they ever line up, someone has
+   copied one list over the other.
 --------------------------------------------------------------------------- */
 
 const awakeners = getAwakeners()
@@ -34,8 +40,23 @@ describe('tier list data', () => {
     for (const entry of Object.values(tiers)) {
       if (entry.dpsRank) expect(['S', 'A', 'B+', 'B', 'C']).toContain(entry.dpsRank)
       if (entry.supportRank) expect(['S', 'A', 'B', 'C+', 'C']).toContain(entry.supportRank)
+      // The endgame lists publish their own scales: no S or B+ on the DPS
+      // side, and an X band for units that only contribute as secondary
+      // damage. Reusing the newbie enum here would let a mis-transcription
+      // through.
+      if (entry.endgameDpsRank) {
+        expect(['A', 'B', 'C', 'X']).toContain(entry.endgameDpsRank)
+      }
+      if (entry.endgameSupportRank) {
+        expect(['S', 'A', 'B', 'C']).toContain(entry.endgameSupportRank)
+      }
       // Every entry has to say something, or it should not be in the file.
-      expect(entry.dpsRank || entry.supportRank).toBeTruthy()
+      expect(
+        entry.dpsRank ||
+          entry.supportRank ||
+          entry.endgameDpsRank ||
+          entry.endgameSupportRank
+      ).toBeTruthy()
     }
   })
 
@@ -127,11 +148,63 @@ describe('rank integration', () => {
 })
 
 describe('Lotan: Cetarchon grading', () => {
-  it('is graded on both axes even though the source lists predate her', () => {
+  it('uses the community grades now that the lists have caught up to her', () => {
+    // She was carried on a local grade (A/A, sourced to Felix) while the
+    // published lists predated her release. They now rank her, and they
+    // disagree in both directions: a harder carry, a weaker support.
     const entry = tiers['awakener-0059']
-    expect(entry.dpsRank).toBe('A')
-    expect(entry.supportRank).toBe('A')
-    // Provenance matters here: this grade is Felix's, not the community's.
-    expect(entry.source).toMatch(/Felix/)
+    expect(entry.dpsRank).toBe('S')
+    expect(entry.dpsFloor).toBe('E2')
+    expect(entry.supportRank).toBe('B')
+    expect(entry.source).toBeUndefined()
+  })
+})
+
+describe('endgame tier lists', () => {
+  it('ranks the units the endgame lists actually cover, and no others', () => {
+    // Absence is data on these lists too, and the endgame lists are much
+    // shorter than the newbie ones — a fresh account's roster is mostly
+    // unranked for Nightmare and Madness.
+    const graded = Object.values(tiers).filter(
+      (t) => t.endgameDpsRank || t.endgameSupportRank
+    )
+    expect(graded.length).toBe(49)
+
+    const caecus = tiers[awakenerIdByName('Caecus')]
+    expect(caecus.supportRank).toBe('B')
+    expect(caecus.endgameDpsRank).toBeUndefined()
+    expect(caecus.endgameSupportRank).toBeUndefined()
+  })
+
+  it('disagrees with the newbie lists rather than mirroring them', () => {
+    // Clementine is a newbie's worst carry and an endgame Madness carry.
+    const clem = tiers[awakenerIdByName('Clementine')]
+    expect(clem.dpsRank).toBe('C')
+    expect(clem.endgameDpsRank).toBe('A')
+
+    // Helot: Catena runs the other way: a newbie A carry, and at endgame a
+    // C-tier niche support.
+    const catena = tiers[awakenerIdByName('Helot: Catena')]
+    expect(catena.dpsRank).toBe('A')
+    expect(catena.endgameSupportRank).toBe('C')
+  })
+
+  it('records the much higher investment floors the endgame lists assume', () => {
+    // Newbie floors top out at E3; endgame grades routinely sit behind OE or
+    // AA, which is the single biggest reason the two lists must not be mixed.
+    const mouchette = tiers[awakenerIdByName('Mouchette')]
+    expect(mouchette.dpsFloor).toBe('E2')
+    expect(mouchette.endgameDpsFloor).toBe('AA')
+
+    const lotan = tiers[awakenerIdByName('Lotan')]
+    expect(lotan.endgameDpsRank).toBe('A')
+    expect(lotan.endgameDpsFloor).toBe('OE')
+  })
+
+  it('merges the endgame grades onto the annotation', () => {
+    const xu = awakeners[awakenerIdByName('Xu')]
+    expect(xu.annotation?.endgameDpsRank).toBe('A')
+    expect(xu.annotation?.endgameDpsFloor).toBe('AA')
+    expect(xu.annotation?.endgameSupportRank).toBe('A')
   })
 })
