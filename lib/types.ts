@@ -213,6 +213,20 @@ export interface AwakenerAnnotation {
   /** Investment level at which the support rank applies, when the source stated one. */
   supportFloor?: EnlightenSlot
   /**
+   * The endgame lists are a second, independent ranking for D-Effect Zone
+   * Nightmare and Madness. They assume a maxed account, so they diverge
+   * sharply from the newbie grades above — Clementine is newbie C and endgame
+   * A as a carry, Helot: Catena is the reverse. Read the pair that matches the
+   * content being planned; never fall back from one to the other.
+   */
+  endgameDpsRank?: 'A' | 'B' | 'C' | 'X'
+  /** How much they improve a team as support at Nightmare/Madness. */
+  endgameSupportRank?: 'S' | 'A' | 'B' | 'C'
+  /** Investment level at which the endgame DPS rank applies. Often OE or AA. */
+  endgameDpsFloor?: EnlightenSlot
+  /** Investment level at which the endgame support rank applies. */
+  endgameSupportFloor?: EnlightenSlot
+  /**
    * Which realm rewrite this character brings, if any.
    *
    * A handful of characters replace their realm's rules wholesale — Saya and
