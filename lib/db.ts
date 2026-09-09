@@ -42,6 +42,10 @@ export function getAwakeners(): Record<string, EnrichedAwakener> {
     awakener.annotation.supportRank = t.supportRank as never
     awakener.annotation.dpsFloor = t.dpsFloor as never
     awakener.annotation.supportFloor = t.supportFloor as never
+    awakener.annotation.endgameDpsRank = t.endgameDpsRank as never
+    awakener.annotation.endgameSupportRank = t.endgameSupportRank as never
+    awakener.annotation.endgameDpsFloor = t.endgameDpsFloor as never
+    awakener.annotation.endgameSupportFloor = t.endgameSupportFloor as never
   }
   return all
 }
@@ -138,6 +142,10 @@ export interface TierListEntry {
   supportRank?: string
   dpsFloor?: string
   supportFloor?: string
+  endgameDpsRank?: string
+  endgameSupportRank?: string
+  endgameDpsFloor?: string
+  endgameSupportFloor?: string
   source?: string
 }
 
