@@ -895,3 +895,120 @@ deliberate about if the onboarding copy ever describes this tab.
 - **Soul Synchronization** is currently eligible as generic filler. It is paid
   archive content, unlike the other two paid-archive wheels which sit in
   `NICHE_MYTHIC_WHEEL_IDS`. Undecided.
+
+## Ogier: Oathbound drop (2026-09-21, synced 2026-09-27)
+
+Records: `awakener-0061`, `wheel-0178` Ever Sunward (signature SSR),
+`wheel-0179` Shadowed by the Past (signature SR), `wheel-0180` Darker than
+Darkness (ownerless SSR, retagged MYTHIC), `posse-0063` Pages Ever New.
+Synced with `scripts/oneoff-sync-gogier.mjs` per the isolation rule.
+
+**Lineup tokens — decided, not open.** Upstream gives the three new wheels
+"zc", "zd" and "ze". Every one of those is already held under the pin, by
+`wheel-0174` Falling Upward, `wheel-0173` Undying Hungerbone and `wheel-0172`
+Cetus Occasus respectively. That is direct evidence for the divergence already
+logged against `wheel-0177`, not a suspicion. The awakener and all three wheels
+therefore ship with `lineupToken: null`; `posse-0063` keeps upstream's "0"
+because the posse category is not pinned and `sync-lineup-tokens.mjs` treats
+upstream as authoritative there. Upstream's awakener value was "xs".
+
+**Open for Felix.**
+- `annotation.tier` is set to `B`. The community grades him C as a carry and B
+  as a support, so B is the honest blend, but `tier` is the field the engine
+  weights (`TIER_W` in `generate.ts`, `TIER_BONUS` in `viability.ts`) and
+  Lotan: Cetarchon — the other Primordia: Chaos rewriter — sits at `S`. If a
+  realm rewrite is worth a floor regardless of the unit's own grade, this
+  should move.
+- Two characters now rewrite Chaos into Primordia: Chaos. `conflictsWith` is
+  left empty, matching how Saya and Caraboo are handled for Propagation: Caro,
+  where the annotation calls the overlap redundancy rather than a conflict.
+- `db/bis.json` is hand-authored from the mythag.net guide, which still carries
+  a "new unit, we are still testing" banner. Re-check when the Mythag
+  Compendium publishes a GOgier column.
+
+## GOgier post-buff pass, Caraboo refresh, Alva adjudication (2026-09-27)
+
+**Alva — settled.** `annotations/awakeners.json` said `B`, `db/awakeners.json`
+said `C`. Felix called it: **C**. The annotation now matches the db and
+`check-annotation-drift.mjs` is clean on that field.
+
+**GOgier buffs are already in the synced data.** The SKeyDB records pulled on
+2026-09-27 are post-buff — E2 carries the Sin-Stained Spear draw and AA reads
++200% Base DMG / +400% STR. Only the hand-written annotation was pre-buff, and
+it has been rewritten. The four buffs, for the record:
+
+- Soulforge "Endless Shadow": STR-down effect and STR multiplier 5-50% → 10-100%
+- Exalt "Unfallen Heart": STR multiplier dealt +25%
+- E2 "Bear the Glimmer": added Turn Unique draw of 1 Sin-Stained Spear on Strike
+- AA "The Vow, Sworn Anew": Base DMG boost 100% → 200%, STR bonus 200% → 400%
+- Stage relic "Dimensional Image": Undertow and Guilt cap raised to 5
+
+**Two exclusive GOgier modes.** Tank Exalts freely; nuker never Exalts at all,
+because Exalting is what spends the Undertow the nuke scales on. The annotation
+now says this explicitly, since a reader who splits the difference gets neither.
+
+**Wheel split.** Ever Sunward is the tank wheel and stays BIS_SSR there; the DPS
+variant now points at Twisted Knight Ballad (Pollux's), which the community
+prefers because it buffs the first card played and the first card is the spear.
+Community also reports Ever Sunward needs E3+ to beat Erica's free shop wheel and
+is arguably better on tank Kathigu-Ra.
+
+**Caraboo BiS is no longer provisional.** Her mythag guide is live and replaced
+the release-day guesses: covenants are Cursed Rabbit and Dream of Medicine (my
+Deus Ex Machina guess is dropped), wheels are Gluttony/Whisper early and Memory
+Spiral/Data is Flesh for Astral Reign, with Honeyed Deceit still BIS_SSR.
+
+**Open for Felix.**
+- **Caraboo mechanics conflict, unresolved.** The existing annotation describes
+  **Satiety**: granted by Devour, caps at 50, permanent, consumed by nothing,
+  raises team Max HP. The mythag guide describes **Offering**: granted by playing
+  Blessings, caps at 5, consumed by her Exalt to raise Max HP for the rest of the
+  exploration. These may be two separate mechanics or one of them may be wrong.
+  Nothing was overwritten — adjudicate before either is trusted.
+- **`annotation.tier` still `B`.** The evidence moved: post-buff, players call an
+  invested GOgier "among the best chars right now" and several run him as a burst
+  DPS rather than a Warden. Against that, mythag still grades him C as a carry and
+  B as a support and has not regraded since the buffs. `tier` is what
+  `TIER_W`/`TIER_BONUS` weight, and Cetarchon sits at `S`. Still your call.
+- **Primordia: Chaos may be under-described for both rewriters.** The Mythag
+  infographic shows a third Posse option, Keyflare Rouse (lose 1000 Keyflare,
+  discover a Rouse card, each one doubles the next cost, Keyflare may go negative),
+  and says a played Rouse releases the equipped Posse once per turn. SKeyDB's
+  Primordial Breath text says the carried Posse can no longer be unleashed at all.
+  `divineRealmNote` on GOgier now covers the realm properly; Lotan: Cetarchon's
+  still carries the older shorter version and should be brought in line.
+- **Mouchette is contested.** Some players pair them; others say the Undertow draw
+  reduction makes Mouchette miserable to play. Left as a note rather than encoded
+  as a `conflictsWith`.
+
+### Blocking: `roster-coverage` is red, and it is telling us something
+
+`tests/roster-coverage.test.ts > repeated Generate presses rotate through most
+of the roster` fails at **44, needing 45**. It is not the Alva regrade and not
+GOgier — both were isolated and reverted independently with no effect. It is the
+**Caraboo synergy edges**, and a single one is enough to tip it:
+
+| Caraboo `synergizesWith` | result |
+| --- | --- |
+| 18 edges (as shipped) | 45, passes |
+| + Xu | 44, fails |
+| + Xu, Pontos | 44, fails |
+| + Xu, Pontos, Ogier: Oathbound | 44, fails |
+
+Pre-GOgier `main` passes. Caraboo already carried the second-largest outbound
+edge set in the graph; one more makes teams cluster harder around her and a
+character drops out of the 48-slot rotation.
+
+All three edges are guide-sourced — mythag's Caraboo page names Xu and Pontos
+under "Works Well With", and the GOgier page names Caraboo — so none of them was
+dropped to make the suite green. Two ways out, both Felix's:
+
+1. **Accept 44.** The assertion's own comment reasons from "a 60-character
+   roster"; it is 61 now, and the stated intent is "well past the 40 the old pool
+   cap allowed". 45 was a tight empirical pin, not a principle.
+2. **Treat it as the engine signal it looks like.** This is the same
+   concentration complaint as the Meta tab favouring a handful of units. Saya
+   pulls 21 inbound edges, Caraboo now pushes 21 outbound, and the long tail sits
+   near zero. A degree cap or normalisation in the candidate scorer would address
+   the cause rather than the threshold.
+
