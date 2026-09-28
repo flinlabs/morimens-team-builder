@@ -3188,8 +3188,7 @@
       ],
       "isDivineRealm": false,
       "tier": "C",
-      "notes": "Anti-'bullshit' utility support \u2014 dispels Seals and discards enemy-inflicted symptom/status cards, while providing shields and vulnerable. At E3 a Precision-Slash/Combat-Stance burst DPS that wants a team making shields and copying/replaying her cards.",
-      "combatTheme": "strike"
+      "notes": "Anti-'bullshit' utility support \u2014 dispels Seals and discards enemy-inflicted symptom/status cards, while providing shields and vulnerable. At E3 a Precision-Slash/Combat-Stance burst DPS that wants a team making shields and copying/replaying her cards."
     },
     "annotationPending": false,
     "statScaling": {
@@ -50064,7 +50063,10 @@
         "awakener-0030",
         "awakener-0045",
         "awakener-0055",
-        "awakener-0027"
+        "awakener-0027",
+        "awakener-0054",
+        "awakener-0058",
+        "awakener-0061"
       ],
       "conflictsWith": [],
       "viabilityFloor": "E0",
@@ -50094,10 +50096,797 @@
       ],
       "divineRealmNote": "Eden of Propagation mutates Caro into Propagation: Caro, the same rewrite Saya brings. Embryo Fusion caps at 200 instead of 100 and yields a Propagule Embryo; consuming one grants 40 temporary Propagation Fiesta stacks per awakener per turn, and each stack adds 1% to exalt base damage, STR, poison and shield. Devour no longer grants Shield or temporary STR, and Crimson Furnace becomes larger but gains a 3-turn cooldown while inflicting Corrosion.",
       "contentNotes": {
-        "arc2": "Realm Mastery pays twice on her: it raises Propagation Fiesta stacks by 0.05% per point under the rewrite, and via E1 it adds 0.15% Snowy Hex Fixed DMG per point from her, her wheel and her covenant. Doubled on an all-Caro or all-Chaos team."
+        "arc2": "Realm Mastery pays twice on her: it raises Propagation Fiesta stacks by 0.05% per point under the rewrite, and via E1 it adds 0.15% Snowy Hex Fixed DMG per point from her, her wheel and her covenant. Doubled on an all-Caro or all-Chaos team.",
+        "dtide": "Her Blessings can inflict Weakness on your own team, so she belongs in slow stall comps that do not care \u2014 poison with Xu, or Fixed DMG carries like Vortice and Pontos. She is a natural in Aequor, where Tranquil Sea shields scale off the Max HP she inflates."
       },
       "anchorPosse": "posse-0062",
       "realmRewrite": "PROPAGATION_CARO"
+    },
+    "annotationPending": false
+  },
+  "awakener-0061": {
+    "id": "awakener-0061",
+    "name": "Ogier: Oathbound",
+    "realm": "CHAOS",
+    "type": "WARDEN",
+    "faction": "The Fools",
+    "rarity": "Genesis",
+    "searchTags": [
+      "STR Up",
+      "STR Down",
+      "Corrosion",
+      "Divine Realm"
+    ],
+    "route": {
+      "slug": "ogier-oathbound",
+      "canonicalPath": "/database/awakeners/ogier-oathbound"
+    },
+    "assets": {
+      "icon": "asset-awakener-0061-icon"
+    },
+    "isDivineRealm": true,
+    "isLemurian": false,
+    "availabilityType": "LIMITED_ASTRAL_REIGN",
+    "aliases": [
+      "ogier oathbound",
+      "genesis ogier",
+      "gogier",
+      "g-ogier"
+    ],
+    "ingameId": "C03EX",
+    "numericId": 61,
+    "lineupToken": null,
+    "primaryScalingBase": 20,
+    "baseStatsLv1": {
+      "CON": 33,
+      "ATK": 40,
+      "DEF": 34
+    },
+    "substatsLv1": {
+      "CritRate": 6.6,
+      "CritDamage": 51.2,
+      "AliemusRegen": 0,
+      "KeyflareRegen": 15,
+      "RealmMastery": 0,
+      "SigilYield": 0,
+      "DamageAmplification": 0,
+      "DeathResistance": 0
+    },
+    "enlightens": [
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.ogier-oathbound.stand-to-defend",
+        "name": "Stand to Defend",
+        "route": {
+          "slug": "stand-to-defend",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/enlightens/stand-to-defend"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "E1",
+        "descriptionTemplate": "{Unfallen Heart} Shield and {STR} generation multipliers +10%. Each stack of {Undertow} grants Ogier: Oathbound +10% Crit. DMG.\nFor every 1% Crit. Rate provided by Ogier: Oathbound and his equipped WoD & Covenant, the Shield and {STR} generation multipliers of {Unfallen Heart} additionally +0.3%, and the Crit. DMG granted by each stack of {Undertow} additionally +0.3%.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.ogier-oathbound.bear-the-glimmer",
+        "name": "Bear the Glimmer",
+        "route": {
+          "slug": "bear-the-glimmer",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/enlightens/bear-the-glimmer"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "E2",
+        "descriptionTemplate": "\"Strike\" takes effect 1 additional time. {Turn Unique}: When \"Strike\" is played, draw 1 {Sin-Stained Spear}.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.ogier-oathbound.fall-for-the-cause",
+        "name": "Fall for the Cause",
+        "route": {
+          "slug": "fall-for-the-cause",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/enlightens/fall-for-the-cause"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "E3",
+        "descriptionTemplate": "Each stack of {Undertow} now increases the Final DMG of Ogier: Oathbound's Command Cards by 50%. The Base Shield and {STR} increase provided by {Unfallen Heart} for each stack of {Undertow} consumed becomes 50%.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.ogier-oathbound.oath-to-tomorrow",
+        "name": "Oath to Tomorrow",
+        "route": {
+          "slug": "oath-to-tomorrow",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/enlightens/oath-to-tomorrow"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "OverExalt",
+        "descriptionTemplate": "{STR} gained is tripled.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "enlighten",
+        "id": "enlighten.ogier-oathbound.the-vow-sworn-anew",
+        "name": "The Vow, Sworn Anew",
+        "route": {
+          "slug": "the-vow-sworn-anew",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/enlightens/the-vow-sworn-anew"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "AbsoluteAxiom",
+        "descriptionTemplate": "{Rouse} {Flesh as Fortress} is enhanced.\n{Sin-Stained Spear} gains +200% Base DMG and an additional 400% {STR} bonus. The Base Shield increase for Ogier: Oathbound's \"Defense\" cards becomes 100%.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Ogier: Oathbound"
+      }
+    ],
+    "skills": [
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.ogier-oathbound.defense",
+        "name": "Defense",
+        "route": {
+          "slug": "defense",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/skills/defense"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "Defense",
+        "cardFamily": "command",
+        "cardTypes": [
+          "defense"
+        ],
+        "descriptionTemplate": "Gain [Block:Arg3] Shield. Ogier: Oathbound gains [Energy:Arg2] Aliemus.\nDraw 1 card",
+        "descriptionArgs": {
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10"
+            ]
+          },
+          "Arg3": {
+            "kind": "scaling",
+            "values": [
+              "10",
+              "12",
+              "14",
+              "16",
+              "18",
+              "20"
+            ],
+            "stat": "DEF",
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "1",
+        "lore": "\"Do you hear it? How their wailing rings through every corner, yet no one rises to shelter them.\"\n\"Covering your ears won't shut it out, worthless knight.\"\n\"You were there. You made your choice.\"\n\"When the tide of enemies swept in, you cast off your armor and let them ravage your beloved homeland.\"",
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.ogier-oathbound.endless-shadow",
+        "name": "Endless Shadow",
+        "route": {
+          "slug": "endless-shadow",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/skills/endless-shadow"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "Skill2",
+        "cardFamily": "command",
+        "cardTypes": [
+          "skill"
+        ],
+        "descriptionTemplate": "Temporarily reduce all enemies' {STR\u25bc} by [Exhaustion:Arg1]. Gain [Power:Arg2] {STR}. Take effect X additional times (X \u2264 5).",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "4",
+              "4.8",
+              "5.6",
+              "6.4",
+              "7.2",
+              "8"
+            ],
+            "stat": "DEF",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "1.5",
+              "1.8",
+              "2.1",
+              "2.4",
+              "2.7",
+              "3"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "X5",
+        "lore": "During routine inspections at Mythag, researchers conducted a dedicated study of this amorphous, pitch-black mass.\nTo their surprise, they did manage to extract certain material components. Then they rushed to conduct a second experiment, only to obtain entirely different results.\nAs if mirroring its amorphous nature, its composition shifts with every passing moment, like an elusive phantom.\nFor the formless, its root is naught but formlessness.",
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.ogier-oathbound.flesh-as-fortress",
+        "name": "Flesh as Fortress",
+        "route": {
+          "slug": "flesh-as-fortress",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/skills/flesh-as-fortress"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "Rouse",
+        "cardFamily": "rouse",
+        "cardTypes": [
+          "rouse"
+        ],
+        "descriptionTemplate": "Ogier: Oathbound gains [Arg2]% Base Aliemus. {Rouse}: Ogier: Oathbound's \"Defense\" cards gain +50% Base Shield and \"Draw 1 card.\" Ogier: Oathbound's {Sin-Stained Spear} gains {Turn Unique}: When it deals DMG, apply {Corrosion} equal to the DMG dealt.",
+        "descriptionArgs": {
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "25",
+              "30",
+              "35",
+              "40",
+              "45",
+              "50"
+            ],
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [
+          {
+            "id": "mechanic.retain"
+          }
+        ],
+        "cost": "3",
+        "lore": "Once, the youth had tried to tear this vile black slime from his own flesh. Yet whatever he did\u2014ripping with his bare hands, cutting with blades, striking with blunt force\u2014the formless nightmare refused to leave, it only pressed in closer.\nFinally, he accepted the truth: he and It had long since bled into one another.\nIt had become his shadow.",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.ogier-oathbound.the-vow-sworn-anew.skill.ogier-oathbound.flesh-as-fortress",
+            "operation": "replace_description",
+            "upgraderId": "enlighten.ogier-oathbound.the-vow-sworn-anew",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "AbsoluteAxiom",
+            "ownerAwakenerId": "awakener-0061",
+            "ownerAwakenerName": "Ogier: Oathbound",
+            "patch": {
+              "descriptionTemplate": "Ogier: Oathbound gains [Arg2]% Base Aliemus. {Rouse}: Ogier: Oathbound's {Sin-Stained Spear} Base DMG +200%, enjoying an additional 400% {STR} bonus. Ogier: Oathbound's \"Defense\" cards gain +100% Base Shield and \"Draw 1 card.\" Ogier: Oathbound's {Sin-Stained Spear} gains {Turn Unique}: When it deals DMG, apply {Corrosion} equal to the DMG dealt."
+            }
+          }
+        ],
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.ogier-oathbound.oath-to-tomorrow",
+        "name": "Oath to Tomorrow",
+        "route": {
+          "slug": "oath-to-tomorrow",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/skills/oath-to-tomorrow"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "OverExalt",
+        "cardFamily": "exalt",
+        "cardTypes": [
+          "over_exalt"
+        ],
+        "descriptionTemplate": "{STR} gained is tripled.",
+        "descriptionArgs": {},
+        "cardKeywords": [],
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.ogier-oathbound.sin-stained-spear",
+        "name": "Sin-Stained Spear",
+        "route": {
+          "slug": "sin-stained-spear",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/skills/sin-stained-spear"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "Skill1",
+        "cardFamily": "command",
+        "cardTypes": [
+          "skill"
+        ],
+        "descriptionTemplate": "Deal [Damage:Arg1] DMG, enjoy a 300% {STR} bonus. {Turn Unique}: Gain 1 stack of {Undertow}.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "100",
+              "120",
+              "140",
+              "160",
+              "180",
+              "200"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "2",
+        "lore": "When a knight takes his oath, the steel at his side is likewise gilded in glory.\nBut his first silver spear, entrusted with a sacred mission, had long ago melted in the embers of war.\nSince he was a sinner already, he might as well let this wicked black slime serve as his new weapon. That way, he thought, even if it took on more blood, it would bring no further shame upon those now gone.",
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.ogier-oathbound.strike",
+        "name": "Strike",
+        "route": {
+          "slug": "strike",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/skills/strike"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "Strike",
+        "cardFamily": "command",
+        "cardTypes": [
+          "strike"
+        ],
+        "descriptionTemplate": "Deal [Damage:Arg1] DMG. Ogier: Oathbound gains [Energy:Arg2] Aliemus.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "scaling",
+            "values": [
+              "10",
+              "12",
+              "14",
+              "16",
+              "18",
+              "20"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          },
+          "Arg2": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10"
+            ]
+          }
+        },
+        "cardKeywords": [],
+        "cost": "1",
+        "lore": "\"Do you see it? How their flesh splits open beneath your blade, how brilliantly the blood blossoms.\"\n\"Closing your eyes won't make it vanish, dear child.\"\n\"You know. You know it well.\"\n\"The skill you've honed took on the color of death long ago; it serves only to sow the next ruin.\"",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.ogier-oathbound.bear-the-glimmer.skill.ogier-oathbound.strike",
+            "operation": "replace_description",
+            "upgraderId": "enlighten.ogier-oathbound.bear-the-glimmer",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E2",
+            "ownerAwakenerId": "awakener-0061",
+            "ownerAwakenerName": "Ogier: Oathbound",
+            "patch": {
+              "descriptionTemplate": "Deal [Damage:Arg1] DMG. Ogier: Oathbound gains [Energy:Arg2] Aliemus. Takes effect 1 additional time. {Turn Unique}: When \"Strike\" is played, draw 1 {Sin-Stained Spear}."
+            }
+          }
+        ],
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "skill",
+        "id": "skill.ogier-oathbound.unfallen-heart",
+        "name": "Unfallen Heart",
+        "route": {
+          "slug": "unfallen-heart",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/skills/unfallen-heart"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "slot": "Exalt",
+        "cardFamily": "exalt",
+        "cardTypes": [
+          "exalt"
+        ],
+        "descriptionTemplate": "Gain [Block:Arg3] Shield and [Power:Arg4] {STR}. Consume all stacks of {Undertow}. For each stack consumed, gain 1 stack of {Guilt} and increase the Base Shield and {STR} generated by this Exalt by 33%.",
+        "descriptionArgs": {
+          "Arg3": {
+            "kind": "scaling",
+            "values": [
+              "35",
+              "42",
+              "49",
+              "56",
+              "63",
+              "70"
+            ],
+            "stat": "DEF",
+            "suffix": "%"
+          },
+          "Arg4": {
+            "kind": "scaling",
+            "values": [
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10"
+            ],
+            "stat": "ATK",
+            "suffix": "%"
+          }
+        },
+        "cardKeywords": [],
+        "cost": "100",
+        "lore": "In truth, the image of that castle had long faded from Ogier's memory.\nYet now, he can raise a new rampart out of the yearning in his heart.\nIf, under his protection, the laughter of people can still be heard, and familiar flowers bloom across the fields once more...\nthen this long-tainted heart might still hold a purpose in this world.",
+        "upgrades": [
+          {
+            "id": "upgrade.enlighten.ogier-oathbound.stand-to-defend.skill.ogier-oathbound.unfallen-heart",
+            "operation": "override_args",
+            "upgraderId": "enlighten.ogier-oathbound.stand-to-defend",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E1",
+            "ownerAwakenerId": "awakener-0061",
+            "ownerAwakenerName": "Ogier: Oathbound",
+            "patch": {
+              "descriptionArgs": {
+                "Arg3": {
+                  "kind": "scaling",
+                  "values": [
+                    "35",
+                    "42",
+                    "49",
+                    "56",
+                    "63",
+                    "70"
+                  ],
+                  "stat": "DEF",
+                  "suffix": "%",
+                  "substatBonus": {
+                    "substat": "CritRate",
+                    "multiplier": "0.3",
+                    "mode": "additive_factor",
+                    "baseMultiplier": "1.1"
+                  }
+                },
+                "Arg4": {
+                  "kind": "scaling",
+                  "values": [
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
+                  ],
+                  "stat": "ATK",
+                  "suffix": "%",
+                  "substatBonus": {
+                    "substat": "CritRate",
+                    "multiplier": "0.3",
+                    "mode": "additive_factor",
+                    "baseMultiplier": "1.1"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "upgrade.enlighten.ogier-oathbound.bear-the-glimmer.skill.ogier-oathbound.unfallen-heart",
+            "operation": "override_args",
+            "upgraderId": "enlighten.ogier-oathbound.bear-the-glimmer",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E2",
+            "ownerAwakenerId": "awakener-0061",
+            "ownerAwakenerName": "Ogier: Oathbound",
+            "patch": {
+              "descriptionArgs": {
+                "Arg3": {
+                  "kind": "scaling",
+                  "values": [
+                    "35",
+                    "42",
+                    "49",
+                    "56",
+                    "63",
+                    "70"
+                  ],
+                  "stat": "DEF",
+                  "suffix": "%",
+                  "substatBonus": {
+                    "substat": "CritRate",
+                    "multiplier": "0.3",
+                    "mode": "additive_factor",
+                    "baseMultiplier": "1.1"
+                  }
+                },
+                "Arg4": {
+                  "kind": "scaling",
+                  "values": [
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
+                  ],
+                  "stat": "ATK",
+                  "suffix": "%",
+                  "substatBonus": {
+                    "substat": "CritRate",
+                    "multiplier": "0.3",
+                    "mode": "additive_factor",
+                    "baseMultiplier": "1.1"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "upgrade.enlighten.ogier-oathbound.fall-for-the-cause.skill.ogier-oathbound.unfallen-heart",
+            "operation": "mixed",
+            "upgraderId": "enlighten.ogier-oathbound.fall-for-the-cause",
+            "upgraderType": "enlighten",
+            "upgraderSlot": "E3",
+            "ownerAwakenerId": "awakener-0061",
+            "ownerAwakenerName": "Ogier: Oathbound",
+            "patch": {
+              "descriptionTemplate": "Gain [Block:Arg3] Shield and [Power:Arg4] {STR}. Consume all stacks of {Undertow}. For each stack consumed, gain 1 stack of {Guilt} and increase the Base Shield and {STR} generated by this Exalt by 50%.",
+              "descriptionArgs": {
+                "Arg3": {
+                  "kind": "scaling",
+                  "values": [
+                    "35",
+                    "42",
+                    "49",
+                    "56",
+                    "63",
+                    "70"
+                  ],
+                  "stat": "DEF",
+                  "suffix": "%",
+                  "substatBonus": {
+                    "substat": "CritRate",
+                    "multiplier": "0.3",
+                    "mode": "additive_factor",
+                    "baseMultiplier": "1.1"
+                  }
+                },
+                "Arg4": {
+                  "kind": "scaling",
+                  "values": [
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
+                  ],
+                  "stat": "ATK",
+                  "suffix": "%",
+                  "substatBonus": {
+                    "substat": "CritRate",
+                    "multiplier": "0.3",
+                    "mode": "additive_factor",
+                    "baseMultiplier": "1.1"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "ownerAwakenerName": "Ogier: Oathbound"
+      }
+    ],
+    "talents": [
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.ogier-oathbound.primordial-breath",
+        "name": "Primordial Breath",
+        "route": {
+          "slug": "primordial-breath",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/talents/primordial-breath"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "family": "passive",
+        "descriptionTemplate": "When Ogier: Oathbound is on the team, the {Chaos} Realm reforges into {Primordia: Chaos}.\n\nPrimordial Influx: Base Keyflare is increased to 2000, Team DMG Amplification is increased by 50%, and all Awakeners' ATK and DEF are increased by 10%. If the team consists solely of {Chaos} Awakeners, the DMG Amplification bonus from this effect is doubled. At the start of battle, gain 2000 Keyflare.\n\nConfluent Keys: All Awakeners' Keyflare Regen Levels are set to the team average and no longer decay. Awakeners no longer gain Keyflare from Arithmetica consumed; instead, the first Command Card played by each Awakener per turn grants Keyflare equal to (team's Keyflare Regen \u00d7 3) + 100.\n\nIndivisible Realm: No longer triggers other Realms' Pure Realm, Double Realm Mastery, or Double DMG Amplification effects\n\nPrimordial {Echo}: {Rouse} Cards gain {Prepare 1}; the currently equipped Posse is automatically unleashed the first time they are played each turn.\n\nMemory Fragments: Posse is replaced with Primordia: Dual Recurrence and Primordia: Triad {Revelation}, and the carried Posse itself can no longer be unleashed.\n\n\u00b7 Primordia: Dual Recurrence: {Discover} 3 Posses from those in hand, then choose 1 to unleash twice.\n\n\u00b7 Primordia: Triad {Revelation}: {Discover} 3 sets of Posses from those in hand, each set containing 3 different Posses. Choose one set to unleash each Posse within it once, in sequence.\n\nThe Posses featured in Primordia: Dual Recurrence and Primordia: Triad {Revelation} are drawn from the 8 types of {Primordial Memory}.\n\nPrimordia: Dual Recurrence and Primordia: Triad {Revelation} each count as unleashing only 1 Posse. When their effects would trigger multiple times, only the first Posse to take effect is valid.\n\n{Primordia: Chaos} Mastery: Realm Mastery becomes {Primordia: Chaos} Mastery. Each point increases Posse effects by 0.05%.\nEach point of Posse effects increases Fixed {Poison}, Fixed Counterattack, Fixed {STR}, Fixed {Tentacle DMG}, and Fixed {Ancient Embers} generated by Posses by 2%, and increases Fixed Shield, Fixed HP Recovery, {STR} reduction, Crit. Rate, Crit. DMG, DMG Amplification, Realm Mastery, Aliemus, {Embryo Fusion}, and Keyflare generated by Posses by 1%.\nIf the team consists solely of {Chaos} Awakeners, this effect is doubled.",
+        "descriptionArgs": {},
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.ogier-oathbound.madness-omen",
+        "name": "Madness Omen",
+        "route": {
+          "slug": "madness-omen",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/talents/madness-omen"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "family": "madness_omen",
+        "maxLevel": 12,
+        "descriptionTemplate": "Obtain [Arg1] Aliemus after the start of exploration.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "5",
+            "gainPerLevel": "5"
+          }
+        },
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.ogier-oathbound.soulforge-aptitude",
+        "name": "Soulforge Aptitude",
+        "route": {
+          "slug": "soulforge-aptitude",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/talents/soulforge-aptitude"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "family": "soulforge_aptitude",
+        "maxLevel": 10,
+        "descriptionTemplate": "This talent is only effective in the {Astral Reign} stages.\nThis Awakener's CON, ATK, and DEF +[Arg1]%, and they gain [Arg2] Keyflare upon their first {Rouse}.\n{Endless Shadow} {STR} reduction and {STR} generation multipliers +[Arg3]%. Each activation grants the next {Sin-Stained Spear} an additional [Arg4]% {STR} bonus, up to an additional 1200%.",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "3",
+            "gainPerLevel": "3"
+          },
+          "Arg2": {
+            "kind": "linear",
+            "base": "50",
+            "gainPerLevel": "50"
+          },
+          "Arg3": {
+            "kind": "linear",
+            "base": "10",
+            "gainPerLevel": "10"
+          },
+          "Arg4": {
+            "kind": "linear",
+            "base": "20",
+            "gainPerLevel": "20"
+          }
+        },
+        "ownerAwakenerName": "Ogier: Oathbound"
+      },
+      {
+        "schemaVersion": 3,
+        "kind": "talent",
+        "id": "talent.ogier-oathbound.gnostic-potential",
+        "name": "Gnostic Potential",
+        "route": {
+          "slug": "gnostic-potential",
+          "canonicalPath": "/database/awakeners/ogier-oathbound/talents/gnostic-potential"
+        },
+        "ownerAwakenerId": "awakener-0061",
+        "family": "gnostic_potential",
+        "maxLevel": 5,
+        "defaultMaxed": true,
+        "descriptionTemplate": "This Awakener gains [Arg1] Levels of Base Attributes.\n\u00b7CON +[Talent_Attr_Lv_physique]\n\u00b7ATK +[Talent_Attr_Lv_atk]\n\u00b7DEF +[Talent_Attr_Lv_def]",
+        "descriptionArgs": {
+          "Arg1": {
+            "kind": "linear",
+            "base": "2",
+            "gainPerLevel": "2"
+          },
+          "Talent_Attr_Lv_physique": {
+            "kind": "linear",
+            "base": "4",
+            "gainPerLevel": "3"
+          },
+          "Talent_Attr_Lv_atk": {
+            "kind": "scaling",
+            "values": [
+              "4",
+              "8",
+              "12",
+              "16",
+              "19"
+            ]
+          },
+          "Talent_Attr_Lv_def": {
+            "kind": "linear",
+            "base": "4",
+            "gainPerLevel": "3"
+          }
+        },
+        "ownerAwakenerName": "Ogier: Oathbound"
+      }
+    ],
+    "build": null,
+    "annotation": {
+      "id": "awakener-0061",
+      "teamRoles": [
+        "shielder",
+        "corrosion_applier",
+        "card_cycler",
+        "str_support",
+        "keyflare_support",
+        "sub_dps"
+      ],
+      "synergyTags": [
+        "divine_realm",
+        "strike_synergy",
+        "counter_scaling"
+      ],
+      "requires": [],
+      "synergizesWith": [
+        "awakener-0060",
+        "awakener-0054",
+        "awakener-0033",
+        "awakener-0022",
+        "awakener-0041",
+        "awakener-0024",
+        "awakener-0059",
+        "awakener-0056",
+        "awakener-0057",
+        "awakener-0006",
+        "awakener-0009"
+      ],
+      "conflictsWith": [],
+      "viabilityFloor": "E0",
+      "enlightenBreakpoints": [
+        "E2",
+        "E3",
+        "OE",
+        "AA"
+      ],
+      "keySkillSlots": [],
+      "keyTalents": [
+        "madness_omen"
+      ],
+      "recommendedPosses": [],
+      "isDivineRealm": true,
+      "tier": "B",
+      "notes": "Chaos Warden who brings Primordia: Chaos and shields around it. The community reads him as genuinely good but best-in-slot nowhere: versatile enough to fit many teams, a 'PChaos bot' in the ones where the realm is the real reason he is there. The September buffs (Endless Shadow STR reduction and multiplier 5-50% to 10-100%, Unfallen Heart +25% STR multiplier, E2 gaining a Sin-Stained Spear draw, AA going to +200% Base DMG and +400% STR) pushed him noticeably toward damage, and opinion has shifted with them: several experienced players now argue he plays better as a burst DPS than as the Warden his title implies.\n\nTwo mutually exclusive modes, and picking one is the whole decision. As a tank he Exalts freely: Sin-Stained Spear takes a 300% STR bonus and hands him a stack of Undertow, which raises his damage and his Exalt while cutting his draw each turn. Unfallen Heart consumes the stacks, turning each into Guilt and adding to the Exalt's base shield and STR per stack consumed, and Guilt then makes his skills draw Defense back with Retain and Prepare. Rouse adds +50% base shield and a draw to Defense, and at E2 his Strike pulls Sin-Stained Spear. As a nuker he never Exalts at all, because Exalting is what spends the Undertow: hold the stacks, spend Arithmetica on Endless Shadow first, then fire the 2-cost. Undertow caps at 3, or 5 with the Dimensional Image relic. Exalt is back to a real 100 Aliemus.\n\nHameln is the closest thing he has to a required partner, and is named by nearly every player who has made him work. The bonus play doubles a Sin-Stained Spear already carrying the Soulforge STR multiplier, and because GOgier consumes his own Corrosion the doubled hit applies and detonates it in the same turn. The doubling also works cleanly on his Defense, unlike Kathigu-Ra, whose Fiamma-inflated shield only partially doubles. The standard nuke line is Endless Shadow, Hameln Exalt, then Sin-Stained Spear.\n\nTeams reported working: Lotan: Cetarchon (the most commonly cited success), Mouchette with Cetarchon and a fourth of Saya or Arachne, a blue counter/shield stall with Caecus and Celeste, and Pollux, who trades card pulls with him and is worth a slot specifically when Pollux has no OE and therefore no team of his own. Horla is a quiet fit because retaining unused Arithmetica across turns is exactly what the X card wants, and retains also soften the Undertow draw penalty. Saya's wheel elsewhere on the team helps with how Aliemus-hungry he is. Two cautions: Mouchette players report the draw reduction is genuinely painful to play around, and Kathigu-Ra wants her own Posse too much to give it up for Primordia: Chaos.\n\nEnlighten reads from players running him: E2 is underrated, because the Aliemus ramp off dumping free Strike and Defense posse cards into him compounds, and the extra Strike play feeds Corrosion triggers when a double play lands on Defense instead. E3 is enough for a full tank \u2014 the shield is still large, just not on demand. OE is mediocre but cheap to reach and speeds the STR ramp. AA is the damage breakpoint, where you start trading the second wheel and other tank pieces for the much larger Rouse bonus. He is also compared to Castor as a less reliable version of the same job.",
+      "keyPairings": [
+        {
+          "partnerId": "awakener-0022",
+          "reason": "Hameln's bonus play doubles a Soulforge-boosted Sin-Stained Spear and detonates the Corrosion it applies in the same turn; it also doubles his Defense cleanly, which Kathigu-Ra's Fiamma shield does not"
+        },
+        {
+          "partnerId": "awakener-0059",
+          "reason": "The most commonly reported working team \u2014 but both bring Primordia: Chaos, so one of them is paying for a rewrite the other already supplies"
+        },
+        {
+          "partnerId": "awakener-0041",
+          "reason": "They pull each other's cards, and Pollux's wheel is the DPS-build wheel pick; worth a slot specifically when Pollux has no OE and no team of his own"
+        }
+      ],
+      "divineRealmNote": "Primordial Breath reforges Chaos into Primordia: Chaos, the same rewrite Lotan: Cetarchon brings. Base Keyflare rises to 2000 with 2000 granted at the start of battle, team DMG Amplification +50% (doubled in Pure Chaos) and all ATK/DEF +10%. Keyflare Regen is set to the team average and stops decaying; Arithmetica no longer grants Keyflare and instead each Awakener's first Command Card per turn grants (team Keyflare Regen x 3) + 100. Rouse cards gain Prepare 1, and the Posse slot is replaced by Primordia: Dual Recurrence and Triad Revelation drawn from the eight Primordial Memory posses. Realm Mastery becomes Posse Potency at 0.05% per point, where each percent raises Poison, Counter, STR and Ancient Embers by 2% and Shield, Healing, STR-down, Crit Rate, Crit DMG, DMG Amp, RM, Aliemus, Embryo Fusion and Keyflare by 1%, doubled in Pure Chaos. It no longer triggers other realms' Pure Realm or Chaos Symbiosis effects. The practical cost: a character who depends on her own Posse, Kathigu-Ra being the standing example, should not be brought into this realm.",
+      "contentNotes": {
+        "arc2": "Soulforge Aptitude makes Endless Shadow the setup button: each activation adds to the next Sin-Stained Spear's STR bonus, up to an extra 1200%, and after the buff the skill's own STR reduction and generation multipliers run 10-100% rather than 5-50%. Spend the X card before the 2-cost, never after.",
+        "dtide": "Fine for story and mid-difficulty content, awkward to slot into the hardest stages: the damage either stays low or takes a long ramp, and the shielding is real but slow and fiddly to cycle."
+      },
+      "realmRewrite": "PRIMORDIA_CHAOS"
     },
     "annotationPending": false
   }
