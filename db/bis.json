@@ -114,7 +114,7 @@
           "DMG AMP",
           "DR"
         ],
-        "notes": "Flexible filler \u2014 can carry any wheels/covenants. Alt SR: 35mm Magic. Alt cov: Paradox."
+        "notes": "Flexible filler — can carry any wheels/covenants. Alt SR: 35mm Magic. Alt cov: Paradox."
       },
       {
         "variant": "DPS Arc 2",
@@ -403,7 +403,7 @@
           "Keyflare",
           "DMG AMP"
         ],
-        "notes": "Flexible filler \u2014 can carry any wheels/covenants."
+        "notes": "Flexible filler — can carry any wheels/covenants."
       }
     ]
   },
@@ -2341,7 +2341,7 @@
           {
             "tier": "SR_SHOP",
             "wheelId": "wheel-0094",
-            "wheelName": "Isarau\u2019s Gaze"
+            "wheelName": "Isarau’s Gaze"
           }
         ],
         "covenants": [
@@ -2381,7 +2381,7 @@
           {
             "tier": "SR_SHOP",
             "wheelId": "wheel-0094",
-            "wheelName": "Isarau\u2019s Gaze"
+            "wheelName": "Isarau’s Gaze"
           }
         ],
         "covenants": [
@@ -2422,7 +2422,7 @@
           {
             "tier": "SR_SHOP",
             "wheelId": "wheel-0094",
-            "wheelName": "Isarau\u2019s Gaze"
+            "wheelName": "Isarau’s Gaze"
           }
         ],
         "covenants": [
@@ -2713,7 +2713,7 @@
           {
             "tier": "ALT_SSR",
             "wheelId": "wheel-0030",
-            "wheelName": "Fouett\u00e9"
+            "wheelName": "Fouetté"
           },
           {
             "tier": "BIS_SR",
@@ -2723,7 +2723,7 @@
           {
             "tier": "SR_SHOP",
             "wheelId": "wheel-0110",
-            "wheelName": "Witch\u2019s Wide-brimmed Hat"
+            "wheelName": "Witch’s Wide-brimmed Hat"
           }
         ],
         "covenants": [
@@ -3146,7 +3146,7 @@
           "Sigil Yield",
           "DMG Amplification"
         ],
-        "notes": "Hand-authored from the two community guides, not from the Mythag Compendium, which has no build for her yet. The headline finding is that her signature is not mandatory: 'Lotan's WoDs can be substituted with a bunch of others to pretty much no difference in performance.' Cetus Occasus is BiS only at E1, where Sigil Yield converts into Strike crit rate and base damage via Rotting Remains; below E1 ignore Sigil Yield entirely and build crit rate instead. Celestial Beast leads because both her Skills count as Strikes, so its Exalt-and-Strike base damage and per-Strike crit stacking cover her whole kit. Split the build by what you need: crit rate and Strike damage (Twisted Knight Ballad, Path Forsaken, Special Training, Blade of the Titan) for mob clearing, full crit DMG (Treasured Rarity, Private Afternoon, Bloody Feast, Amber-Tinted Death, Celestial Beast) when mobbing does not matter. Special Training deserves a mention for fixing her crit rate single-handedly, since she always Rouses turn 1; paired with April Tribute she reaches 100% crit rate. Covenants split by role \u2014 April Tribute for subDPS and mob clearing, Paradox for main DPS in long fights, and at E2 or above Twisted Twins: Black is arguably best of all, since the odd-turn Strike copy pulls a Short Blade and removes the need to search for her cards. Do not run Dream of Medicine on her except as a Freeze/Exhaust countermeasure \u2014 the guides call it counterproductive, because copied Short Blades do not advance the stack counter. Substat priority at E1 is Crit DMG = Sigil Yield > Crit Rate = DMG Amp = Death Resistance > Realm Mastery; without E1, drop Sigil Yield and prioritise Crit Rate."
+        "notes": "Hand-authored from the two community guides, not from the Mythag Compendium, which has no build for her yet. The headline finding is that her signature is not mandatory: 'Lotan's WoDs can be substituted with a bunch of others to pretty much no difference in performance.' Cetus Occasus is BiS only at E1, where Sigil Yield converts into Strike crit rate and base damage via Rotting Remains; below E1 ignore Sigil Yield entirely and build crit rate instead. Celestial Beast leads because both her Skills count as Strikes, so its Exalt-and-Strike base damage and per-Strike crit stacking cover her whole kit. Split the build by what you need: crit rate and Strike damage (Twisted Knight Ballad, Path Forsaken, Special Training, Blade of the Titan) for mob clearing, full crit DMG (Treasured Rarity, Private Afternoon, Bloody Feast, Amber-Tinted Death, Celestial Beast) when mobbing does not matter. Special Training deserves a mention for fixing her crit rate single-handedly, since she always Rouses turn 1; paired with April Tribute she reaches 100% crit rate. Covenants split by role — April Tribute for subDPS and mob clearing, Paradox for main DPS in long fights, and at E2 or above Twisted Twins: Black is arguably best of all, since the odd-turn Strike copy pulls a Short Blade and removes the need to search for her cards. Do not run Dream of Medicine on her except as a Freeze/Exhaust countermeasure — the guides call it counterproductive, because copied Short Blades do not advance the stack counter. Substat priority at E1 is Crit DMG = Sigil Yield > Crit Rate = DMG Amp = Death Resistance > Realm Mastery; without E1, drop Sigil Yield and prioritise Crit Rate."
       },
       {
         "variant": "Support",
@@ -3206,7 +3206,7 @@
           "Death Resistance",
           "Realm Mastery"
         ],
-        "notes": "Her better role according to both guides. Heart of Silver is the stand-out because Keyflare Regen is set to the team average under Primordia: Chaos and every Rouse fires the chosen Posse \u2014 though the guides note it works nearly as well on a teammate. Sever and Scar maxes out instantly off her high ATK for -90 STR, which is strong into multi-hit enemies and gives the team DMG Amplification; stacked with Grace Through Pain her 2-cost mitigates 240+ damage a turn. Falling Upward is genuinely good on her rather than only on Saya: her high ATK pushes it past 8000 Corrosion for 0 cost, which accelerates her own Exalt. Manikin of Oblivion is worth trying on an Exalt-based unit with costs this high \u2014 it can refund roughly 90 Aliemus off her Over-Exalt. Death-resist wheels work but are usually contested and better placed elsewhere."
+        "notes": "Her better role according to both guides. Heart of Silver is the stand-out because Keyflare Regen is set to the team average under Primordia: Chaos and every Rouse fires the chosen Posse — though the guides note it works nearly as well on a teammate. Sever and Scar maxes out instantly off her high ATK for -90 STR, which is strong into multi-hit enemies and gives the team DMG Amplification; stacked with Grace Through Pain her 2-cost mitigates 240+ damage a turn. Falling Upward is genuinely good on her rather than only on Saya: her high ATK pushes it past 8000 Corrosion for 0 cost, which accelerates her own Exalt. Manikin of Oblivion is worth trying on an Exalt-based unit with costs this high — it can refund roughly 90 Aliemus off her Over-Exalt. Death-resist wheels work but are usually contested and better placed elsewhere."
       }
     ]
   },
@@ -3222,9 +3222,29 @@
             "wheelName": "Honeyed Deceit"
           },
           {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0021",
+            "wheelName": "Memory Spiral"
+          },
+          {
             "tier": "BIS_SR",
+            "wheelId": "wheel-0089",
+            "wheelName": "Data is Flesh"
+          },
+          {
+            "tier": "ALT_SR",
             "wheelId": "wheel-0176",
             "wheelName": "Serene Truth"
+          },
+          {
+            "tier": "GOOD",
+            "wheelId": "wheel-0061",
+            "wheelName": "Gluttony"
+          },
+          {
+            "tier": "GOOD",
+            "wheelId": "wheel-0066",
+            "wheelName": "Whisper"
           }
         ],
         "covenants": [
@@ -3233,8 +3253,8 @@
             "covenantName": "Cursed Rabbit"
           },
           {
-            "covenantId": "covenant-0001",
-            "covenantName": "Deus Ex Machina"
+            "covenantId": "covenant-0017",
+            "covenantName": "Dream of Medicine"
           }
         ],
         "preferredStats": [
@@ -3243,7 +3263,87 @@
         ]
       }
     ],
+    "provisional": false,
+    "provisionalNote": "Rebuilt 2026-09-27 from the mythag.net Caraboo guide, which replaced the release-day hand-authored entry. The guide's covenants are Cursed Rabbit and Dream of Medicine (Deus Ex Machina was my earlier guess and is dropped). Its early-game wheels are Gluttony and Whisper; its Astral Reign wheels are Memory Spiral and Data is Flesh; BIS_TIER_ORDER has no early/Arc2 axis so those fold into GOOD and the SSR/SR tiers. Honeyed Deceit stays BIS_SSR — the guide calls it out by name for drawing Miracle Blessing more often and recommends it for anyone investing in her. Serene Truth is not on the guide's list but is her free event signature, so it is kept at ALT_SR rather than dropped."
+  },
+  "awakener-0061": {
+    "awakenerId": "awakener-0061",
+    "variants": [
+      {
+        "variant": "Tank",
+        "wheels": [
+          {
+            "tier": "BIS_SSR",
+            "wheelId": "wheel-0178",
+            "wheelName": "Ever Sunward"
+          },
+          {
+            "tier": "BIS_SR",
+            "wheelId": "wheel-0091",
+            "wheelName": "The Land of Nonexistence"
+          },
+          {
+            "tier": "GOOD",
+            "wheelId": "wheel-0066",
+            "wheelName": "Whisper"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0123",
+            "wheelName": "Dusk and Dawn"
+          }
+        ],
+        "covenants": [
+          {
+            "covenantId": "covenant-0018",
+            "covenantName": "Feast from Afar"
+          },
+          {
+            "covenantId": "covenant-0007",
+            "covenantName": "Twisted Twins: White"
+          }
+        ],
+        "preferredStats": [
+          "Defense",
+          "Realm Mastery"
+        ]
+      },
+      {
+        "variant": "DPS",
+        "wheels": [
+          {
+            "tier": "BIS_SSR",
+            "wheelId": "wheel-0042",
+            "wheelName": "Twisted Knight Ballad"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0178",
+            "wheelName": "Ever Sunward"
+          },
+          {
+            "tier": "BIS_SR",
+            "wheelId": "wheel-0083",
+            "wheelName": "Analysis of Death"
+          }
+        ],
+        "covenants": [
+          {
+            "covenantId": "covenant-0017",
+            "covenantName": "Dream of Medicine"
+          },
+          {
+            "covenantId": "covenant-0009",
+            "covenantName": "Paradox"
+          }
+        ],
+        "preferredStats": [
+          "Crit DMG",
+          "Crit Rate"
+        ]
+      }
+    ],
     "provisional": true,
-    "provisionalNote": "Hand-authored on release day. Mythag has no Caraboo page yet, so this covers only what her own kit makes unambiguous: Honeyed Deceit is her signature and the only wheel keyed to Crimson Furnace, and Serene Truth is the free event floor carrying the same Weakness-into-Shield clause. Cursed Rabbit pairs Realm Mastery (her Snowy Hex multiplier once E1 is online) with a 6-piece that raises Shield and HP Recovery, which is her whole identity; Deus Ex Machina trades that for Arithmetica, which her Blessing engine spends heavily. Replace wholesale once the community list lands."
+    "provisionalNote": "Transcribed from the mythag.net GOgier guide on 2026-09-27, which itself carries a \"new unit, we are still testing\" disclaimer. The guide's wheel picks are newbie builds; Ever Sunward is called out by name in its Important Stats section and is listed here as the signature SSR. Re-check once the Mythag Compendium publishes a GOgier column. The guide splits its tank wheels into early-game (The Land of Nonexistence, Whisper) and Astral Reign (Dusk and Dawn) picks. BIS_TIER_ORDER has no axis for that, so they are folded into GOOD and ALT_SSR here rather than adding tiers to a pinned vocabulary. wheel-0179 Shadowed by the Past is his signature SR but the guide does not list it, so it is deliberately absent. Updated 2026-09-27: for the DPS build the community consensus is Pollux's wheel, Twisted Knight Ballad, over his own — it gives crit rate, crit damage and base damage, and heavily buffs the first card played, which is the Sin-Stained Spear anyway. Ever Sunward is not bad, but it is a tank wheel: its value is Exalt and Defense shielding plus STR on Defense, and the nuke build deliberately never Exalts. Ever Sunward also reportedly needs E3+ to compete with Erica's wheel, which is free in the shop, and is argued to be better on tank Kathigu-Ra, whose Fiamma gimmick lets her spam Defense far more often."
   }
 }
