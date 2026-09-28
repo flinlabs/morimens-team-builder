@@ -168,7 +168,7 @@ describe('endgame tier lists', () => {
     const graded = Object.values(tiers).filter(
       (t) => t.endgameDpsRank || t.endgameSupportRank
     )
-    expect(graded.length).toBe(49)
+    expect(graded.length).toBe(51)
 
     const caecus = tiers[awakenerIdByName('Caecus')]
     expect(caecus.supportRank).toBe('B')
