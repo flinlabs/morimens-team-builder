@@ -111,7 +111,7 @@ annotations/             # hand-curated per-awakener roles, tiers, pairings, not
 
 ## How it works
 
-1. **Data layer.** `npm run sync` pulls catalogs and per-record text from [SKeyDB](https://github.com/dansa/SKeyDB), hydrates descriptions, retags Mythic wheels, flags character-bonus posses, and merges the curated `annotations/`. The result lands in `db/`: 60 awakeners, 134 wheels, 21 covenants, 51 posses, plus D-Tide season metadata. Two derived datasets accompany them — `db/bis.json` (the parsed Mythag Compendium best-in-slot tables) and `db/gameplay-math.json` (the stat-growth, Keeper, and wheel main-stat curves from SKeyDB's metadata).
+1. **Data layer.** `npm run sync` pulls catalogs and per-record text from [SKeyDB](https://github.com/dansa/SKeyDB), hydrates descriptions, retags Mythic wheels, flags character-bonus posses, and merges the curated `annotations/`. The result lands in `db/`: 61 awakeners, 146 wheels, 21 covenants, 51 posses, plus D-Tide season metadata. Two derived datasets accompany them — `db/bis.json` (the parsed Mythag Compendium best-in-slot tables) and `db/gameplay-math.json` (the stat-growth, Keeper, and wheel main-stat curves from SKeyDB's metadata).
 2. **Algorithm layer.** `lib/` turns a roster into recommendations with no AI in the loop: viability scoring, realm legality, role coverage, a class cap (no more than two ASSAULT units), synergy, candidate combination, and a greedy five-team D-Tide solver, then deterministic wheel/covenant/posse assignment from owned inventory.
 3. **UI layer.** `RosterBuilder` (Inventory + Teams tabs) binds the Zustand store to the formation board and the `/api/generate` endpoint, with full investment detail in `DetailModal`.
 
