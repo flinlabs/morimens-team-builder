@@ -1,6 +1,6 @@
 {
   "_note": "Community tier lists, transcribed verbatim from mythag.net. Two SEPARATE rankings: how well a character carries as main DPS, and how much they improve a team as support. Keeping them apart is the whole point — Kathigu-Ra is A as a DPS and C as a support, Clementine is the reverse, and the single `tier` field on annotations/awakeners.json cannot express either. `dpsFloor` / `supportFloor` record the investment level the source printed in parentheses next to a portrait, e.g. \"Mouchette (E2)\"; that is the level at which the rank applies, and it is role-specific, so a unit can be listed at different floors on the two lists (Murphy: Fauxborn is E2 as a DPS and unqualified as a support). Absent from a list means the source did not rank them there at all — per its own note, you would need a crazy reason to use them in that role. That is meaningful data, so absence is left as absence rather than backfilled with a low grade.",
-  "_source": "mythag.net/handbook/tier-list and /handbook/tier-list-endgame, transcribed 2026-09-08 (after the 5-9 Sep D-Effect Zone rework). D-Effect Zone difficulties are Normal / Hard / Nightmare / Madness; the retired Alert 1-5 system covered only Normal (1-3) and Hard (4-5).",
+  "_source": "mythag.net/handbook/tier-list and /handbook/tier-list-endgame, re-transcribed 2026-09-27 (GOgier drop). D-Effect Zone difficulties are Normal / Hard / Nightmare / Madness; the retired Alert 1-5 system covered only Normal (1-3) and Hard (4-5).",
   "_dpsScale": {
     "S": "Newbie solo carry - very little investment needed to clear Normal and Hard stages.",
     "A": "Great in Hard - clears Normal and Hard stages as main DPS even with a suboptimal team.",
@@ -58,7 +58,7 @@
     "awakener-0005": {
       "name": "Aurita",
       "dpsRank": "B",
-      "endgameDpsRank": "B",
+      "endgameDpsRank": "C",
       "endgameDpsFloor": "AA"
     },
     "awakener-0006": {
@@ -99,7 +99,7 @@
       "dpsFloor": "E3",
       "supportRank": "A",
       "supportFloor": "E3",
-      "endgameDpsRank": "B",
+      "endgameDpsRank": "C",
       "endgameDpsFloor": "AA",
       "endgameSupportRank": "B",
       "endgameSupportFloor": "AA"
@@ -114,7 +114,9 @@
     },
     "awakener-0013": {
       "name": "Doll",
-      "supportRank": "B"
+      "supportRank": "B",
+      "endgameSupportRank": "B",
+      "endgameSupportFloor": "AA"
     },
     "awakener-0014": {
       "name": "Doresain",
@@ -285,6 +287,8 @@
       "dpsRank": "B",
       "dpsFloor": "E3",
       "supportRank": "B",
+      "endgameDpsRank": "C",
+      "endgameDpsFloor": "AA",
       "endgameSupportRank": "B"
     },
     "awakener-0038": {
@@ -434,6 +438,15 @@
       "dpsFloor": "E1",
       "supportRank": "A",
       "endgameSupportRank": "A"
+    },
+    "awakener-0061": {
+      "name": "Ogier: Oathbound",
+      "dpsRank": "C",
+      "dpsFloor": "E3",
+      "supportRank": "B",
+      "endgameDpsRank": "B",
+      "endgameDpsFloor": "AA",
+      "endgameSupportRank": "B"
     }
   }
 }
