@@ -142,7 +142,7 @@
       "posse-0023"
     ],
     "isDivineRealm": false,
-    "tier": "B",
+    "tier": "C",
     "notes": "Anti-'bullshit' utility support \u2014 dispels Seals and discards enemy-inflicted symptom/status cards, while providing shields and vulnerable. At E3 a Precision-Slash/Combat-Stance burst DPS that wants a team making shields and copying/replaying her cards."
   },
   "awakener-0005": {
@@ -2333,7 +2333,10 @@
       "awakener-0030",
       "awakener-0045",
       "awakener-0055",
-      "awakener-0027"
+      "awakener-0027",
+      "awakener-0054",
+      "awakener-0058",
+      "awakener-0061"
     ],
     "conflictsWith": [],
     "viabilityFloor": "E0",
@@ -2363,9 +2366,76 @@
     ],
     "divineRealmNote": "Eden of Propagation mutates Caro into Propagation: Caro, the same rewrite Saya brings. Embryo Fusion caps at 200 instead of 100 and yields a Propagule Embryo; consuming one grants 40 temporary Propagation Fiesta stacks per awakener per turn, and each stack adds 1% to exalt base damage, STR, poison and shield. Devour no longer grants Shield or temporary STR, and Crimson Furnace becomes larger but gains a 3-turn cooldown while inflicting Corrosion.",
     "contentNotes": {
-      "arc2": "Realm Mastery pays twice on her: it raises Propagation Fiesta stacks by 0.05% per point under the rewrite, and via E1 it adds 0.15% Snowy Hex Fixed DMG per point from her, her wheel and her covenant. Doubled on an all-Caro or all-Chaos team."
+      "arc2": "Realm Mastery pays twice on her: it raises Propagation Fiesta stacks by 0.05% per point under the rewrite, and via E1 it adds 0.15% Snowy Hex Fixed DMG per point from her, her wheel and her covenant. Doubled on an all-Caro or all-Chaos team.",
+      "dtide": "Her Blessings can inflict Weakness on your own team, so she belongs in slow stall comps that do not care \u2014 poison with Xu, or Fixed DMG carries like Vortice and Pontos. She is a natural in Aequor, where Tranquil Sea shields scale off the Max HP she inflates."
     },
     "anchorPosse": "posse-0062",
     "realmRewrite": "PROPAGATION_CARO"
+  },
+  "awakener-0061": {
+    "id": "awakener-0061",
+    "teamRoles": [
+      "shielder",
+      "corrosion_applier",
+      "card_cycler",
+      "str_support",
+      "keyflare_support",
+      "sub_dps"
+    ],
+    "synergyTags": [
+      "divine_realm",
+      "strike_synergy",
+      "counter_scaling"
+    ],
+    "requires": [],
+    "synergizesWith": [
+      "awakener-0060",
+      "awakener-0054",
+      "awakener-0033",
+      "awakener-0022",
+      "awakener-0041",
+      "awakener-0024",
+      "awakener-0059",
+      "awakener-0056",
+      "awakener-0057",
+      "awakener-0006",
+      "awakener-0009"
+    ],
+    "conflictsWith": [],
+    "viabilityFloor": "E0",
+    "enlightenBreakpoints": [
+      "E2",
+      "E3",
+      "OE",
+      "AA"
+    ],
+    "keySkillSlots": [],
+    "keyTalents": [
+      "madness_omen"
+    ],
+    "recommendedPosses": [],
+    "isDivineRealm": true,
+    "tier": "B",
+    "notes": "Chaos Warden who brings Primordia: Chaos and shields around it. The community reads him as genuinely good but best-in-slot nowhere: versatile enough to fit many teams, a 'PChaos bot' in the ones where the realm is the real reason he is there. The September buffs (Endless Shadow STR reduction and multiplier 5-50% to 10-100%, Unfallen Heart +25% STR multiplier, E2 gaining a Sin-Stained Spear draw, AA going to +200% Base DMG and +400% STR) pushed him noticeably toward damage, and opinion has shifted with them: several experienced players now argue he plays better as a burst DPS than as the Warden his title implies.\n\nTwo mutually exclusive modes, and picking one is the whole decision. As a tank he Exalts freely: Sin-Stained Spear takes a 300% STR bonus and hands him a stack of Undertow, which raises his damage and his Exalt while cutting his draw each turn. Unfallen Heart consumes the stacks, turning each into Guilt and adding to the Exalt's base shield and STR per stack consumed, and Guilt then makes his skills draw Defense back with Retain and Prepare. Rouse adds +50% base shield and a draw to Defense, and at E2 his Strike pulls Sin-Stained Spear. As a nuker he never Exalts at all, because Exalting is what spends the Undertow: hold the stacks, spend Arithmetica on Endless Shadow first, then fire the 2-cost. Undertow caps at 3, or 5 with the Dimensional Image relic. Exalt is back to a real 100 Aliemus.\n\nHameln is the closest thing he has to a required partner, and is named by nearly every player who has made him work. The bonus play doubles a Sin-Stained Spear already carrying the Soulforge STR multiplier, and because GOgier consumes his own Corrosion the doubled hit applies and detonates it in the same turn. The doubling also works cleanly on his Defense, unlike Kathigu-Ra, whose Fiamma-inflated shield only partially doubles. The standard nuke line is Endless Shadow, Hameln Exalt, then Sin-Stained Spear.\n\nTeams reported working: Lotan: Cetarchon (the most commonly cited success), Mouchette with Cetarchon and a fourth of Saya or Arachne, a blue counter/shield stall with Caecus and Celeste, and Pollux, who trades card pulls with him and is worth a slot specifically when Pollux has no OE and therefore no team of his own. Horla is a quiet fit because retaining unused Arithmetica across turns is exactly what the X card wants, and retains also soften the Undertow draw penalty. Saya's wheel elsewhere on the team helps with how Aliemus-hungry he is. Two cautions: Mouchette players report the draw reduction is genuinely painful to play around, and Kathigu-Ra wants her own Posse too much to give it up for Primordia: Chaos.\n\nEnlighten reads from players running him: E2 is underrated, because the Aliemus ramp off dumping free Strike and Defense posse cards into him compounds, and the extra Strike play feeds Corrosion triggers when a double play lands on Defense instead. E3 is enough for a full tank \u2014 the shield is still large, just not on demand. OE is mediocre but cheap to reach and speeds the STR ramp. AA is the damage breakpoint, where you start trading the second wheel and other tank pieces for the much larger Rouse bonus. He is also compared to Castor as a less reliable version of the same job.",
+    "keyPairings": [
+      {
+        "partnerId": "awakener-0022",
+        "reason": "Hameln's bonus play doubles a Soulforge-boosted Sin-Stained Spear and detonates the Corrosion it applies in the same turn; it also doubles his Defense cleanly, which Kathigu-Ra's Fiamma shield does not"
+      },
+      {
+        "partnerId": "awakener-0059",
+        "reason": "The most commonly reported working team \u2014 but both bring Primordia: Chaos, so one of them is paying for a rewrite the other already supplies"
+      },
+      {
+        "partnerId": "awakener-0041",
+        "reason": "They pull each other's cards, and Pollux's wheel is the DPS-build wheel pick; worth a slot specifically when Pollux has no OE and no team of his own"
+      }
+    ],
+    "divineRealmNote": "Primordial Breath reforges Chaos into Primordia: Chaos, the same rewrite Lotan: Cetarchon brings. Base Keyflare rises to 2000 with 2000 granted at the start of battle, team DMG Amplification +50% (doubled in Pure Chaos) and all ATK/DEF +10%. Keyflare Regen is set to the team average and stops decaying; Arithmetica no longer grants Keyflare and instead each Awakener's first Command Card per turn grants (team Keyflare Regen x 3) + 100. Rouse cards gain Prepare 1, and the Posse slot is replaced by Primordia: Dual Recurrence and Triad Revelation drawn from the eight Primordial Memory posses. Realm Mastery becomes Posse Potency at 0.05% per point, where each percent raises Poison, Counter, STR and Ancient Embers by 2% and Shield, Healing, STR-down, Crit Rate, Crit DMG, DMG Amp, RM, Aliemus, Embryo Fusion and Keyflare by 1%, doubled in Pure Chaos. It no longer triggers other realms' Pure Realm or Chaos Symbiosis effects. The practical cost: a character who depends on her own Posse, Kathigu-Ra being the standing example, should not be brought into this realm.",
+    "contentNotes": {
+      "arc2": "Soulforge Aptitude makes Endless Shadow the setup button: each activation adds to the next Sin-Stained Spear's STR bonus, up to an extra 1200%, and after the buff the skill's own STR reduction and generation multipliers run 10-100% rather than 5-50%. Spend the X card before the 2-cost, never after.",
+      "dtide": "Fine for story and mid-difficulty content, awkward to slot into the hardest stages: the damage either stays low or takes a long ramp, and the shielding is real but slow and fiddly to cycle."
+    },
+    "realmRewrite": "PRIMORDIA_CHAOS"
   }
 }
