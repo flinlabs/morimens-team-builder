@@ -26,7 +26,7 @@ describe('Caraboo', () => {
       .filter((a) => a.annotation?.teamRoles?.includes('corrosion_applier'))
       .map((a) => a.name)
       .sort()
-    expect(appliers).toEqual(['Caraboo', 'Castor', 'Saya'])
+    expect(appliers).toEqual(['Caraboo', 'Castor', 'Ogier: Oathbound', 'Saya'])
   })
 
   it('stops at E1 and E3, skipping the E2 scam rung', () => {
