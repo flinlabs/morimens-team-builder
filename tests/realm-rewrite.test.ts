@@ -31,12 +31,14 @@ describe('realm rewrites', () => {
     // one rewrite — she and Saya both bring Propagation: Caro. Ogier: Oathbound
     // makes it the norm rather than the exception: he and Lotan: Cetarchon both
     // bring Primordia: Chaos, so two of the four rewrites are now doubled up.
+    // Vivian makes Primordia: Chaos a three-way share.
     expect(declared).toEqual([
       'Arachne',
       'Caraboo',
       'Lotan: Cetarchon',
       'Ogier: Oathbound',
       'Saya',
+      'Vivian',
       'Vortice',
     ])
   })

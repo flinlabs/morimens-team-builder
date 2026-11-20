@@ -122,6 +122,12 @@ function resolveArg(
       // Account-research-scaled value (esoteric/occult research depth). Needs the
       // player's account (keeper) level; without it we can't show a real number.
       // In-game these always round UP to a whole number (e.g. 39.6 shows as 40).
+      // A "fixed" base is a flat number that only Primordia: Chaos Mastery
+      // scales (the 2.6.x posse reissue moved flat posse values here), so it
+      // needs no account level: show the unscaled base.
+      if (a.baseFormula === "fixed" && a.baseValue != null) {
+        return `${a.baseValue}${suffix}`;
+      }
       if (accountLevel == null) return "?";
       const v = researchDepthValue(
         String(a.baseFormula ?? ""),
@@ -201,7 +207,21 @@ export function segmentTemplate(
         }
       }
     } else if (m[3]) {
-      segs.push({ kind: "keyword", text: m[3].slice(1, -1) });
+      // SKeyDB's 2.6.x text uses typed directives inside braces:
+      //   {derived:Gaunt}                        generated card -> keyword "Gaunt"
+      //   {derived:derived.vivian.cauldron|Cauldron}  id|label -> keyword "Cauldron"
+      //   {overlay:Ultra Space}                  tooltip ref    -> keyword "Ultra Space"
+      //   {ordinal:3rd}                          plain text     -> "3rd"
+      const inner = m[3].slice(1, -1);
+      const dm = /^(derived|overlay|ordinal):([\s\S]*)$/.exec(inner);
+      if (dm) {
+        const body = dm[2];
+        const label = body.includes("|") ? body.slice(body.lastIndexOf("|") + 1) : body;
+        if (dm[1] === "ordinal") pushText(label);
+        else segs.push({ kind: "keyword", text: label });
+      } else {
+        segs.push({ kind: "keyword", text: inner });
+      }
     }
     last = TOKEN.lastIndex;
   }

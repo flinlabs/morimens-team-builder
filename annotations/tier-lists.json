@@ -447,6 +447,10 @@
       "endgameDpsRank": "B",
       "endgameDpsFloor": "AA",
       "endgameSupportRank": "B"
+    },
+    "awakener-0062": {
+      "name": "Vivian",
+      "supportRank": "A"
     }
   }
 }

@@ -25,8 +25,8 @@ describe('Pontos content drop is synced', () => {
   })
 
   it('his signature wheels and posse are in the catalog', () => {
-    expect(wheels['wheel-0171']?.name).toBe('The Living Cage')
-    expect(wheels['wheel-0169']?.name).toBe('Compass to False North')
+    expect(wheels['wheel-0171']?.name).toBe('Living Cage')
+    expect(wheels['wheel-0169']?.name).toBe('The Errant Compass')
     expect(wheels['wheel-0171']?.ownerAwakenerId).toBe('awakener-0058')
     expect(posses['posse-0052']?.characterBonusFor).toBe('Pontos')
   })

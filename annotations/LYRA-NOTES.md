@@ -1012,3 +1012,71 @@ dropped to make the suite green. Two ways out, both Felix's:
    near zero. A degree cap or normalisation in the candidate scorer would address
    the cause rather than the threshold.
 
+
+## 2026-11-20 — public notes scrubbed, Vivian drop, 2.6.x text refresh
+
+### Public prose no longer carries provenance
+
+The detail modal renders `annotation.notes` and the wheel star-floor `note`
+verbatim, and both had picked up notebook phrasing. Rewritten as plain statements:
+
+| Record | Was | Now |
+| --- | --- | --- |
+| Pontos notes | "Enlighten priority per Lyra … (The Experimental log instead calls E2+E3 the comfort point.)" | Same order, no attribution; the log's E2+E3 view folded in as "the comfortable point" |
+| Lotan: Cetarchon notes | "caveats the guides stress", "guides advise against", "rule the guides are firm about" | Stated directly |
+| Ogier: Oathbound notes | "The community reads him…", "players report…", "Enlighten reads from players running him" | Stated directly |
+| Merciful Nurturing floor | "Felix's call from in-game use … Flagged in LYRA-NOTES." | "Strong on paper from E0, but E2–E3 is where Thais reliably does her job with it." |
+
+Provenance for the floor stays here: starFloor 2 is Felix's in-game call; the
+Caro guide rates the wheel excellent from E0.
+
+Two guards so it does not creep back: `lib/public-text.ts` drops any sentence or
+parenthetical naming an internal source (Felix, Lyra, LYRA-NOTES, the
+Compendium, "transcribed", "flagged in" …) at the API boundary, and
+`tests/public-text.test.ts` fails on those names or on hearsay framing ("the
+guides", "the community", "players report") in any note.
+
+### Vivian (awakener-0062) — provisional annotation
+
+Synced with `scripts/oneoff-sync-vivian.mjs`, plus The Seer's Riddle,
+She and Her Tree Hole, Imago's Clinic, Next Time It Rains and Nightborn Evil.
+All four wheels and Vivian ship tokenless (three wheel tokens collide with the
+pin; Vivian's upstream "xs" is the value GOgier was given last drop).
+
+Annotation and BiS come from the mythag.net Vivian page (new-unit disclaimer)
+and her kit text. Calls made that are yours to confirm:
+
+- **Breakpoints E1/E3/OE.** The page's headline stopping points are "Any, OE,
+  AA" but its body calls E1 (Crit Rate buff, Corrosion scaling) and E3
+  ("power spike") out as well. AA left off as whale-only, matching how
+  Cetarchon is handled.
+- **tier A** from the page's Support "Game Changing"; tier-lists.json gets
+  `supportRank: A` and no DPS rank (not listed = no claim).
+- **No conflictsWith** for Vortice/Kathigu-Ra. The page calls them less
+  compatible because they want their own posse, and says Kathigu-Ra still works
+  decently; the realm-rewrite logic already handles the posse-slot loss.
+- **Covenants** Twisted Twins: Black + Deus Ex Machina are the page's example
+  support build, not a stated BiS. Marked provisional in db/bis.json.
+- Imago's Clinic and Next Time It Rains (event Mythics) added to
+  NICHE_MYTHIC_WHEEL_IDS.
+
+### 2.6.x retranslation folded in
+
+`scripts/oneoff-refresh-text.mjs` refreshed name/description/args on 614
+existing records without touching tokens, Mythic retags, `defaultMaxed`, posse
+bonus flags or annotations. Nine child records were re-slugged with a rename
+(Arachne's Eternal Loom → Eternal Weave, etc.); wheel renames (A Knight's Vow,
+The Errant Compass, Living Cage) are mirrored into db/bis.json. Real number
+changes: Power of the Pious StateArg3 9-15% → 11-20%; Caecus and Leigh
+Soulforge typo fixes.
+
+Knock-on fixes: the template renderer now handles `{derived:id|Label}`,
+`{overlay:…}` and `{ordinal:…}`, and shows flat posse values that the reissue
+moved to `computed/baseFormula: fixed` instead of "?". The wheel/posse purpose
+regexes were widened for the new wording; a before/after diff shows no
+classification lost, only gains.
+
+### Outstanding
+
+- The mythag.net tier list may now show Caraboo as Support **S**
+  (tier-lists.json has A). Not changed — re-transcribe the list deliberately.

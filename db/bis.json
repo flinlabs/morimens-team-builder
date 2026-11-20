@@ -55,7 +55,7 @@
           {
             "tier": "BIS_SR",
             "wheelId": "wheel-0077",
-            "wheelName": "Duty gravitas"
+            "wheelName": "Duty's Gravitas"
           }
         ],
         "covenants": [
@@ -100,7 +100,7 @@
           {
             "tier": "GOOD",
             "wheelId": "wheel-0094",
-            "wheelName": "Isarau's Gaze"
+            "wheelName": "The Gaze of Isarawu"
           }
         ],
         "covenants": [
@@ -301,7 +301,7 @@
           {
             "tier": "BIS_SR",
             "wheelId": "wheel-0083",
-            "wheelName": "analisys of death"
+            "wheelName": "Analysis of Death"
           }
         ],
         "covenants": [
@@ -2341,7 +2341,7 @@
           {
             "tier": "SR_SHOP",
             "wheelId": "wheel-0094",
-            "wheelName": "Isarau’s Gaze"
+            "wheelName": "The Gaze of Isarawu"
           }
         ],
         "covenants": [
@@ -2381,7 +2381,7 @@
           {
             "tier": "SR_SHOP",
             "wheelId": "wheel-0094",
-            "wheelName": "Isarau’s Gaze"
+            "wheelName": "The Gaze of Isarawu"
           }
         ],
         "covenants": [
@@ -2422,7 +2422,7 @@
           {
             "tier": "SR_SHOP",
             "wheelId": "wheel-0094",
-            "wheelName": "Isarau’s Gaze"
+            "wheelName": "The Gaze of Isarawu"
           }
         ],
         "covenants": [
@@ -2723,7 +2723,7 @@
           {
             "tier": "SR_SHOP",
             "wheelId": "wheel-0110",
-            "wheelName": "Witch’s Wide-brimmed Hat"
+            "wheelName": "Witch's Wide-brimmed Hat"
           }
         ],
         "covenants": [
@@ -3009,7 +3009,7 @@
           {
             "tier": "BIS_SSR",
             "wheelId": "wheel-0171",
-            "wheelName": "The Living Cage"
+            "wheelName": "Living Cage"
           },
           {
             "tier": "ALT_SSR",
@@ -3024,7 +3024,7 @@
           {
             "tier": "BIS_SR",
             "wheelId": "wheel-0169",
-            "wheelName": "Compass to False North"
+            "wheelName": "The Errant Compass"
           },
           {
             "tier": "GOOD",
@@ -3345,5 +3345,61 @@
     ],
     "provisional": true,
     "provisionalNote": "Transcribed from the mythag.net GOgier guide on 2026-09-27, which itself carries a \"new unit, we are still testing\" disclaimer. The guide's wheel picks are newbie builds; Ever Sunward is called out by name in its Important Stats section and is listed here as the signature SSR. Re-check once the Mythag Compendium publishes a GOgier column. The guide splits its tank wheels into early-game (The Land of Nonexistence, Whisper) and Astral Reign (Dusk and Dawn) picks. BIS_TIER_ORDER has no axis for that, so they are folded into GOOD and ALT_SSR here rather than adding tiers to a pinned vocabulary. wheel-0179 Shadowed by the Past is his signature SR but the guide does not list it, so it is deliberately absent. Updated 2026-09-27: for the DPS build the community consensus is Pollux's wheel, Twisted Knight Ballad, over his own — it gives crit rate, crit damage and base damage, and heavily buffs the first card played, which is the Sin-Stained Spear anyway. Ever Sunward is not bad, but it is a tank wheel: its value is Exalt and Defense shielding plus STR on Defense, and the nuke build deliberately never Exalts. Ever Sunward also reportedly needs E3+ to compete with Erica's wheel, which is free in the shop, and is argued to be better on tank Kathigu-Ra, whose Fiamma gimmick lets her spam Defense far more often."
+  },
+  "awakener-0062": {
+    "awakenerId": "awakener-0062",
+    "variants": [
+      {
+        "variant": "Support",
+        "wheels": [
+          {
+            "tier": "BIS_SSR",
+            "wheelId": "wheel-0181",
+            "wheelName": "The Seer's Riddle"
+          },
+          {
+            "tier": "BIS_SR",
+            "wheelId": "wheel-0182",
+            "wheelName": "She and Her Tree Hole"
+          },
+          {
+            "tier": "ALT_SSR",
+            "wheelId": "wheel-0167",
+            "wheelName": "Fragrant Morphogenesis"
+          },
+          {
+            "tier": "ALT_SR",
+            "wheelId": "wheel-0092",
+            "wheelName": "Hand of Oblivion"
+          },
+          {
+            "tier": "GOOD",
+            "wheelId": "wheel-0063",
+            "wheelName": "Favor"
+          },
+          {
+            "tier": "GOOD",
+            "wheelId": "wheel-0061",
+            "wheelName": "Gluttony"
+          }
+        ],
+        "covenants": [
+          {
+            "covenantId": "covenant-0005",
+            "covenantName": "Twisted Twins: Black"
+          },
+          {
+            "covenantId": "covenant-0001",
+            "covenantName": "Deus Ex Machina"
+          }
+        ],
+        "preferredStats": [
+          "Crit Rate"
+        ],
+        "notes": "Signature wheels first. Favor and Gluttony are early-game fillers."
+      }
+    ],
+    "provisional": true,
+    "provisionalNote": "Transcribed from the mythag.net Vivian page on 2026-11-20, which carries a new-unit disclaimer. Covenants are the example support build on that page, not a stated BiS. Re-check once the Mythag Compendium adds a Vivian column."
   }
 }

@@ -39,7 +39,7 @@
     "acquisitionSource": "Automatically Unlocked",
     "realm": "FADED_LEGACY",
     "lineupToken": "h",
-    "descriptionTemplate": "Inflict 1 turn of {Weakness} and {Vulnerable} on each enemy, and {Steal} [Arg1] {STR} from them.",
+    "descriptionTemplate": "Inflict 1 stack of {Weakness} and {Vulnerable} on each enemy, and {Steal} [Arg1] {STR} from them.",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -117,7 +117,7 @@
     "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 2 - Waxen Legacy",
     "realm": "FADED_LEGACY",
     "lineupToken": "c",
-    "descriptionTemplate": "Recover 3 Arithmetica.",
+    "descriptionTemplate": "Gain 3 Arithmetica.",
     "descriptionArgs": {},
     "lore": "The little mouse and its owner share many traits:\nCunning, bravery, and speed...\nThey freely roam the gaps between the scattered houses in the Eastern District, using the sky as their blanket and rooftops as their bed.\nThey thrive in the corners of the city.",
     "hasCharacterBonus": false,
@@ -140,11 +140,19 @@
     "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 1 - East District's Enigma",
     "realm": "FADED_LEGACY",
     "lineupToken": "i",
-    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg1].",
+    "descriptionTemplate": "Grant a chosen Awakener [Arg1] Aliemus.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "35"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 35,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "On the day of her sixth birthday, the girl made a wish:\nTo have a toy bear named \"Bobo,\" and for love—not too much, just a little.\nThe girl has never been good at fantasizing, nor is she a greedy person.",
@@ -168,17 +176,21 @@
     "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 5 - Eye of the Storm",
     "realm": "FADED_LEGACY",
     "lineupToken": "g",
-    "descriptionTemplate": "Gain [Arg1] {STR}, then gain Temporary {STR} equal to 25% of your permanent {STR}.",
+    "descriptionTemplate": "Gain [Arg1] {STR}, then gain Temporary {STR} equal to 25% of your Permanent {STR}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.03,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       }
     },
     "lore": "Given her obsession, I have a vague feeling that this millennia-spanning ritual has yet to reach its end...",
@@ -225,8 +237,21 @@
     "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 6 - Twisted Stars",
     "realm": "FADED_LEGACY",
     "lineupToken": "f",
-    "descriptionTemplate": "Increase all Awakeners' Aliemus by 15. Suffer a Delayed {Sacrifice} equal to 5% of your Max HP.",
-    "descriptionArgs": {},
+    "descriptionTemplate": "Grant all Awakeners [Arg1] Aliemus. Suffer a Delayed {Sacrifice} equal to 5% of your Max HP.\nScaling guide: {Primordia Mastery Scaling}",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
+      }
+    },
     "lore": "I couldn't help her much; she single-handedly stopped the false god's descent.\nHer soul will not fade; she will forever shine as a star of freedom.",
     "hasCharacterBonus": false,
     "characterBonusFor": null
@@ -250,22 +275,34 @@
     "acquisitionSource": "Clear Psyche Deepdive: The Knight's Wish",
     "realm": "CHAOS",
     "lineupToken": "l",
-    "descriptionTemplate": "Gain +[Arg1]% Temporary Crit. Rate and [Arg2] Temporary {STR}. If you're in a Boss Battle and have played no cards this turn, attempt to trigger {Death Resistance} [Arg3] {plural:[Arg3]|time|times}. If successful, gain [Block:Arg4] Shield. This effect can only trigger [Arg5] {plural:[Arg5]|time|times} per battle.",
+    "descriptionTemplate": "Gain +[Arg1] Temporary Crit. Rate and [Arg2] Temporary {STR}. If in a Boss Battle and no cards have been played this turn, attempt to trigger {Death Resistance} [Arg3] {plural:[Arg3]|time|times}. If successful, gain [Block:Arg4] Shield. This effect can only trigger [Arg5] {plural:[Arg5]|time|times} per battle.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "25",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 25,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.02,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       },
       "Arg3": {
         "kind": "fixed",
@@ -309,7 +346,7 @@
     "acquisitionSource": "Clear Psyche Deepdive: Eadem Omnia",
     "realm": "AEQUOR",
     "lineupToken": "j",
-    "descriptionTemplate": "Draw [Arg1] {plural:[Arg1]|card|cards} with the lowest Arithmetica Cost from the Draw Pile. If the Realm includes {Aequor}, increase {Tentacle DMG} by [Arg2].",
+    "descriptionTemplate": "Draw [Arg1] {plural:[Arg1]|card|cards} with the lowest Arithmetica Cost from the Draw Pile. If the Realm includes {Aequor}, gain [Arg2] {Tentacle DMG}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "fixed",
@@ -317,13 +354,17 @@
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.01,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       }
     },
     "lore": "Glass tank. Fish tank. Palace.\n\nCall it whatever you like. It is a small paradise where Aurita's friends reside, free from Dissolution and suffering.",
@@ -349,25 +390,45 @@
     "acquisitionSource": "Clear Psyche Deepdive: Blood and Sand",
     "realm": "CARO",
     "lineupToken": "k",
-    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg2]. Gain [Arg3] {STR}. If the Realm includes {Caro}, consume 10% of your HP to increase {Embryo Fusion} by +[Arg4].",
+    "descriptionTemplate": "Grant a chosen Awakener [Arg2] Aliemus. Gain [Arg3] {STR}. If the Realm includes {Caro}, consume 10% of your HP to increase {Embryo Fusion} by +[Arg4].\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg2": {
-        "kind": "fixed",
-        "value": "20"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 20,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       },
       "Arg3": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.02,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       },
       "Arg4": {
-        "kind": "fixed",
-        "value": "20"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 20,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "Crimson twilight, swirling sand.\n\nUpon the boundless dunes, a warrior born without hesitation bites into his wrist, returning his blood to the sky and earth.",
@@ -393,7 +454,7 @@
     "acquisitionSource": "Clear Psyche Deepdive: Twisted Core",
     "realm": "ULTRA",
     "lineupToken": "m",
-    "descriptionTemplate": "Gain [Arg4] Arithmetica. Choose an Awakener; place their [Arg1] {plural:[Arg1]|copy|copies} of \"Strike\" and [Arg1] {plural:[Arg1]|copy|copies} of \"Defense\" into your hand, and grant them {Exhaust} and {Fleeting}. If the current Realm is {Ultra}, gain [Arg2] Temp. {STR} and [Arg3] Temp. {Alert}.",
+    "descriptionTemplate": "Gain [Arg4] Arithmetica. Choose an Awakener; create [Arg1] of their Basic Strike and [Arg1] of their Basic Defense. The copies have {Exhaust} and {Fleeting}. If the Realm includes {Ultra}, gain [Arg2] Temp. {STR} and [Arg3] Temp. {Alert}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "fixed",
@@ -401,13 +462,17 @@
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.02,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       },
       "Arg3": {
         "kind": "computed",
@@ -447,27 +512,35 @@
     "acquisitionSource": "Clear Psyche Deepdive: Feast of Flames",
     "realm": "ULTRA",
     "lineupToken": "q",
-    "descriptionTemplate": "Gain [Arg1] {Counter} and inflict [Arg2] Temp. {STR⯆} on all enemies. If in an {Ultra Round}, deal DMG equal to your {Counter} to all enemies instead of inflicting {STR⯆}.",
+    "descriptionTemplate": "Gain [Arg1] {Counter} and temporarily inflict [Arg2] {STR▼} on all enemies. If in an {Ultra Round}, trigger 100% {Counter} against all enemies instead of inflicting {STR▼}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "occultResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.06,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.03,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "The feast has reached its peak. The queen of Cambrian laughed heartily, raising her glass to you amidst the revelry and D-Slime.",
@@ -493,7 +566,7 @@
     "acquisitionSource": "Clear Psyche Deepdive: Sculpted Like a Song",
     "realm": "AEQUOR",
     "lineupToken": "n",
-    "descriptionTemplate": "Recover [Arg1] Arithmetica and gain [Block:Arg2] Delayed Shield. If your Tentacle Stance is {Surging Tides}, instead summon [Arg3] Tentacles.",
+    "descriptionTemplate": "Gain [Arg1] Arithmetica, and gain [Block:Arg2] Shield at next turn start. If your Tentacle Stance is {Surging Tides}, instead spawn [Arg3] {plural:[Arg3]|Tentacle|Tentacles}.",
     "descriptionArgs": {
       "Arg1": {
         "kind": "fixed",
@@ -537,7 +610,7 @@
     "acquisitionSource": "Clear Psyche Deepdive: Pale Descendant",
     "realm": "CARO",
     "lineupToken": "o",
-    "descriptionTemplate": "Inflict [Arg2] {Poison} on the highest HP enemy, and gain [Block:Arg1] Shield. If {Devour} has been triggered this turn, trigger half of that enemy's {Poison} instead of gaining Shield.",
+    "descriptionTemplate": "Inflict [Arg2] {Poison} on the highest HP enemy, and gain [Block:Arg1] Shield. If {Devour} has been triggered this turn, trigger that enemy's 50% {Poison} instead of gaining Shield.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -551,13 +624,17 @@
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "occultResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.14,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       }
     },
     "lore": "The lake in Cambrian Valley shimmers with crystal-clear waters.\n\nThe clamor of the maze gradually fades away, leaving only you and the newly freed girl to savor this tranquil moment.",
@@ -583,7 +660,7 @@
     "acquisitionSource": "Clear Psyche Deepdive: One Step Away",
     "realm": "CHAOS",
     "lineupToken": "p",
-    "descriptionTemplate": "Search your Draw Pile for [Arg1] {plural:[Arg1]|card|cards} to put into your hand, and reduce their Arithmetica Cost by [Arg2].",
+    "descriptionTemplate": "Search your Draw Pile for [Arg1] {plural:[Arg1]|card|cards} to put into hand, and reduce their Arithmetica Cost by [Arg2].",
     "descriptionArgs": {
       "Arg1": {
         "kind": "fixed",
@@ -617,17 +694,21 @@
     "acquisitionSource": "Clear Special Ops: Phantom of the Rainy Town",
     "realm": "ULTRA",
     "lineupToken": "v",
-    "descriptionTemplate": "Gain [Arg1] {STR} and create [Arg2] {Insight}. If in an {Ultra Round}, instead create [Arg3] {Insight}.",
+    "descriptionTemplate": "Gain [Arg1] {STR} and create [Arg2] {derived:Insight}. If in an {Ultra Round}, instead create [Arg3] {derived:Insight}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.015,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       },
       "Arg2": {
         "kind": "fixed",
@@ -661,11 +742,19 @@
     "acquisitionSource": "Clear Special Ops: The Magic of Storytelling",
     "realm": "CHAOS",
     "lineupToken": "w",
-    "descriptionTemplate": "Draw a card; if the drawn card is a Command or {Rouse} card, reduce its Arithmetica Cost to 0 and increase its owner's Aliemus by [Arg1]. Otherwise, discard that card and repeat this process.",
+    "descriptionTemplate": "Draw 1 card; if the drawn card is a Command or {Rouse} card, reduce its Arithmetica Cost to 0 and grant its Awakener [Arg1] Aliemus. Otherwise, discard that card and repeat this process.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "20"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 20,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "It was a fleeting, ethereal dream of a night, light and soft, not captured on film but flowing through the memory of every photographer.",
@@ -691,27 +780,35 @@
     "acquisitionSource": "Clear Special Ops: Tribute to the Rose",
     "realm": "CARO",
     "lineupToken": "u",
-    "descriptionTemplate": "Draw 2 cards and gain [Arg1] Temp. {STR}. If the Realm includes {Caro}, consume 10% of your HP to gain another [Arg2] Temp. {STR}, and another [Arg2] Temp. {STR} for each {Embryo} in your hand.",
+    "descriptionTemplate": "Draw 2 cards and gain [Arg1] Temp. {STR}. If the Realm includes {Caro}, consume 10% of your HP to gain another [Arg2] Temp. {STR}, and another [Arg2] Temp. {STR} for each {Embryo} in your hand.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.045,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.015,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       }
     },
     "lore": "The graceful rose has achieved her complete victory.\n\nShe has returned to the noble rose surrounded by the crowd like stars around the moon, with only the gaze directed at you proclaiming the secret adventure experienced with you at the opera house.",
@@ -737,17 +834,21 @@
     "acquisitionSource": "Clear Special Ops: The Color of Blood",
     "realm": "CARO",
     "lineupToken": "r",
-    "descriptionTemplate": "Gain [Arg1] {STR}. Until your next turn, whenever you take Active DMG, gain Delayed Shield equal to [Arg2]% of that DMG. If the Realms includes {Caro}, instead accumulate {Crimson Furnace} equal to 10% of that DMG.",
+    "descriptionTemplate": "Gain [Arg1] {STR}. Until your next turn, whenever you take Active DMG, gain Delayed Shield equal to [Arg2]% of that DMG. If the Realms includes {Caro}, instead accumulate {Crimson Furnace} equal to 10% of that DMG.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.02,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       },
       "Arg2": {
         "kind": "fixed",
@@ -778,21 +879,46 @@
     "acquisitionSource": "Clear Psyche Deepdive: The Fall of Giant",
     "realm": "AEQUOR",
     "lineupToken": "s",
-    "descriptionTemplate": "Recover 1 Arithmetica and gain [Arg1] {STR}. Increase a chosen Awakener's Aliemus by [Arg2]. If your Tentacle Stance is {Raging Waves}, instead gain +15% Temporary Crit. Rate & Crit. DMG.",
+    "descriptionTemplate": "Gain 1 Arithmetica and [Arg1] {STR}, then grant a chosen Awakener [Arg2] Aliemus. If your Tentacle Stance is {Raging Waves}, instead gain +[Arg3] Temporary Crit. Rate & Crit. DMG.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.015,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       },
       "Arg2": {
-        "kind": "fixed",
-        "value": "15"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
+      },
+      "Arg3": {
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       }
     },
     "lore": "The way of the conqueror is to never give up, to never admit defeat.\n\nEven if the horizon has devoured the light, he will still lift the unquenchable sun with brawn.",
@@ -818,15 +944,31 @@
     "acquisitionSource": "Clear Special Ops: Serene Fission",
     "realm": "CHAOS",
     "lineupToken": "t",
-    "descriptionTemplate": "Increase Realm Mastery by [Arg1]. Increase a chosen Awakener's Aliemus by [Energy:Arg2].",
+    "descriptionTemplate": "Increase Realm Mastery by [Arg1]. Grant a chosen Awakener [Energy:Arg2] Aliemus.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "24"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 24,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       },
       "Arg2": {
-        "kind": "fixed",
-        "value": "24"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 24,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "All 24 merge into one, dissolving into starlight.\n\nHer personality becomes whole through division, and her body endures through fission.\n\nThere is only one 24 in this world, and she embodies them all.",
@@ -850,11 +992,19 @@
     "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 7 - Desire's Flow",
     "realm": "CARO",
     "lineupToken": "G",
-    "descriptionTemplate": "Choose a Non-Derived Command Card in hand and create a Base Copy of it. The copy has {Exhaust}. Increase its owner's Aliemus by [Arg1].",
+    "descriptionTemplate": "Choose a non-Derived Command Card in hand and create a Basic Copy of it. The copy has {Exhaust}. Grant its Awakener [Arg1] Aliemus.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "15"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "She will pass the Lone Seed to your tongue.\nThe strength of blood, the faith of inheritance, the courage to transcend, and deep affection... she entrusts everything to you.",
@@ -905,17 +1055,21 @@
     "acquisitionSource": "Clear Dreamscape: Desecrate",
     "realm": "AEQUOR",
     "lineupToken": "C",
-    "descriptionTemplate": "Draw 2 cards. Recover 2 Arithmetica. All Awakeners lose 5 Aliemus. If your Tentacle Stance is {Tranquil Sea}, inflict [Arg1] {Poison} on all enemies. Inflict 3× that much {Poison} instead in Boss Battle.",
+    "descriptionTemplate": "Draw 2 cards. Gain 2 Arithmetica. All Awakeners lose 5 Aliemus. If your Tentacle Stance is {Tranquil Sea}, inflict [Arg1] {Poison} on all enemies. Inflict 3× that much {Poison} instead in Boss Battles.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "occultResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.08,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       }
     },
     "lore": "The High Priestess of Lemuria never expects a response from the ocean.\n\nShe offers everything to the ocean, which has nothing to do with the ocean.",
@@ -966,12 +1120,20 @@
     "acquisitionSource": "Clear Special Ops: Happy Hunting!",
     "realm": "CHAOS",
     "lineupToken": "D",
-    "descriptionTemplate": "Create 1 {Shining Octahedron Dice} and gain [Arg1]% Temporary Crit. Rate.",
+    "descriptionTemplate": "Create 1 {Shining Octahedron Dice} and gain [Arg1] Temporary Crit. Rate.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "15",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       }
     },
     "lore": "Bang—\nA gunshot that splits the sky pierces the heart of the mastermind behind the conspiracy.\n\nDeath is not the end of life, but merely the peak of the puzzle's twist.",
@@ -995,7 +1157,7 @@
     "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 8 - Last Symphony",
     "realm": "CHAOS",
     "lineupToken": "I",
-    "descriptionTemplate": "If the Arithmetica Cost of the next card you play this turn is 3 or more, recover 2 Arithmetica. Otherwise, draw 2 cards. If this is the {ordinal:4th} time this Posse was unleashed this battle, instead create 4 {Insight}.",
+    "descriptionTemplate": "If the Arithmetica Cost of the next card you play this turn is 3 or more, gain 2 Arithmetica. Otherwise, draw 2 cards. If this is the {ordinal:4th} time this Posse was unleashed this battle, instead create 4 {derived:Insight}.",
     "descriptionArgs": {},
     "lore": "Notes gather into a surging sea of stars, the theme dances in the grand deep space.\nClose your eyes and listen. Listen to the end of the universe, listen to the climax of the universe.",
     "hasCharacterBonus": false,
@@ -1005,7 +1167,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0029",
-    "name": "Answer of the Gate",
+    "name": "The Gated Answer",
     "route": {
       "slug": "answer-of-the-gate",
       "canonicalPath": "/database/posses/answer-of-the-gate"
@@ -1018,11 +1180,19 @@
     "acquisitionSource": "Clear Operation: Faded Legacy - Ch. 9 - A Long Dream's End",
     "realm": "CHAOS",
     "lineupToken": "H",
-    "descriptionTemplate": "{Discover} 3 random Posses; unleash 1 and gain [Arg1] Keyflare.",
+    "descriptionTemplate": "{Discover} 1 out of 3 random Posses, choose 1 and trigger its effect, and gain [Arg1] Keyflare.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "200"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 200,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "The Truth of all things lies beyond the Gate.\nShe remains silent here, bearing all the inquiries, responding with silence.\nThe one she awaits will eventually write their own answer.",
@@ -1046,21 +1216,33 @@
     "acquisitionSource": "Clear Operation: Astral Reign - Ch. 1 - Return to the Big Smoke",
     "realm": "CHAOS",
     "lineupToken": "J",
-    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg1], and inflict [Arg2] {Poison} on all enemies. For each 1% of HP the target is missing, trigger 1% of their {Poison}, up to 50%.",
+    "descriptionTemplate": "Grant a chosen Awakener [Arg1] Aliemus, and inflict [Arg2] {Poison} on each enemy. For each 1% of HP each enemy is missing, trigger 1% of their {Poison}, up to 50%.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "20"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 20,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "occultResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.045,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       }
     },
     "lore": "The Void is a plague brought by the Hidden Truth, erasing all colors and painting everything gray.\nDo not look directly into those mad Eyes; be careful, she may have already infected you.",
@@ -1111,16 +1293,32 @@
     "acquisitionSource": "Clear Psyche Deepdive: Passion to Dust",
     "realm": "ULTRA",
     "lineupToken": "B",
-    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg2], and the Temp. Crit. Rate & Crit. DMG of their Command Cards by [Arg1]%. If Liz is in your team, create 1 {Corrupted Flames} with {Exhaust}.",
+    "descriptionTemplate": "Grant a chosen Awakener [Arg2] Aliemus. The Crit. Rate & Crit. DMG of their Command Cards +[Arg1] this turn. If Liz is in the team, create 1 {derived:Corrupted Flames} with {Exhaust}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "15",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       },
       "Arg2": {
-        "kind": "fixed",
-        "value": "15"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "Light steps. A sharp turn. A spin. At the crescendo of the music, she dives headlong into flames. Burn. Burning is the only answer her dance can give.",
@@ -1144,7 +1342,7 @@
     "acquisitionSource": "Clear Multiverse Link: My Turn!",
     "realm": "OTHER",
     "lineupToken": "L",
-    "descriptionTemplate": "Generate 1 {Leah's Coin} and shuffle it into the Discard Pile.",
+    "descriptionTemplate": "Create 1 {Leah's Coin} and put it into the Discard Pile.",
     "descriptionArgs": {},
     "lore": "When one world comes to an end, the prologue of another world begins. Stories will be passed down by people alongside fine wine, but time will write answers for all things.",
     "hasCharacterBonus": false,
@@ -1167,7 +1365,7 @@
     "acquisitionSource": "Clear Operation: Astral Reign - Ch. 2 - Metamorphosis",
     "realm": "ULTRA",
     "lineupToken": "M",
-    "descriptionTemplate": "Recover [Heal:Arg1] HP and gain [Arg2] {STR}. If Clementine is in your team, add 1 extra instance of the following effects to her next Command Card you play: DMG, Shield, HP Recovery, Aliemus, and Keyflare.",
+    "descriptionTemplate": "Recover [Heal:Arg1] HP and gain [Arg2] {STR}. If Clementine is in the team, add 1 additional instance of the following effects to her next Command Card: DMG, Shield, HP Recovery, Aliemus, and Keyflare.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -1181,13 +1379,17 @@
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.02,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       }
     },
     "lore": "She has healed countless patients, guiding them toward rebirth, and everything now is just a psychological therapy.\nThe only special thing is that the patient is herself.",
@@ -1213,7 +1415,7 @@
     "acquisitionSource": "Clear Psyche Deepdive: Final Steersmanship",
     "realm": "AEQUOR",
     "lineupToken": "N",
-    "descriptionTemplate": "Draw [Arg2] {plural:[Arg2]|card|cards}. Gain [Arg1] Shield. If Corposant is in your team, create 1 {Pilot}.",
+    "descriptionTemplate": "Gain [Block:Arg1] Shield. Draw [Arg2] {plural:[Arg2]|card|cards}. If Corposant is on the team, place 1 {derived:Pilot} into hand.",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -1253,20 +1455,36 @@
     "acquisitionSource": "Clear Dreamscape: Beyond the Skies: Part I",
     "realm": "ULTRA",
     "lineupToken": "O",
-    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Energy:Arg3]. Draw [Arg2] {plural:[Arg2]|card|cards} with the lowest Arithmetica Cost from the Draw Pile. If Castor is in your team, increase his Temp. DMG Amplification by [Arg1]%.",
+    "descriptionTemplate": "Grant a chosen Awakener [Energy:Arg3] Aliemus. Draw [Arg2] {plural:[Arg2]|card|cards} with the lowest Arithmetica Cost from the Draw Pile. If Castor is in the team, increase his Temp. DMG Amplification by [Arg1].\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "30",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 30,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       },
       "Arg2": {
         "kind": "fixed",
         "value": "2"
       },
       "Arg3": {
-        "kind": "fixed",
-        "value": "15"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "They always brush past fleeting hopes at the wrong time.\nOnce, that tender hand guided him towards the light of freedom.\nAs he desperately flapped his wings and broke free from the prison of fate once more, why did that familiar hand pierce through his chest at this moment?",
@@ -1290,7 +1508,7 @@
     "acquisitionSource": "Clear Operation: Astral Reign - Ch. 3 - Ossuary Gala",
     "realm": "CARO",
     "lineupToken": "S",
-    "descriptionTemplate": "{Steal} [Arg1] {STR} from all enemies. If Doresain is in your team, he gains 1 {Corpse}.",
+    "descriptionTemplate": "{Steal} [Arg1] {STR} from all enemies. If Doresain is in the team, he gains 1 {Corpse}.",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -1326,12 +1544,20 @@
     "acquisitionSource": "Clear Psyche Deepdive: Everburning Vex",
     "realm": "CHAOS",
     "lineupToken": "R",
-    "descriptionTemplate": "Recover 1 Arithmetica and gain [Arg1]% Temp. DMG Amplification. If Kathigu-Ra is in your team, draw 1 of her cards and apply 1 stack of {Fiamma} to it",
+    "descriptionTemplate": "Gain 1 Arithmetica and [Arg1] Temp. DMG Amplification. If Kathigu-Ra is in the team, draw 1 of her Command Cards and apply 1 stack of {Fiamma} to it.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "30",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 30,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       }
     },
     "lore": "Even if the false black sun has obscured the sky, the true sun will never extinguish.\nThe brief sunset at this moment is meant to burst forth a more blazing sun.\nNow, the sun burning with amber flames rises again, never to set again.",
@@ -1357,12 +1583,20 @@
     "acquisitionSource": "Clear Dreamscape: Beyond the Skies: Part II",
     "realm": "ULTRA",
     "lineupToken": "V",
-    "descriptionTemplate": "Draw 1 card and reduce its Arithmetica Cost by 1. If a Command Card is drawn, its owner gains [Arg1]% Temporary Crit. DMG. If Pollux is in the team, gain [Arg2] {plural:[Arg2]|stack|stacks} of {Sin Mark}.",
+    "descriptionTemplate": "Draw 1 card and reduce its Arithmetica Cost by 1. If a Command Card is drawn, its Awakener gains +[Arg1] Temporary Crit. DMG. If Pollux is in the team, gain [Arg2] {plural:[Arg2]|stack|stacks} of {Sin Mark}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "25",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 25,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       },
       "Arg2": {
         "kind": "fixed",
@@ -1390,7 +1624,7 @@
     "acquisitionSource": "Clear Dreamscape: Culinary Dominion",
     "realm": "CARO",
     "lineupToken": "Q",
-    "descriptionTemplate": "{Discover} 1 of 3 basic Skill Commands from the Awakeners in your team; it has {Exhaust}, and its Arithmetica Cost -1. If the Realm includes {Caro}, you may choose \"Gobble Up!\"",
+    "descriptionTemplate": "{Discover} 1 of 3 basic Skill Commands from the Awakeners in the team, choose 1 and place its temporary copy in hand, and reduce its Arithmetica Cost by 1. If the Realm includes {Caro}, you may choose {Gobble Up!}",
     "descriptionArgs": {},
     "lore": "This is the Promised Land sworn by Mythag to her warriors—where jars overflow with honey and cabinets groan with meat.\nNo force may bar the brave; what is theirs by right, they shall claim.",
     "hasCharacterBonus": false,
@@ -1413,12 +1647,20 @@
     "acquisitionSource": "Clear Dreamscape: See You in Neverland",
     "realm": "OTHER",
     "lineupToken": "T",
-    "descriptionTemplate": "Choose an Awakener; create 1 of their basic Strike Commands. It has {Exhaust}. Every {ordinal:3rd} time this is unleashed, instead create 1 {Fleeting Beauty} and gain +[Arg1]% Temp. Crit. Rate.",
+    "descriptionTemplate": "Choose an Awakener; place 1 of their temporary basic \"Strike\" s with 0 cost into hand. Every {ordinal:3rd} time this is unleashed, instead place 1 {derived:Fleeting Beauty} into hand and gain +[Arg1] Temp. Crit. Rate.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "20",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 20,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       }
     },
     "lore": "Every party has its end, but the memories etched in the soul never cease. No matter how many times, when recalling this frozen moment, longing will surge like a tide.",
@@ -1444,11 +1686,19 @@
     "acquisitionSource": "Clear Psyche Deepdive: Ghastly Canvas",
     "realm": "CARO",
     "lineupToken": "U",
-    "descriptionTemplate": "Increase a chosen Awakener's Aliemus by [Arg1], and shuffle 1 {Insight} into the Draw Pile. If Pickman is in your team, he gains 1 stack of {Creativity}.",
+    "descriptionTemplate": "Grant a chosen Awakener [Arg1] Aliemus, and shuffle 1 {derived:Insight} into the Draw Pile. If Pickman is in the team, he gains 1 stack of {Creativity}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "20"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 20,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "The rotting phantasm gives birth to a distorted neon on the retina—\nthus the concept of \"color\" transcends the virtual world, leaving only the delirious hues flowing on the corpse of reality.",
@@ -1472,7 +1722,7 @@
     "acquisitionSource": "Clear Dreamscape: See You, Neverland",
     "realm": "OTHER",
     "lineupToken": "W",
-    "descriptionTemplate": "Gain [Block:Arg1] Shield and Temporary {STR} equal to 10% of the current Shield.",
+    "descriptionTemplate": "Gain [Block:Arg1] Shield and Temporary {STR} equal to 10% of your current Shield.",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -1506,7 +1756,7 @@
     "acquisitionSource": "Clear Operation: Astral Reign - Ch. 4 - Paradise",
     "realm": "AEQUOR",
     "lineupToken": "X",
-    "descriptionTemplate": "Gain 1 Arithmetica, and apply 5 stacks of {Birth Ritual} to all enemies. If \"Murphy: Fauxborn\" is in the team, draw 1 {Waltz of Lemuria}.",
+    "descriptionTemplate": "Gain 1 Arithmetica, and inflict 5 stacks of {Birth Ritual} on all enemies. If Murphy: Fauxborn is in the team, draw 1 {Waltz of Lemuria}.",
     "descriptionArgs": {},
     "lore": "The Apostle of the Sea kneels devoutly at the Maiden's feet, offering a kiss of fidelity—she has traveled too far on the wrong course.",
     "hasCharacterBonus": true,
@@ -1516,7 +1766,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0045",
-    "name": "Reunion Wish",
+    "name": "Reunion's Wish",
     "route": {
       "slug": "reunion-wish",
       "canonicalPath": "/database/posses/reunion-wish"
@@ -1531,7 +1781,7 @@
     "acquisitionSource": "Clear Special Ops: Celestial Aria",
     "realm": "OTHER",
     "lineupToken": "Y",
-    "descriptionTemplate": "Return 1 Command Card from the Discard Pile to your hand. If Ramona is in the team, the next Command Card she plays this turn takes effect [Arg1] {plural:[Arg1]|time|times}.",
+    "descriptionTemplate": "Return 1 Command Card from the Discard Pile to your hand. The next Ramona Command Card played this turn takes effect [Arg1] {plural:[Arg1]|time|times}.",
     "descriptionArgs": {
       "Arg1": {
         "kind": "fixed",
@@ -1561,7 +1811,7 @@
     "acquisitionSource": "Clear Multiverse Link: Baptism of Silver and Blood",
     "realm": "CHAOS",
     "lineupToken": "Z",
-    "descriptionTemplate": "Draw 2 \"Strike\" cards. If \"Mouchette\" is in the team, reduce their Arithmetica Cost by 1.",
+    "descriptionTemplate": "Draw 2 \"Strike\" s. If Mouchette is in the team, reduce their Arithmetica Cost by 1.",
     "descriptionArgs": {},
     "lore": "She is Mouchette, the vanguard of the A.U.G.E. from a distant realm. Having endured a baptism of silver and blood within this world, she has been forged anew. This badge, imbued with the essence of \"home,\" stands as the eternal witness to her journey across the dimensions.",
     "hasCharacterBonus": true,
@@ -1586,7 +1836,7 @@
     "acquisitionSource": "Clear Psyche Deepdive: Whispers Behind the Fan",
     "realm": "CARO",
     "lineupToken": "2",
-    "descriptionTemplate": "Gain 1 Arithmetica and temporarily reduce all enemies' {STR⯆} by [Exhaustion:Arg1] for 1 turn. If \"Xu\" is in the team, inflict 1 stack of {Spellbound} on all enemies.",
+    "descriptionTemplate": "Gain 1 Arithmetica and inflict [Exhaustion:Arg1] Temp. {STR▼} on all enemies. If Xu is in the team, also inflict 1 stack of {Spellbound} on all enemies.",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -1620,17 +1870,34 @@
     "acquisitionSource": "Clear Special Ops: Spring Festival Express",
     "realm": "OTHER",
     "lineupToken": "3",
-    "descriptionTemplate": "Temporary Crit. Rate +15%, gain 1 Arithmetica. The first time unleashed in this battle, deal [Arg3] {Ancient Embers} to all enemies.",
+    "descriptionTemplate": "Gain 1 Arithmetica and +[Arg1] Temporary Crit. Rate. The first time this is unleashed each battle, inflict [Arg3] {Ancient Embers} on all enemies.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
+      },
       "Arg3": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "occultResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.3,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "offensive"
       }
     },
     "lore": "Year after year, the blossoms return unchanged;\nSeason after season, I long for our reunion.\n\nThis Spring Festival is so brief, so sweet, like a beautiful dream. My dear, when you stand beside your beloved, hand in hand,\ngazing upon the countless fireworks lighting the sky... pray, do not forget the devotion of this humble heart.",
@@ -1656,15 +1923,31 @@
     "acquisitionSource": "Clear Psyche Deepdive: No More the Shore",
     "realm": "AEQUOR",
     "lineupToken": "5",
-    "descriptionTemplate": "Choose an Awakener to gain [Arg1] Aliemus, while other Awakeners gain [Arg2] Aliemus. Vortice: Immediately unleash {Vortex! Shell!} as a {Pursuit}.",
+    "descriptionTemplate": "Grant a chosen Awakener [Arg1] Aliemus, and all other Awakeners [Arg2] Aliemus. If Vortice is in the team, she performs her {Pursuit}: {derived:Vortex! Shell!}\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "15"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 15,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       },
       "Arg2": {
-        "kind": "fixed",
-        "value": "5"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 5,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "She plunged into the icy sea without hesitation, fully aware that the vortex would claim her life.\nBecause in her pure, innocent mind, this was the only way to save her friends.",
@@ -1688,7 +1971,7 @@
     "acquisitionSource": "Clear Operation: Astral Reign - Ch. 5 - Fated Theater",
     "realm": "ULTRA",
     "lineupToken": "1",
-    "descriptionTemplate": "Gain [Arg1] Shield and [Arg2]% Temporary DMG Amplification. If \"Arachne\" is in the party, draw 1 {Eternal Loom} and reduce its Arithmetica Cost by 1.",
+    "descriptionTemplate": "Gain [Block:Arg1] Shield and +[Arg2] Temporary DMG Amplification. If Arachne is in the party, draw 1 {Eternal Weave} and reduce its Arithmetica Cost by 1.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -1701,9 +1984,17 @@
         ]
       },
       "Arg2": {
-        "kind": "fixed",
-        "value": "50",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 50,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       }
     },
     "lore": "Spin, measure, sever.\nThe goddess of destiny knows neither joy nor sorrow; the wheel of fate turns for all eternity.",
@@ -1729,7 +2020,7 @@
     "acquisitionSource": "Clear Multiverse Link: Forgotten Seed of Love",
     "realm": "CARO",
     "lineupToken": "4",
-    "descriptionTemplate": "Gain [Arg1] Shield. Draw 2 \"Skill\" cards and grant them {Perception Warp}. Saya: gains 1 stack of {Gynoecium}.",
+    "descriptionTemplate": "Gain [Block:Arg1] Shield. Draw 2 \"Skill\" cards and grant them {Perception Warp}. Saya: gains 1 stack of {Gynoecium.}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -1765,22 +2056,34 @@
     "acquisitionSource": "Clear Psyche Deepdive: Ebwynnos Evermore",
     "realm": "AEQUOR",
     "lineupToken": "6",
-    "descriptionTemplate": "Temporary Crit. DMG +[Arg1]%, temporarily reduce all enemies' {STR▼} by [Arg2]. If Pontos is in the party, gain 1 stack of {Pack Hunt}.",
+    "descriptionTemplate": "Temporary Crit. DMG +[Arg1], temporarily reduce all enemies' {STR▼} by [Arg2]. If Pontos is in the party, gain 1 stack of {Pack Hunt}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
-        "kind": "fixed",
-        "value": "30",
-        "suffix": "%"
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 30,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "suffix": "%",
+        "scalingBucket": "utility"
       },
       "Arg2": {
         "kind": "computed",
-        "formulaKey": "scaled",
+        "formulaKey": "primordiaPosseScaled",
         "baseFormula": "esotericResearchDepth",
+        "rounding": "ceil",
         "multiplier": 0.045,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount"
-        ]
+          "ownedPosseCount",
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
       }
     },
     "lore": "Let us recount the tale of your life—a story that shall echo no more.\nLike the sea surging into the abyss, to slumber there for all eternity.",
@@ -1806,7 +2109,7 @@
     "acquisitionSource": "Clear Psyche Deepdive: Till the Cetus Falls",
     "realm": "CHAOS",
     "lineupToken": "7",
-    "descriptionTemplate": "Gain [Arg2] {STR}. Choose 1 Awakener to Steal up to [Arg1] Aliemus from other Awakeners. If Lotan: Cetarchon is in the party, the next \"Strike\" of Lotan: Cetarchon takes effect 1 additional time.\nScaling guide: {Primordia Mastery Scaling}",
+    "descriptionTemplate": "Gain [Arg2] {STR}. Choose 1 Awakener to Steal up to [Arg1] Aliemus from other Awakeners. If Lotan: Cetarchon is in the team, the next \"Strike\" of Lotan: Cetarchon takes effect 1 additional time.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "fixed",
@@ -1837,7 +2140,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0054",
-    "name": "Primordial Memory·Drain",
+    "name": "Primordial Memory: Drain",
     "route": {
       "slug": "primordial-memorydrain",
       "canonicalPath": "/database/posses/primordial-memorydrain"
@@ -1875,7 +2178,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0055",
-    "name": "Primordial Memory·Catalyst",
+    "name": "Primordial Memory: Catalysis",
     "route": {
       "slug": "primordial-memorycatalyst",
       "canonicalPath": "/database/posses/primordial-memorycatalyst"
@@ -1911,7 +2214,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0056",
-    "name": "Primordial Memory·Healing",
+    "name": "Primordial Memory: Healing",
     "route": {
       "slug": "primordial-memoryhealing",
       "canonicalPath": "/database/posses/primordial-memoryhealing"
@@ -1925,21 +2228,17 @@
     "classification": "PRIMORDIAL_MEMORY",
     "equippable": false,
     "collectible": false,
-    "descriptionTemplate": "Restore [Arg1] HP\nScaling guide: {Primordia Mastery Scaling}",
+    "descriptionTemplate": "Restore [Heal:Arg1] HP",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "primordiaPosseScaled",
+        "formulaKey": "scaled",
         "baseFormula": "esotericResearchDepth",
-        "rounding": "ceil",
         "multiplier": 0.08,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount",
-          "realmMasteryFinal",
-          "primordiaAllChaosTeam"
-        ],
-        "scalingBucket": "utility"
+          "ownedPosseCount"
+        ]
       }
     },
     "hasCharacterBonus": false,
@@ -1949,7 +2248,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0057",
-    "name": "Primordial Memory·Toxin",
+    "name": "Primordial Memory: Toxin",
     "route": {
       "slug": "primordial-memorytoxin",
       "canonicalPath": "/database/posses/primordial-memorytoxin"
@@ -1987,7 +2286,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0058",
-    "name": "Primordial Memory·Spike",
+    "name": "Primordial Memory: Spike",
     "route": {
       "slug": "primordial-memoryspike",
       "canonicalPath": "/database/posses/primordial-memoryspike"
@@ -2001,7 +2300,7 @@
     "classification": "PRIMORDIAL_MEMORY",
     "equippable": false,
     "collectible": false,
-    "descriptionTemplate": "Gain [Arg1] stack(s) of {Temporary Counter}.\nScaling guide: {Primordia Mastery Scaling}",
+    "descriptionTemplate": "Gain [Arg1] {plural:[Arg1]|stack|stacks} of {Temporary Counter}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
@@ -2025,7 +2324,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0059",
-    "name": "Primordial Memory·Might",
+    "name": "Primordial Memory: Might",
     "route": {
       "slug": "primordial-memorymight",
       "canonicalPath": "/database/posses/primordial-memorymight"
@@ -2063,7 +2362,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0060",
-    "name": "Primordial Memory·Bastion",
+    "name": "Primordial Memory: Bastion",
     "route": {
       "slug": "primordial-memorybastion",
       "canonicalPath": "/database/posses/primordial-memorybastion"
@@ -2077,21 +2376,17 @@
     "classification": "PRIMORDIAL_MEMORY",
     "equippable": false,
     "collectible": false,
-    "descriptionTemplate": "Gain [Arg1] Shield.\nScaling guide: {Primordia Mastery Scaling}",
+    "descriptionTemplate": "Gain [Block:Arg1] Shield.",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "primordiaPosseScaled",
+        "formulaKey": "scaled",
         "baseFormula": "esotericResearchDepth",
-        "rounding": "ceil",
         "multiplier": 0.1,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount",
-          "realmMasteryFinal",
-          "primordiaAllChaosTeam"
-        ],
-        "scalingBucket": "utility"
+          "ownedPosseCount"
+        ]
       }
     },
     "hasCharacterBonus": false,
@@ -2101,7 +2396,7 @@
     "schemaVersion": 3,
     "kind": "posse",
     "id": "posse-0061",
-    "name": "Primordial Memory·Fury",
+    "name": "Primordial Memory: Fury",
     "route": {
       "slug": "primordial-memoryfury",
       "canonicalPath": "/database/posses/primordial-memoryfury"
@@ -2153,21 +2448,17 @@
     "acquisitionSource": "Clear Operation: Astral Reign - Ch. 6 - When the Mountain Feasts",
     "realm": "CARO",
     "lineupToken": "8",
-    "descriptionTemplate": "Gain [Block:Arg1] Shield, increase Realm Mastery by [Arg2]. If Caraboo is in the party, the next {derived:Caraboo's Blessing} will not trigger \"Negative Effects\".\nScaling guide: {Primordia Mastery Scaling}",
+    "descriptionTemplate": "Gain [Block:Arg1] Shield, increase Realm Mastery by [Arg2]. If Caraboo is in the team, the next Caraboo's {derived:Caraboo's Blessing} will not come with a {Price}.\nScaling guide: {Primordia Mastery Scaling}",
     "descriptionArgs": {
       "Arg1": {
         "kind": "computed",
-        "formulaKey": "primordiaPosseScaled",
+        "formulaKey": "scaled",
         "baseFormula": "esotericResearchDepth",
-        "rounding": "ceil",
         "multiplier": 0.104,
         "inputs": [
           "accountLevel",
-          "ownedPosseCount",
-          "realmMasteryFinal",
-          "primordiaAllChaosTeam"
-        ],
-        "scalingBucket": "utility"
+          "ownedPosseCount"
+        ]
       },
       "Arg2": {
         "kind": "computed",
@@ -2251,5 +2542,54 @@
     "collectible": true,
     "hasCharacterBonus": true,
     "characterBonusFor": "Ogier: Oathbound"
+  },
+  "posse-0064": {
+    "schemaVersion": 3,
+    "kind": "posse",
+    "id": "posse-0064",
+    "name": "Nightborn Evil",
+    "route": {
+      "slug": "nightborn-evil",
+      "canonicalPath": "/database/posses/nightborn-evil"
+    },
+    "assets": {
+      "icon": "asset-posse-0064-icon",
+      "crystal": "asset-posse-0064-crystal",
+      "badge": "asset-posse-0064-badge"
+    },
+    "ownerAwakenerId": "awakener-0062",
+    "ownerAwakenerName": "Vivian",
+    "acquisitionSource": "Clear Psyche Deepdive: The Diaries of a Princess",
+    "realm": "CHAOS",
+    "lineupToken": "xb",
+    "descriptionTemplate": "Recover [Heal:Arg1] HP. Choose 1 Awakener to gain [Arg2] Aliemus. If Vivian is on the team, the {derived:derived.vivian.cauldron|Cauldron} countdown -1.\nScaling guide: {Primordia Mastery Scaling}",
+    "descriptionArgs": {
+      "Arg1": {
+        "kind": "computed",
+        "formulaKey": "scaled",
+        "baseFormula": "esotericResearchDepth",
+        "multiplier": 0.06,
+        "inputs": [
+          "accountLevel",
+          "ownedPosseCount"
+        ]
+      },
+      "Arg2": {
+        "kind": "computed",
+        "formulaKey": "primordiaPosseScaled",
+        "baseFormula": "fixed",
+        "baseValue": 20,
+        "rounding": "ceil",
+        "inputs": [
+          "realmMasteryFinal",
+          "primordiaAllChaosTeam"
+        ],
+        "scalingBucket": "utility"
+      }
+    },
+    "equippable": true,
+    "collectible": true,
+    "hasCharacterBonus": true,
+    "characterBonusFor": "Vivian"
   }
 }

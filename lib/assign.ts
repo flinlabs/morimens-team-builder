@@ -120,6 +120,8 @@ const NICHE_MYTHIC_WHEEL_IDS = new Set([
   'wheel-0047', // Stakes of Wisdom — event wheel, niche use
   'wheel-0130', // Private Afternoon — event wheel, niche use
   'wheel-0165', // Sakura Reveries — paid event wheel
+  'wheel-0183', // Imago's Clinic — event wheel, exploration-start card
+  'wheel-0184', // Next Time It Rains — event wheel, exploration-start sigils/card
 ])
 
 // Assign up to 2 wheels to a unit, best-tier-first, from owned inventory.

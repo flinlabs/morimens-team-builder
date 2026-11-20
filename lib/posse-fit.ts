@@ -40,7 +40,8 @@ export type PossePurpose =
 // does two or three of these at once, which is fine — fit is scored on overlap,
 // not on a single dominant purpose.
 const TEXT_PURPOSE: [RegExp, PossePurpose][] = [
-  [/[Dd]raw \d|[Dd]raw that many|Discard|Discover|from the Discard pile|add a copy|add one|add all|into your hand|Hand Limit/i, 'draw'],
+  // 2.6.x reworded "into your hand" to "into hand" and "place their Strike" to "create ... Basic Strike".
+  [/[Dd]raw \d|[Dd]raw that many|Discard|Discover|from the Discard pile|add a copy|add one|add all|into (?:your )?hand|create .*Basic (?:Strike|Defense)|Hand Limit/i, 'draw'],
   [/Arithmetica/i, 'arithmetica'],
   [/Aliemus/i, 'aliemus'],
   [/Keyflare/i, 'keyflare'],
@@ -54,7 +55,7 @@ const TEXT_PURPOSE: [RegExp, PossePurpose][] = [
   [/Counter/i, 'counter'],
   [/Embryo/i, 'embryo'],
   [/Tentacle/i, 'tentacle'],
-  [/deal .*(DMG|damage)|Fixed DMG|Ancient Ember/i, 'direct_damage'],
+  [/deal .*(DMG|damage)|Fixed DMG|Ancient Ember|trigger \d+% \{?Counter/i, 'direct_damage'],
 ]
 
 /** Everything a posse does, read from its effect text. */

@@ -15,6 +15,7 @@ import {
   getWheelStarFloors,
 } from "@/lib/db";
 import { bisTierRank } from "@/lib/bis-client";
+import { publicNote } from "@/lib/public-text";
 import { RECORD_SLOT_TO_ROSTER } from "@/lib/enlighten";
 import type { EnlightenSlot } from "@/lib/types";
 
@@ -131,7 +132,9 @@ export async function GET(req: Request) {
         isDivineRealm: !!a.isDivineRealm,
         isLemurian: !!a.isLemurian,
         searchTags: a.searchTags ?? [],
-        annotationNotes: a.annotation?.notes ?? null,
+        // Run through publicNote so repo-internal provenance (who made a call,
+        // which guide it came from) never reaches the modal.
+        annotationNotes: publicNote(a.annotation?.notes),
         teamRoles: a.annotation?.teamRoles ?? [],
         // Investment guidance. The roster grid already had this from
         // app/page.tsx, but the detail modal fetches its own payload and so was
@@ -183,7 +186,7 @@ export async function GET(req: Request) {
         // Sorted BiS-first so the strongest claim reads at the top.
         bisFor: bisUsersOf(w.id),
         starFloor: getWheelStarFloors()[w.id]?.starFloor ?? null,
-        starFloorNote: getWheelStarFloors()[w.id]?.note ?? null,
+        starFloorNote: publicNote(getWheelStarFloors()[w.id]?.note),
       });
     }
 

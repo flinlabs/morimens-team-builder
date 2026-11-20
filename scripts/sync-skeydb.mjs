@@ -254,7 +254,7 @@ function buildPosses(posseRecords, awakenerNames) {
     if (!desc) return null
     // Pattern A: "If <name> is in your/the team/party, ..."
     for (const name of names) {
-      const re = new RegExp(`\\bIf\\s+"?${esc(name)}"?\\s+is in (?:your |the )?(?:team|party)\\b`, 'i')
+      const re = new RegExp(`\\bIf\\s+"?${esc(name)}"?\\s+is (?:in|on) (?:your |the )?(?:team|party)\\b`, 'i')
       if (re.test(desc)) return name
     }
     // Pattern B: a sentence-initial "<name>: <effect>" clause granting that

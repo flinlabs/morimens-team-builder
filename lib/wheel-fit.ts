@@ -67,7 +67,8 @@ const MAINSTAT_PURPOSE: Record<string, WheelPurpose> = {
 
 // Effect-text patterns, checked against descriptionTemplate.
 const TEXT_PURPOSE: [RegExp, WheelPurpose][] = [
-  [/Base DMG|Final DMG|Active DMG|DMG Amplification|deal .*DMG|Exalt DMG|Pursuit/i, 'offense'],
+  // "Inflict Fixed Corrosion" is the 2.6.x wording for what used to read "deal fixed Corrosion DMG".
+  [/Base DMG|Final DMG|Active DMG|DMG Amplification|deal .*DMG|Exalt DMG|Pursuit|Fixed \{?Corrosion/i, 'offense'],
   [/Crit\.? (Rate|DMG)/i, 'crit'],
   [/\bSTR\b|Temporary STR/i, 'str'],
   [/Shield/i, 'shield'],

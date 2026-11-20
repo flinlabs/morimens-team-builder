@@ -17,7 +17,7 @@ const annotationOf = (name: string) => awakeners[awakenerIdByName(name)].annotat
 describe('Caraboo', () => {
   const caraboo = annotationOf('Caraboo')
 
-  it('is a Corrosion source, alongside the only two others', () => {
+  it('is a Corrosion source, alongside the other appliers', () => {
     // Devour applies Corrosion on every hit of her Exalt. Before her that role
     // belonged to Castor and Saya alone, which is exactly why she matters to
     // Corrosion payoff teams.
@@ -26,7 +26,7 @@ describe('Caraboo', () => {
       .filter((a) => a.annotation?.teamRoles?.includes('corrosion_applier'))
       .map((a) => a.name)
       .sort()
-    expect(appliers).toEqual(['Caraboo', 'Castor', 'Ogier: Oathbound', 'Saya'])
+    expect(appliers).toEqual(['Caraboo', 'Castor', 'Ogier: Oathbound', 'Saya', 'Vivian'])
   })
 
   it('stops at E1 and E3, skipping the E2 scam rung', () => {
