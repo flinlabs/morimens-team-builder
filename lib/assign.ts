@@ -9,6 +9,7 @@ covenants, mainstats, substats) and the roster, and resolves the best owned
 option per slot. No AI is involved; the AI layer (if any) only narrates the
 result. Source data verified present for 56/57 awakeners' builds. **/
 
+import { resolveSubstatPriority, type SubstatKey } from './substats'
 import type {
   EnrichedAwakener,
   EnrichedPosse,
@@ -89,6 +90,18 @@ function recommendedCovenantsFor(awakener: EnrichedAwakener, role?: string): str
   const bis = pickBisVariant(awakener.id, role)
   if (bis && bis.covenants.length) return bis.covenants.map((c) => c.covenantId)
   return primaryVariant(awakener)?.recommendedCovenantIds ?? []
+}
+
+/**
+ * Covenant substats this awakener wants, in priority order, for the BiS
+ * variant their role picks. BiS preferredStats first, SKeyDB's ordered groups
+ * when the BiS list names none (see lib/substats.ts).
+ */
+export function substatPriorityFor(awakener: EnrichedAwakener, role?: string): SubstatKey[] {
+  return resolveSubstatPriority(
+    pickBisVariant(awakener.id, role)?.preferredStats,
+    primaryVariant(awakener)?.substatPriorityGroups
+  )
 }
 
 // The build variant the player should follow (its designated primary, else the
@@ -429,7 +442,7 @@ export function recommendCovenant(
 ): CovenantRecommendation {
   const variant = primaryVariant(awakener)
   const ids = recommendedCovenantsFor(awakener, role)
-  const prioritySubstats = (variant?.substatPriorityGroups ?? []).flat()
+  const prioritySubstats = substatPriorityFor(awakener, role)
 
   // A covenant copy is a physical item: two characters can't wear the same one.
   // Before 2.6.0 that made the whole set unique, which is what `usedCovenantIds`
@@ -439,7 +452,7 @@ export function recommendCovenant(
   // filtered out upstream by rankCopiesFor.
   for (const covenantId of ids) {
     const entry = getCovenantEntry(roster, covenantId)
-    const copy = rankCopiesFor(entry, awakener.id).find(
+    const copy = rankCopiesFor(entry, awakener.id, prioritySubstats).find(
       (c) => !usedCovenantIds.has(copyKey(covenantId, c.id))
     )
     if (copy) {

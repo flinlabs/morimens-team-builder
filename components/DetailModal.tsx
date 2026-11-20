@@ -2,9 +2,10 @@
 
 import { useEffect, useState, type ChangeEvent, type MouseEvent, type ReactNode } from "react";
 import { useRosterStore } from "@/lib/store";
-import { covenantCopies, canBindCovenants, COVENANT_BINDING_LEVEL } from "@/lib/roster";
+import { covenantCopies, canBindCovenants, COVENANT_BINDING_LEVEL, rankCopiesFor } from "@/lib/roster";
+import { SUBSTAT_LABEL, substatFit, hasRecordedSubstats, type SubstatKey } from "@/lib/substats";
 import { BIS_TIER_LABEL } from "@/lib/bis-client";
-import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg, SkeySkillUpgrade } from "@/lib/types";
+import type { EnlightenSlot, SkillSlot, Realm, DescriptionArg, SkeySkillUpgrade, CovenantEntry } from "@/lib/types";
 import { RealmSigil, REALM_COLOR } from "./realm";
 import { ScaledText, maxScalingIndex, applySkillUpgrades, type StatResolver } from "@/lib/template";
 import { resolvePrimaryStat, gnosticBonusLevels, wheelMainStat } from "@/lib/stats";
@@ -101,6 +102,8 @@ interface BisVariant {
   wheels: { tier: string; wheelId: string; wheelName: string }[];
   covenants: { covenantId: string; covenantName: string }[];
   preferredStats: string[];
+  /** Ordered covenant substat keys for this variant. */
+  substats?: string[];
 }
 interface AwakenerDetail {
   kind: "awakener";
@@ -135,6 +138,7 @@ interface WheelDetail {
 }
 interface CovenantDetail {
   kind: "covenant";
+  substatWants?: { awakenerId: string; awakenerName: string; variant: string; substats: string[] }[];
   bindTargets?: { id: string; name: string }[];
   acquisitionSource?: string | null;
   lore?: string | null;
@@ -435,14 +439,102 @@ function RecommendedPill({ label = "recommended" }: { label?: string }) {
    character to decide what to farm had no way to see it. Owned state comes from
    the roster so the list reads as "you have this / you don't" rather than an
    abstract wishlist. */
+/**
+ * Which owned characters this copy suits, from the substats recorded on it.
+ * One line per character (their best-fitting variant), top three shown.
+ */
+function CopyFitList({
+  totals,
+  wants,
+}: {
+  totals?: Record<string, number>;
+  wants: { awakenerId: string; awakenerName: string; variant: string; substats: string[] }[];
+}) {
+  if (!wants.length) return null;
+  if (!hasRecordedSubstats(totals)) {
+    return (
+      <p className="text-[12px] text-[var(--text-dim)]">
+        Record this set&apos;s substats to see which of your characters it fits best.
+      </p>
+    );
+  }
+  const best = new Map<string, { name: string; score: number; matched: SubstatKey[] }>();
+  for (const w of wants) {
+    const fit = substatFit(totals, w.substats);
+    const prev = best.get(w.awakenerId);
+    if (fit.score > 0 && (!prev || fit.score > prev.score)) {
+      best.set(w.awakenerId, { name: w.awakenerName, ...fit });
+    }
+  }
+  const ranked = [...best.values()].sort((a, b) => b.score - a.score || a.name.localeCompare(b.name)).slice(0, 3);
+  return (
+    <div className="space-y-1 border-t border-[var(--border)] pt-2 text-[12.5px]">
+      <span className="text-[11px] uppercase tracking-wider text-[var(--text-dim)]">Best fit</span>
+      {ranked.length === 0 ? (
+        <p className="text-[var(--text-dim)]">
+          None of your characters who use this set want these substats.
+        </p>
+      ) : (
+        ranked.map((r) => (
+          <div key={r.name} className="flex items-baseline gap-2">
+            <span className="text-[var(--text)]">{r.name}</span>
+            <span className="truncate text-[var(--text-dim)]">
+              {r.matched.map((k) => SUBSTAT_LABEL[k]).join(" · ")}
+            </span>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+/** Numbered substat chips in priority order, or "Any" when nothing is wanted. */
+function SubstatPriorityRow({ substats }: { substats: string[] }) {
+  return (
+    <div className="mb-2 flex flex-wrap items-center gap-1.5 text-[12px]">
+      <span className="w-[74px] shrink-0 text-[11px] uppercase tracking-wider text-[var(--text-dim)]">
+        Substats
+      </span>
+      {substats.length === 0 ? (
+        <span className="text-[var(--text-dim)]">Any</span>
+      ) : (
+        substats.map((k, i) => (
+          <span
+            key={k}
+            className="rounded-full border border-[var(--border)] bg-[var(--panel)] px-2 py-0.5 text-[var(--text-muted)]"
+          >
+            <span className="tabular-nums text-[var(--gold)]">{i + 1}</span>{" "}
+            {SUBSTAT_LABEL[k as SubstatKey] ?? k}
+          </span>
+        ))
+      )}
+    </div>
+  );
+}
+
+/**
+ * Owned state for a covenant line, naming which duplicate to equip when the
+ * player has more than one: the same ranking the team builder uses.
+ */
+function bestCopyLabel(entry: CovenantEntry | undefined, awakenerId: string, substats: string[]): string {
+  if (!entry?.owned) return "not owned";
+  const copies = covenantCopies(entry);
+  if (copies.length < 2) return "owned";
+  const best = rankCopiesFor(entry, awakenerId, substats)[0];
+  if (!best) return "owned · all bound";
+  return `owned · use Set ${copies.findIndex((c) => c.id === best.id) + 1}`;
+}
+
 function BisPanel({
   variants,
   wheels,
   covenants,
+  awakenerId,
 }: {
   variants: BisVariant[];
   wheels: Record<string, { owned: boolean; starLevel: number; stackLevel: number }>;
-  covenants: Record<string, { owned: boolean }>;
+  covenants: Record<string, CovenantEntry>;
+  awakenerId: string;
 }) {
   if (!variants.length) {
     return (
@@ -463,12 +555,9 @@ function BisPanel({
             <span className="font-title text-[12px] uppercase tracking-wider text-[var(--gold-bright)]">
               {v.variant}
             </span>
-            {v.preferredStats.length > 0 && (
-              <span className="truncate text-[12px] text-[var(--text-dim)]">
-                {v.preferredStats.join(" · ")}
-              </span>
-            )}
           </div>
+
+          <SubstatPriorityRow substats={v.substats ?? []} />
 
           <div className="space-y-1">
             {v.wheels.map((w) => {
@@ -507,7 +596,7 @@ function BisPanel({
                     {c.covenantName}
                   </span>
                   <span className="ml-auto shrink-0 text-[12px] text-[var(--text-dim)]">
-                    {covenants[c.covenantId]?.owned ? "owned" : "not owned"}
+                    {bestCopyLabel(covenants[c.covenantId], awakenerId, v.substats ?? [])}
                   </span>
                 </div>
               ))}
@@ -1021,6 +1110,7 @@ export default function DetailModal({
                       variants={d?.bisVariants ?? []}
                       wheels={roster.wheels}
                       covenants={roster.covenants}
+                      awakenerId={target.id}
                     />
                   </Section>
 
@@ -1351,6 +1441,15 @@ export default function DetailModal({
                               );
                             })}
                           </div>
+
+                          {!copy.boundTo && (
+                            <CopyFitList
+                              totals={copy.substatTotals}
+                              wants={(d?.substatWants ?? []).filter(
+                                (w) => roster.awakeners[w.awakenerId]?.owned
+                              )}
+                            />
+                          )}
                         </div>
                       ))}
 

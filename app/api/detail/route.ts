@@ -16,6 +16,8 @@ import {
 } from "@/lib/db";
 import { bisTierRank } from "@/lib/bis-client";
 import { publicNote } from "@/lib/public-text";
+import { resolveSubstatPriority } from "@/lib/substats";
+import type { EnrichedAwakener } from "@/lib/types";
 import { RECORD_SLOT_TO_ROSTER } from "@/lib/enlighten";
 import type { EnlightenSlot } from "@/lib/types";
 
@@ -31,6 +33,44 @@ const SKILL_ORDER: Record<string, number> = {
   Exalt: 5,
   OverExalt: 6,
 };
+
+/** SKeyDB's ordered substat groups for an awakener's primary build. */
+function skeySubstatGroups(a: EnrichedAwakener | undefined): string[][] {
+  const build = a?.build;
+  if (!build?.builds?.length) return [];
+  const v = build.builds.find((b) => b.id === build.primaryBuildId) ?? build.builds[0];
+  return v.substatPriorityGroups ?? [];
+}
+
+/**
+ * Everyone who wants this covenant set, with the substats they want on it.
+ * BiS variants first; awakeners with no BiS entry fall back to SKeyDB's
+ * recommendedCovenantIds. The client keeps the owned ones and ranks them
+ * against each copy's rolled substats, since the roster never reaches here.
+ */
+function substatWantsFor(covenantId: string) {
+  const awakeners = getAwakeners();
+  const bis = getBisData();
+  const out: { awakenerId: string; awakenerName: string; variant: string; substats: string[] }[] = [];
+  for (const a of Object.values(awakeners)) {
+    const variants = bis[a.id]?.variants ?? [];
+    if (variants.length) {
+      for (const v of variants) {
+        if (!(v.covenants ?? []).some((c) => c.covenantId === covenantId)) continue;
+        const substats = resolveSubstatPriority(v.preferredStats, skeySubstatGroups(a));
+        if (substats.length) out.push({ awakenerId: a.id, awakenerName: a.name, variant: v.variant, substats });
+      }
+      continue;
+    }
+    const build = a.build;
+    const primary = build?.builds?.find((b) => b.id === build.primaryBuildId) ?? build?.builds?.[0];
+    if (primary?.recommendedCovenantIds?.includes(covenantId)) {
+      const substats = resolveSubstatPriority([], primary.substatPriorityGroups);
+      if (substats.length) out.push({ awakenerId: a.id, awakenerName: a.name, variant: primary.label, substats });
+    }
+  }
+  return out.sort((x, y) => x.awakenerName.localeCompare(y.awakenerName));
+}
 
 /** Every character/variant that lists this wheel in db/bis.json. */
 function bisUsersOf(wheelId: string) {
@@ -155,6 +195,8 @@ export async function GET(req: Request) {
             covenantName: c.covenantName,
           })),
           preferredStats: v.preferredStats ?? [],
+          // Ordered substat keys for this variant's covenants (lib/substats.ts).
+          substats: resolveSubstatPriority(v.preferredStats, skeySubstatGroups(a)),
         })),
         enlightens,
         skills,
@@ -207,6 +249,7 @@ export async function GET(req: Request) {
         // Bind targets for the 2.6.0 binding menu. The whole catalog, sorted by
         // name — the client filters to what the player owns, since the roster
         // lives in localStorage and never reaches the server.
+        substatWants: substatWantsFor(c.id),
         bindTargets: Object.values(getAwakeners())
           .map((a) => ({ id: a.id, name: a.name }))
           .sort((x, y) => x.name.localeCompare(y.name)),

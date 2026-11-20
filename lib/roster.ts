@@ -1,3 +1,4 @@
+import { compareSubstatFit } from './substats'
 import type {
   UserRoster,
   AwakenerEntry,
@@ -350,9 +351,16 @@ export function copiesAvailableTo(
  * the alternative is leaving a strictly stronger item unworn. Below that it is
  * 6-piece, then 3-piece, then raw completion.
  */
+/**
+ * Copies this awakener can wear, best first: their own bound copy, then set
+ * completion, then rolled substats against `substatPriority` (their wanted
+ * substats in order), then completion percent. Substats sit below the set
+ * bonus on purpose: a finished 6-piece beats a better-rolled 3-piece.
+ */
 export function rankCopiesFor(
   entry: CovenantEntry,
-  awakenerId: string
+  awakenerId: string,
+  substatPriority: readonly string[] = []
 ): CovenantCopy[] {
   return [...copiesAvailableTo(entry, awakenerId)].sort((a, b) => {
     const bound = Number(b.boundTo === awakenerId) - Number(a.boundTo === awakenerId)
@@ -361,6 +369,8 @@ export function rankCopiesFor(
     if (six) return six
     const three = Number(b.threePieceComplete) - Number(a.threePieceComplete)
     if (three) return three
+    const fit = compareSubstatFit(a.substatTotals, b.substatTotals, substatPriority)
+    if (fit) return fit
     return (b.completionPercent ?? 0) - (a.completionPercent ?? 0)
   })
 }
