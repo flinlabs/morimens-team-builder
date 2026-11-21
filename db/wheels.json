@@ -593,7 +593,7 @@
     "mainstatKey": "CRIT_DMG",
     "ownerAwakenerId": "awakener-0014",
     "ownerAwakenerName": "Doresain",
-    "lineupToken": "yP",
+    "lineupToken": "yJ",
     "descriptionTemplate": "{Team Unique}: The wielder's Base DMG +[StateArg1]%. During this exploration, every time the wielder kills an enemy, their Crit. Rate +2% and Exalt Base DMG +[StateArg2]%, up to 10 times. If the current Realm is {Caro}, the wielder gains an extra [StateArg4] Aliemus when they directly consume {Embryo}. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -661,7 +661,7 @@
     "mainstatKey": "ALIEMUS_REGEN",
     "ownerAwakenerId": "awakener-0040",
     "ownerAwakenerName": "Pickman",
-    "lineupToken": "yd",
+    "lineupToken": "yc",
     "descriptionTemplate": "{Team Unique}: The wielder's Aliemus Generation and {STR} Generation +[StateArg1]%. After unleashing Exalt, the Final DMG, Shield, and HP Recovery from the next Exalt released by other Awakeners this turn +[StateArg2]%. If this Exalt triggered {Devour}, the wielder gains [StateArg3] Aliemus.",
     "descriptionArgs": {
       "StateArg1": {
@@ -721,7 +721,7 @@
     "mainstatKey": "DMG_AMP",
     "ownerAwakenerId": "awakener-0054",
     "ownerAwakenerName": "Xu",
-    "lineupToken": "yV",
+    "lineupToken": "yP",
     "descriptionTemplate": "{Team Unique}: The wielder's Fixed {Poison} Infliction and {Poison} Trigger +[StateArg1]%, and {Caro} Realm's automatic {Embryo Fusion} +[StateArg2]%. When the wielder first triggers {Resonance} each turn, other Awakeners gain [StateArg3] Aliemus.",
     "descriptionArgs": {
       "StateArg1": {
@@ -1513,7 +1513,7 @@
     "mainstatKey": "CRIT_DMG",
     "ownerAwakenerId": "awakener-0027",
     "ownerAwakenerName": "Kathigu-Ra",
-    "lineupToken": "yn",
+    "lineupToken": "ym",
     "descriptionTemplate": "{Team Unique}: The wielder's Base DMG +[StateArg1]%, and {STR} Generation +[StateArg2]%. Whenever one of the wielder's Command Cards is played, gain Temporary {STR} equal to [StateArg3]% of their ATK. (This effect stacks up to 5 times.)",
     "descriptionArgs": {
       "StateArg1": {
@@ -1572,7 +1572,7 @@
     "mainstatKey": "DEATH_RESISTANCE",
     "ownerAwakenerId": "awakener-0033",
     "ownerAwakenerName": "Mouchette",
-    "lineupToken": "yM",
+    "lineupToken": "yH",
     "descriptionTemplate": "{Team Unique}: The Base DMG of the wielder's Exalt and {Pursuit} each +[StateArg1]%.\nAfter any Awakener's \"Strike\" is played, DMG dealt by the wielder's \"Strike\" s this turn increases by [StateArg2]% of the wielder's ATK.\n(This effect stacks up to 8 times.)",
     "descriptionArgs": {
       "StateArg1": {
@@ -2118,7 +2118,7 @@
     "mainstatKey": "DMG_AMP",
     "ownerAwakenerId": "awakener-0008",
     "ownerAwakenerName": "Castor",
-    "lineupToken": "yb",
+    "lineupToken": "ya",
     "descriptionTemplate": "{Team Unique}: Hand Limit +2. <Italic:(Does not stack with other Wheels.)> The wielder's Base DMG and Shield Generation +[StateArg1]%.\nObtain [StateArg2] Aliemus upon entering the {Ultra Round}.\nRelease {Annihilation} to grant all Awakeners Temporary Crit. DMG +[StateArg3]%. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2240,7 +2240,7 @@
     "mainstatKey": "KEYFLARE_REGEN",
     "ownerAwakenerId": "awakener-0010",
     "ownerAwakenerName": "Clementine",
-    "lineupToken": "yf",
+    "lineupToken": "ye",
     "descriptionTemplate": "{Team Unique}: The wielder's Exalt Base DMG +[StateArg1]%, and Keyflare Regen +[StateArg2]%. After entering {Ultra Round}, all Awakeners obtain [StateArg4] Aliemus. After releasing {Annihilation}, the wielder obtains [StateArg3] Aliemus.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2308,7 +2308,7 @@
     "mainstatKey": "CRIT_RATE",
     "ownerAwakenerId": "awakener-0041",
     "ownerAwakenerName": "Pollux",
-    "lineupToken": "yg",
+    "lineupToken": "yf",
     "descriptionTemplate": "{Team Unique}: The wielder's cards gain +[StateArg1]% Base DMG and Crit. DMG. At the start of your turn and after using the wielder's Exalt, gain 1 stack of {Alight}. When the wielder's Command Card is played, consume 1 stack to increase its Final DMG and Shield by [StateArg2]%. During an {Ultra Round}, gain {Ablaze} instead (effect doubled).",
     "descriptionArgs": {
       "StateArg1": {
@@ -2356,7 +2356,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "CRIT_RATE",
-    "lineupToken": "yJ",
+    "lineupToken": "yF",
     "descriptionTemplate": "{Team Unique}: After unleashing a Posse, the wielder's Crit. Rate is temporarily+[StateArg1]%.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2393,7 +2393,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "SIGIL_YIELD",
-    "lineupToken": "yI",
+    "lineupToken": "yE",
     "descriptionTemplate": "{Team Unique}: After resetting stock at \"D-Mark\" and {Ashen Ruins}, the wielder gains [StateArg1] Aliemus.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2429,7 +2429,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "DEATH_RESISTANCE",
-    "lineupToken": "yS",
+    "lineupToken": "yM",
     "descriptionTemplate": "{Team Unique}: Your first purchase of an \"Orison\" in the \"D-Mark\" store or your first purchase of a discounted item in the {Ashen Ruins} has a [StateArg1]% chance to cost 0 Black Sigils. This can trigger only once per Exploration.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2463,7 +2463,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "KEYFLARE_REGEN",
-    "lineupToken": "yT",
+    "lineupToken": "yN",
     "descriptionTemplate": "{Team Unique}: At the start of exploration, add 1 card {5: Countdown} to the deck. {5: Countdown}: Draw 1 card after played, shuffle the next {Countdown} into the Discard Pile, {Destroy}. {0: Countdown}: Draw 3 cards, gain 3 Arithmetica, and have a [StateArg1]% chance to shuffle {5: Countdown} into the Discard Pile, {Retain}, {Destroy}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2501,7 +2501,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "CRIT_DMG",
-    "lineupToken": "y4",
+    "lineupToken": "yV",
     "descriptionTemplate": "{Team Unique}: After exploration starts, shuffle 1 {derived:Stakes of Wisdom} into the Draw Pile. {derived:Stakes of Wisdom}: Cost 1 Arithmetica. Shuffle all Command Cards in hand randomly into the Draw Pile. Shuffled Command Cards have a [StateArg1]% chance to take effect 1 additional time when played next, and for each Command Card shuffled in, all Awakeners gain 2 Aliemus. {Retain}. {Exhaust}. {Innate}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2547,7 +2547,7 @@
     "rarity": "N",
     "realm": "NEUTRAL",
     "mainstatKey": "KEYFLARE_REGEN",
-    "lineupToken": "ya",
+    "lineupToken": "x0",
     "descriptionTemplate": "{Team Unique}: If the wielder is the Awakener \"Ramona,\" the Affinity gained upon completing the stage +[StateArg1]%.",
     "descriptionArgs": {
       "StateArg1": {
@@ -2576,7 +2576,7 @@
     "rarity": "N",
     "realm": "NEUTRAL",
     "mainstatKey": "KEYFLARE_REGEN",
-    "lineupToken": "yW",
+    "lineupToken": "yQ",
     "descriptionTemplate": "{Team Unique}: If the wielder is the Awakener \"Ramona: Timeworn,\" the Affinity gained by other Awakeners upon completing the stage +[StateArg1]%, but the wielder does not gain any Affinity.",
     "descriptionArgs": {
       "StateArg1": {
@@ -3131,7 +3131,7 @@
     "mainstatKey": "DEATH_RESISTANCE",
     "ownerAwakenerId": "awakener-0011",
     "ownerAwakenerName": "Corposant",
-    "lineupToken": "ye",
+    "lineupToken": "yd",
     "descriptionTemplate": "{Team Unique}: Shield gained from the wielder's Exalt +[StateArg1]%.\nAfter the wielder Exalts, all Awakeners gain +[StateArg2]% Temp. Crit. DMG, and another +1% for each Tentacle.\nThe first time {Death Resistance} triggers each investigation, recover [StateArg3]% of Max HP at the start of your next turn.",
     "descriptionArgs": {
       "StateArg1": {
@@ -3193,7 +3193,7 @@
     "mainstatKey": "REALM_MASTERY",
     "ownerAwakenerId": "awakener-0055",
     "ownerAwakenerName": "Vortice",
-    "lineupToken": "y2",
+    "lineupToken": "yT",
     "descriptionTemplate": "{Team Unique}: At the start of each battle, the wielder gains Aliemus equal to [StateArg1]% of their Base Aliemus.\nThe Final DMG dealt by the wielder's Exalt increases by a percentage equal to [StateArg2]% of their Base Aliemus.\nUpon switching to the {Raging Waves} stance, gain Temp. Realm Mastery equal to [StateArg3]% of current Realm Mastery. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5147,7 +5147,7 @@
     "mainstatKey": "CRIT_DMG",
     "ownerAwakenerId": "awakener-0014",
     "ownerAwakenerName": "Doresain",
-    "lineupToken": "yO",
+    "lineupToken": "yI",
     "descriptionTemplate": "{Team Unique}: The wielder's Base DMG +[StateArg1]%. If the current Realm is {Caro}, whenever the wielder kills an enemy, accumulate {Crimson Furnace} equal to [StateArg2]% of the wielder's ATK.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5241,7 +5241,7 @@
     "mainstatKey": "KEYFLARE_REGEN",
     "ownerAwakenerId": "awakener-0035",
     "ownerAwakenerName": "Murphy: Fauxborn",
-    "lineupToken": "yQ",
+    "lineupToken": "yK",
     "descriptionTemplate": "{Team Unique}: The wielder's Keyflare Regen, Exalt Final DMG & Shield +[StateArg1]%.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5281,7 +5281,7 @@
     "mainstatKey": "DMG_AMP",
     "ownerAwakenerId": "awakener-0008",
     "ownerAwakenerName": "Castor",
-    "lineupToken": "yq",
+    "lineupToken": "yo",
     "descriptionTemplate": "{Team Unique}: The wielder's Shield Generation +[StateArg1]%. At turn end, gain Shield equal to [StateArg2]% of the wielder's DEF, which +2% of the wielder's DEF per turn.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5330,7 +5330,7 @@
     "mainstatKey": "CRIT_RATE",
     "ownerAwakenerId": "awakener-0041",
     "ownerAwakenerName": "Pollux",
-    "lineupToken": "yD",
+    "lineupToken": "yB",
     "descriptionTemplate": "{Team Unique}: In the {Ultra Round}: Gain 3 stacks of {Alight}. When the wielder plays a Command Card, consume 1 stack to increase its Final DMG and Shield Generation by [StateArg1]%.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5369,7 +5369,7 @@
     "mainstatKey": "DEATH_RESISTANCE",
     "ownerAwakenerId": "awakener-0011",
     "ownerAwakenerName": "Corposant",
-    "lineupToken": "yv",
+    "lineupToken": "yt",
     "descriptionTemplate": "{Team Unique}: At battle start, gain Shield equal to [StateArg1]% of the wielder's DEF. After triggering {Death Resistance}, trigger this effect again At next turn start.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5409,7 +5409,7 @@
     "mainstatKey": "ALIEMUS_REGEN",
     "ownerAwakenerId": "awakener-0040",
     "ownerAwakenerName": "Pickman",
-    "lineupToken": "yt",
+    "lineupToken": "yr",
     "descriptionTemplate": "{Team Unique}: After the wielder unleashes Exalt, they gain 1 stack of {Collaboration}. The next Exalt of other Awakeners this turn can consume {Collaboration}, increasing its Crit. Rate by [StateArg1]%, and the Awakener consuming {Collaboration} gains Aliemus equal to [StateArg1]% the wielder's Aliemus Regen.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5449,7 +5449,7 @@
     "mainstatKey": "CRIT_DMG",
     "ownerAwakenerId": "awakener-0027",
     "ownerAwakenerName": "Kathigu-Ra",
-    "lineupToken": "yE",
+    "lineupToken": "yC",
     "descriptionTemplate": "{Team Unique}: The wielder's Base DMG +[StateArg1]%. After playing 5 of the wielder's Command Cards, the wielder gains [StateArg2]% Temporary Crit. Rate. This effect can only trigger once per turn.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5498,7 +5498,7 @@
     "mainstatKey": "DEATH_RESISTANCE",
     "ownerAwakenerId": "awakener-0033",
     "ownerAwakenerName": "Mouchette",
-    "lineupToken": "yK",
+    "lineupToken": "yG",
     "descriptionTemplate": "{Team Unique}: After the first Posse release in each turn, there is a [StateArg1]% chance to draw 1 \"Strike\" of the wielder's.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5537,7 +5537,7 @@
     "mainstatKey": "DMG_AMP",
     "ownerAwakenerId": "awakener-0054",
     "ownerAwakenerName": "Xu",
-    "lineupToken": "yU",
+    "lineupToken": "yO",
     "descriptionTemplate": "{Team Unique}: The wielder's Fixed {Poison} Infliction and {Poison} Trigger +[StateArg1]%. The wielder gains [StateArg2] Aliemus the first time they trigger {Resonance} each turn.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5586,7 +5586,7 @@
     "mainstatKey": "REALM_MASTERY",
     "ownerAwakenerId": "awakener-0055",
     "ownerAwakenerName": "Vortice",
-    "lineupToken": "y3",
+    "lineupToken": "yU",
     "descriptionTemplate": "{Team Unique}: When switching to the {Raging Waves} stance, gain Temporary Realm Mastery equal to [StateArg1]% of your current Realm Mastery. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5876,7 +5876,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "ALIEMUS_REGEN",
-    "lineupToken": "yH",
+    "lineupToken": "yD",
     "descriptionTemplate": "{Team Unique}: After the wielder releases Exalt, Exalt Base DMG +[StateArg1]%, Shield and HP Recovery +[StateArg2]%, stacking up to 5 times. During exploration, the Affinity gained by the wielder +[StateArg3]%.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5934,7 +5934,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "REALM_MASTERY",
-    "lineupToken": "yR",
+    "lineupToken": "yL",
     "descriptionTemplate": "{Team Unique}: After switching Tentacle Stances, using {Crimson Furnace}, or unleashing {Annihilation}, draw the wielder's Command Card ×1; each effect has a cooldown of 3 turns. After the Exploration, all Awakeners in the team gain +[StateArg1]% Affinity.",
     "descriptionArgs": {
       "StateArg1": {
@@ -5973,7 +5973,7 @@
     "mainstatKey": "REALM_MASTERY",
     "ownerAwakenerId": "awakener-0056",
     "ownerAwakenerName": "Arachne",
-    "lineupToken": "yi",
+    "lineupToken": "yh",
     "descriptionTemplate": "{Team Unique}: The wielder's Shield Generation +[StateArg1]%, and when the wielder uses {Pursuit}, Temporary Amplification +[StateArg2]%, up to 5 times per turn. Whenever {Dimension Shuttle} is triggered, the wielder gains [StateArg3] Aliemus.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6031,7 +6031,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "CRIT_DMG",
-    "lineupToken": "y5",
+    "lineupToken": "yW",
     "descriptionTemplate": "{Team Unique}: After exploration starts, shuffle 1 {derived:Private Afternoon} into the Draw Pile. {derived:Private Afternoon}: Consume 1 Arithmetica. Temporary Crit. DMG +[StateArg1]%. {Retain}. {Exhaust}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6079,7 +6079,7 @@
     "mainstatKey": "KEYFLARE_REGEN",
     "ownerAwakenerId": "awakener-0035",
     "ownerAwakenerName": "Murphy: Fauxborn",
-    "lineupToken": "yp",
+    "lineupToken": "yn",
     "descriptionTemplate": "{Team Unique}: Hand Limit +2. <Italic:(Does not stack with other Wheels.)>\nThe wielder's Keyflare Regen and their Exalt's Final DMG & Shield Generation +[StateArg1]%.\nUpon switching to the {Tranquil Sea} stance, the wielder gains [StateArg2] Aliemus. 3-turn cooldown.\nUpon switching to the {Raging Waves} stance, inflict [StateArg3] stacks of {Birth Ritual} on all enemies. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6139,7 +6139,7 @@
     "mainstatKey": "REALM_MASTERY",
     "ownerAwakenerId": "awakener-0056",
     "ownerAwakenerName": "Arachne",
-    "lineupToken": "yu",
+    "lineupToken": "ys",
     "descriptionTemplate": "{Team Unique}: The wielder's Shield Generation +[StateArg1]%, and when the wielder uses {Pursuit}, Temporary Amplification +[StateArg2]%, up to 5 times per turn.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6225,7 +6225,7 @@
     "mainstatKey": "KEYFLARE_REGEN",
     "ownerAwakenerId": "awakener-0010",
     "ownerAwakenerName": "Clementine",
-    "lineupToken": "x0",
+    "lineupToken": "x9",
     "descriptionTemplate": "{Team Unique}: Increases the wielder's Keyflare Regen by [StateArg1]%. At the start of the first battle, inflict 1 stack of {Weakness} and {Vulnerable} on all enemies.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6264,7 +6264,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "REALM_MASTERY",
-    "lineupToken": "y6",
+    "lineupToken": "yX",
     "descriptionTemplate": "{Team Unique}: After the exploration starts, shuffle 1 {Vernal Message} into the deck: Arithmetica Cost 1, gain [StateArg1] Keyflare, permanently transforms into {Sakura Blossoms} after played: Arithmetica Cost 1, gain [StateArg2] Keyflare, after playing it permanently transforms into {Hanafubuki}: Arithmetica Cost 1, gain [StateArg3] Keyflare, permanently transforms into {Ichigo Ichie} after played: Arithmetica Cost 1, choose 1 from 3 random unlocked Posse to immediately unleash and trigger 2 times, permanently transforms into {Vernal Message} after played. All of these cards have {Retain}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6318,7 +6318,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "SIGIL_YIELD",
-    "lineupToken": "y7",
+    "lineupToken": "yY",
     "descriptionTemplate": "{Team Unique}: For every 1% of Sigil Yield the wielder, their WoDs, and Covenants have, recover [StateArg1]% Max HP at the end of battle. This effect diminishes by 30% at the end of every turn, and is calculated individually for each battle.\nAfter choosing {Perception} at {Ashen Ruins}, refreshes will be free at this {Ashen Ruins} before you leave.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6359,7 +6359,7 @@
     "mainstatKey": "SIGIL_YIELD",
     "ownerAwakenerId": "awakener-0057",
     "ownerAwakenerName": "Saya",
-    "lineupToken": "yY",
+    "lineupToken": "yS",
     "descriptionTemplate": "{Team Unique}: Arithmetica Limit +1. Effects of the same type cannot stack.\nFor every 10 Base Aliemus the wielder has, they inflict +[StateArg1]% {Corrosion} stacks and cause +[Float:StateArg2]% {Embryo Fusion}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6408,7 +6408,7 @@
     "mainstatKey": "SIGIL_YIELD",
     "ownerAwakenerId": "awakener-0057",
     "ownerAwakenerName": "Saya",
-    "lineupToken": "yX",
+    "lineupToken": "yR",
     "descriptionTemplate": "{Team Unique}: After using {Crimson Furnace}, the wielder gains Aliemus equal to [StateArg1]% of Base Aliemus. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6447,7 +6447,7 @@
     "mainstatKey": "CRIT_DMG",
     "ownerAwakenerId": "awakener-0058",
     "ownerAwakenerName": "Pontos",
-    "lineupToken": "y8",
+    "lineupToken": "yZ",
     "descriptionTemplate": "{Team Unique}: The wielder's {STR▼} effect +[StateArg1]%. After switching to the {Raging Waves} stance, Temporary Crit. DMG increases by an amount equal to [StateArg1]% of the wielder's Base Crit. DMG, 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6495,7 +6495,7 @@
     "mainstatKey": "DMG_AMP",
     "ownerAwakenerId": "awakener-0029",
     "ownerAwakenerName": "Lily",
-    "lineupToken": "y0",
+    "lineupToken": "y2",
     "descriptionTemplate": "{Team Unique}: After exploration starts, add 1 {derived:Dreaming of Wonderland} to the deck. {derived:Dreaming of Wonderland}: Consume 2 Arithmetica, grant the wielder [StateArg1] Aliemus and 3 stacks of {Mental Interference}. {Retain}. {Exhaust}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6542,7 +6542,7 @@
     "mainstatKey": "CRIT_DMG",
     "ownerAwakenerId": "awakener-0058",
     "ownerAwakenerName": "Pontos",
-    "lineupToken": "y9",
+    "lineupToken": "y1",
     "descriptionTemplate": "{Team Unique}: The wielder's {STR▼} Infliction +[StateArg1]%. For the current exploration, each kill increases the wielder's Fixed Aliemus recovery at turn end by 2, stacking up to [StateArg2] times. After switching to the {Raging Waves} stance, Temporary Crit. DMG increases by an amount equal to [StateArg1]% of the wielder's Base Crit. DMG, 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6591,7 +6591,7 @@
     "mainstatKey": "SIGIL_YIELD",
     "ownerAwakenerId": "awakener-0059",
     "ownerAwakenerName": "Lotan: Cetarchon",
-    "lineupToken": "ze",
+    "lineupToken": "y7",
     "descriptionTemplate": "{Team Unique}: The wielder's \"Strike\" Crit. DMG +[StateArg1]%. At the end of each turn, the wielder's next Exalt Crit. DMG is increased by a percentage equal to [StateArg2]% of their Base Aliemus, stacking up to 5 times.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6642,7 +6642,7 @@
     "mainstatKey": "SIGIL_YIELD",
     "ownerAwakenerId": "awakener-0059",
     "ownerAwakenerName": "Lotan: Cetarchon",
-    "lineupToken": "zd",
+    "lineupToken": "y6",
     "descriptionTemplate": "{Team Unique}: The wielder's \"Strike\" Crit. DMG +[StateArg1]%.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6680,7 +6680,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "REALM_MASTERY",
-    "lineupToken": "zc",
+    "lineupToken": "y5",
     "descriptionTemplate": "{Team Unique}: At the start of exploration, add 1 {derived:Mortal Sojourn} to the deck.\n{Mortal Sojourn} (Costs 0 Arithmetica): Inflict Fixed {Corrosion} on all enemies equal to [StateArg1]% of the wielder's ATK plus [Float:StateArg4]% of their Max HP. Then, apply {Perception Warp} to the Command Cards of all other Awakeners on the field, and shuffle 1 {derived:Falling Upward} into the Draw Pile. {Retain}. {Exhaust}",
     "descriptionArgs": {
       "StateArg1": {
@@ -6743,7 +6743,7 @@
     "mainstatKey": "REALM_MASTERY",
     "ownerAwakenerId": "awakener-0060",
     "ownerAwakenerName": "Caraboo",
-    "lineupToken": "yj",
+    "lineupToken": "yi",
     "descriptionTemplate": "{Team Unique}: The wielder's Exalt generates +[StateArg1]% Base Shield. After the wielder plays a Command Card that inflicts {Weakness}, their next Command Card generates +[StateArg1]% Base Shield. Upon using {Crimson Furnace}, draw the wielder's Skill Card with the highest Arithmetica Cost and {Embryo Fusion} +[StateArg1]. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6784,7 +6784,7 @@
     "mainstatKey": "REALM_MASTERY",
     "ownerAwakenerId": "awakener-0060",
     "ownerAwakenerName": "Caraboo",
-    "lineupToken": "yA",
+    "lineupToken": "yv",
     "descriptionTemplate": "{Team Unique}: After the wielder plays a Command Card that inflicts {Weakness}, their next Command Card Base Shield +[StateArg1]%.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6822,7 +6822,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "SIGIL_YIELD",
-    "lineupToken": "zf",
+    "lineupToken": "y0",
     "descriptionTemplate": "{Team Unique}: At the start of exploration, add 1 {Soul Synchronization} to your deck.\n{derived:Soul Synchronization} (0 Arithmetica Cost): Gain 1 Arithmetica when played.\n{Retain}: While in hand, this card accumulates Fixed HP Recovery (equal to [StateArg1]% of the wielder's CON) and [StateArg2] Fixed Aliemus per turn. If the wielder takes fatal damage, this card prevents their death, releases all stored HP and Aliemus to them, and is then {Destroyed}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6880,7 +6880,7 @@
     "mainstatKey": "CRIT_RATE",
     "ownerAwakenerId": "awakener-0061",
     "ownerAwakenerName": "Ogier: Oathbound",
-    "lineupToken": null,
+    "lineupToken": "za",
     "descriptionTemplate": "{Team Unique}: The wielder's \"Exalt\" generates +[StateArg1]% Base Shield and Fixed {STR}. The wielder's \"Defense\" generates +[StateArg2]% Base Shield. After the wielder plays \"Defense,\" gain {STR} equal to [StateArg3]% of the wielder's ATK.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6941,7 +6941,7 @@
     "mainstatKey": "CRIT_RATE",
     "ownerAwakenerId": "awakener-0061",
     "ownerAwakenerName": "Ogier: Oathbound",
-    "lineupToken": null,
+    "lineupToken": "zb",
     "descriptionTemplate": "{Team Unique}: The wielder's \"Exalt\" generates +[StateArg1]% Base Shield and Fixed {STR}.",
     "descriptionArgs": {
       "StateArg1": {
@@ -6979,7 +6979,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "CRIT_RATE",
-    "lineupToken": null,
+    "lineupToken": "zc",
     "searchTags": [
       "Draw",
       "Aliemus",
@@ -7031,7 +7031,7 @@
     "mainstatKey": "CRIT_RATE",
     "ownerAwakenerId": "awakener-0062",
     "ownerAwakenerName": "Vivian",
-    "lineupToken": null,
+    "lineupToken": "zd",
     "descriptionTemplate": "{Team Unique}: The wielder's Fixed {Corrosion} effects +[StateArg1]%, and Fixed HP Recovery from Exalt +[StateArg2]%. After the wielder releases Exalt, gain Temporary {STR} equal to [StateArg3]% of their current Permanent {STR}. 3-turn cooldown.",
     "descriptionArgs": {
       "StateArg1": {
@@ -7094,7 +7094,7 @@
     "mainstatKey": "CRIT_RATE",
     "ownerAwakenerId": "awakener-0062",
     "ownerAwakenerName": "Vivian",
-    "lineupToken": null,
+    "lineupToken": "ze",
     "descriptionTemplate": "{Team Unique}: The wielder's Fixed {Corrosion} effects +[StateArg1]%, and Fixed HP Recovery from Exalt +[StateArg2]%.",
     "descriptionArgs": {
       "StateArg1": {
@@ -7144,7 +7144,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "CRIT_RATE",
-    "lineupToken": null,
+    "lineupToken": "zf",
     "descriptionTemplate": "{Team Unique}: At the start of exploration, add 1 {derived:Imago's Clinic} to the deck. {derived:Insect Taxidermy}",
     "descriptionArgs": {
       "StateArg1": {
@@ -7189,7 +7189,7 @@
     "rarity": "MYTHIC",
     "realm": "NEUTRAL",
     "mainstatKey": "REALM_MASTERY",
-    "lineupToken": null,
+    "lineupToken": "zi",
     "searchTags": [
       "Draw",
       "Sigil Gain"

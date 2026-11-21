@@ -183,6 +183,22 @@ function parseCapture(text) {
   // rather than by position: a three-part row could be one wheel and a covenant
   // or two wheels and none.
   const slots = rows.map((row) => {
+    // Newer game builds copy a fixed-width row instead: every column present,
+    // "-" for an empty one and a trailing comma ("Ogier, Imago's Clinic, -,").
+    // There the columns are positional, so read them by position.
+    if (/(^|,)\s*-\s*(,|$)/.test(row) || /,\s*$/.test(row)) {
+      const cols = row.split(',').map((p) => p.trim())
+      const blank = (v) => (!v || v === '-' ? null : v)
+      const wheels = [blank(cols[1]), blank(cols[2])].filter(Boolean)
+      for (const w of wheels) {
+        if (!isName('wheels', w)) throw new Error(`"${w}" in row "${row}" is not a wheel.`)
+      }
+      const covenant = blank(cols[3])
+      if (covenant && !isName('covenants', covenant)) {
+        throw new Error(`"${covenant}" in row "${row}" is not a covenant.`)
+      }
+      return { name: blank(cols[0]), wheels, covenant, positional: true, wheelCols: [blank(cols[1]), blank(cols[2])] }
+    }
     const [name, ...rest] = row.split(',').map((p) => p.trim()).filter(Boolean)
     const wheels = []
     let covenant = null
@@ -218,7 +234,11 @@ function resolveCapture(capture) {
   }
   for (const slot of capture.slots) {
     resolved.awakeners.push(slot.name ? lookup('awakeners', slot.name) : null)
-    const wheels = slot.wheels.map((w) => lookup('wheels', w))
+    // Positional rows keep an empty first wheel column in place, so a slot
+    // with only its second wheel set is encoded as [empty, wheel].
+    const wheels = slot.positional
+      ? slot.wheelCols.map((w) => (w ? lookup('wheels', w) : null))
+      : slot.wheels.map((w) => lookup('wheels', w))
     while (wheels.length < WHEELS_PER_SLOT) wheels.push(null)
     resolved.wheels.push(wheels)
     resolved.covenants.push(slot.covenant ? lookup('covenants', slot.covenant) : null)
@@ -442,12 +462,11 @@ const exact = matches.find(
 
 if (exact) {
   console.log('The committed dictionaries reproduce the capture exactly.')
-  console.log('The pin in scripts/sync-lineup-tokens.mjs is correct — no change needed.')
+  console.log('The committed tokens match the game — no change needed.')
   if (matches.length > 1) {
     console.log('')
-    console.log('Other offsets also fit, which means this capture does not discriminate')
-    console.log('between them. Capture a lineup containing Arachne or Soul Synchronization')
-    console.log('to get a decisive answer.')
+    console.log('Other offsets also fit for a category this capture does not exercise')
+    console.log('(usually covenants when no slot has one). Include one to pin it down.')
     for (const m of matches) console.log(`  ${describe(m)}`)
   }
   process.exit(0)

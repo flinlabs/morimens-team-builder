@@ -83,12 +83,13 @@ const writeDb = (f, data) => {
  * until upstream is confirmed correct against a fresh in-game capture. Clear an
  * entry here once that check passes.
  */
-const PINNED = {
-  awakeners:
-    'Held at pre-2.6.0 values — upstream reissue contradicts a real in-game code (see tests/ingame-codec.test.ts).',
-  wheels:
-    'Held at pre-2.6.0 values — same reissue, shifted by two places.',
-}
+//
+// Cleared 2026-11-20. A fresh capture with Vivian and the four Vivian-drop
+// wheels encodes Ogier/Ramona/Doll as C/M/k and the new wheels as zd/ze/zf/zi,
+// exactly SKeyDB's numbering and one place off the old pin. The game moved to
+// the reissued dictionary after the mercury child capture was taken, so the
+// pin is lifted. tests/ingame-codec.test.ts now holds the new capture.
+const PINNED = {}
 
 async function main() {
   console.log(`🔑 Refreshing lineup tokens${checkOnly ? ' (check only)' : ''}…\n`)

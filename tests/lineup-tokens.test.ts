@@ -50,7 +50,7 @@ describe('token coverage', () => {
       .filter((a) => !a.lineupToken)
       .map((a) => a.name)
       .sort()
-    expect(missing).toEqual(['Caraboo', 'Ogier: Oathbound', 'Vivian'])
+    expect(missing).toEqual([])
   })
 
   it('gives every equippable posse a token', () => {

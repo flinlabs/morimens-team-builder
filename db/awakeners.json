@@ -36,7 +36,7 @@
     ],
     "ingameId": "C06",
     "numericId": 1,
-    "lineupToken": "T",
+    "lineupToken": "S",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 35,
@@ -885,7 +885,7 @@
     ],
     "ingameId": "B06",
     "numericId": 2,
-    "lineupToken": "S",
+    "lineupToken": "R",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 35,
@@ -1759,7 +1759,7 @@
     ],
     "ingameId": "B03",
     "numericId": 3,
-    "lineupToken": "J",
+    "lineupToken": "I",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 27,
@@ -2471,7 +2471,7 @@
     ],
     "ingameId": "C11",
     "numericId": 4,
-    "lineupToken": "G",
+    "lineupToken": "F",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 32,
@@ -3259,7 +3259,7 @@
     ],
     "ingameId": "O05",
     "numericId": 5,
-    "lineupToken": "o",
+    "lineupToken": "n",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 26,
@@ -4037,7 +4037,7 @@
     ],
     "ingameId": "O04",
     "numericId": 6,
-    "lineupToken": "M",
+    "lineupToken": "L",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 41,
@@ -4949,7 +4949,7 @@
     ],
     "ingameId": "D09",
     "numericId": 7,
-    "lineupToken": "n",
+    "lineupToken": "m",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 29,
@@ -5674,7 +5674,7 @@
     ],
     "ingameId": "D11",
     "numericId": 8,
-    "lineupToken": "7",
+    "lineupToken": "6",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 35,
@@ -6566,7 +6566,7 @@
     ],
     "ingameId": "O09",
     "numericId": 9,
-    "lineupToken": "h",
+    "lineupToken": "g",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 21,
@@ -7473,7 +7473,7 @@
     ],
     "ingameId": "D13",
     "numericId": 10,
-    "lineupToken": "9",
+    "lineupToken": "8",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 30,
@@ -8325,7 +8325,7 @@
     ],
     "ingameId": "O10",
     "numericId": 11,
-    "lineupToken": "6",
+    "lineupToken": "5",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 34,
@@ -9281,7 +9281,7 @@
     ],
     "ingameId": "D02",
     "numericId": 12,
-    "lineupToken": "I",
+    "lineupToken": "H",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 33,
@@ -9993,7 +9993,7 @@
     ],
     "ingameId": "C02",
     "numericId": 13,
-    "lineupToken": "l",
+    "lineupToken": "k",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 24,
@@ -10840,7 +10840,7 @@
     ],
     "ingameId": "B10",
     "numericId": 14,
-    "lineupToken": "xi",
+    "lineupToken": "xf",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 35,
@@ -11613,7 +11613,7 @@
     ],
     "ingameId": "D08",
     "numericId": 15,
-    "lineupToken": "V",
+    "lineupToken": "U",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 39,
@@ -12399,7 +12399,7 @@
     ],
     "ingameId": "B09",
     "numericId": 16,
-    "lineupToken": "s",
+    "lineupToken": "r",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 28,
@@ -13293,7 +13293,7 @@
     ],
     "ingameId": "O03",
     "numericId": 17,
-    "lineupToken": "q",
+    "lineupToken": "p",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 26,
@@ -14062,7 +14062,7 @@
     ],
     "ingameId": "C02EX",
     "numericId": 18,
-    "lineupToken": "U",
+    "lineupToken": "T",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 24,
@@ -14919,7 +14919,7 @@
     ],
     "ingameId": "B05EX",
     "numericId": 19,
-    "lineupToken": "i",
+    "lineupToken": "h",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 37,
@@ -15711,7 +15711,7 @@
     ],
     "ingameId": "C01EX",
     "numericId": 20,
-    "lineupToken": "j",
+    "lineupToken": "i",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 32,
@@ -16435,7 +16435,7 @@
     ],
     "ingameId": "O06",
     "numericId": 21,
-    "lineupToken": "f",
+    "lineupToken": "e",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 44,
@@ -17148,7 +17148,7 @@
     ],
     "ingameId": "D12",
     "numericId": 22,
-    "lineupToken": "Y",
+    "lineupToken": "X",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 32,
@@ -17881,7 +17881,7 @@
     ],
     "ingameId": "B05",
     "numericId": 23,
-    "lineupToken": "F",
+    "lineupToken": "E",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 37,
@@ -18621,7 +18621,7 @@
     ],
     "ingameId": "D06",
     "numericId": 24,
-    "lineupToken": "B",
+    "lineupToken": "A",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 25,
@@ -19498,7 +19498,7 @@
     ],
     "ingameId": "D07",
     "numericId": 25,
-    "lineupToken": "L",
+    "lineupToken": "K",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 27,
@@ -20337,7 +20337,7 @@
     ],
     "ingameId": "C12",
     "numericId": 26,
-    "lineupToken": "m",
+    "lineupToken": "l",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 30,
@@ -21131,7 +21131,7 @@
     ],
     "ingameId": "C16",
     "numericId": 27,
-    "lineupToken": "1",
+    "lineupToken": "Z",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 33,
@@ -22120,7 +22120,7 @@
     ],
     "ingameId": "B08",
     "numericId": 28,
-    "lineupToken": "P",
+    "lineupToken": "O",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 19,
@@ -22914,7 +22914,7 @@
     ],
     "ingameId": "C10",
     "numericId": 29,
-    "lineupToken": "w",
+    "lineupToken": "v",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 38,
@@ -23780,7 +23780,7 @@
     ],
     "ingameId": "D01",
     "numericId": 30,
-    "lineupToken": "d",
+    "lineupToken": "c",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 29,
@@ -24523,7 +24523,7 @@
     ],
     "ingameId": "C04",
     "numericId": 31,
-    "lineupToken": "k",
+    "lineupToken": "j",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 34,
@@ -25286,7 +25286,7 @@
     ],
     "ingameId": "O07",
     "numericId": 32,
-    "lineupToken": "A",
+    "lineupToken": "w",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 23,
@@ -26462,7 +26462,7 @@
     ],
     "ingameId": "C17",
     "numericId": 33,
-    "lineupToken": "xg",
+    "lineupToken": "xe",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 30,
@@ -27191,7 +27191,7 @@
     ],
     "ingameId": "O02",
     "numericId": 34,
-    "lineupToken": "r",
+    "lineupToken": "q",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 31,
@@ -27998,7 +27998,7 @@
     ],
     "ingameId": "O02EX",
     "numericId": 35,
-    "lineupToken": "H",
+    "lineupToken": "G",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 24,
@@ -28915,7 +28915,7 @@
     ],
     "ingameId": "C07",
     "numericId": 36,
-    "lineupToken": "g",
+    "lineupToken": "f",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 40,
@@ -29817,7 +29817,7 @@
     ],
     "ingameId": "C08",
     "numericId": 37,
-    "lineupToken": "v",
+    "lineupToken": "u",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 20,
@@ -30700,7 +30700,7 @@
     ],
     "ingameId": "C03",
     "numericId": 38,
-    "lineupToken": "D",
+    "lineupToken": "C",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 36,
@@ -32545,7 +32545,7 @@
     ],
     "ingameId": "B12",
     "numericId": 40,
-    "lineupToken": "0",
+    "lineupToken": "9",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 34,
@@ -33264,7 +33264,7 @@
     ],
     "ingameId": "D14",
     "numericId": 41,
-    "lineupToken": "3",
+    "lineupToken": "2",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 33,
@@ -33899,7 +33899,7 @@
     ],
     "ingameId": "C01",
     "numericId": 42,
-    "lineupToken": "N",
+    "lineupToken": "M",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 32,
@@ -34718,7 +34718,7 @@
     ],
     "ingameId": "C05",
     "numericId": 43,
-    "lineupToken": "W",
+    "lineupToken": "V",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 42,
@@ -35479,7 +35479,7 @@
     ],
     "ingameId": "B02",
     "numericId": 44,
-    "lineupToken": "R",
+    "lineupToken": "Q",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 45,
@@ -36528,7 +36528,7 @@
     ],
     "ingameId": "O08",
     "numericId": 45,
-    "lineupToken": "K",
+    "lineupToken": "J",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 34,
@@ -37470,7 +37470,7 @@
     ],
     "ingameId": "B04",
     "numericId": 46,
-    "lineupToken": "C",
+    "lineupToken": "B",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 31,
@@ -38399,7 +38399,7 @@
     ],
     "ingameId": "C15",
     "numericId": 47,
-    "lineupToken": "X",
+    "lineupToken": "W",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 32,
@@ -39137,7 +39137,7 @@
     ],
     "ingameId": "B01",
     "numericId": 48,
-    "lineupToken": "O",
+    "lineupToken": "N",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 33,
@@ -40103,7 +40103,7 @@
     ],
     "ingameId": "D03",
     "numericId": 49,
-    "lineupToken": "p",
+    "lineupToken": "o",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 28,
@@ -40848,7 +40848,7 @@
     ],
     "ingameId": "O01",
     "numericId": 50,
-    "lineupToken": "e",
+    "lineupToken": "d",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 36,
@@ -41799,7 +41799,7 @@
     ],
     "ingameId": "B07",
     "numericId": 51,
-    "lineupToken": "Q",
+    "lineupToken": "P",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 38,
@@ -42609,7 +42609,7 @@
     ],
     "ingameId": "D04",
     "numericId": 52,
-    "lineupToken": "E",
+    "lineupToken": "D",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 37,
@@ -43491,7 +43491,7 @@
     ],
     "ingameId": "D05",
     "numericId": 53,
-    "lineupToken": "u",
+    "lineupToken": "t",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 30,
@@ -44377,7 +44377,7 @@
     ],
     "ingameId": "B14",
     "numericId": 54,
-    "lineupToken": "xj",
+    "lineupToken": "xg",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 48,
@@ -45204,7 +45204,7 @@
     ],
     "ingameId": "O11",
     "numericId": 55,
-    "lineupToken": "xm",
+    "lineupToken": "xi",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 35,
@@ -46072,7 +46072,7 @@
     ],
     "ingameId": "D10",
     "numericId": 56,
-    "lineupToken": "4",
+    "lineupToken": "3",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 34,
@@ -46849,7 +46849,7 @@
     ],
     "ingameId": "B15",
     "numericId": 57,
-    "lineupToken": "xk",
+    "lineupToken": "xh",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 25,
@@ -47667,7 +47667,7 @@
     ],
     "ingameId": "O13",
     "numericId": 58,
-    "lineupToken": "xr",
+    "lineupToken": "xn",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 42,
@@ -48407,7 +48407,7 @@
     ],
     "ingameId": "C04EX",
     "numericId": 59,
-    "lineupToken": "xt",
+    "lineupToken": "xp",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 28,
@@ -49139,7 +49139,7 @@
     ],
     "ingameId": "B11",
     "numericId": 60,
-    "lineupToken": null,
+    "lineupToken": "4",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 21,
@@ -50112,7 +50112,7 @@
     ],
     "ingameId": "C03EX",
     "numericId": 61,
-    "lineupToken": null,
+    "lineupToken": "xr",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 33,
@@ -50894,7 +50894,7 @@
     ],
     "ingameId": "C20",
     "numericId": 62,
-    "lineupToken": null,
+    "lineupToken": "xs",
     "primaryScalingBase": 20,
     "baseStatsLv1": {
       "CON": 35,

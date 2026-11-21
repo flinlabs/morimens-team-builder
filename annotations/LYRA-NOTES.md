@@ -1080,3 +1080,20 @@ classification lost, only gains.
 
 - The mythag.net tier list may now show Caraboo as Support **S**
   (tier-lists.json has A). Not changed — re-transcribe the list deliberately.
+
+### 2026-11-21 — token dictionary settled: the game now uses SKeyDB's numbering
+
+A capture from Mega (Team D4) with Vivian, Ogier, Ramona, Doll, The Seer's
+Riddle, She and Her Tree Hole, Imago's Clinic, Next Time It Rains and
+A Mouse's Wisdom (`@@xsCMkzdzezfaziaaaaaaac@@`) reproduces exactly under
+SKeyDB's tokens and fails under the old pin: Ogier/Ramona/Doll are C/M/k
+(pin had D/N/l), and the new wheels sit on zd/ze/zf/zi, three of which the pin
+had given to Undying Hungerbone, Cetus Occasus and Soul Synchronization.
+
+The earlier mercury child capture matched the pin, so the game renumbered
+between the two. The pin in sync-lineup-tokens.mjs is lifted and all 115
+drifted awakener/wheel tokens now follow upstream. Every awakener has a token
+again (Caraboo 4, Ogier: Oathbound xr, Vivian xs), which also closes the
+wheel-0177 `zf` question. Codes copied out of the game before the renumber
+will decode one place off; there is no version marker in the code to detect
+that. Covenants were not in this capture but never drifted upstream.

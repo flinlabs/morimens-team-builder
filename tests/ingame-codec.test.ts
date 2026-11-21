@@ -38,28 +38,47 @@ describe('ingame-codec', () => {
   it('decodes a real copied in-game lineup to the exact units, gear, and posse', () => {
     const awById = getAwakeners()
     const whById = getWheels()
-    const cvById = getCovenants()
     const poById = getPosses()
-    // A genuine block copied out of Morimens, header and all.
+    // A genuine block copied out of Morimens on 2026-11-21, after the Vivian
+    // drop. It settled the token dictionary: Ogier/Ramona/Doll encode as C/M/k
+    // and the four new wheels as zd/ze/zf/zi, which is SKeyDB's reissued
+    // numbering. The earlier "mercury child" capture (9B41yfx…) matched the
+    // old pin, so the game itself renumbered in between; codes shared before
+    // that change no longer decode to the same characters.
     const block = `Investigation Lineup
-Keeper: mercury child（101242880） Team: Team7
-Clementine, Veiled Anguish, Elevated Focus, Life Drain
-Horla, The Last Verse, Poetic Bygone Days, Dream of Medicine
-Arachne, Eternal Weave, Amidst the Downpour, Steppenwolf
-Kathigu-Ra, Amber-Tinted Death, Blade of the Titan, April Tribute
-Undying Sun
-@@9B41yfxDkxRyivyn1nowbR@@`
+Keeper: Mega（102227110） Team: D4
+
+Vivian, The Seer's Riddle, She and Her Tree Hole, 
+Ogier, Imago's Clinic, -, 
+Ramona, Next Time It Rains, -, 
+Doll, -, -, 
+A Mouse's Wisdom
+
+@@xsCMkzdzezfaziaaaaaaac@@`
     const dec = decodeIngameTeamCode(block)
     expect(dec.warnings).toEqual([])
     const resolved = dec.slots.map((s) => ({
       awk: s.awakenerId ? awById[s.awakenerId].name : null,
       wheels: s.wheelIds.map((id) => (id ? whById[id].name : null)),
-      cov: s.covenantId ? cvById[s.covenantId].name : null,
+      cov: s.covenantId ?? null,
     }))
-    expect(resolved[0]).toEqual({ awk: 'Clementine', wheels: ['Veiled Anguish', 'Elevated Focus'], cov: 'Life Drain' })
-    expect(resolved[1]).toEqual({ awk: 'Horla', wheels: ['The Last Verse', 'Poetic Bygone Days'], cov: 'Dream of Medicine' })
-    expect(resolved[2]).toEqual({ awk: 'Arachne', wheels: ['Eternal Weave', 'Amidst the Downpour'], cov: 'Steppenwolf' })
-    expect(resolved[3]).toEqual({ awk: 'Kathigu-Ra', wheels: ['Amber-Tinted Death', 'Blade of the Titan'], cov: 'April Tribute' })
-    expect(dec.posseId ? poById[dec.posseId].name : null).toBe('Undying Sun')
+    expect(resolved[0]).toEqual({ awk: 'Vivian', wheels: ["The Seer's Riddle", 'She and Her Tree Hole'], cov: null })
+    expect(resolved[1]).toEqual({ awk: 'Ogier', wheels: ["Imago's Clinic", null], cov: null })
+    expect(resolved[2]).toEqual({ awk: 'Ramona', wheels: ['Next Time It Rains', null], cov: null })
+    expect(resolved[3]).toEqual({ awk: 'Doll', wheels: [null, null], cov: null })
+    expect(dec.posseId ? poById[dec.posseId].name : null).toBe("A Mouse's Wisdom")
+  })
+
+  it('round-trips that capture byte for byte', () => {
+    const dec = decodeIngameTeamCode('@@xsCMkzdzezfaziaaaaaaac@@')
+    const again = encodeIngameTeamCode({
+      slots: dec.slots.map((s) => ({
+        awakenerId: s.awakenerId ?? null,
+        wheelIds: s.wheelIds,
+        covenantId: s.covenantId,
+      })),
+      posseId: dec.posseId ?? null,
+    })
+    expect(again).toBe('@@xsCMkzdzezfaziaaaaaaac@@')
   })
 })
