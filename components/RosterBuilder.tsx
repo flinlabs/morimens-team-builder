@@ -804,8 +804,11 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
       next.forEach((id, i) => {
         if (!id || slots[i] === id) return; // unchanged or cleared
         const existing = np[id];
-        if (existing && (existing.wheelIds?.length || existing.covenantId)) {
-          existing.wheelIds?.forEach((w) => usedWheelIds.add(w));
+        // Reuse a saved plan only when it has wheels. A covenant-only plan
+        // (left by an imported code with no wheels) used to be kept as-is, so
+        // the character was placed with empty wheel slots.
+        if (existing?.wheelIds?.length) {
+          existing.wheelIds.forEach((w) => usedWheelIds.add(w));
           if (existing.covenantId) usedCovenantIds.add(existing.covenantId);
           return;
         }
@@ -826,7 +829,8 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
           ...(existing ?? {}),
           role: existing?.role ?? (role ? humanRole(role) : undefined),
           wheelIds: g.wheelIds,
-          covenantId: g.covenantId,
+          // Keep a covenant the saved plan already had (an imported code's).
+          covenantId: existing?.covenantId ?? g.covenantId,
         };
       });
       return np;
@@ -850,6 +854,14 @@ export default function RosterBuilder({ catalog }: { catalog: Catalog }) {
       if (!c) continue;
       result[i] = c.awakenerId;
       nextPlans[c.awakenerId] = planFromAssignment(c);
+    }
+    // Refresh plans for pinned members too, same as D-Tide. The engine geared
+    // them as part of this team, so their wheels and covenant stay unique
+    // across the lineup. Without this a pinned character kept whatever plan
+    // the slot had before (empty after importing a code with no wheels) and
+    // Generate never filled it in.
+    for (const c of top.composition) {
+      if (taken.has(c.awakenerId)) nextPlans[c.awakenerId] = planFromAssignment(c);
     }
     setSlots(result);
     setPlans(nextPlans);
